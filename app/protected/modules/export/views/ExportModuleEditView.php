@@ -33,45 +33,9 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-    /**
-     * Column adapter for cancel of job for the export item.
-     */
-    class CancelExportListViewColumnAdapter extends IntegerListViewColumnAdapter
-    {
-        public function renderGridViewData()
-        {
-            return array(
-                    'name'  => $this->attribute,
-                    'value' => 'CancelExportListViewColumnAdapter::renderStatus($data)',
-                    'type'  => 'raw',
-            );
-        }
 
-        public static function renderStatus($data)
-        {
-            $value = (int)$data->isJobRunning;
-            $url   = Yii::app()->createUrl('export/default/cancel', array('id' => $data->id));
-            if($value == 0)
-            {
-                $cancelBtn  = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Cancel')), $url, array('class' => 'white-button'));
-                if((int)$data->cancelExport == 0)
-                {
-                    return $cancelBtn;
-                }
-                else
-                {
-                    return Zurmo::t('ExportModule', 'Cancel Pending');
-                }
-            }
-            elseif($value == 1)
-            {
-                $cancelBtn  = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Cancel')), $url, array('class' => 'white-button disabled'));
-                return $cancelBtn;
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-        }
+    class ExportModuleEditView extends GlobalSearchEnabledModuleEditView
+    {
+        
     }
 ?>

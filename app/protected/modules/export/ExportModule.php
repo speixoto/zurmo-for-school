@@ -96,6 +96,12 @@
         {
             $metadata = array();
             $metadata['global'] = array(
+                'designerMenuItems' => array(
+                    'showFieldsLink' => true,
+                    'showGeneralLink' => true,
+                    'showLayoutsLink' => true,
+                    'showMenusLink' => true,
+                ),
                 'adminTabMenuItems' => array(
                     array(
                         'label' => "eval:Zurmo::t('ExportModule', 'Export Items')",
