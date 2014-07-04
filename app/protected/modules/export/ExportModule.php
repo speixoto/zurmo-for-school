@@ -104,7 +104,7 @@
                 ),
                 'adminTabMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('ExportModule', 'Export Items')",
+                        'label' => "eval:Zurmo::t('ExportModule', 'Export')",
                         'url'   => array('/export/default/list'),
                         'right' => self::RIGHT_ACCESS_EXPORT,
                     ),

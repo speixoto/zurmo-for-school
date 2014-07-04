@@ -95,6 +95,11 @@
                     'serializedData',
                     'exportFileModel',
                 ),
+                'elements' => array(
+                    'isCompleted'     => 'ExportStatus',
+                    'isJobRunning'    => 'ExportJobStatus',
+                    'cancelExport'    => 'CancelExport'
+                ),
                 'globalSearchAttributeNames' => array(
                     'exportFileName',
                 ),
