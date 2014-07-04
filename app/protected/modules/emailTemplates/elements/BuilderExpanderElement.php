@@ -69,7 +69,7 @@
         {
             $elementClass       = 'TextElement';
             $property           = '[height]';
-            $label              = Zurmo::t('EmailTemplatesModule', 'Height');
+            $label              = Zurmo::t('Core', 'Height');
             $params             = static::resolveDefaultElementParamsForEditableForm($label);
             $params['inline']   = true;
             $propertiesForm = BuilderElementFrontendPropertiesEditableElementUtil::render($elementClass, $this->model,

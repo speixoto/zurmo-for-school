@@ -56,7 +56,7 @@
                 'TextElement',
                 'title',
                 static::resolveDefaultParams(
-                    Zurmo::t('EmailTemplatesModule', 'Title')));
+                    Zurmo::t('ZurmoModule', 'Title')));
             $configurationItems[]       = static::resolveConfigurationItem(
                 'BuilderElementFrontendPropertiesEditableElementUtil',
                 'TextElement',

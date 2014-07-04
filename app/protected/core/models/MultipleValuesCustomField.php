@@ -72,6 +72,11 @@
                 ),
                 'rules' => array(
                 ),
+                'indexes' => array(
+                    'basecustomfield_id' => array(
+                        'members' => array('basecustomfield_id'),
+                        'unique' => false),
+                ),
             );
             return $metadata;
         }

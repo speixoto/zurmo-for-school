@@ -62,6 +62,11 @@
                 'rules' => array(
                     array('value', 'type', 'type' => 'string'),
                 ),
+                'indexes' => array(
+                    'multiplevaluescustomfield_id' => array(
+                        'members' => array('multiplevaluescustomfield_id'),
+                        'unique' => false),
+                ),
                 'defaultSortAttribute' => 'value'
             );
             return $metadata;

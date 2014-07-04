@@ -484,7 +484,7 @@
             $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(null, 50));
             $jobs = Yii::app()->jobQueue->getAll();
             $this->assertCount(1, $jobs);
-            $this->assertEquals('CampaignQueueMessagesInOutbox', $jobs[5][0]);
+            $this->assertEquals('CampaignQueueMessagesInOutbox', $jobs[5][0]['jobType']);
             $campaign           = Campaign::getById($campaignId);
             $this->assertNotNull($campaign);
             $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
@@ -555,14 +555,14 @@
             $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(2));
             $jobs = Yii::app()->jobQueue->getAll();
             $this->assertCount(1, $jobs);
-            $this->assertEquals('CampaignGenerateDueCampaignItems', $jobs[5][0]);
+            $this->assertEquals('CampaignGenerateDueCampaignItems', $jobs[5][0]['jobType']);
             //Now process 3 more.
             Yii::app()->jobQueue->deleteAll();
             $this->assertCount(0, Yii::app()->jobQueue->getAll());
             $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(3));
             $jobs = Yii::app()->jobQueue->getAll();
             $this->assertCount(1, $jobs);
-            $this->assertEquals('CampaignQueueMessagesInOutbox', $jobs[5][0]);
+            $this->assertEquals('CampaignQueueMessagesInOutbox', $jobs[5][0]['jobType']);
             foreach ($campaignIds as $index => $campaignId)
             {
                 $campaign           = Campaign::getById($campaignId);
