@@ -290,7 +290,8 @@
             $effectivePermissions = $this->getEffectivePermissions($currentUser);
             if (($effectivePermissions & $requiredPermissions) == 0)
             {
-                if ($this->setTreatCurrentUserAsOwnerForPermissions(true) && !$this->isPredefinedBuilderTemplate())
+                $this->setTreatCurrentUserAsOwnerForPermissions(true);
+                if (!$this->isPredefinedBuilderTemplate())
                 {
                     throw new AccessDeniedSecurityException($currentUser, $requiredPermissions, $effectivePermissions);
                 }
