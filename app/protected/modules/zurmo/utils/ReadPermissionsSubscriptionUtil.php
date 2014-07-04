@@ -72,46 +72,46 @@
             assert('is_string($tableName) && $tableName  != ""');
             return array($tableName =>  array(
                 'columns' => array(
-                array(
-                    'name' => 'userid',
-                    'type' => 'INT(11)',
-                    'unsigned' => 'UNSIGNED',
-                    'notNull' => 'NOT NULL', // Not Coding Standard
-                    'collation' => null,
-                    'default' => null,
-                ),
-                array(
-                    'name' => 'modelid',
-                    'type' => 'INT(11)',
-                    'unsigned' => 'UNSIGNED',
-                    'notNull' => 'NOT NULL', // Not Coding Standard
-                    'collation' => null,
-                    'default' => null,
-                ),
-                array(
-                    'name' => 'modifieddatetime',
-                    'type' => 'DATETIME',
-                    'unsigned' => null,
-                    'notNull' => 'NULL', // Not Coding Standard
-                    'collation' => null,
-                    'default' => 'NULL', // Not Coding Standard
-                ),
-                array(
-                    'name' => 'subscriptiontype',
-                    'type' => 'TINYINT(4)',
-                    'unsigned' => null,
-                    'notNull' => 'NULL', // Not Coding Standard
-                    'collation' => null,
-                    'default' => 'NULL', // Not Coding Standard
-                ),
-            ),
-            'indexes' =>
-                array('userid_modelid' =>
                     array(
-                        'columns' => array('userid', 'modelid'),
-                        'unique' => true,
+                        'name' => 'userid',
+                        'type' => 'INT(11)',
+                        'unsigned' => 'UNSIGNED',
+                        'notNull' => 'NOT NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => null,
+                    ),
+                    array(
+                        'name' => 'modelid',
+                        'type' => 'INT(11)',
+                        'unsigned' => 'UNSIGNED',
+                        'notNull' => 'NOT NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => null,
+                    ),
+                    array(
+                        'name' => 'modifieddatetime',
+                        'type' => 'DATETIME',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'NULL', // Not Coding Standard
+                    ),
+                    array(
+                        'name' => 'subscriptiontype',
+                        'type' => 'TINYINT(4)',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'NULL', // Not Coding Standard
                     ),
                 ),
+                'indexes' =>
+                    array('userid_modelid' =>
+                              array(
+                                  'columns' => array('userid', 'modelid'),
+                                  'unique' => true,
+                              ),
+                    ),
             )
             );
         }
@@ -131,15 +131,15 @@
         /**
          * Update read subscription table for all users and models
          * @param MessageLogger $messageLogger
+         * @param null | array $modelClassNames
          * @return bool
          */
-        public static function updateAllReadSubscriptionTables(MessageLogger $messageLogger)
+        public static function updateAllReadSubscriptionTables(MessageLogger $messageLogger, $modelClassNames = null)
         {
             $loggedUser = Yii::app()->user->userModel;
             $users = User::getAll();
             $updateStartTimestamp = time();
             static::setReadPermissionUpdateStatus(static::STATUS_STARTED);
-
             $messageLogger->addDebugMessage(Zurmo::t('ZurmoModule',
                 'Starting read permission building for all users.'));
 
@@ -149,7 +149,11 @@
                     'Starting read permission building for userID: {id}', array('{id}' => $user->id)));
                 $startTime = microtime(true);
                 Yii::app()->user->userModel = $user;
-                $modelClassNames = PathUtil::getAllReadSubscriptionModelClassNames();
+
+                if (!is_array($modelClassNames) || empty($modelClassNames))
+                {
+                    $modelClassNames = PathUtil::getAllReadSubscriptionModelClassNames();
+                }
                 if (!empty($modelClassNames) && is_array($modelClassNames))
                 {
                     foreach ($modelClassNames as $modelClassName)
@@ -244,11 +248,11 @@
                     $sql = "DELETE FROM $tableName WHERE
                                                     userid = '" . $user->id . "'
                                                     AND modelid = '{$modelId}'
-                                                    AND subscriptiontype='" . self::TYPE_DELETE . "';";
+                                                    AND subscriptiontype='" . self::TYPE_DELETE . "'";
                     ZurmoRedBean::exec($sql);
 
                     $sql = "INSERT INTO $tableName VALUES
-                                                    (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_ADD . "');";
+                                                    (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_ADD . "')";
                     ZurmoRedBean::exec($sql);
                 }
             }
@@ -260,14 +264,123 @@
                     $sql = "DELETE FROM $tableName WHERE
                                                     userid = '" . $user->id . "'
                                                     AND modelid = '{$modelId}'
-                                                    AND subscriptiontype='" . self::TYPE_ADD . "';";
+                                                    AND subscriptiontype='" . self::TYPE_ADD . "'";
                     ZurmoRedBean::exec($sql);
 
                     $sql = "INSERT INTO $tableName VALUES
-                                                    (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_DELETE . "');";
+                                                    (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_DELETE . "')";
                     ZurmoRedBean::exec($sql);
                 }
             }
+        }
+
+        /**
+         * Add new model to read permission subscription table
+         * @param int $modelId
+         * @param string $modelClassName
+         * @param User $user
+         */
+        public static function addModelToReadSubscriptionTableByModelIdAndModelClassNameAndUser($modelId,
+                                                                                                $modelClassName,
+                                                                                                User $user)
+        {
+            assert('is_int($modelId)');
+            assert('is_string($modelClassName)');
+
+            $updateStartTimestamp = time();
+            $updateDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($updateStartTimestamp);
+            $tableName = static::getSubscriptionTableName($modelClassName);
+            $sql = "DELETE FROM $tableName WHERE
+                    userid = '" . $user->id . "'
+                    AND modelid = '{$modelId}'
+                    AND subscriptiontype='" . self::TYPE_DELETE . "'";
+            ZurmoRedBean::exec($sql);
+
+            $sql = "SELECT * FROM $tableName WHERE
+                    userid = '" . $user->id . "'
+                    AND modelid = '{$modelId}'
+                    AND subscriptiontype='" . self::TYPE_ADD . "'";
+            $results = ZurmoRedBean::getAll($sql);
+
+            if (!is_array($results) || empty($results))
+            {
+                $sql = "INSERT INTO $tableName VALUES
+                    (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_ADD . "')";
+                ZurmoRedBean::exec($sql);
+            }
+        }
+
+        /**
+         * Delete model read permission subscription table by model id, class name and user
+         * @param int $modelId
+         * @param string $modelClassName
+         * @param User $user
+         */
+        public static function deleteModelFromReadSubscriptionTableByModelIdAndModelClassNameAndUser($modelId,
+                                                                                                     $modelClassName,
+                                                                                                     User $user)
+        {
+            assert('is_int($modelId)');
+            assert('is_string($modelClassName)');
+
+            $updateStartTimestamp = time();
+            $updateDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($updateStartTimestamp);
+            $tableName = static::getSubscriptionTableName($modelClassName);
+            $sql = "DELETE FROM $tableName WHERE
+                    userid = '" . $user->id . "'
+                    AND modelid = '{$modelId}'
+                    AND subscriptiontype='" . self::TYPE_ADD . "'";
+            ZurmoRedBean::exec($sql);
+
+            $sql = "SELECT * FROM $tableName WHERE
+                    userid = '" . $user->id . "'
+                    AND modelid = '{$modelId}'
+                    AND subscriptiontype='" . self::TYPE_DELETE . "'";
+            $results = ZurmoRedBean::getAll($sql);
+
+            if (!is_array($results) || empty($results))
+            {
+                $sql = "INSERT INTO $tableName VALUES
+                        (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_DELETE . "')";
+                ZurmoRedBean::exec($sql);
+            }
+        }
+
+        /**
+         * @param int $modelId
+         * @param string $modelClassName
+         */
+        protected static function deleteOnlyModelToReadSubscriptionTableByModelIdAndModelClassName($modelId,
+                                                                                                   $modelClassName)
+        {
+            assert('is_int($modelId)');
+            assert('is_string($modelClassName)');
+
+            $updateStartTimestamp = time();
+            $updateDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($updateStartTimestamp);
+            $tableName = static::getSubscriptionTableName($modelClassName);
+            $sql = "UPDATE $tableName set
+                    subscriptiontype='" . self::TYPE_DELETE . "', modifieddatetime='" . $updateDateTime . "'
+                    WHERE
+                    modelid = '{$modelId}'
+                    AND subscriptiontype='" . self::TYPE_ADD . "'";
+            ZurmoRedBean::exec($sql);
+        }
+
+        /**
+         * Call this function when changing model owner
+         * This function first mark model as deleted for all users where type was added, and change timestamp,
+         * then it add new record for new owner.
+         * @param int $modelId
+         * @param string $modelClassName
+         * @param User $user
+         */
+        public static function changeOwnerOfModelInReadSubscriptionTableByModelIdAndModelClassNameAndUser($modelId,
+                                                                                                          $modelClassName,
+                                                                                                          User $user)
+        {
+            static::deleteOnlyModelToReadSubscriptionTableByModelIdAndModelClassName($modelId, $modelClassName);
+            static::addModelToReadSubscriptionTableByModelIdAndModelClassNameAndUser($modelId, $modelClassName, $user);
         }
 
         /**

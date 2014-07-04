@@ -104,6 +104,11 @@
 
             $sql = "SELECT * FROM contact_read_subscription WHERE userid = " . Yii::app()->user->userModel->id;
             $permissionTableRows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(2, count($permissionTableRows));
+            $sql = "DELETE FROM contact_read_subscription";
+            ZurmoRedBean::exec($sql);
+            $sql = "SELECT * FROM contact_read_subscription WHERE userid = " . Yii::app()->user->userModel->id;
+            $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(0, count($permissionTableRows));
 
             ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassNameAndUser('Contact',
@@ -297,6 +302,150 @@
                 'TestService', 'Task', 0, ReadPermissionsSubscriptionUtil::TYPE_ADD, $super);
             $this->asserttrue(is_array($addedModelIds));
             $this->assertEquals(0, count($addedModelIds));
+        }
+
+        public function testAddAndDeleteModelToReadSubscriptionTableByModelIdAndModelClassNameAndUser()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $messageLogger = new DebuggingMessageLogger();
+
+            // Clean contact table
+            $contacts = Contact::getAll();
+            foreach ($contacts as $contact)
+            {
+                $contact->delete();
+            }
+            $sql = "DELETE FROM contact_read_subscription";
+            ZurmoRedBean::exec($sql);
+            $sql = "SELECT * FROM contact_read_subscription";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertTrue(empty($rows));
+
+            $contact1 = ContactTestHelper::createContactByNameForOwner('Jason', $super);
+            $sql = "SELECT * FROM contact_read_subscription";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(1, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($contact1->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+
+            // Nothing shouldn't change after this command, not even modifieddatetime
+            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassNameAndUser('Contact',
+                $super, time(), false, $messageLogger);
+
+            $sql = "SELECT * FROM contact_read_subscription";
+            $rowsAfterReadSubscriptionTableUpdate = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(1, count($rowsAfterReadSubscriptionTableUpdate));
+            $this->assertEquals($super->id, $rowsAfterReadSubscriptionTableUpdate[0]['userid']);
+            $this->assertEquals($contact1->id, $rowsAfterReadSubscriptionTableUpdate[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD,
+                $rowsAfterReadSubscriptionTableUpdate[0]['subscriptiontype']);
+            $this->assertEquals($rows[0]['modifieddatetime'], $rowsAfterReadSubscriptionTableUpdate[0]['modifieddatetime']);
+
+            // Lets test deletion
+            $contact1->delete();
+            $sql = "SELECT * FROM contact_read_subscription";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(1, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($contact1->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[0]['subscriptiontype']);
+
+            // Nothing shouldn't change after this command, not even modifieddatetime
+            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassNameAndUser('Contact',
+                $super, time(), false, $messageLogger);
+
+            $sql = "SELECT * FROM contact_read_subscription";
+            $rowsAfterReadSubscriptionTableUpdate = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(1, count($rowsAfterReadSubscriptionTableUpdate));
+            $this->assertEquals($super->id, $rowsAfterReadSubscriptionTableUpdate[0]['userid']);
+            $this->assertEquals($contact1->id, $rowsAfterReadSubscriptionTableUpdate[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE,
+                $rowsAfterReadSubscriptionTableUpdate[0]['subscriptiontype']);
+            $this->assertEquals($rows[0]['modifieddatetime'], $rowsAfterReadSubscriptionTableUpdate[0]['modifieddatetime']);
+
+            // Test with accounts - in this case nothing shouldn't change directly during account save() or delete()
+            $accounts = Account::getAll();
+            foreach ($accounts as $account)
+            {
+                $account->delete();
+            }
+            $sql = "DELETE FROM account_read_subscription";
+            ZurmoRedBean::exec($sql);
+            $sql = "SELECT * FROM account_read_subscription";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertTrue(empty($rows));
+            $account1 = AccountTestHelper::createAccountByNameForOwner("TestAccount", $super);
+            $sql = "SELECT * FROM account_read_subscription";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertTrue(empty($rows));
+
+            $account1->delete();
+            $sql = "SELECT * FROM account_read_subscription";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertTrue(empty($rows));
+        }
+
+        public function testChangeOwnerOfModelInReadSubscriptionTableByModelIdAndModelClassNameAndUser()
+        {
+            $super = User::getByUsername('super');
+            $billy = UserTestHelper::createBasicUser('billy');
+            Yii::app()->user->userModel = $super;
+
+            // Clean contact table
+            $contacts = Contact::getAll();
+            foreach ($contacts as $contact)
+            {
+                $contact->delete();
+            }
+            $sql = "DELETE FROM contact_read_subscription";
+            ZurmoRedBean::exec($sql);
+            $sql = "SELECT * FROM contact_read_subscription";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertTrue(empty($rows));
+
+            $contact1 = ContactTestHelper::createContactByNameForOwner('Ray', $super);
+            $sql = "SELECT * FROM contact_read_subscription";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(1, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($contact1->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+
+            $contact1->owner = $billy;
+            $this->assertTrue($contact1->save());
+            $sql = "SELECT * FROM contact_read_subscription order by id";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(2, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($contact1->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[0]['subscriptiontype']);
+            $this->assertEquals($billy->id, $rows[1]['userid']);
+            $this->assertEquals($contact1->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
+
+            // Test with accounts - in this case nothing shouldn't change directly during account save() or delete()
+            $accounts = Account::getAll();
+            foreach ($accounts as $account)
+            {
+                $account->delete();
+            }
+            $sql = "DELETE FROM account_read_subscription";
+            ZurmoRedBean::exec($sql);
+            $sql = "SELECT * FROM account_read_subscription";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertTrue(empty($rows));
+            $account1 = AccountTestHelper::createAccountByNameForOwner("TestAccount2", $super);
+            $sql = "SELECT * FROM account_read_subscription";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertTrue(empty($rows));
+
+            $account1->owner = $billy;
+            $this->assertTrue($account1->save());
+            $sql = "SELECT * FROM account_read_subscription";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertTrue(empty($rows));
         }
     }
 ?>

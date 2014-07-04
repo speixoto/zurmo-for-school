@@ -101,7 +101,18 @@
          */
         public function readPermissionSubscriptionOnAfterOwnerChange(CEvent $event)
         {
-            //Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdate', 5);
+            if (get_class($event->sender) == 'Account')
+            {
+                Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+            }
+            elseif ($event->sender->id > 0) // ToDo: Check with Jason why we need this
+            {
+                ReadPermissionsSubscriptionUtil::changeOwnerOfModelInReadSubscriptionTableByModelIdAndModelClassNameAndUser(
+                    $event->sender->id,
+                    get_class($event->sender),
+                    $event->sender->owner
+                );
+            }
             return true;
         }
 
@@ -113,7 +124,18 @@
         {
             if ($event->sender->getIsNewModel())
             {
-                //Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdate', 5);
+                if (get_class($event->sender) == 'Account')
+                {
+                    Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+                }
+                else
+                {
+                    ReadPermissionsSubscriptionUtil::addModelToReadSubscriptionTableByModelIdAndModelClassNameAndUser(
+                        $event->sender->id,
+                        get_class($event->sender),
+                        $event->sender->owner
+                    );
+                }
             }
             return true;
         }
@@ -124,7 +146,19 @@
          */
         public function readPermissionSubscriptionOnAfterDelete(CEvent $event)
         {
-            //Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdate', 5);
+            if (get_class($event->sender) == 'Account')
+            {
+                // Maybe we do not need this - figure out
+                Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+            }
+            else
+            {
+                ReadPermissionsSubscriptionUtil::deleteModelFromReadSubscriptionTableByModelIdAndModelClassNameAndUser(
+                    $event->sender->id,
+                    get_class($event->sender),
+                    $event->sender->owner
+                );
+            }
             return true;
         }
     }
