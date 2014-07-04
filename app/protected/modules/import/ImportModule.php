@@ -61,7 +61,7 @@
             $metadata['global'] = array(
                 'adminTabMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('ImportModule', 'Import')",
+                        'label' => "eval:Zurmo::t('ZurmoModule', 'Import')",
                         'url'   => array('/import/default'),
                         'right' => self::RIGHT_ACCESS_IMPORT,
                     ),
@@ -69,7 +69,7 @@
                 'configureMenuItems' => array(
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => "eval:Zurmo::t('ImportModule', 'Import')",
+                        'titleLabel'       => "eval:Zurmo::t('ZurmoModule', 'Import')",
                         'descriptionLabel' => "eval:Zurmo::t('ImportModule', 'Import data into Zurmo', LabelUtil::getTranslationParamsForAllModules())",
                         'route'            => '/import/default',
                         'right'            => self::RIGHT_ACCESS_IMPORT,
@@ -77,7 +77,7 @@
                 ),
                 'headerMenuItems' => array(
                     array(
-                        'label'  => "eval:Zurmo::t('ImportModule', 'Import')",
+                        'label'  => "eval:Zurmo::t('ZurmoModule', 'Import')",
                         'url'    => array('/import/default'),
                         'right'  => self::RIGHT_ACCESS_IMPORT,
                         'order'  => 3,
@@ -95,7 +95,7 @@
 
         protected static function getSingularModuleLabel($language)
         {
-            return Zurmo::t('ImportModule', 'Import', array(), null, $language);
+            return Zurmo::t('ZurmoModule', 'Import', array(), null, $language);
         }
 
         protected static function getPluralModuleLabel($language)
