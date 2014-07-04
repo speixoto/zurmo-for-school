@@ -270,6 +270,37 @@
             return self::getSubset($joinTablesAdapter, null, null, $where, 'name');
         }
 
+        protected static function bypassReadPermissionsOptimizationToSqlQueryBasedOnWhere($where)
+        {
+            $q                 = DatabaseCompatibilityUtil::getQuote();
+            $builtTemplateType = static::BUILT_TYPE_BUILDER_TEMPLATE;
+            $isNull            = SQLOperatorUtil::resolveOperatorAndValueForNullOrEmpty('isNull');
+            $expectedWhere     = "({$q}emailtemplate{$q}.{$q}builttype{$q} = {$builtTemplateType}) and " .
+                                 "({$q}emailtemplate{$q}.{$q}modelclassname{$q} {$isNull})";
+            if ($where == $expectedWhere)
+            {
+                return true;
+            }
+            return parent::bypassReadPermissionsOptimizationToSqlQueryBasedOnWhere($where);
+        }
+
+        protected function checkPermissionsHasAnyOf($requiredPermissions)
+        {
+            $currentUser = Yii::app()->user->userModel;
+            $effectivePermissions = $this->getEffectivePermissions($currentUser);
+            if (($effectivePermissions & $requiredPermissions) == 0)
+            {
+                if ($this->setTreatCurrentUserAsOwnerForPermissions(true) && !$this->isPredefinedBuilderTemplate())
+                {
+                    throw new AccessDeniedSecurityException($currentUser, $requiredPermissions, $effectivePermissions);
+                }
+                else
+                {
+                    //Do nothing
+                }
+            }
+        }
+
         /**
          * Returns the SearchAttributeData array to search for all previouslyCreatedBuilderTemplates
          * @param null $modelClassName
