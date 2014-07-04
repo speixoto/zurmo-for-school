@@ -112,8 +112,8 @@
                 'configureMenuItems' => array(
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => "eval:Zurmo::t('ExportModule', 'Export Items')",
-                        'descriptionLabel' => "eval:Zurmo::t('ExportModule', 'Export Status.')",
+                        'titleLabel'       => "eval:Zurmo::t('ExportModule', 'Export')",
+                        'descriptionLabel' => "eval:Zurmo::t('ExportModule', 'Export Items Status.')",
                         'route'            => '/export/default/list',
                         'right'            => self::RIGHT_ACCESS_EXPORT,
                     ),
