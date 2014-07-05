@@ -57,6 +57,7 @@
                     $resolvedData[$moduleClassName] = $modulePermissions;
                 }
             }
+            ksort($resolvedData);
             return $resolvedData;
         }
 
