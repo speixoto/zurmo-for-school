@@ -36,11 +36,13 @@
 
     class Redactor extends ZurmoWidget
     {
-        public $scriptFile      = array('redactor.js');
+        const LINK_FOR_INSERT_CLASS = 'image-gallery-modal-insert';
 
-        public $cssFile         = array('redactor.css');
+        public $scriptFile          = array('redactor.js');
 
-        public $assetFolderName = 'redactor';
+        public $cssFile             = array('redactor.css');
+
+        public $assetFolderName     = 'redactor';
 
         public $htmlOptions;
 
@@ -51,7 +53,7 @@
 
         public $buttons         = "['html', '|', 'formatting', 'bold', 'italic', 'deleted', '|',
                                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link', '|',
-                                   'alignleft', 'aligncenter', 'alignright', '|', 'horizontalrule', '|', 'image']";
+                                   'alignleft', 'aligncenter', 'alignright', '|', 'horizontalrule']";
 
         public $pastePlainText  = "true";
 
@@ -105,10 +107,14 @@
 
         public $imageUploadErrorCallback;
 
+        public $urlForImageGallery;
+
         public function run()
         {
-            $id         = $this->htmlOptions['id'];
-            $name       = $this->htmlOptions['name'];
+            $id                 = $this->htmlOptions['id'];
+            $name               = $this->htmlOptions['name'];
+            $linkForInsertClass = static::LINK_FOR_INSERT_CLASS;
+            $urlForImageGallery = Yii::app()->createUrl('zurmo/imageModel/modalList/');
             unset($this->htmlOptions['name']);
             $javaScript = "
                     $(document).ready(
@@ -130,6 +136,7 @@
                                 {$this->renderRedactorParamForInit('deniedTags')}
                                 {$this->renderRedactorParamForInit('iframe')}
                                 {$this->renderRedactorParamForInit('css')}
+                                {$this->renderRedactorParamForInit('urlForImageGallery')}
                                 buttons:            {$this->buttons},
                                 cleanup:            {$this->cleanup},
                                 convertDivs:        {$this->convertDivs},
@@ -144,6 +151,8 @@
                                 tidyHtml:           {$this->tidyHtml},
                                 wym:                {$this->wym},
                                 xhtml:              {$this->xhtml},
+                                linkForInsertClass: '{$linkForInsertClass}',
+                                urlForImageGallery: '{$urlForImageGallery}',
                             });
                         }
                     );";

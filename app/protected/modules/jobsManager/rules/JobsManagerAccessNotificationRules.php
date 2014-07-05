@@ -46,7 +46,7 @@
          */
         protected function loadUsers()
         {
-            foreach (User::getAll() as $user)
+            foreach (User::getActiveUsers() as $user)
             {
                 if ($user->getEffectiveRight('JobsManagerModule', JobsManagerModule::RIGHT_ACCESS_JOBSMANAGER) ==
                     Right::ALLOW)

@@ -686,7 +686,7 @@
         protected function getImportPageView($progressBarAndStepsView, $importView)
         {
             $breadCrumbLinks = array(
-                Zurmo::t('ImportModule', 'Import'),
+                Zurmo::t('ZurmoModule',  'Import'),
                 Zurmo::t('Core',         'Create')
             );
             $view       = new ImportPageView(ZurmoDefaultAdminViewUtil::makeTwoViewsWithBreadcrumbsForCurrentUser(

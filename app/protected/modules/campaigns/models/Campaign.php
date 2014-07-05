@@ -302,5 +302,16 @@
                                                                                 'CampaignGenerateDueCampaignItems');
             parent::afterSave();
         }
+
+        protected function afterDelete()
+        {
+            parent::afterDelete();
+            $campaignitems = CampaignItem::getByProcessedAndCampaignId(0, $this->id);
+            foreach ($campaignitems as $campaignitem)
+            {
+                ZurmoRedBean::exec("DELETE FROM campaignitemactivity WHERE campaignitem_id = " . $campaignitem->id);
+            }
+            ZurmoRedBean::exec("DELETE FROM campaignitem WHERE processed = 0 and campaign_id = " . $this->id);
+        }
     }
 ?>

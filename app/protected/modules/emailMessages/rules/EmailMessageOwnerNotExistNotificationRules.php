@@ -59,7 +59,7 @@
          */
         protected function loadUsers()
         {
-            foreach (User::getAll() as $user)
+            foreach (User::getActiveUsers() as $user)
             {
                 if ($user->isSuperAdministrator())
                 {

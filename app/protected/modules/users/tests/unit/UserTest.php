@@ -1439,5 +1439,22 @@
             $this->assertTrue($userA->isSuperAdministrator());
             $this->assertFalse($userB->isSuperAdministrator());
         }
+
+        public function testInactiveUsers()
+        {
+            $activeUserCount = User::getActiveUserCount();
+            $this->assertEquals(28, $activeUserCount);
+            $this->assertCount(28, User::getActiveUsers());
+            $user = new User();
+            $user->username           = 'inactiveuser';
+            $user->title->value       = 'Mr.';
+            $user->firstName          = 'My';
+            $user->lastName           = 'inactiveuser';
+            $user->setPassword('myuser');
+            $user->setIsSystemUser();
+            $this->assertTrue($user->save());
+            $this->assertEquals(28, $activeUserCount);
+            $this->assertCount(28, User::getActiveUsers());
+        }
     }
 ?>

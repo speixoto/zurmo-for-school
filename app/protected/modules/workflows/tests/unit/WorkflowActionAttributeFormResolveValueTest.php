@@ -522,7 +522,7 @@
         {
             $form        = new MultiSelectDropDownWorkflowActionAttributeForm('WorkflowsTestModule', 'WorkflowModelTestItem');
             $form->type  = MultiSelectDropDownWorkflowActionAttributeForm::TYPE_STATIC;
-            $form->value = 'M2';
+            $form->value = array('M2');
             $model       = new WorkflowModelTestItem();
             $adapter     = new WorkflowActionProcessingModelAdapter($model, Yii::app()->user->userModel);
             $this->assertEquals(0, $model->multiDropDown->values->count());
@@ -530,11 +530,12 @@
             $this->assertEquals(1, $model->multiDropDown->values->count());
             $this->assertEquals('M2', $model->multiDropDown->values[0]->value);
 
-            //Now replace M2 with M3
-            $form->value = 'M3';
+            //Now replace M2 with M1 and M3
+            $form->value = array('M1', 'M3');
             $form->resolveValueAndSetToModel($adapter, 'multiDropDown');
-            $this->assertEquals(1, $model->multiDropDown->values->count());
-            $this->assertEquals('M3', $model->multiDropDown->values[0]->value);
+            $this->assertEquals(2, $model->multiDropDown->values->count());
+            $this->assertEquals('M1', $model->multiDropDown->values[0]->value);
+            $this->assertEquals('M3', $model->multiDropDown->values[1]->value);
         }
 
         public function testPhoneResolveValueAndSetToModelUpdateAsStatic()
@@ -614,7 +615,7 @@
         {
             $form        = new TagCloudWorkflowActionAttributeForm('WorkflowsTestModule', 'WorkflowModelTestItem');
             $form->type  = TagCloudWorkflowActionAttributeForm::TYPE_STATIC;
-            $form->value = 'M2';
+            $form->value = array('M2');
             $model       = new WorkflowModelTestItem();
             $adapter     = new WorkflowActionProcessingModelAdapter($model, Yii::app()->user->userModel);
             $this->assertEquals(0, $model->tagCloud->values->count());
@@ -622,11 +623,12 @@
             $this->assertEquals(1, $model->tagCloud->values->count());
             $this->assertEquals('M2', $model->tagCloud->values[0]->value);
 
-            //Now replace M2 with M3
-            $form->value = 'M3';
+            //Now replace M2 with M1 and M3
+            $form->value = array('M1', 'M3');
             $form->resolveValueAndSetToModel($adapter, 'tagCloud');
-            $this->assertEquals(1, $model->tagCloud->values->count());
-            $this->assertEquals('M3', $model->tagCloud->values[0]->value);
+            $this->assertEquals(2, $model->tagCloud->values->count());
+            $this->assertEquals('M1', $model->tagCloud->values[0]->value);
+            $this->assertEquals('M3', $model->tagCloud->values[1]->value);
         }
 
         public function testTextResolveValueAndSetToModelUpdateAsStatic()

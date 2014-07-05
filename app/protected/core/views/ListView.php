@@ -202,11 +202,10 @@
         {
             $columns = $this->getCGridViewColumns();
             assert('is_array($columns)');
-            $listTypeCssClass = 'type-' . $this->moduleId;
             $params = array(
                 'id' => $this->getGridViewId(),
                 'htmlOptions' => array(
-                    'class' => 'cgrid-view ' . $listTypeCssClass
+                    'class' => 'cgrid-view ' . $this->getTypeCssClassForCGridView()
                 ),
                 'loadingCssClass'      => 'loading',
                 'dataProvider'         => $this->getDataProvider(),
@@ -228,6 +227,11 @@
                 'hideHeader'           => $this->isHeaderHidden()
             );
             return $this->resolveCGridViewParamsForKanbanBoard($params);
+        }
+
+        protected function getTypeCssClassForCGridView()
+        {
+            return 'type-' . $this->moduleId;
         }
 
         protected static function getGridTemplate()

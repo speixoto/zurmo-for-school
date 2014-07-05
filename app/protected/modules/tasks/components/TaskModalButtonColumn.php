@@ -50,29 +50,12 @@
          */
         protected function renderButton($id, $button, $row, $data)
         {
-            if (isset($button['visible']) && !$this->evaluateExpression($button['visible'],
-                    array('row' => $row, 'data' => $data)))
-            {
-                return;
-            }
-            $label = isset($button['label']) ? $button['label'] : $id;
-            if (isset($button['url']))
-            {
-                $url = $this->evaluateExpression($button['url'], array('data'=>$data, 'row'=>$row)); // Not Coding Standard
-            }
-            else
-            {
-                $url = '#';
-            }
             $options = isset($button['options']) ? $button['options'] : array();
-            if (!isset($options['title']))
-            {
-                $options['title'] = $label;
-            }
             //Required else id assigned to update button is same as create task link in top nav bar
             //opening create task instead of edit task
             $options['id'] = $button['gridId'] . '-' . $data->id;
-            echo ZurmoHtml::ajaxLink($label, $url, $button['ajaxOptions'], $options);
+            $button['options'] = $options;
+            return parent::renderButton($id, $button, $row, $data);
         }
     }
 ?>

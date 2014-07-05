@@ -199,7 +199,7 @@
             $this->assertEquals($group1, $readWritePermitables[$group1->getClassId('Permitable')]);
         }
 
-        public function testWorkflowDontLinkRelatedModelWhenPermissionsIsSetToOwner()
+        public function testWorkflowDoesLinkRelatedModelWhenPermissionsIsSetToOwner()
         {
             $super         = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $contactStates = ContactState::getAll();
@@ -249,6 +249,8 @@
             $contacts = Contact::getAll();
             $this->assertCount(1, $contacts);
             $this->assertEquals('myTestAccount', $contacts[0]->account->name);
+            $this->assertEquals('john smith', strval($account->contacts[0]));
+            $this->assertTrue($account->contacts[0]->id > 0);
         }
     }
 ?>

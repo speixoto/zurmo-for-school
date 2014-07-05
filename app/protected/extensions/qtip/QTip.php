@@ -44,10 +44,18 @@ class QTip extends CComponent {
      * @param options array) the qtip js options
      * @param minify bool true to select the minified js script
      */
-    public static function qtip2($jsSelector, $options = array(), $minify = true) {
+    public static function qtip2($jsSelector, $options = array(), $minify = true, $live = false) {
         if (! empty($minify)) self::registerScript(self::scriptName($minify));
 
-        Yii::app()->clientScript->registerScript(__CLASS__.$jsSelector, '$("'.$jsSelector.'").qtip('.CJavaScript::encode($options).');');
+        if ($live)
+        {
+            $script = '$(document).off("mouseover", "'.$jsSelector.'");$(document).on("mouseover", "'.$jsSelector.'", function(event) {$(this).qtip('.CJavaScript::encode($options).', event);})';
+        }
+        else
+        {
+            $script = '$("'.$jsSelector.'").qtip('.CJavaScript::encode($options).');';
+        }
+        Yii::app()->clientScript->registerScript(__CLASS__.$jsSelector, $script);
     }
 
     public $minify = true; // true to select the minified js script
