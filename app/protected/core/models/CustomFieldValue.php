@@ -61,6 +61,7 @@
                 ),
                 'rules' => array(
                     array('value', 'type', 'type' => 'string'),
+                    array('value', 'length', 'max'   => 255),
                 ),
                 'defaultSortAttribute' => 'value'
             );
