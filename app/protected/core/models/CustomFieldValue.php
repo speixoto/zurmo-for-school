@@ -60,8 +60,8 @@
                     'multipleValuesCustomField' => array(static::HAS_ONE, 'MultipleValuesCustomField', static::NOT_OWNED),
                 ),
                 'rules' => array(
-                    array('value', 'type', 'type' => 'string'),
-                    array('value', 'length', 'max'   => 255),
+                    array('value', 'type',   'type' => 'string'),
+                    array('value', 'length', 'max'  => 255),
                 ),
                 'defaultSortAttribute' => 'value'
             );
