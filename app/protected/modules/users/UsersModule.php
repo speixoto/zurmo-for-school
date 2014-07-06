@@ -147,18 +147,6 @@
                         'label' => "eval:Zurmo::t('UsersModule', 'Users')",
                         'url'   => array('/users/default'),
                         'right' => self::RIGHT_ACCESS_USERS,
-                        'items' => array(
-                            array(
-                                'label' => "eval:Zurmo::t('UsersModule', 'Create User')",
-                                'url'   => array('/users/default/create'),
-                                'right' => self::RIGHT_CREATE_USERS
-                            ),
-                            array(
-                                'label' => "eval:Zurmo::t('UsersModule', 'Users')",
-                                'url'   => array('/users/default'),
-                                'right' => self::RIGHT_ACCESS_USERS
-                            ),
-                        ),
                     ),
                 ),
                 'globalSearchAttributeNames' => array(
