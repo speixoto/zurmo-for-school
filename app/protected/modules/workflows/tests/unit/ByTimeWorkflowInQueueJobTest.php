@@ -89,7 +89,7 @@
             $this->assertEquals(5, count(ByTimeWorkflowInQueue::getAll()));
             $jobs = Yii::app()->jobQueue->getAll();
             $this->assertCount(1, $jobs);
-            $this->assertEquals('ByTimeWorkflowInQueue', $jobs[key($jobs)][0]);
+            $this->assertEquals('ByTimeWorkflowInQueue', $jobs[key($jobs)][0]['jobType']);
 
             Yii::app()->jobQueue->deleteAll();
             $this->assertTrue($job->run());

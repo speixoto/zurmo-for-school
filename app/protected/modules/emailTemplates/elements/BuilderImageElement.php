@@ -43,7 +43,7 @@
 
         protected static function resolveLabel()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Image');
+            return Zurmo::t('Core', 'Image');
         }
 
         protected function resolveDefaultContent()

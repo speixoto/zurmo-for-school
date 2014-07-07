@@ -178,7 +178,7 @@
                                                 },
                                     success:    function(data, status, request)
                                                 {
-                                                    refreshMembersListGridView();
+                                                    refreshMembersListGridView("' . $this->getListViewGridId() . '");
                                                     updateFlashBar(data, notificationBarId);
                                                     //todo: this is only a check if reporting.
                                                     if (data.nextPage)
