@@ -373,9 +373,9 @@
             else
             {
                 Yii::app()->clientScript->registerScript($scriptName, '
-                function refreshMembersListGridView()
+                function refreshMembersListGridView(id)
                 {
-                    $("#list-viewMarketingListMembersPortletView .pager .refresh a").click();
+                    $("#" + id).yiiGridView("update");
                 }');
             }
         }

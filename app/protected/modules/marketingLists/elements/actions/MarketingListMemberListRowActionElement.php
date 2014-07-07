@@ -103,7 +103,7 @@
                             refreshGrid = false;
                             if (linkId.indexOf("delete") !== -1 && !$(this).onAjaxSubmitRelatedListAction("' . $unlinkConfirmMessage . '", "' . $this->getGridId() . '"))
                             {
-                                refreshMembersListGridView();
+                                refreshMembersListGridView("' . $this->getGridId() . '");
                             }
                             else
                             {
@@ -114,7 +114,7 @@
                                                     },
                                     "success"   : function()
                                                     {
-                                                        refreshMembersListGridView();
+                                                        refreshMembersListGridView("' . $this->getGridId() . '");
                                                     },
                                     "url"       : linkUrl,
                                     "cache"	    : false
