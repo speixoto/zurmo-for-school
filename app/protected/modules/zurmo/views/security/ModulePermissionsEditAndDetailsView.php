@@ -122,7 +122,8 @@
                 foreach ($panel['rows'] as $row)
                 {
                     assert('!empty($row["title"])');
-                    $cellsContent = '<th>' . Zurmo::t('ZurmoModule', $row['title']) . '</th>';
+                    $title = Zurmo::t('ZurmoModule', $row['title']);
+                    $rowTitlesAndContent[$title] = '<th>' . $title . '</th>';
                     foreach ($row['cells'] as $cell)
                     {
                         if (is_array($cell['elements']) && $this->shouldDisplayCell(ArrayUtil::getArrayValue($cell, 'detailViewOnly')))
@@ -138,15 +139,20 @@
                                                             $form,
                                                             array_slice($elementInformation, 2));
                                 $element->editableTemplate = $editableTemplate;
-                                $cellsContent    .= $element->render();
+                                $rowTitlesAndContent[$title] .= $element->render();
                             }
                         }
                     }
-                    if (!empty($cellsContent))
+                    
+                }
+                ksort($rowTitlesAndContent);
+                foreach ($rowTitlesAndContent as $rowcontent)
+                {
+                    if (!empty($rowcontent))
                     {
-                    $content .= '<tr>';
-                    $content .= $cellsContent;
-                    $content .= '</tr>';
+                        $content .= '<tr>';
+                        $content .= $rowcontent;
+                        $content .= '</tr>';
                     }
                 }
                 $content .= '</tbody>';
