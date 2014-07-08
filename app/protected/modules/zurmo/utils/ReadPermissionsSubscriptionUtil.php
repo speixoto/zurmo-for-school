@@ -53,6 +53,7 @@
                 $readPermissionsSubscriptionTableName  = static::getSubscriptionTableName($modelClassName);
                 static::recreateTable($readPermissionsSubscriptionTableName);
             }
+            static::recreateAccountBuildTable();
             ModelCreationApiSyncUtil::buildTable();
         }
 
@@ -63,6 +64,13 @@
         public static function recreateTable($modelSubscriptionTableName)
         {
             $schema = static::getReadSubscriptionTableSchemaByName($modelSubscriptionTableName);
+            CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition(
+                $schema, new MessageLogger());
+        }
+
+        public static function recreateAccountBuildTable()
+        {
+            $schema = static::getReadSubscriptionTableSchemaForAccountTempTable();
             CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition(
                 $schema, new MessageLogger());
         }
@@ -116,6 +124,55 @@
             );
         }
 
+        protected static function getReadSubscriptionTableSchemaForAccountTempTable()
+        {
+            $tableName = static::getAccountSubscriptionTempBuildTableName();
+            return array($tableName =>  array(
+                'columns' => array(
+                    array(
+                        'name' => 'accountid',
+                        'type' => 'INT(11)',
+                        'unsigned' => 'UNSIGNED',
+                        'notNull' => 'NOT NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => null,
+                    ),
+                ),
+                'indexes' => array(),
+                ),
+            );
+        }
+
+        protected static function getAccountIdsArrayFromBuildTable()
+        {
+            $tableName = static::getAccountSubscriptionTempBuildTableName();
+            $sql = "select accountid from " . $tableName;
+            return ZurmoRedBean::getCol($sql);
+        }
+
+        protected static function addAccountIdToBuildTable($accountId)
+        {
+            assert('is_int($accountId)');
+            $tableName = static::getAccountSubscriptionTempBuildTableName();
+            $sql = "insert into $tableName (accountid) values ($accountId)";
+            ZurmoRedBean::exec($sql);
+        }
+
+        protected static function cleanAccountBuildTable()
+        {
+            $tableName = static::getAccountSubscriptionTempBuildTableName();
+            $sql = "delete from $tableName";
+            ZurmoRedBean::exec($sql);
+        }
+
+        public static function updateAccountReadSubscriptionTableBasedOnBuildTable($accountId)
+        {
+            assert('is_int($accountId)');
+            static::addAccountIdToBuildTable($accountId);
+            static::updateAllReadSubscriptionTables(new MessageLogger(), 'Account', true);
+            static::cleanAccountBuildTable();
+        }
+
         protected static function getModelTableName($modelClassName)
         {
             assert('is_string($modelClassName) && $modelClassName != ""');
@@ -128,13 +185,20 @@
             return static::getModelTableName($modelClassName) . '_read_subscription';
         }
 
+        public static function getAccountSubscriptionTempBuildTableName()
+        {
+            return 'account_read_subscription_temp_build';
+        }
+
         /**
          * Update read subscription table for all users and models
          * @param MessageLogger $messageLogger
          * @param null | array $modelClassNames
+         * @param bool $updateOnlyRecordsFromBuildTable
          * @return bool
          */
-        public static function updateAllReadSubscriptionTables(MessageLogger $messageLogger, $modelClassNames = null)
+        public static function updateAllReadSubscriptionTables(MessageLogger $messageLogger, $modelClassNames = null,
+                                                               $updateOnlyRecordsFromBuildTable = null)
         {
             $loggedUser = Yii::app()->user->userModel;
             $users = User::getAll();
@@ -158,14 +222,18 @@
                 {
                     foreach ($modelClassNames as $modelClassName)
                     {
-                        $onlyOwnedModels = false;
                         if ($modelClassName != 'Account')
                         {
-                            $onlyOwnedModels = true;
+                            static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
+                                Yii::app()->user->userModel, $updateStartTimestamp, true,
+                                $messageLogger);
                         }
-                        static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
-                            Yii::app()->user->userModel, $updateStartTimestamp, $onlyOwnedModels,
-                            $messageLogger);
+                        else
+                        {
+                            static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
+                                Yii::app()->user->userModel, $updateStartTimestamp, false,
+                                $messageLogger, $updateOnlyRecordsFromBuildTable);
+                        }
                     }
                 }
                 $endTime = microtime(true);
@@ -188,9 +256,11 @@
          * @param bool $onlyOwnedModels
          * @param int $updateStartTimestamp
          * @param MessageLogger $messageLogger
+         * @param bool | null $updateOnlyRecordsFromBuildTable
          */
         public static function updateReadSubscriptionTableByModelClassNameAndUser($modelClassName, User $user, $updateStartTimestamp,
-                                                                                  $onlyOwnedModels = false, MessageLogger $messageLogger)
+                                                                                  $onlyOwnedModels = false, MessageLogger $messageLogger,
+                                                                                  $updateOnlyRecordsFromBuildTable = null)
         {
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
             assert('is_int($updateStartTimestamp)');
@@ -200,21 +270,35 @@
             $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($lastReadPermissionUpdateTimestamp);
             $updateDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($updateStartTimestamp);
 
-            $metadata['clauses'][1] = array(
-                'attributeName'        => 'createdDateTime',
-                'operatorType'         => 'lessThanOrEqualTo',
-                'value'                => $updateDateTime
-            );
-            $metadata['structure'] = "1";
-
-            if ($onlyOwnedModels)
+            if (isset($updateOnlyRecordsFromBuildTable) && $updateOnlyRecordsFromBuildTable == true &&
+                $modelClassName == 'Account')
             {
-                $metadata['clauses'][2] = array(
-                    'attributeName'        => 'owner',
-                    'operatorType'         => 'equals',
-                    'value'                => $user->id
+                $accountIds = static::getAccountIdsArrayFromBuildTable();
+                $metadata['clauses'][1] = array(
+                    'attributeName' => 'id',
+                    'operatorType'  => 'oneOf',
+                    'value'         => $accountIds,
                 );
-                $metadata['structure'] .= " AND 2";
+                $metadata['structure'] = "1";
+            }
+            else
+            {
+                $metadata['clauses'][1] = array(
+                    'attributeName'        => 'createdDateTime',
+                    'operatorType'         => 'lessThanOrEqualTo',
+                    'value'                => $updateDateTime
+                );
+                $metadata['structure'] = "1";
+
+                if ($onlyOwnedModels)
+                {
+                    $metadata['clauses'][2] = array(
+                        'attributeName'        => 'owner',
+                        'operatorType'         => 'equals',
+                        'value'                => $user->id
+                    );
+                    $metadata['structure'] .= " AND 2";
+                }
             }
 
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
@@ -230,6 +314,17 @@
             $tableName = static::getSubscriptionTableName($modelClassName);
             $sql = "SELECT modelid FROM $tableName WHERE userid = " . $user->id .
                 " AND subscriptiontype = " . static::TYPE_ADD;
+
+            if (isset($updateOnlyRecordsFromBuildTable) && $updateOnlyRecordsFromBuildTable == true &&
+                $modelClassName == 'Account')
+            {
+                $accountIds = static::getAccountIdsArrayFromBuildTable();
+                if (!empty($accountIds))
+                {
+                    $list = "'". implode(", ", $accountIds) ."'";
+                    $sql .= " AND modelid in ($list)";
+                }
+            }
             $permissionTableRows = ZurmoRedBean::getAll($sql);
             $permissionTableIds = array();
             if (is_array($permissionTableRows) && !empty($permissionTableRows))
@@ -251,9 +346,18 @@
                                                     AND subscriptiontype='" . self::TYPE_DELETE . "'";
                     ZurmoRedBean::exec($sql);
 
-                    $sql = "INSERT INTO $tableName VALUES
-                                                    (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_ADD . "')";
-                    ZurmoRedBean::exec($sql);
+                    $sql = "SELECT * FROM $tableName WHERE
+                            userid = '" . $user->id . "'
+                            AND modelid = '{$modelId}'
+                            AND subscriptiontype='" . self::TYPE_ADD . "'";
+                    $results = ZurmoRedBean::getAll($sql);
+
+                    if (!is_array($results) || empty($results))
+                    {
+                        $sql = "INSERT INTO $tableName VALUES
+                                (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_ADD . "')";
+                        ZurmoRedBean::exec($sql);
+                    }
                 }
             }
 
@@ -267,9 +371,18 @@
                                                     AND subscriptiontype='" . self::TYPE_ADD . "'";
                     ZurmoRedBean::exec($sql);
 
-                    $sql = "INSERT INTO $tableName VALUES
-                                                    (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_DELETE . "')";
-                    ZurmoRedBean::exec($sql);
+                    $sql = "SELECT * FROM $tableName WHERE
+                    userid = '" . $user->id . "'
+                    AND modelid = '{$modelId}'
+                    AND subscriptiontype='" . self::TYPE_DELETE . "'";
+                    $results = ZurmoRedBean::getAll($sql);
+
+                    if (!is_array($results) || empty($results))
+                    {
+                        $sql = "INSERT INTO $tableName VALUES
+                                                        (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_DELETE . "')";
+                        ZurmoRedBean::exec($sql);
+                    }
                 }
             }
         }

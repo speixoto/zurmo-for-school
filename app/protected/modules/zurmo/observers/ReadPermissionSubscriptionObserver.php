@@ -101,17 +101,20 @@
          */
         public function readPermissionSubscriptionOnAfterOwnerChange(CEvent $event)
         {
-            if (get_class($event->sender) == 'Account')
+            if ($event->sender->id > 0) // ToDo: Check with Jason why we need this
             {
-                Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
-            }
-            elseif ($event->sender->id > 0) // ToDo: Check with Jason why we need this
-            {
-                ReadPermissionsSubscriptionUtil::changeOwnerOfModelInReadSubscriptionTableByModelIdAndModelClassNameAndUser(
-                    $event->sender->id,
-                    get_class($event->sender),
-                    $event->sender->owner
-                );
+                if (get_class($event->sender) == 'Account')
+                {
+                    ReadPermissionsSubscriptionUtil::updateAccountReadSubscriptionTableBasedOnBuildTable($event->sender->id);
+                }
+                else
+                {
+                    ReadPermissionsSubscriptionUtil::changeOwnerOfModelInReadSubscriptionTableByModelIdAndModelClassNameAndUser(
+                        $event->sender->id,
+                        get_class($event->sender),
+                        $event->sender->owner
+                    );
+                }
             }
             return true;
         }
@@ -126,7 +129,7 @@
             {
                 if (get_class($event->sender) == 'Account')
                 {
-                    Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+                    ReadPermissionsSubscriptionUtil::updateAccountReadSubscriptionTableBasedOnBuildTable($event->sender->id);
                 }
                 else
                 {
@@ -148,8 +151,7 @@
         {
             if (get_class($event->sender) == 'Account')
             {
-                // Maybe we do not need this - figure out
-                Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+                ReadPermissionsSubscriptionUtil::updateAccountReadSubscriptionTableBasedOnBuildTable($event->sender->id);
             }
             else
             {
