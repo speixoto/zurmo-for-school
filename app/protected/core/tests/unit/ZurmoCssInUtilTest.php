@@ -41,24 +41,30 @@
             $css = "body.outlook p {display: inline /*!important*/;}
                     @media screen {body {width: 75%;}}
                     table.round td {-webkit-border-radius: 500px;-moz-border-radius: 500px;border-radius: 500px}";
-            $this->assertEquals(" @media screen {body {width: 75%;}}\n", ZurmoCssInUtil::splitMediaQueries($css[1]));
+            $mediaQuery = ZurmoCssInUtil::splitMediaQueries($css);
+            $this->assertEquals(" @media screen {body {width: 75%;}}\n", $mediaQuery[1]);
 
             $css = "body.outlook p {display: inline /*!important*/;}
                     @media screen {body {width: 75%;}}\n";
-            $this->assertEquals(" @media screen {body {width: 75%;}}\n", ZurmoCssInUtil::splitMediaQueries($css[1]));
+            $mediaQuery = ZurmoCssInUtil::splitMediaQueries($css);
+            $this->assertEquals(" @media screen {body {width: 75%;}}\n", $mediaQuery[1]);
 
             $css = "body.outlook p {display: inline /*!important*/;}
                     @media screen {body {width: 75%;}}";
-            $this->assertEquals(" @media screen {body {width: 75%;}}\n", ZurmoCssInUtil::splitMediaQueries($css[1]));
+            $mediaQuery = ZurmoCssInUtil::splitMediaQueries($css);
+            $this->assertEquals(" @media screen {body {width: 75%;}}\n", $mediaQuery[1]);
 
             $css = "body.outlook p {display: inline /*!important*/;} @media screen {body {width: 75%;}}";
-            $this->assertEquals(" @media screen {body {width: 75%;}}\n", ZurmoCssInUtil::splitMediaQueries($css[1]));
+            $mediaQuery = ZurmoCssInUtil::splitMediaQueries($css);
+            $this->assertEquals(" @media screen {body {width: 75%;}}\n", $mediaQuery[1]);
 
             $css = "@media screen {body {width: 75%;}}";
-            $this->assertEquals(" @media screen {body {width: 75%;}}\n", ZurmoCssInUtil::splitMediaQueries($css[1]));
+            $mediaQuery = ZurmoCssInUtil::splitMediaQueries($css);
+            $this->assertEquals(" @media screen {body {width: 75%;}}\n", $mediaQuery[1]);
 
             $css = "@media {}";
-            $this->assertEquals(" @media {}\n", ZurmoCssInUtil::splitMediaQueries($css[1]));
+            $mediaQuery = ZurmoCssInUtil::splitMediaQueries($css);
+            $this->assertEquals(" @media {}\n", $mediaQuery[1]);
         }
     }
 ?>
