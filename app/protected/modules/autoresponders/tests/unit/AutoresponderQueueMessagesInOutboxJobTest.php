@@ -326,7 +326,7 @@
             $this->assertCount(0, $unprocessedItems);
             $jobs = Yii::app()->jobQueue->getAll();
             $this->assertCount(1, $jobs);
-            $this->assertEquals('ProcessOutboundEmail', $jobs[0][0]);
+            $this->assertEquals('ProcessOutboundEmail', $jobs[0][0]['jobType']);
         }
 
         /**
