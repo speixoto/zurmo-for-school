@@ -35,13 +35,13 @@
      ********************************************************************************/
 
     /**
-     * Edit and details view for the marketing global configuration view.
+     * Edit and details view for the system configuration view.
      */
-    class MarketingConfigurationEditAndDetailsView extends EditAndDetailsView
+    class ZurmoSystemConfigurationEditAndDetailsView extends EditAndDetailsView
     {
         public function getTitle()
         {
-            return Zurmo::t('MarketingModule', 'Marketing Configuration');
+            return Zurmo::t('ZurmoModule', 'System Configuration');
         }
 
         public static function getDefaultMetadata()
@@ -63,21 +63,21 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'autoresponderOrCampaignFooterPlainText',
-                                                      'type'          => 'TextAreaWithPreviewLink'),
+                                                array('attributeName' => 'autoresponderOrCampaignBatchSize',
+                                                      'type'          => 'BatchConfigInteger'),
                                             ),
                                         ),
                                     )
                                 ),
                                 array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'autoresponderOrCampaignFooterRichText',
-                                                      'type'          => 'RedactorWithPreviewLink'),
-                                            ),
-                                        ),
-                                    )
+                                      array(
+                                          array(
+                                              'elements' => array(
+                                                  array('attributeName' => 'campaignItemsToCreatePageSize',
+                                                        'type'          => 'BatchConfigInteger'),
+                                              ),
+                                          ),
+                                      )
                                 ),
                             ),
                         ),

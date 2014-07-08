@@ -142,6 +142,13 @@
                         'route'            => '/zurmo/default/userInterfaceConfigurationEdit',
                         'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
                     ),
+                    array(
+                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
+                        'titleLabel'       => "eval:Zurmo::t('ZurmoModule', 'System Configuration')",
+                        'descriptionLabel' => "eval:Zurmo::t('ZurmoModule', 'Manage System Configuration')",
+                        'route'            => '/zurmo/default/systemConfigurationEdit',
+                        'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
+                    ),
                 ),
                 'headerMenuItems' => array(
                     array(
