@@ -339,5 +339,10 @@
 
             return $rules;
         }
+
+        public static function splitMediaQueries($css)
+        {
+            return parent::splitMediaQueries(' ' . $css . ' ');
+        }
     }
 ?>
