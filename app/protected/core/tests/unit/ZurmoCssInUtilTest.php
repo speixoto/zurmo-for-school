@@ -34,43 +34,37 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Model used when a @see MultipleValuesCustomField needs to store values.
-     */
-    class CustomFieldValue extends RedBeanModel
+    class ZurmoCssInUtilTest extends BaseTest
     {
-        public function __toString()
+        public function testSplitMediaQueries()
         {
-            $s = strval($this->value);
-            if ($s == '')
-            {
-                return Zurmo::t('Core', '(None)');
-            }
-            return $s;
-        }
+            $css = "body.outlook p {display: inline /*!important*/;}
+                    @media screen {body {width: 75%;}}
+                    table.round td {-webkit-border-radius: 500px;-moz-border-radius: 500px;border-radius: 500px}";
+            $mediaQuery = ZurmoCssInUtil::splitMediaQueries($css);
+            $this->assertEquals(" @media screen {body {width: 75%;}}\n", $mediaQuery[1]);
 
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'value',
-                ),
-                'relations' => array(
-                    'multipleValuesCustomField' => array(static::HAS_ONE, 'MultipleValuesCustomField', static::NOT_OWNED),
-                ),
-                'rules' => array(
-                    array('value', 'type',   'type' => 'string'),
-                    array('value', 'length', 'max'  => 255),
-                ),
-                'indexes' => array(
-                    'multiplevaluescustomfield_id' => array(
-                        'members' => array('multiplevaluescustomfield_id'),
-                        'unique' => false),
-                ),
-                'defaultSortAttribute' => 'value'
-            );
-            return $metadata;
+            $css = "body.outlook p {display: inline /*!important*/;}
+                    @media screen {body {width: 75%;}}\n";
+            $mediaQuery = ZurmoCssInUtil::splitMediaQueries($css);
+            $this->assertEquals(" @media screen {body {width: 75%;}}\n", $mediaQuery[1]);
+
+            $css = "body.outlook p {display: inline /*!important*/;}
+                    @media screen {body {width: 75%;}}";
+            $mediaQuery = ZurmoCssInUtil::splitMediaQueries($css);
+            $this->assertEquals(" @media screen {body {width: 75%;}}\n", $mediaQuery[1]);
+
+            $css = "body.outlook p {display: inline /*!important*/;} @media screen {body {width: 75%;}}";
+            $mediaQuery = ZurmoCssInUtil::splitMediaQueries($css);
+            $this->assertEquals(" @media screen {body {width: 75%;}}\n", $mediaQuery[1]);
+
+            $css = "@media screen {body {width: 75%;}}";
+            $mediaQuery = ZurmoCssInUtil::splitMediaQueries($css);
+            $this->assertEquals(" @media screen {body {width: 75%;}}\n", $mediaQuery[1]);
+
+            $css = "@media {}";
+            $mediaQuery = ZurmoCssInUtil::splitMediaQueries($css);
+            $this->assertEquals(" @media {}\n", $mediaQuery[1]);
         }
     }
 ?>

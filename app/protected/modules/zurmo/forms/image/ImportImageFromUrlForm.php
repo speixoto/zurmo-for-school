@@ -52,7 +52,7 @@
         public function attributeLabels()
         {
             return array(
-                'url'   => Zurmo::t('ZurmoModule', 'Url'),
+                'url'   => Zurmo::t('Core', 'Url'),
             );
         }
     }
