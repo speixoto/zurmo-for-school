@@ -184,7 +184,6 @@
             unset($response['data']['hideFromSelecting']);
             unset($response['data']['isRootUser']);
             unset($response['data']['isSystemUser']);
-            $hash = User::encryptPassword($data['password']);
             unset($data['password']);
 
             ksort($data);
@@ -194,7 +193,6 @@
             $this->assertEquals($data, $response['data']);
             // Check if new user can log in
             $newUser = User::getByUsername('diggy011');
-            $this->assertEquals($hash, $newUser->hash);
             $newUser->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API);
             $saved = $newUser->save();
             $authenticationData = $this->login('diggy011', 'diggy011');
