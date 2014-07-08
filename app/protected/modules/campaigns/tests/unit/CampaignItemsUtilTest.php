@@ -240,21 +240,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            /*
-            var_dump("Contact:");
-            var_dump(get_class($contact));
-            var_dump("Contact's Id / Item's Id");
-            var_dump($contact->id . '/' . $contact->getClassId('Item'));
-            var_dump("PersonOrAccount");
-            var_dump(get_class($recipients[0]->personsOrAccounts[0]));
-            var_dump("PersonOrAccount Id / Item's Id");
-            var_dump($recipients[0]->personsOrAccounts[0]->id . '/' . $recipients[0]->personsOrAccounts[0]->getClassId('Item'));
-            var_dump("emailmessagerecipient_item for emailmessagerecipient_id");
-            var_dump(ZurmoRedBean::getAll("SELECT * FROM emailmessagerecipient_item WHERE emailmessagerecipient_id = " . $recipients[0]->id));
-            exit;
-            */
-
-            $this->assertEquals($contact, $recipients[0]->personsOrAccounts[0]);
+            $this->assertEquals($contact->getClassId('Item'), $recipients[0]->personsOrAccounts[0]->id);
             $headersArray               = array('zurmoItemId' => $campaignItem->id,
                                                 'zurmoItemClass' => get_class($campaignItem),
                                                 'zurmoPersonId' => $contact->getClassId('Person'));
@@ -310,7 +296,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            $this->assertEquals($contact, strval($recipients[0]->personsOrAccounts[0]));
+            $this->assertEquals($contact->getClassId('Item'), $recipients[0]->personsOrAccounts[0]->id);
             $headersArray               = array('zurmoItemId' => $campaignItem->id,
                                                 'zurmoItemClass' => get_class($campaignItem),
                                                 'zurmoPersonId' => $contact->getClassId('Person'));
@@ -368,7 +354,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            $this->assertEquals($contact, $recipients[0]->personsOrAccounts[0]);
+            $this->assertEquals($contact->getClassId('Item'), $recipients[0]->personsOrAccounts[0]->id);
             $headersArray               = array('zurmoItemId' => $campaignItem->id,
                                                 'zurmoItemClass' => get_class($campaignItem),
                                                 'zurmoPersonId' => $contact->getClassId('Person'));
@@ -438,7 +424,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            $this->assertEquals($contact, $recipients[0]->personsOrAccounts[0]);
+            $this->assertEquals($contact->getClassId('Item'), $recipients[0]->personsOrAccounts[0]->id);
             $this->assertNotEmpty($emailMessage->files);
             $this->assertCount(count($files), $emailMessage->files);
             foreach ($campaign->files as $index => $file)
@@ -509,7 +495,7 @@
         }
 
         /**
-         * @depends testGenerateCampaignItemsForDueCampaignsWithCustomBatchSize
+         * @depends testGenerateCampaignItemsForDueCampaigns
          */
         public function testProcessDueCampaignItemWithOptout()
         {
@@ -598,7 +584,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            $this->assertEquals($contact, strval($recipients[0]->personsOrAccounts[0]));
+            $this->assertEquals($contact->getClassId('Item'), $recipients[0]->personsOrAccounts[0]->id);
             $headersArray               = array('zurmoItemId' => $campaignItem->id,
                                                 'zurmoItemClass' => get_class($campaignItem),
                                                 'zurmoPersonId' => $contact->getClassId('Person'),
