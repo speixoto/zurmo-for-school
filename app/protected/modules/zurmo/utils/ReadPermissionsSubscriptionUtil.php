@@ -124,6 +124,13 @@
             );
         }
 
+        /*
+         * Schema for temp build table for accounts.
+         * After account is created, deleted, or its owner is changed we don't want to rebuild read permission subscription
+         * table for all accounts, but just for those that are actually created/deleted/changed owner.
+         * So we eep list of these account ids in this temp table, and after account read permission table is updated,
+         * we need to remove accounts from temp table.
+         */
         protected static function getReadSubscriptionTableSchemaForAccountTempTable()
         {
             $tableName = static::getAccountSubscriptionTempBuildTableName();
@@ -143,6 +150,10 @@
             );
         }
 
+        /**
+         * Get array odf all account ids from account temp build table
+         * @return array
+         */
         protected static function getAccountIdsArrayFromBuildTable()
         {
             $tableName = static::getAccountSubscriptionTempBuildTableName();
@@ -150,6 +161,9 @@
             return ZurmoRedBean::getCol($sql);
         }
 
+        /*
+         * Add account id to account temp build table
+         */
         protected static function addAccountIdToBuildTable($accountId)
         {
             assert('is_int($accountId)');
@@ -158,6 +172,9 @@
             ZurmoRedBean::exec($sql);
         }
 
+        /**
+         * Clean account temp build table(delete all records from it)
+         */
         protected static function cleanAccountBuildTable()
         {
             $tableName = static::getAccountSubscriptionTempBuildTableName();
@@ -165,6 +182,10 @@
             ZurmoRedBean::exec($sql);
         }
 
+        /*
+         * Based on account id, we add account id to account temp build table, refrsh account read permission
+         * subscription table for account ids in temp build table, and delete all records from account temp build table
+         */
         public static function updateAccountReadSubscriptionTableBasedOnBuildTable($accountId)
         {
             assert('is_int($accountId)');
@@ -185,6 +206,10 @@
             return static::getModelTableName($modelClassName) . '_read_subscription';
         }
 
+        /**
+         * Get able name for account temp build table
+         * @return string
+         */
         public static function getAccountSubscriptionTempBuildTableName()
         {
             return 'account_read_subscription_temp_build';
@@ -194,7 +219,8 @@
          * Update read subscription table for all users and models
          * @param MessageLogger $messageLogger
          * @param null | array $modelClassNames
-         * @param bool $updateOnlyRecordsFromBuildTable
+         * @param bool $updateOnlyRecordsFromBuildTable - if true and modelClassName is 'Account' refresh account read
+         * permission subscription table just for account ids that exist in account temp build table
          * @return bool
          */
         public static function updateAllReadSubscriptionTables(MessageLogger $messageLogger, $modelClassNames = null,
@@ -256,7 +282,8 @@
          * @param bool $onlyOwnedModels
          * @param int $updateStartTimestamp
          * @param MessageLogger $messageLogger
-         * @param bool | null $updateOnlyRecordsFromBuildTable
+         * @param bool | null $updateOnlyRecordsFromBuildTable - if true and modelClassName is 'Account' refresh account read
+         * permission subscription table just for account ids that exist in account temp build table
          */
         public static function updateReadSubscriptionTableByModelClassNameAndUser($modelClassName, User $user, $updateStartTimestamp,
                                                                                   $onlyOwnedModels = false, MessageLogger $messageLogger,
