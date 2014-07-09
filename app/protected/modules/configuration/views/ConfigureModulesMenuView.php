@@ -93,7 +93,7 @@
             $content = '<ul class="configuration-list">';
             foreach ($items as $item)
             {
-                if (!Yii::app()->user->userModel->isRootUser && $item['titleLabel'] == "System Configuration")
+                if (!Yii::app()->user->userModel->isRootUser && $item['route'] == "/zurmo/default/systemConfigurationEdit")
                 {
                     continue;
                 }

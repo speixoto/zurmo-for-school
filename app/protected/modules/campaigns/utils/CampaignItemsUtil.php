@@ -39,15 +39,130 @@
      */
     abstract class CampaignItemsUtil extends AutoresponderAndCampaignItemsUtil
     {
+        const CONFIG_KEY             = 'CampaignItemsToCreatePageSize';
+
+        const CONFIG_MODULE_NAME     = 'CampaignsModule';
+
+        const DEFAULT_CAMPAIGNITEMS_TO_CREATE_PAGE_SIZE = 200;
+
         /**
+         * For now we should limit to process one campaign at a time until it is completely processed. This will
+         * avoid potential performance problems.
+         * @param null $pageSize - used to determine how many campaignItems to create per run.
+         * @param int $campaignPageSize
          * @return bool
+         * @throws FailedToSaveModelException
          */
-        public static function generateCampaignItemsForDueCampaigns()
+        public static function generateCampaignItemsForDueCampaigns($pageSize = null, $campaignPageSize = 1)
         {
-            $sql                    = 'call `generate_campaign_items`(' . Campaign::STATUS_ACTIVE . ', ' . Campaign::STATUS_PROCESSING . ');';
-            ZurmoRedBean::exec($sql);
-            Yii::app()->jobQueue->add('CampaignQueueMessagesInOutbox', 5);
+            assert('is_int($pageSize) || $pageSize == null');
+            assert('is_int($campaignPageSize)');
+            $dueCampaigns   = Campaign::getByStatusAndSendingTime(Campaign::STATUS_ACTIVE, time(), $campaignPageSize);
+            foreach ($dueCampaigns as $dueCampaign)
+            {
+                if (static::generateCampaignItems($dueCampaign, $pageSize))
+                {
+                    $dueCampaign->status = Campaign::STATUS_PROCESSING;
+                    if (!$dueCampaign->save())
+                    {
+                        throw new FailedToSaveModelException("Unable to save campaign");
+                    }
+                    //Run queue job since the campaign items are all generated
+                    Yii::app()->jobQueue->add('CampaignQueueMessagesInOutbox', 5);
+                }
+                else
+                {
+                    //Run job again, since it has more items to generate
+                    Yii::app()->jobQueue->add('CampaignGenerateDueCampaignItems', 5);
+                }
+            }
             return true;
+        }
+
+        protected static function generateCampaignItems($campaign, $pageSize)
+        {
+            if ($pageSize == null)
+            {
+                $pageSize = self::getCreatePageSize();
+            }
+            $contacts                      = array();
+            $quote                         = DatabaseCompatibilityUtil::getQuote();
+            $marketingListMemberTableName  = MarketingListMember::getTableName();
+            $campaignItemTableName         = CampaignItem::getTableName();
+            $contactTableName              = Contact::getTableName();
+            $sql  = "select {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote} ";
+            $sql .= "from {$quote}{$marketingListMemberTableName}{$quote} ";
+            $sql .= "left join {$quote}{$campaignItemTableName}{$quote} on ";
+            $sql .= "{$quote}{$campaignItemTableName}{$quote}.{$quote}contact_id{$quote} ";
+            $sql .= "= {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote} ";
+            $sql .= "AND {$quote}{$campaignItemTableName}{$quote}.{$quote}campaign_id{$quote} = " . $campaign->id . " " ;
+            $sql .= "left join {$quote}{$contactTableName}{$quote} on ";
+            $sql .= "{$quote}{$contactTableName}{$quote}.{$quote}id{$quote} ";
+            $sql .= "= {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote} ";
+            $sql .= "where {$quote}{$marketingListMemberTableName}{$quote}.{$quote}marketinglist_id{$quote} = " . $campaign->marketingList->id ;
+            $sql .= " and {$quote}{$campaignItemTableName}{$quote}.{$quote}id{$quote} is null";
+            $sql .= " and {$quote}{$contactTableName}{$quote}.{$quote}id{$quote} is not null limit " . $pageSize;
+            $ids = ZurmoRedBean::getCol($sql);
+            foreach ($ids as $contactId)
+            {
+                try
+                {
+                    $contacts[] = Contact::getById((int)$contactId);
+                }
+                catch (NotFoundException $e)
+                {
+                    //Do nothing, just skip
+                }
+            }
+            if (!empty($contacts))
+            {
+                //todo: if the return value is false, then we might need to catch that since it didn't go well.
+                CampaignItem::registerCampaignItemsByCampaign($campaign, $contacts);
+                if (count($ids) < $pageSize)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        /**
+         * Return the page size used in the creation of campaign items
+         * @param bool $returnDefaultIfMissing
+         * @param bool $setDefaultIfMissing
+         * @return int
+         */
+        public static function getCreatePageSize($returnDefaultIfMissing = true, $setDefaultIfMissing = false)
+        {
+            assert('is_bool($returnDefaultIfMissing)');
+            assert('is_bool($setDefaultIfMissing)');
+            $size = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY);
+            if (empty($size) && $returnDefaultIfMissing)
+            {
+                $size = static::DEFAULT_CAMPAIGNITEMS_TO_CREATE_PAGE_SIZE;
+                if ($setDefaultIfMissing)
+                {
+                    static::setBatchSize($size);
+                }
+            }
+            return $size;
+        }
+
+        /**
+         * Stores the campaign items create page size as a global configuration value
+         * @param int $size
+         */
+        public static function setCreatePageSize($size)
+        {
+            assert('is_int($size) || $size === null');
+            ZurmoConfigurationUtil::setByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY, $size);
         }
     }
 ?>
