@@ -33,7 +33,7 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-    class CampaignItemsUtilTest extends ZurmoBaseTest
+    class CampaignItemsUtilTest extends AutoresponderOrCampaignBaseTest
     {
         // We don't need to add separate tests for tracking scenarios here because we have already gained more than
         //  sufficient coverage in CampaignItemActivityUtilTest and EmailMessageActivityUtilTest for those.
@@ -76,7 +76,7 @@
                                                                                 false);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
         }
 
         /**
@@ -103,7 +103,7 @@
                                                                                 false);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
         }
 
         /**
@@ -113,7 +113,7 @@
         public function testProcessDueCampaignItemThrowsExceptionWhenNoContactIsAvailable()
         {
             $campaignItem          = new CampaignItem();
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
         }
 
         /**
@@ -139,7 +139,7 @@
                                                                                 false);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
         }
 
         /**
@@ -162,10 +162,10 @@
                                                                                 $marketingList);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $this->assertEquals(1, $campaignItem->processed);
             $emailMessage               = $campaignItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -179,10 +179,10 @@
             //Test with empty primary email address
             $contact->primaryEmail->emailAddress = '';
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $this->assertEquals(1, $campaignItem->processed);
             $emailMessage               = $campaignItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -219,10 +219,10 @@
 
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $this->assertEquals(1, $campaignItem->processed);
             $emailMessage               = $campaignItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -240,7 +240,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            $this->assertEquals($contact, $recipients[0]->personsOrAccounts[0]);
+            $this->assertEquals($contact->getClassId('Item'), $recipients[0]->personsOrAccounts[0]->id);
             $headersArray               = array('zurmoItemId' => $campaignItem->id,
                                                 'zurmoItemClass' => get_class($campaignItem),
                                                 'zurmoPersonId' => $contact->getClassId('Person'));
@@ -275,10 +275,10 @@
                                                                                 $marketingList);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $this->assertEquals(1, $campaignItem->processed);
             $emailMessage               = $campaignItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -296,7 +296,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            $this->assertEquals($contact, strval($recipients[0]->personsOrAccounts[0]));
+            $this->assertEquals($contact->getClassId('Item'), $recipients[0]->personsOrAccounts[0]->id);
             $headersArray               = array('zurmoItemId' => $campaignItem->id,
                                                 'zurmoItemClass' => get_class($campaignItem),
                                                 'zurmoPersonId' => $contact->getClassId('Person'));
@@ -331,10 +331,10 @@
                                                                                 $marketingList);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $this->assertEquals(1, $campaignItem->processed);
             $emailMessage               = $campaignItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -354,7 +354,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            $this->assertEquals($contact, $recipients[0]->personsOrAccounts[0]);
+            $this->assertEquals($contact->getClassId('Item'), $recipients[0]->personsOrAccounts[0]->id);
             $headersArray               = array('zurmoItemId' => $campaignItem->id,
                                                 'zurmoItemClass' => get_class($campaignItem),
                                                 'zurmoPersonId' => $contact->getClassId('Person'));
@@ -363,7 +363,7 @@
         }
 
         /**
-         * @depends testProcessDueCampaignItemWithValidMergeTags
+         * @//depends testProcessDueCampaignItemWithValidMergeTags
          */
         public function testProcessDueCampaignItemWithAttachments()
         {
@@ -401,10 +401,10 @@
             $this->assertTrue($campaign->save());
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $this->assertEquals(1, $campaignItem->processed);
             $emailMessage               = $campaignItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -424,7 +424,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            $this->assertEquals($contact, $recipients[0]->personsOrAccounts[0]);
+            $this->assertEquals($contact->getClassId('Item'), $recipients[0]->personsOrAccounts[0]->id);
             $this->assertNotEmpty($emailMessage->files);
             $this->assertCount(count($files), $emailMessage->files);
             foreach ($campaign->files as $index => $file)
@@ -433,7 +433,7 @@
                 $this->assertEquals($file->type, $emailMessage->files[$index]->type);
                 $this->assertEquals($file->size, $emailMessage->files[$index]->size);
                 //CampaingItem should share the Attachments content from Campaign
-                $this->assertEquals($file->fileContent, $emailMessage->files[$index]->fileContent);
+                $this->assertEquals($file->fileContent->content, $emailMessage->files[$index]->fileContent->content);
             }
             $headersArray               = array('zurmoItemId' => $campaignItem->id,
                                                 'zurmoItemClass' => get_class($campaignItem),
@@ -477,7 +477,7 @@
             //Process open campaigns.
             Yii::app()->jobQueue->deleteAll();
             $this->assertCount(0, Yii::app()->jobQueue->getAll());
-            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(null, 50));
+            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns());
             $jobs = Yii::app()->jobQueue->getAll();
             $this->assertCount(1, $jobs);
             $this->assertEquals('CampaignQueueMessagesInOutbox', $jobs[5][0]['jobType']);
@@ -492,124 +492,6 @@
 
         /**
          * @depends testGenerateCampaignItemsForDueCampaigns
-         */
-        public function testGenerateCampaignItemsForDueCampaignsWithCustomBatchSize()
-        {
-            $contactIds         = array();
-            $marketingListIds   = array();
-            $campaignIds        = array();
-            for ($index = 6; $index < 9; $index++)
-            {
-                $contact        = ContactTestHelper::createContactByNameForOwner('campaignContact 0' . $index,
-                                                                                    $this->user);
-                $contactIds[] = $contact->id;
-                $contact->forgetAll();
-            }
-            for ($index = 8; $index < 12; $index++)
-            {
-                $suffix     = $index;
-                if ($index < 10)
-                {
-                    $suffix = "0${suffix}";
-                }
-                $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList ' . $suffix);
-                $marketingListId    = $marketingList->id;
-                $marketingListIds[] = $marketingListId;
-                foreach ($contactIds as $contactId)
-                {
-                    $contact        = Contact::getById($contactId);
-                    $unsubscribed   = (rand(10, 20) % 2);
-                    MarketingListMemberTestHelper::createMarketingListMember($unsubscribed, $marketingList, $contact);
-                }
-                $marketingList->forgetAll();
-                $marketingList      = MarketingList::getById($marketingListId);
-                $campaignSuffix     = substr($marketingList->name, -2);
-                $campaign           = CampaignTestHelper::createCampaign('campaign ' . $campaignSuffix,
-                                                                            'subject ' . $campaignSuffix,
-                                                                            'text ' . $campaignSuffix,
-                                                                            'html ' . $campaignSuffix,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            $marketingList);
-                $this->assertNotNull($campaign);
-                $campaignIds[]      = $campaign->id;
-                $campaign->forgetAll();
-            }
-
-            foreach ($campaignIds as $campaignId)
-            {
-                $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
-                $this->assertEmpty($campaignItems);
-            }
-            Yii::app()->jobQueue->deleteAll();
-            $this->assertCount(0, Yii::app()->jobQueue->getAll());
-            //First process 2 so we can show that the job gets queued up to run again
-            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(2));
-            $jobs = Yii::app()->jobQueue->getAll();
-            $this->assertCount(1, $jobs);
-            $this->assertEquals('CampaignGenerateDueCampaignItems', $jobs[5][0]['jobType']);
-            //Now process 3 more.
-            Yii::app()->jobQueue->deleteAll();
-            $this->assertCount(0, Yii::app()->jobQueue->getAll());
-            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(3));
-            $jobs = Yii::app()->jobQueue->getAll();
-            $this->assertCount(1, $jobs);
-            $this->assertEquals('CampaignQueueMessagesInOutbox', $jobs[5][0]['jobType']);
-            foreach ($campaignIds as $index => $campaignId)
-            {
-                $campaign           = Campaign::getById($campaignId);
-                $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
-                if ($index === 0)
-                {
-                    $expectedCount  = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
-                    $memberCount    = count($campaign->marketingList->marketingListMembers);
-                    if ($memberCount < $expectedCount)
-                    {
-                        $expectedCount = $memberCount;
-                    }
-                    $this->assertNotEmpty($campaignItems);
-                    $this->assertCount($expectedCount, $campaignItems);
-                    $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
-                }
-                else
-                {
-                    $this->assertEmpty($campaignItems);
-                    $this->assertEquals(Campaign::STATUS_ACTIVE, $campaign->status);
-                }
-            }
-
-            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns());
-            foreach ($campaignIds as $index => $campaignId)
-            {
-                $campaign           = Campaign::getById($campaignId);
-                $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
-                if ($index < 2)
-                {
-                    $expectedCount  = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
-                    $memberCount    = count($campaign->marketingList->marketingListMembers);
-                    if ($memberCount < $expectedCount)
-                    {
-                        $expectedCount = $memberCount;
-                    }
-                    $this->assertNotEmpty($campaignItems);
-                    $this->assertCount($expectedCount, $campaignItems);
-                    $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
-                }
-                else
-                {
-                    $this->assertEmpty($campaignItems);
-                    $this->assertEquals(Campaign::STATUS_ACTIVE, $campaign->status);
-                }
-            }
-            // TODO: @Shoaibi: Low: Add tests for the other campaign type.
-        }
-
-        /**
-         * @depends testGenerateCampaignItemsForDueCampaignsWithCustomBatchSize
          */
         public function testProcessDueCampaignItemWithOptout()
         {
@@ -636,7 +518,7 @@
                                                                                 $marketingList);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $this->assertEquals(1, $campaignItem->processed);
             $personId                   = $contact->getClassId('Person');
             $activities                 = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
@@ -675,10 +557,10 @@
                                                                                 $marketingList);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $this->assertEquals(1, $campaignItem->processed);
             $emailMessage               = $campaignItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -698,7 +580,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-            $this->assertEquals($contact, strval($recipients[0]->personsOrAccounts[0]));
+            $this->assertEquals($contact->getClassId('Item'), $recipients[0]->personsOrAccounts[0]->id);
             $headersArray               = array('zurmoItemId' => $campaignItem->id,
                                                 'zurmoItemClass' => get_class($campaignItem),
                                                 'zurmoPersonId' => $contact->getClassId('Person'),
@@ -734,7 +616,7 @@
                                                                              $marketingList);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $emailMessage               = $campaignItem->emailMessage;
             $this->assertNotNull($emailMessage->content->textContent);
             $this->assertNull   ($emailMessage->content->htmlContent);
@@ -767,7 +649,7 @@
                                                                              $marketingList);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $emailMessage               = $campaignItem->emailMessage;
             $this->assertNull   ($emailMessage->content->textContent);
             $this->assertNotNull($emailMessage->content->htmlContent);
@@ -800,7 +682,7 @@
                                                                              $marketingList);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $emailMessage               = $campaignItem->emailMessage;
             $this->assertNotNull($emailMessage->content->textContent);
             $this->assertNull   ($emailMessage->content->htmlContent);
@@ -833,7 +715,7 @@
                                                                                 $marketingList);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $emailMessage               = $campaignItem->emailMessage;
             $this->assertNotNull   ($emailMessage->content->textContent);
             $this->assertNotNull($emailMessage->content->htmlContent);
@@ -870,7 +752,7 @@
                                                                              $marketingList);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $emailMessage               = $campaignItem->emailMessage;
             $this->assertEquals('testFromName',   $emailMessage->sender->fromName);
             $this->assertEquals('test@zurmo.com', $emailMessage->sender->fromAddress);
@@ -903,7 +785,7 @@
                                                                                 $marketingList);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $textContent                = $campaignItem->emailMessage->content->textContent;
             $htmlContent                = $campaignItem->emailMessage->content->htmlContent;
             $this->assertNotEquals($campaign->textContent, $textContent);
@@ -944,7 +826,7 @@
                                                                                 $marketingList);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $textContent                = $campaignItem->emailMessage->content->textContent;
             $htmlContent                = $campaignItem->emailMessage->content->htmlContent;
             $this->assertNotEquals($campaign->textContent, $textContent);
@@ -987,7 +869,7 @@
                                                                                 $marketingList);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $textContent                = $campaignItem->emailMessage->content->textContent;
             $htmlContent                = $campaignItem->emailMessage->content->htmlContent;
             $this->assertNotEquals($campaign->textContent, $textContent);
@@ -1033,7 +915,7 @@
                                                                                 $marketingList);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $textContent                = $campaignItem->emailMessage->content->textContent;
             $htmlContent                = $campaignItem->emailMessage->content->htmlContent;
             $this->assertNotEquals($campaign->textContent, $textContent);
@@ -1080,7 +962,7 @@
                                                                              $marketingList);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $this->assertEquals(1, $campaignItem->processed);
             $personId                   = $contact->getClassId('Person');
             $activities                 = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(

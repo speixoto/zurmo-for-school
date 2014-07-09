@@ -34,36 +34,28 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class to adapt marketing global configuration values into a configuration form.
-     * Saves global values from a configuration form.
-     */
-    class MarketingConfigurationFormAdapter
+    class CurlUtil
     {
-        /**
-         * Creates a form populated with the marketing configuration global stored values.
-         * @return MarketingConfigurationForm
-         */
-        public static function makeFormFromMarketingConfiguration()
+        // TODO: @Shoaibi: Critical0: Incorporate a merger of https://github.com/php-curl-class/php-curl-class and https://github.com/hackerone/curl
+        public static function urlExists($url)
         {
-            $form                                         = new MarketingConfigurationForm();
-            $form->autoresponderOrCampaignBatchSize       = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
-            $form->autoresponderOrCampaignFooterPlainText = GlobalMarketingFooterUtil::getContentByType(false);
-            $form->autoresponderOrCampaignFooterRichText  = GlobalMarketingFooterUtil::getContentByType(true);
-            return $form;
+            $headers    = static::getHeaders($url);
+            return (strpos($headers[0], "200 OK") !== false);
         }
 
-        /**
-         * Given a MarketingConfigurationForm, save the marketing configuration global values.
-         */
-        public static function setConfigurationFromForm(MarketingConfigurationForm $form)
+        public static function getHeaders($url)
         {
-            if (Yii::app()->user->userModel->isRootUser)
-            {
-                AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize((int)$form->autoresponderOrCampaignBatchSize);
-            }
-            GlobalMarketingFooterUtil::setContentByType($form->autoresponderOrCampaignFooterPlainText, false);
-            GlobalMarketingFooterUtil::setContentByType($form->autoresponderOrCampaignFooterRichText, true);
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL,            $url);
+            curl_setopt($ch, CURLOPT_HEADER,         true);
+            curl_setopt($ch, CURLOPT_NOBODY,         true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT,        15);
+
+            $r = curl_exec($ch);
+            curl_close($ch);
+            $r = explode("\n", $r);
+            return $r;
         }
     }
 ?>

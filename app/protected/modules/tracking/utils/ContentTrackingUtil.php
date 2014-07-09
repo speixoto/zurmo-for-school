@@ -38,6 +38,19 @@
     {
         protected static $baseQueryStringArray;
 
+        public static function resolveContentsForTracking(& $textContent, & $htmlContent, $enableTracking, $modelId,
+                                                            $modelType, $personId)
+        {
+            if (!empty($textContent))
+            {
+                static::resolveContentForTracking($enableTracking, $textContent, $modelId, $modelType, $personId, false);
+            }
+            if (!empty($htmlContent))
+            {
+                static::resolveContentForTracking($enableTracking, $htmlContent, $modelId, $modelType, $personId, true);
+            }
+        }
+
         public static function resolveContentForTracking($tracking, & $content, $modelId, $modelType, $personId,
                                                          $isHtmlContent)
         {

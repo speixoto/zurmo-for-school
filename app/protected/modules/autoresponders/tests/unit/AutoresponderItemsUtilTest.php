@@ -33,7 +33,7 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-    class AutoresponderItemsUtilTest extends ZurmoBaseTest
+    class AutoresponderItemsUtilTest extends AutoresponderOrCampaignBaseTest
     {
         // We don't need to add separate tests for tracking scenarios here because we have already gained more than
         //  sufficient coverage in AutoresponderItemActivityUtilTest and EmailMessageActivityUtilTest for those.
@@ -60,7 +60,7 @@
         public function testProcessDueAutoresponderItemThrowsExceptionWhenNoContactIsAvailable()
         {
             $autoresponderItem          = new AutoresponderItem();
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
         }
 
         /**
@@ -86,7 +86,7 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
         }
 
         /**
@@ -109,10 +109,10 @@
                                                                                                $processDateTime,
                                                                                                $autoresponder,
                                                                                                $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -130,10 +130,10 @@
                                                                                                $processDateTime,
                                                                                                $autoresponder,
                                                                                                $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -169,10 +169,10 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -228,10 +228,10 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -284,10 +284,10 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -354,10 +354,10 @@
                                                                                                     $processDateTime,
                                                                                                     $autoresponder,
                                                                                                     $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -386,7 +386,7 @@
                 $this->assertEquals($file->type, $emailMessage->files[$index]->type);
                 $this->assertEquals($file->size, $emailMessage->files[$index]->size);
                 //AutoresponderItem should share the Attachments content from Autoresponder
-                $this->assertEquals($file->fileContent, $emailMessage->files[$index]->fileContent);
+                $this->assertEquals($file->fileContent->content, $emailMessage->files[$index]->fileContent->content);
             }
             $headersArray               = array('zurmoItemId' => $autoresponderItem->id,
                                                 'zurmoItemClass' => get_class($autoresponderItem),
@@ -423,7 +423,7 @@
                                                                                                     $processDateTime,
                                                                                                     $autoresponder,
                                                                                                     $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $personId                   = $contact->getClassId('Person');
             $activities                 = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
@@ -462,10 +462,10 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -522,7 +522,7 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
             $this->assertNotEquals($autoresponder->textContent, $emailMessage->content->textContent);
@@ -560,7 +560,7 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $textContent                = $autoresponderItem->emailMessage->content->textContent;
             $htmlContent                = $autoresponderItem->emailMessage->content->htmlContent;
@@ -602,7 +602,7 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $textContent                = $autoresponderItem->emailMessage->content->textContent;
             $htmlContent                = $autoresponderItem->emailMessage->content->htmlContent;
@@ -646,7 +646,7 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $textContent                = $autoresponderItem->emailMessage->content->textContent;
             $htmlContent                = $autoresponderItem->emailMessage->content->htmlContent;
@@ -693,7 +693,7 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $textContent                = $autoresponderItem->emailMessage->content->textContent;
             $htmlContent                = $autoresponderItem->emailMessage->content->htmlContent;

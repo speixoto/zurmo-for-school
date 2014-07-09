@@ -107,21 +107,22 @@
          * @param array $params
          * @return bool | array
          */
-        public function resolveMergeTagsArrayToAttributes($model, & $invalidTags = array(), $language = null, $errorOnFirstMissing = false, $params = array())
+        public function resolveMergeTagsArrayToAttributes($model, & $invalidTags = array(), $language = null,
+                                                          $errorOnFirstMissing = false, $params = array())
         {
+            $mergeTagsToAttributes  = false;
             if (!$language)
             {
                 $language = $this->language;
             }
-            if (empty($this->mergeTags))
+            if (!empty($this->mergeTags))
             {
-                return false;
+                $mergeTagsToAttributes = MergeTagsToModelAttributesAdapter::
+                                            resolveMergeTagsArrayToAttributesFromModel($this->mergeTags[1], $model,
+                                                                                        $invalidTags, $language,
+                                                                                        $errorOnFirstMissing, $params);
             }
-            else
-            {
-                return MergeTagsToModelAttributesAdapter::resolveMergeTagsArrayToAttributesFromModel($this->mergeTags[1],
-                                        $model, $invalidTags, $language, $errorOnFirstMissing, $params);
-            }
+            return $mergeTagsToAttributes;
         }
 
         /**
@@ -132,7 +133,8 @@
          * @param array $params
          * @return bool | string
          */
-        public function resolveMergeTags($model, & $invalidTags = array(), $language = null, $errorOnFirstMissing = false, $params = array())
+        public function resolveMergeTags($model, & $invalidTags = array(), $language = null,
+                                         $errorOnFirstMissing = false, $params = array())
         {
             if (!isset($language))
             {
