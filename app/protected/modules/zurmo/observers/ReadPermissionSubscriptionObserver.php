@@ -101,19 +101,22 @@
          */
         public function readPermissionSubscriptionOnAfterOwnerChange(CEvent $event)
         {
-            if ($event->sender->id > 0) // ToDo: Check with Jason why we need this
+            if ($this->enabled)
             {
-                if (get_class($event->sender) == 'Account')
+                if ($event->sender->id > 0) // ToDo: Check with Jason why we need this
                 {
-                    ReadPermissionsSubscriptionUtil::updateAccountReadSubscriptionTableBasedOnBuildTable($event->sender->id);
-                }
-                else
-                {
-                    ReadPermissionsSubscriptionUtil::changeOwnerOfModelInReadSubscriptionTableByModelIdAndModelClassNameAndUser(
-                        $event->sender->id,
-                        get_class($event->sender),
-                        $event->sender->owner
-                    );
+                    if (get_class($event->sender) == 'Account')
+                    {
+                        ReadPermissionsSubscriptionUtil::updateAccountReadSubscriptionTableBasedOnBuildTable($event->sender->id);
+                    }
+                    else
+                    {
+                        ReadPermissionsSubscriptionUtil::changeOwnerOfModelInReadSubscriptionTableByModelIdAndModelClassNameAndUser(
+                            $event->sender->id,
+                            get_class($event->sender),
+                            $event->sender->owner
+                        );
+                    }
                 }
             }
             return true;
@@ -125,19 +128,22 @@
          */
         public function readPermissionSubscriptionOnAfterSave(CEvent $event)
         {
-            if ($event->sender->getIsNewModel())
+            if ($this->enabled)
             {
-                if (get_class($event->sender) == 'Account')
+                if ($event->sender->getIsNewModel())
                 {
-                    ReadPermissionsSubscriptionUtil::updateAccountReadSubscriptionTableBasedOnBuildTable($event->sender->id);
-                }
-                else
-                {
-                    ReadPermissionsSubscriptionUtil::addModelToReadSubscriptionTableByModelIdAndModelClassNameAndUser(
-                        $event->sender->id,
-                        get_class($event->sender),
-                        $event->sender->owner
-                    );
+                    if (get_class($event->sender) == 'Account')
+                    {
+                        ReadPermissionsSubscriptionUtil::updateAccountReadSubscriptionTableBasedOnBuildTable($event->sender->id);
+                    }
+                    else
+                    {
+                        ReadPermissionsSubscriptionUtil::addModelToReadSubscriptionTableByModelIdAndModelClassNameAndUser(
+                            $event->sender->id,
+                            get_class($event->sender),
+                            $event->sender->owner
+                        );
+                    }
                 }
             }
             return true;
@@ -149,17 +155,20 @@
          */
         public function readPermissionSubscriptionOnAfterDelete(CEvent $event)
         {
-            if (get_class($event->sender) == 'Account')
+            if ($this->enabled)
             {
-                ReadPermissionsSubscriptionUtil::updateAccountReadSubscriptionTableBasedOnBuildTable($event->sender->id);
-            }
-            else
-            {
-                ReadPermissionsSubscriptionUtil::deleteModelFromReadSubscriptionTableByModelIdAndModelClassNameAndUser(
-                    $event->sender->id,
-                    get_class($event->sender),
-                    $event->sender->owner
-                );
+                if (get_class($event->sender) == 'Account')
+                {
+                    ReadPermissionsSubscriptionUtil::updateAccountReadSubscriptionTableBasedOnBuildTable($event->sender->id);
+                }
+                else
+                {
+                    ReadPermissionsSubscriptionUtil::deleteModelFromReadSubscriptionTableByModelIdAndModelClassNameAndUser(
+                        $event->sender->id,
+                        get_class($event->sender),
+                        $event->sender->owner
+                    );
+                }
             }
             return true;
         }

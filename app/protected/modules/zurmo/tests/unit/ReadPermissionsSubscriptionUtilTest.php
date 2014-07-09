@@ -43,6 +43,7 @@
             ContactsModule::loadStartingData();
             $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
             $everyoneGroup->save();
+            Yii::app()->readPermissionSubscriptionObserver->enabled = false;
         }
 
         public function setUp()
@@ -102,11 +103,6 @@
             sleep(1);
             $contact2 = ContactTestHelper::createContactByNameForOwner('Jake', $super);
 
-            $sql = "SELECT * FROM contact_read_subscription WHERE userid = " . Yii::app()->user->userModel->id;
-            $permissionTableRows = ZurmoRedBean::getAll($sql);
-            $this->assertEquals(2, count($permissionTableRows));
-            $sql = "DELETE FROM contact_read_subscription";
-            ZurmoRedBean::exec($sql);
             $sql = "SELECT * FROM contact_read_subscription WHERE userid = " . Yii::app()->user->userModel->id;
             $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(0, count($permissionTableRows));
@@ -325,6 +321,12 @@
             $contact1 = ContactTestHelper::createContactByNameForOwner('Jason', $super);
             $sql = "SELECT * FROM contact_read_subscription";
             $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(0, count($rows));
+
+            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassNameAndUser('Contact',
+                $super, time(), false, $messageLogger);
+            $sql = "SELECT * FROM contact_read_subscription";
+            $rows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(1, count($rows));
             $this->assertEquals($super->id, $rows[0]['userid']);
             $this->assertEquals($contact1->id, $rows[0]['modelid']);
@@ -350,12 +352,20 @@
             $this->assertEquals(1, count($rows));
             $this->assertEquals($super->id, $rows[0]['userid']);
             $this->assertEquals($contact1->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+
+            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassNameAndUser('Contact',
+                $super, time(), false, $messageLogger);
+            $sql = "SELECT * FROM contact_read_subscription";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(1, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($contact1->id, $rows[0]['modelid']);
             $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[0]['subscriptiontype']);
 
             // Nothing shouldn't change after this command, not even modifieddatetime
             ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassNameAndUser('Contact',
                 $super, time(), false, $messageLogger);
-
             $sql = "SELECT * FROM contact_read_subscription";
             $rowsAfterReadSubscriptionTableUpdate = ZurmoRedBean::getAll($sql);
             $this->assertEquals(1, count($rowsAfterReadSubscriptionTableUpdate));
@@ -408,6 +418,14 @@
             $contact1 = ContactTestHelper::createContactByNameForOwner('Ray', $super);
             $sql = "SELECT * FROM contact_read_subscription";
             $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(0, count($rows));
+
+            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassNameAndUser('Contact',
+                $super, time(), true, new MessageLogger());
+            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassNameAndUser('Contact',
+                $billy, time(), true, new MessageLogger());
+            $sql = "SELECT * FROM contact_read_subscription";
+            $rows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(1, count($rows));
             $this->assertEquals($super->id, $rows[0]['userid']);
             $this->assertEquals($contact1->id, $rows[0]['modelid']);
@@ -415,6 +433,11 @@
 
             $contact1->owner = $billy;
             $this->assertTrue($contact1->save());
+            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassNameAndUser('Contact',
+                $super, time(), true, new MessageLogger());
+            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassNameAndUser('Contact',
+                $billy, time(), true, new MessageLogger());
+
             $sql = "SELECT * FROM contact_read_subscription order by id";
             $rows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(2, count($rows));
