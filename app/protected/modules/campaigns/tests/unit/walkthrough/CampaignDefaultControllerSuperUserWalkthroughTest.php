@@ -74,7 +74,6 @@
             $this->runControllerWithNoExceptionsAndGetContent('campaigns/default');
             $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/index');
             $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/list');
-
             CampaignTestHelper::createCampaign('campaign01',
                 'campaign subject 01',
                 'text content for campaign 01',
@@ -688,6 +687,7 @@
 
         public function testCampaignDashboardGroupByActions()
         {
+            $this->assertNotNull($this->campaign);
             $this->setGetArray(array('id' => $this->campaign->id));
             $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/details');
 

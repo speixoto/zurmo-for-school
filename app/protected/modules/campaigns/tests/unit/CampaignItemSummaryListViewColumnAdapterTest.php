@@ -33,7 +33,7 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-    class CampaignItemSummaryListViewColumnAdapterTest extends ZurmoBaseTest
+    class CampaignItemSummaryListViewColumnAdapterTest extends AutoresponderOrCampaignBaseTest
     {
         private $campaignItem;
         private $contact;

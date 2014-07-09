@@ -121,7 +121,7 @@
                     array(
                         array(
                             'name' => 'hash',
-                            'type' => 'VARCHAR(32)',
+                            'type' => 'VARCHAR(60)',
                             'unsigned' => null,
                             'notNull' => 'NULL', // Not Coding Standard
                             'collation' => 'COLLATE utf8_unicode_ci',

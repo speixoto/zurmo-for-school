@@ -42,7 +42,10 @@
     {
         const PROPERTY_NOT_FOUND = "!MERGETAG-TO-ATTR-FAILED";
 
-        public static function resolveMergeTagsArrayToAttributesFromModel(& $mergeTags, $model, & $invalidTags = array(), $language, $errorOnFirstMissing = false, $params = array())
+        public static function resolveMergeTagsArrayToAttributesFromModel(& $mergeTags, $model,
+                                                                          & $invalidTags = array(), $language,
+                                                                          $errorOnFirstMissing = false,
+                                                                          $params = array())
         {
             assert('$language == null || is_string($language)');
             if ($language == null)
@@ -54,7 +57,12 @@
             {
                 $attributeAccessorString    = static::resolveStringToAttributeAccessor($mergeTag);
                 $timeQualifier              = static::stripTimeDelimiterAndReturnQualifier($attributeAccessorString);
-                $resolvedValue              = static::resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier, $params);
+                $resolvedValue              = static::resolveMergeTagToStandardOrRelatedAttribute(
+                                                                                                $attributeAccessorString,
+                                                                                                $model,
+                                                                                                $language,
+                                                                                                $timeQualifier,
+                                                                                                $params);
                 if ($resolvedValue === static::PROPERTY_NOT_FOUND)
                 {
                     if ($errorOnFirstMissing)
@@ -90,7 +98,8 @@
             }
         }
 
-        protected static function resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier, $params)
+        protected static function resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model,
+                                                                              $language, $timeQualifier, $params)
         {
             $attributeName = strtok($attributeAccessorString, '->');
             if (SpecialMergeTagsAdapter::isSpecialMergeTag($attributeName, $timeQualifier))
@@ -208,7 +217,8 @@
                             return ArrayUtil::stringify($values);
                         }
                     }
-                    return static::resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier, $params);
+                    return static::resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model,
+                                                                                $language, $timeQualifier, $params);
                 }
                 else
                 {

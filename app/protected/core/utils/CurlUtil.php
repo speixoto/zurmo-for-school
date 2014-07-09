@@ -34,32 +34,28 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListTestHelper
+    class CurlUtil
     {
-        public static function createMarketingListByName($name, $description = null, $fromName = null,
-                                                                        $fromAddress = null, $anyoneCanSubscribe = 0)
+        // TODO: @Shoaibi: Critical0: Incorporate a merger of https://github.com/php-curl-class/php-curl-class and https://github.com/hackerone/curl
+        public static function urlExists($url)
         {
-            $marketingList  = static::populateMarketingListByName($name, $description, $fromName,
-                                                                                $fromAddress, $anyoneCanSubscribe);
-            $saved          = $marketingList->save();
-            if (!$saved)
-            {
-                var_dump($marketingList->getErrors());
-                throw new FailedToSaveModelException();
-            }
-            return $marketingList;
+            $headers    = static::getHeaders($url);
+            return (strpos($headers[0], "200 OK") !== false);
         }
 
-        public static function populateMarketingListByName($name, $description = null, $fromName = null,
-                                                                            $fromAddress = null, $anyoneCanSubscribe = 0)
+        public static function getHeaders($url)
         {
-            $marketingList                      = new MarketingList();
-            $marketingList->name                = $name;
-            $marketingList->description         = $description;
-            $marketingList->fromName            = $fromName;
-            $marketingList->fromAddress         = $fromAddress;
-            $marketingList->anyoneCanSubscribe    = $anyoneCanSubscribe;
-            return $marketingList;
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL,            $url);
+            curl_setopt($ch, CURLOPT_HEADER,         true);
+            curl_setopt($ch, CURLOPT_NOBODY,         true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT,        15);
+
+            $r = curl_exec($ch);
+            curl_close($ch);
+            $r = explode("\n", $r);
+            return $r;
         }
     }
 ?>

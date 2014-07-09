@@ -282,15 +282,13 @@
             if ($this->supportsRichText && empty($this->htmlContent))
             {
                 $errorMessage = Zurmo::t('CampaignsModule', 'You choose to support HTML but didn\'t set any HTML content.');
-                $this->addError('htmlContent',
-                    Zurmo::t('CampaignsModule', $errorMessage));
+                $this->addError('htmlContent', Zurmo::t('CampaignsModule', $errorMessage));
                 return false;
             }
             if (!$this->supportsRichText && empty($this->textContent))
             {
                 $errorMessage = Zurmo::t('CampaignsModule', 'You choose not to support HTML but didn\'t set any text content.');
-                $this->addError('textContent',
-                    Zurmo::t('CampaignsModule', $errorMessage));
+                $this->addError('textContent', Zurmo::t('CampaignsModule', $errorMessage));
                 return false;
             }
             return true;

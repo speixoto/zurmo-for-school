@@ -37,7 +37,7 @@
     /**
      * A job for processing campaign messages that are not sent immediately when triggered
      */
-    class CampaignQueueMessagesInOutboxJob extends AutoresponderOrCampaignBaseJob
+    class CampaignQueueMessagesInOutboxJob extends AutoresponderOrCampaignQueueMessagesInOutboxBaseJob
     {
         /**
          * @see BaseJob::$loadJobQueueOnCleanupAndFallback
@@ -66,6 +66,7 @@
 
         protected function processRun()
         {
+            parent::processRun();
             $batchSize = $this->resolveBatchSize();
             if ($batchSize != null)
             {
