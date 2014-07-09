@@ -56,7 +56,7 @@
 
         public function testSingleItem()
         {
-            $this->testItems(1, 2);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(1, 2);
         }
 
         /**
@@ -64,7 +64,7 @@
          */
         public function testFiveItems()
         {
-            $this->testItems(5, 5);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(5, 5);
         }
 
         /**
@@ -72,7 +72,7 @@
          */
         public function testTenItems()
         {
-            $this->testItems(10, 9);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(10, 9);
         }
 
         /**
@@ -80,7 +80,7 @@
          */
         public function testFiftyItems()
         {
-            $this->testItems(50, 46);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(50, 46);
         }
 
         /**
@@ -88,7 +88,7 @@
          */
         public function testHundredItems()
         {
-            $this->testItems(100, 95);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(100, 95);
         }
 
         /**
@@ -96,7 +96,7 @@
          */
         public function testTwoFiftyItems()
         {
-            $this->testItems(250, 240);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(250, 240);
         }
 
         /**
@@ -104,7 +104,7 @@
          */
         public function testFiveHundredItems()
         {
-            $this->testItems(500, 490);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(500, 490);
         }
 
         /**
@@ -112,10 +112,10 @@
          */
         public function testThousandItems()
         {
-            $this->testItems(1000, 950);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(1000, 950);
         }
 
-        protected function testItems($count, $expectedTime)
+        protected function ensureTimeSpentIsLessOrEqualThanExpectedForCount($count, $expectedTime)
         {
             $timeSpent  = $this->generateAndProcessCampaignItems($count);
             echo PHP_EOL. $count . ' items took ' . $timeSpent . ' seconds';

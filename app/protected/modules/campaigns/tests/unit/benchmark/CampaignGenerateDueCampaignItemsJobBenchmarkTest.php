@@ -59,7 +59,7 @@
 
         public function testSingleItem()
         {
-            $this->testItems(1);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(1);
         }
 
         /**
@@ -67,7 +67,7 @@
          */
         public function testTenItems()
         {
-            $this->testItems(10);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(10);
         }
 
         /**
@@ -75,7 +75,7 @@
          */
         public function testFiftyItems()
         {
-            $this->testItems(50);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(50);
         }
 
         /**
@@ -83,7 +83,7 @@
          */
         public function testHundredItems()
         {
-            $this->testItems(100);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(100);
         }
 
         /**
@@ -91,7 +91,7 @@
          */
         public function testTwoFiftyItems()
         {
-            $this->testItems(250);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(250);
         }
 
         /**
@@ -99,7 +99,7 @@
          */
         public function testFiveHundredItems()
         {
-            $this->testItems(500);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(500);
         }
 
         /**
@@ -107,12 +107,12 @@
          */
         public function testThousandItems()
         {
-            $this->testItems(1000);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(1000);
         }
 
-        protected function testItems($count)
+        protected function ensureTimeSpentIsLessOrEqualThanExpectedForCount($count)
         {
-            $timeSpent      = $this->testGenerateCampaignItemsForDueCampaigns($count);
+            $timeSpent      = $this->generateCampaignItemsForDueCampaigns($count);
             echo PHP_EOL. $count . ' items took ' . $timeSpent . ' seconds';
             // no need to multiply by $count
             // this is all sql with no php in the core logic of generation so the time spent
@@ -120,7 +120,7 @@
             $this->assertTrue($timeSpent <= $this->singleItemExpectedTime);
         }
 
-        public function testGenerateCampaignItemsForDueCampaigns($count)
+        public function generateCampaignItemsForDueCampaigns($count)
         {
             $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList Test',
                                                                                                 'description goes here',

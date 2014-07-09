@@ -59,6 +59,8 @@
 
         const EMAIL_MESSAGE_ID                          = "@emailMessageId";
 
+        const NULL_FLAG                                 = "!~~NULL~~!";
+
         public static function resolveAndSaveEmailMessage($textContent, $htmlContent, Item $itemOwnerModel,
                                                     Contact $contact, MarketingList $marketingList, $itemId, $folderId)
         {
@@ -103,7 +105,7 @@
                 }
                 else
                 {
-                    if (!empty($marketingList->fromname) && !empty($marketingList->fromaddress))
+                    if (!empty($marketingList->fromName) && !empty($marketingList->fromAddress))
                     {
                         $fromAddress    = $marketingList->fromAddress;
                         $fromName       = $marketingList->fromName;
@@ -155,19 +157,37 @@
 
         protected static function resolveEmailMessageCreationFunctionQueryWithPlaceholders()
         {
-            $query      = "SELECT create_email_message(textContent, htmlContent, fromName,fromAddress , userId,
-                                                    ownerId, subject, headers, folderId, serializedData, toAddress,
-                                                    toName, recipientType, contactItemId, relatedModelType,
-                                                    relatedModelId)";
+            $query      = "SELECT create_email_message(textContent,
+                                                         htmlContent,
+                                                         fromName,
+                                                         fromAddress,
+                                                         userId,
+                                                         ownerId,
+                                                         subject,
+                                                         headers,
+                                                         folderId,
+                                                         serializedData,
+                                                         toAddress,
+                                                         toName,
+                                                         recipientType,
+                                                         contactItemId,
+                                                         relatedModelType,
+                                                         relatedModelId)";
             return $query;
         }
 
         protected static function resolveEmailMessageCreationFunctionQuery(array $emailMessageData)
         {
             $query                  = static::resolveEmailMessageCreationFunctionQueryWithPlaceholders();
-            $emailMessageData       = static::escapeValues($emailMessageData);
+            static::escapeValues($emailMessageData);
             static::quoteValues($emailMessageData);
             $query                  = strtr($query, $emailMessageData);
+            // need to change it to mysql null.
+            // couldn't find a reasonable workaround for this.
+            // if we allow escaping and quoting of null in array then at this point its 'null';
+            // if we do not allow escaping and quoting then strtr returns false for that key and there is nothing for that
+            // key inside the string, something like 'textContentHere', , 'fromName here' which cause mysql syntax errors.
+            $query                  = str_replace("'" . static::NULL_FLAG . "'", 'null', $query);
             return $query;
         }
 
@@ -176,23 +196,35 @@
             $result     = ZurmoRedBean::getCell($query);
             if (!isset($result) || ($result < 1 && $expectingAtLeastOne))
             {
-                $selectQuery    = str_replace('COUNT(*)', '*', $query);
-                echo PHP_EOL . $selectQuery . PHP_EOL;
-                var_dump(ZurmoRedBean::getAll($selectQuery));
                 throw new NotSupportedException("Query: " . PHP_EOL . $query);
             }
             return intval($result);
         }
 
-        protected static function escapeValues(array $values)
+        protected static function escapeValues(array & $values)
         {
-            $escapedValues  = array_map(array(ZurmoRedBean::$adapter, 'escape'), $values);
-            return $escapedValues;
+            // We do use array_map as that would also escape null values
+            //$values = array_map(array(ZurmoRedBean::$adapter, 'escape'), $values);
+            foreach ($values as $key => & $value)
+            {
+                if (isset($value))
+                {
+                    $value  = ZurmoRedBean::$adapter->escape($value);
+                }
+            }
         }
 
         protected static function quoteValues(array & $values)
         {
-            array_walk($values, create_function('&$value', '$value = "\'$value\'";'));
+            array_walk($values, create_function('&$value', 'if (isset($value))
+            {
+                $value = "\'$value\'";
+            }
+            else
+            {
+                // a custom flag we use to mark null values.
+                $value = "\'' . static::NULL_FLAG . '\'";
+            }'));
         }
 
         protected static function resolveCurrentUserId()

@@ -92,7 +92,6 @@
                    static::createSkipActivity($itemId);
                 }
             }
-            //$marked = static::markItemAsProcessed($item);
             $marked = static::markItemAsProcessedWithSQL($itemId, $item->emailMessage->id);
             return $marked;
         }
@@ -254,16 +253,6 @@
             $explicitReadWriteModelPermissions  = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($emailMessage,
                                                                                     $explicitReadWriteModelPermissions);
-        }
-
-        protected static function markItemAsProcessed(OwnedModel $item)
-        {
-            $item->processed    = 1;
-            if (!$item->unrestrictedSave(false))
-            {
-                throw new FailedToSaveModelException();
-            }
-            return true;
         }
 
         protected static function markItemAsProcessedWithSQL($itemId, $emailMessageId = null)
