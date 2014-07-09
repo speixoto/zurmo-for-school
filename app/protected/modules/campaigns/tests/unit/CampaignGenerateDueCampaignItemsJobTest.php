@@ -170,27 +170,22 @@
         }
 
         /**
-         * @//depends testRunWithDueActiveCampaignsWithNonMembers
+         * @depends testRunWithDueActiveCampaignsWithNonMembers
          */
         public function testRunWithDueActiveCampaignsWithMembers()
         {
             $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 04');
             $marketingListId    = $marketingList->id;
-            $contact1           = ContactTestHelper::createContactByNameForOwner('campaignContact 01', $this->user);
-            $contact2           = ContactTestHelper::createContactByNameForOwner('campaignContact 02', $this->user);
-            $contact3           = ContactTestHelper::createContactByNameForOwner('campaignContact 03', $this->user);
-            $contact4           = ContactTestHelper::createContactByNameForOwner('campaignContact 04', $this->user);
-            $contact5           = ContactTestHelper::createContactByNameForOwner('campaignContact 05', $this->user);
             $processed          = 0;
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact1);
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact2);
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact3);
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact4);
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact5);
+            for ($i = 1; $i <= 5; $i++)
+            {
+                $contact = ContactTestHelper::createContactByNameForOwner('campaignContact 0' . $i, $this->user);
+                MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact);
+            }
             $marketingList->forgetAll();
 
             $marketingList      = MarketingList::getById($marketingListId);
-            CampaignTestHelper::createCampaign('Active, Due With Members',
+            $campaign           = CampaignTestHelper::createCampaign('Active, Due With Members',
                                                 'subject',
                                                 'text Content',
                                                 'Html Content',
@@ -201,17 +196,12 @@
                                                 null,
                                                 null,
                                                 $marketingList);
+            // we have to do this to ensure when we retrieve the data status is updated from db.
+            $campaign->forgetAll();
             $this->assertEmpty(CampaignItem::getAll());
             $job                = new CampaignGenerateDueCampaignItemsJob();
             $this->assertTrue($job->run());
             $campaign           = Campaign::getByName('Active, Due With Members');
-            /*
-            var_dump("sql status:");
-            var_dump(ZurmoRedBean::getCell('SELECT `status` FROM `campaign` WHERE `name` = "Active, Due With Members"'));
-            var_dump("object status:");
-            var_dump($campaign[0]->status);
-            */
-            $this->markTestSkipped("@Sergio: Some cache issue due to which status in object is not same as the one in db and causes the assertion that follows to fail.");
             $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign[0]->status);
             $allCampaignItems   = CampaignItem::getAll();
             $this->assertNotEmpty($allCampaignItems);
