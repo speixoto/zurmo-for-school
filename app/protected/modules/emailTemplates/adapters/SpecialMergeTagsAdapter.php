@@ -179,36 +179,21 @@
 
         protected static function resolveUnsubscribeUrl($model, $params = array())
         {
-            $prefix     = Zurmo::t('Core', 'Unsubscribe');
-            $content    = static::resolveGlobalMarketingFooterUrl('resolveUnsubscribeUrlByArray', $params, $prefix);
+            $content    = static::resolveGlobalMarketingFooterUrl('resolveUnsubscribeUrlByArray', $params);
             return $content;
         }
 
         protected static function resolveManageSubscriptionsUrl($model, $params = array())
         {
-            $prefix     = Zurmo::t('MarketingListsModule', 'Manage Subscriptions');
-            $content    = static::resolveGlobalMarketingFooterUrl('resolveManageSubscriptionsUrlByArray', $params, $prefix);
+            $content    = static::resolveGlobalMarketingFooterUrl('resolveManageSubscriptionsUrlByArray', $params);
             return $content;
         }
 
-        protected static function resolveGlobalMarketingFooterUrl($method, $params = array(), $prefix)
+        protected static function resolveGlobalMarketingFooterUrl($method, $params = array())
         {
             try
             {
                 $content = GlobalMarketingFooterUtil::$method($params);
-                if ($prefix)
-                {
-                    // TODO: @Shoaibi: Critical0: Is this ok?
-                    $isHtmlContent  = ArrayUtil::getArrayValue($params, 'isHtmlContent', false);
-                    if ($isHtmlContent)
-                    {
-                        $content    = ZurmoHtml::link($prefix, $content);
-                    }
-                    else
-                    {
-                        $content = $prefix . ': ' . $content;
-                    }
-                }
                 return $content;
             }
             catch (NotSupportedException $e)

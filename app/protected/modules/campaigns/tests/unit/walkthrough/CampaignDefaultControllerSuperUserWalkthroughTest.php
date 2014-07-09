@@ -344,7 +344,7 @@
             $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix">') !== false);
             $this->assertTrue(strpos($content, '<div class="addfileinput-button"><span>Y</span>') !== false);
             $this->assertTrue(strpos($content, '<strong class="add-label">Add Files</strong>') !== false);
-            $this->assertTrue(strpos($content, '<input id="Campaign_files" type="file" name="Campaign_files"') !== false);
+            $this->assertTrue(strpos($content, '<input id="Campaign_files" multiple="multiple" type="file" name="Campaign_files"') !== false);
             $this->assertTrue(strpos($content, '<div class="fileupload-content">') !== false);
             $this->assertTrue(strpos($content, '<table class="files">') !== false);
             $this->assertTrue(strpos($content, '<div class="right-column">') !== false);
@@ -635,7 +635,7 @@
             $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix">') !== false);
             $this->assertTrue(strpos($content, '<div class="addfileinput-button"><span>Y</span>') !== false);
             $this->assertTrue(strpos($content, '<strong class="add-label">Add Files</strong>') !== false);
-            $this->assertTrue(strpos($content, '<input id="Campaign_files" type="file" name="Campaign_files"') !== false);
+            $this->assertTrue(strpos($content, '<input id="Campaign_files" multiple="multiple" type="file" name="Campaign_files"') !== false);
             $this->assertTrue(strpos($content, '<div class="fileupload-content"><table class="files">') !== false);
             $this->assertTrue(strpos($content, '<div class="right-column">') !== false);
             $this->assertTrue(strpos($content, '<div class="email-template-combined-content') !== false);

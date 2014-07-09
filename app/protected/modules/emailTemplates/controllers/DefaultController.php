@@ -374,6 +374,10 @@
          */
         public function actionRelationsAndAttributesTreeForMergeTags($uniqueId = null, $nodeId = null, $modelClassName = 'Contact')
         {
+            if ($modelClassName == null)
+            {
+                $modelClassName = 'Contact';
+            }
             $moduleClassName = $modelClassName::getModuleClassName();
             $type     = Report::TYPE_ROWS_AND_COLUMNS;
             $treeType = ComponentForReportForm::TYPE_FILTERS;

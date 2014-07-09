@@ -95,10 +95,10 @@
         }
 
         public static function resolveFooterMergeTagsArray($personId, $marketingListId, $modelId, $modelType,
-                                                $createNewActivity = true, $preview = false, $isHtmlContent = false)
+                                                $createNewActivity = true, $preview = false)
         {
             $hashArray              = static::resolveHashArray($personId, $marketingListId, $modelId, $modelType, $createNewActivity);
-            $queryStringArray       = CMap::mergeArray($hashArray, compact('preview', 'isHtmlContent'));
+            $queryStringArray       = CMap::mergeArray($hashArray, compact('preview'));
             return $queryStringArray;
         }
 
@@ -179,8 +179,8 @@
 
         protected static function resolveDefaultValue($isHtmlContent)
         {
-            $unsubscribeUrlPlaceHolder          = static::resolveUnsubscribeUrlMergeTag();
-            $manageSubscriptionsUrlPlaceHolder  = static::resolveManageSubscriptionsMergeTag();
+            $unsubscribeUrlPlaceHolder          = static::resolveDefaultUnsubscribeUrlMergeTagContent($isHtmlContent);
+            $manageSubscriptionsUrlPlaceHolder  = static::resolveDefaultManageSubscriptionsUrlMergeTagContent($isHtmlContent);
             $recipientMention                   = 'This email was sent to [[PRIMARY^EMAIL]].';
             StringUtil::prependNewLine($unsubscribeUrlPlaceHolder, $isHtmlContent);
             StringUtil::prependNewLine($manageSubscriptionsUrlPlaceHolder, $isHtmlContent);
@@ -188,6 +188,34 @@
             $content        = $unsubscribeUrlPlaceHolder;
             $content        .= $manageSubscriptionsUrlPlaceHolder;
             $content        .= $recipientMention;
+            return $content;
+        }
+
+        protected static function resolveDefaultUnsubscribeUrlMergeTagContent($isHtmlContent)
+        {
+            $tag                = static::resolveUnsubscribeUrlMergeTag();
+            $descriptiveText    = 'Unsubscribe';
+            return static::resolveDefaultMergeTagContentWithDescriptiveText($tag, $descriptiveText, $isHtmlContent);
+        }
+
+        protected static function resolveDefaultManageSubscriptionsUrlMergeTagContent($isHtmlContent)
+        {
+            $tag                = static::resolveManageSubscriptionsMergeTag();
+            $descriptiveText    = 'Manage Subscriptions';
+            return static::resolveDefaultMergeTagContentWithDescriptiveText($tag, $descriptiveText, $isHtmlContent);
+        }
+
+        protected static function resolveDefaultMergeTagContentWithDescriptiveText($tag, $descriptiveText, $isHtmlContent)
+        {
+            $content            = null;
+            if ($isHtmlContent)
+            {
+                $content        = ZurmoHtml::link($descriptiveText, $tag);
+            }
+            else
+            {
+                $content        = $descriptiveText . ': ' . $tag;
+            }
             return $content;
         }
 

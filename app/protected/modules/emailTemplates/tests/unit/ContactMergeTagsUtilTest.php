@@ -53,6 +53,8 @@
 
         protected $mergeTagsUtil;
 
+        protected static $hash;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -121,10 +123,11 @@
             $likeContactState->name                         = 'Customer';
             $likeContactState->order                        = 0;
 
+            static::$hash                                   = StringUtil::generateRandomString(60);
             $users                                          = User::getAll();
             $user                                           = new User();
             $user->lastName                                 = 'Kevin';
-            $user->hash                                     = 'rieWoy3aijohP6chaigaokohs1oovohf';
+            $user->hash                                     = static::$hash;
             $user->language                                 = 'es';
             $user->timeZone                                 = 'America/Chicago';
             $user->username                                 = 'kevinjones';
@@ -687,7 +690,7 @@
         {
             $content                        = 'user: [[USER__HASH]] [[USER__LAST^NAME]] [[USER__LANGUAGE]] [[USER__TIME^ZONE]]' .
                                                 ' [[USER__USERNAME]] [[USER__CURRENCY]] [[USER__CURRENCY__CODE]]';
-            $compareContent                 = 'user: rieWoy3aijohP6chaigaokohs1oovohf Kevin es America/Chicago kevinjones USD USD';
+            $compareContent                 = 'user: '. static::$hash .' Kevin es America/Chicago kevinjones USD USD';
             $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);

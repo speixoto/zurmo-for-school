@@ -1232,7 +1232,7 @@ body > .ui-autocomplete{
 		display:inline-block;
 		text-align:center;
 		position:relative;
-		top:1px;
+		top:2px;
 		left: 2px;
 	}
 	/*deafult for if an icon doesnt exist*/
@@ -1261,6 +1261,7 @@ body > .ui-autocomplete{
 	.type-mashableInbox   i:before{ content:  "g"; }
 	.type-marketing       i:before{ content:  '\2021'; }
 	.type-reports         i:before{ content:  "V"; }
+	.type-images          i:before{ content:  '\0112'; }
 	.type-UsersModule            i:before{ content: "e"; }
 	.type-AccountsModule         i:before{ content: "P"; }
 	.type-ContactsModule         i:before{ content: "y"; }
@@ -1310,6 +1311,15 @@ body > .ui-autocomplete{
 	}
 	.toggle-hidden-nav-items:hover{
 		color: #333 !important;
+	}
+}
+
+#RecentlyViewedView {
+	height: 100%;
+	a:hover{
+		i{
+			.t-shadow( none ) !important;
+		}
 	}
 }
 
@@ -2196,6 +2206,8 @@ td.empty{
 
 input[type="text"],
 input[type="password"],
+input[type="url"],
+input[type="number"],
 select.multiple,
 textarea{
 	.text-input();
@@ -2476,8 +2488,19 @@ body div.form-toolbar{
 			height: 31px !important;
 			text-indent: -9999px;
 			display: block;
+			.animateAll(0.15s);
 			&:hover{
+				-webkit-transform: scale(1.2);
+				-moz-transform: scale(1.2);
+				-ms-transform: scale(1.2);
+				transform: scale(1.2);
 				background: transparent url("@{path}widget-close-btn.png") left top no-repeat;
+			}
+			&:active{
+				-webkit-transform: scale(.9);
+				-moz-transform: scale(.9);
+				-ms-transform: scale(.9);
+				transform: scale(.9);
 			}
 		}
 	}
@@ -2695,9 +2718,8 @@ div.wide.form{
 		margin-left:30px;
 		margin-top:30px;
 		float:left;
-		.radius(3px);
+		//.radius(3px);
 		display:block;
-		overflow: hidden;
 		position: relative;
 		cursor:pointer;
 	}
@@ -5104,7 +5126,7 @@ div.radio-input{
 		position: relative;
 		margin:0 20px 20px 0;
 		padding:10px;
-		border-radius:5px !important;
+		.radius(5px) !important;
 		border:1px solid #FFCC00;
 		background:#FFFCB5;
 		font-weight: bold;

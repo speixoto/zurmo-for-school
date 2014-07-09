@@ -60,7 +60,13 @@
                     'multipleValuesCustomField' => array(static::HAS_ONE, 'MultipleValuesCustomField', static::NOT_OWNED),
                 ),
                 'rules' => array(
-                    array('value', 'type', 'type' => 'string'),
+                    array('value', 'type',   'type' => 'string'),
+                    array('value', 'length', 'max'  => 255),
+                ),
+                'indexes' => array(
+                    'multiplevaluescustomfield_id' => array(
+                        'members' => array('multiplevaluescustomfield_id'),
+                        'unique' => false),
                 ),
                 'defaultSortAttribute' => 'value'
             );

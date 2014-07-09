@@ -477,12 +477,12 @@ HTML;
         protected static function resolveContent(& $content, $tracking = true, $isHtmlContent = true)
         {
             return (GlobalMarketingFooterUtil::resolveContentGlobalFooter($content, $isHtmlContent) &&
-                    static::resolveContentForMergeTags($content, $isHtmlContent) &&
+                    static::resolveContentForMergeTags($content) &&
                     ContentTrackingUtil::resolveContentForTracking($tracking, $content, 1, 'AutoresponderItem',
                                                                                 1, $isHtmlContent));
         }
 
-        protected static function resolveContentForMergeTags(& $content, $isHtmlContent)
+        protected static function resolveContentForMergeTags(& $content)
         {
             $language               = null;
             $errorOnFirstMissing    = true;
@@ -491,7 +491,7 @@ HTML;
             $textMergeTagsUtil      = MergeTagsUtilFactory::make($templateType, $language, $content);
             $params                 = GlobalMarketingFooterUtil::resolveFooterMergeTagsArray(1, 2, 3,
                                                                                             'AutoresponderITem', true,
-                                                                                            false, $isHtmlContent);
+                                                                                            false);
             $content                = $textMergeTagsUtil->resolveMergeTags(Yii::app()->user->userModel,
                                                                             $invalidTags,
                                                                             $language,

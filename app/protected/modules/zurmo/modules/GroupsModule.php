@@ -73,18 +73,6 @@
                         'label' => "eval:Zurmo::t('ZurmoModule', 'Groups')",
                         'url'   => array('/zurmo/group'),
                         'right' => self::RIGHT_ACCESS_GROUPS,
-                        'items' => array(
-                            array(
-                                'label' => "eval:Zurmo::t('ZurmoModule', 'Create Group')",
-                                'url'   => array('/zurmo/group/create'),
-                                'right' => self::RIGHT_CREATE_GROUPS
-                            ),
-                            array(
-                                'label' => "eval:Zurmo::t('ZurmoModule', 'Groups')",
-                                'url'   => array('/zurmo/group'),
-                                'right' => self::RIGHT_ACCESS_GROUPS
-                            ),
-                        ),
                     ),
                 ),
                 'configureMenuItems' => array(

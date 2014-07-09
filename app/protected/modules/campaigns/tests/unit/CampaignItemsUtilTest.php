@@ -449,16 +449,12 @@
         {
             $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 07');
             $marketingListId    = $marketingList->id;
-            $contact1           = ContactTestHelper::createContactByNameForOwner('campaignContact 01', $this->user);
-            $contact2           = ContactTestHelper::createContactByNameForOwner('campaignContact 02', $this->user);
-            $contact3           = ContactTestHelper::createContactByNameForOwner('campaignContact 03', $this->user);
-            $contact4           = ContactTestHelper::createContactByNameForOwner('campaignContact 04', $this->user);
-            $contact5           = ContactTestHelper::createContactByNameForOwner('campaignContact 05', $this->user);
-            MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList, $contact1);
-            MarketingListMemberTestHelper::createMarketingListMember(1, $marketingList, $contact2);
-            MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList, $contact3);
-            MarketingListMemberTestHelper::createMarketingListMember(1, $marketingList, $contact4);
-            MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList, $contact5);
+            for ($i = 0; $i < 5; $i++)
+            {
+
+                $contact    = ContactTestHelper::createContactByNameForOwner('campaignContact ' . $i, $this->user);
+                MarketingListMemberTestHelper::createMarketingListMember($i % 2, $marketingList, $contact);
+            }
             $marketingList->forgetAll();
 
             $marketingList      = MarketingList::getById($marketingListId);
@@ -485,7 +481,7 @@
             $jobs = Yii::app()->jobQueue->getAll();
             $this->markTestSkipped("@Sergio: Following 2 assertions fail.");
             $this->assertCount(1, $jobs);
-            $this->assertEquals('CampaignQueueMessagesInOutbox', $jobs[5][0]);
+            $this->assertEquals('CampaignQueueMessagesInOutbox', $jobs[5][0]['jobType']);
             $campaign           = Campaign::getById($campaignId);
             $this->assertNotNull($campaign);
             $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
@@ -795,12 +791,10 @@
             $htmlContent                = $campaignItem->emailMessage->content->htmlContent;
             $this->assertNotEquals($campaign->textContent, $textContent);
             $this->assertNotEquals($campaign->htmlContent, $htmlContent);
-            $this->assertTrue(strpos($textContent, 'Unsubscribe: localhost') !== false);
+            $this->assertTrue(strpos($textContent, 'localhost') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/unsubscribe?hash='));
-            $this->assertTrue(strpos($htmlContent, '<a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, 'localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/unsubscribe?hash='));
-            $this->assertTrue(strpos($htmlContent, '">Unsubscribe</a>') !== false);
-            $this->assertEquals(1, substr_count($htmlContent, '">Unsubscribe</a>'));
             $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost') !== false);
             $this->assertTrue(strpos($htmlContent, '/tracking/default/track?id=') !== false);
             $this->assertTrue(strpos($htmlContent, '/marketingLists/external/manageSubscriptions') === false);
@@ -838,12 +832,10 @@
             $htmlContent                = $campaignItem->emailMessage->content->htmlContent;
             $this->assertNotEquals($campaign->textContent, $textContent);
             $this->assertNotEquals($campaign->htmlContent, $htmlContent);
-            $this->assertTrue(strpos($textContent, 'Manage Subscriptions: localhost') !== false);
+            $this->assertTrue(strpos($textContent, 'localhost') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, '<a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, 'localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, '">Manage Subscriptions</a>') !== false);
-            $this->assertEquals(1, substr_count($htmlContent, '">Manage Subscriptions</a>'));
             $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost') !== false);
             $this->assertTrue(strpos($htmlContent, '/tracking/default/track?id=') !== false);
             $this->assertTrue(strpos($htmlContent, '/marketingLists/external/unsubscribe') === false);
@@ -883,20 +875,16 @@
             $htmlContent                = $campaignItem->emailMessage->content->htmlContent;
             $this->assertNotEquals($campaign->textContent, $textContent);
             $this->assertNotEquals($campaign->htmlContent, $htmlContent);
-            $this->assertTrue(strpos($textContent, 'Unsubscribe: localhost') !== false);
+            $this->assertTrue(strpos($textContent, 'localhost') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/unsubscribe?hash='));
-            $this->assertTrue(strpos($htmlContent, '<a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, 'localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/unsubscribe?hash='));
-            $this->assertTrue(strpos($htmlContent, '">Unsubscribe</a>') !== false);
-            $this->assertEquals(1, substr_count($htmlContent, '">Unsubscribe</a>'));
             $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost') !== false);
             $this->assertTrue(strpos($htmlContent, '/tracking/default/track?id=') !== false);
-            $this->assertTrue(strpos($textContent, ', Manage Subscriptions: localhost') !== false);
+            $this->assertTrue(strpos($textContent, ', localhost') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, ', <a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, ', localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, '">Manage Subscriptions</a>') !== false);
-            $this->assertEquals(1, substr_count($htmlContent, '">Manage Subscriptions</a>'));
             $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost') !== false);
             $this->assertTrue(strpos($htmlContent, '/tracking/default/track?id=') !== false);
         }
@@ -938,18 +926,15 @@
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/unsubscribe?hash='));
             $this->assertTrue(strpos($textContent, '/marketingLists/external/manageSubscriptions?hash=') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, 'HTML<br /><br /><a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, 'HTML<br /><br /><a href="localhost/') !== false);
             $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost') !== false);
             $this->assertTrue(strpos($htmlContent, '/tracking/default/track?id=') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/tracking/default/track?id='));
             $this->assertTrue(strpos($htmlContent, '/marketingLists/external/unsubscribe?hash=') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/unsubscribe?hash='));
-            $this->assertTrue(strpos($htmlContent, '">Unsubscribe</a><br /><a href="localhost') !== false);
-            $this->assertEquals(1, substr_count($htmlContent, '">Unsubscribe</a><br /><a href="localhost'));
+            $this->assertEquals(2, substr_count($htmlContent, '<br /><a href="localhost/'));
             $this->assertTrue(strpos($htmlContent, '/marketingLists/external/manageSubscriptions?hash=') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, '">Manage Subscriptions</a>') !== false);
-            $this->assertEquals(1, substr_count($htmlContent, '">Manage Subscriptions</a>'));
         }
 
         public function testProcessDueCampaignItemContactUnsubscribed()
