@@ -37,6 +37,7 @@
     class ReadPermissionSubscriptionObserverTest extends ZurmoBaseTest
     {
         protected static $billy;
+        protected static $johnny;
 
         public static function setUpBeforeClass()
         {
@@ -47,7 +48,11 @@
             $group->users->add(self::$billy);
             $group->save();
 
+            self::$johnny = UserTestHelper::createBasicUser('Johnny');
             ContactsModule::loadStartingData();
+
+            $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
+            $everyoneGroup->save();
         }
 
         public function setUp()
@@ -185,7 +190,57 @@
             $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
 
             // ToDo: Test owner change when second user do not have permissions to read account
-            
+            // Clean account table
+            $accounts = Account::getAll();
+            foreach ($accounts as $account)
+            {
+                $account->delete();
+            }
+            $sql = "DELETE FROM account_read_subscription";
+            ZurmoRedBean::exec($sql);
+            $johnny = self::$johnny;
+            $account3 = AccountTestHelper::createAccountByNameForOwner('Third Account', $johnny);
+
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(4, count($rows)); // Forth record belongs to backendjobuser
+
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account3->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($billy->id, $rows[1]['userid']);
+            $this->assertEquals($account3->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
+            $this->assertEquals($johnny->id, $rows[2]['userid']);
+            $this->assertEquals($account3->id, $rows[2]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[2]['subscriptiontype']);
+
+            $account3Id = $account3->id;
+            $account3->forgetAll();
+            $account3 = Account::getById($account3Id);
+            $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
+            $account3->removePermissions($everyoneGroup, Permission::READ);
+            $this->assertTrue($account3->save());
+            $account3->forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $account3 = Account::getById($account3Id);
+            $account3->owner = $super;
+            $this->assertTrue($account3->save());
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(4, count($rows)); // Forth record belongs to backendjobuser
+
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account3->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($billy->id, $rows[1]['userid']);
+            $this->assertEquals($account3->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
+            $this->assertEquals($johnny->id, $rows[2]['userid']);
+            $this->assertEquals($account3->id, $rows[2]['modelid']);
+            // ToDo: Fix failure below
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[2]['subscriptiontype']);
         }
     }
 ?>
