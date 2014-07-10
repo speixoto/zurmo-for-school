@@ -41,8 +41,6 @@
      */
     abstract class AutoresponderAndCampaignItemsEmailMessageUtil
     {
-        public static $marketingListIdToSenderMapping   = array();
-
         public static $itemClass                        = null;
 
         public static $returnPath                       = null;
@@ -91,33 +89,23 @@
 
         protected static function resolveSender(MarketingList $marketingList, $itemOwnerModel)
         {
-            $marketingListId    = intval($marketingList->id);
-            if (isset(static::$marketingListIdToSenderMapping[$marketingListId]))
+            if (get_class($itemOwnerModel) == 'Campaign')
             {
-                $sender = static::$marketingListIdToSenderMapping[$marketingListId];
+                $fromAddress    = $itemOwnerModel->fromAddress;
+                $fromName       = $itemOwnerModel->fromName;
             }
             else
             {
-                if (get_class($itemOwnerModel) == 'Campaign')
-                {
-                    $fromAddress    = $itemOwnerModel->fromAddress;
-                    $fromName       = $itemOwnerModel->fromName;
+                if (!empty($marketingList->fromName) && !empty($marketingList->fromAddress)) {
+                    $fromAddress = $marketingList->fromAddress;
+                    $fromName = $marketingList->fromName;
+                } else {
+                    $userToSendMessagesFrom = BaseControlUserConfigUtil::getUserToRunAs();
+                    $fromAddress = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
+                    $fromName = strval($userToSendMessagesFrom);
                 }
-                else
-                {
-                    if (!empty($marketingList->fromName) && !empty($marketingList->fromAddress))
-                    {
-                        $fromAddress    = $marketingList->fromAddress;
-                        $fromName       = $marketingList->fromName;
-                    } else {
-                        $userToSendMessagesFrom = BaseControlUserConfigUtil::getUserToRunAs();
-                        $fromAddress    = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
-                        $fromName       = strval($userToSendMessagesFrom);
-                    }
-                }
-                $sender                                                     = compact('fromName', 'fromAddress');
-                static::$marketingListIdToSenderMapping[$marketingListId]   = $sender;
             }
+            $sender                 = compact('fromName', 'fromAddress');
             return $sender;
         }
 
