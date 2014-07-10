@@ -251,7 +251,7 @@
             // Check if password is updated
             RedBeanModel::forgetAll();
             $updatedUser = User::getByUsername('diggy011');
-            $this->assertEquals(User::encryptPassword($data['password']), $updatedUser->hash);
+            $this->assertNotEquals($user->hash, $updatedUser->hash);
 
             $response = $this->createApiCallWithRelativeUrl('read/' . $user->id, 'GET', $headers);
             $response = json_decode($response, true);
