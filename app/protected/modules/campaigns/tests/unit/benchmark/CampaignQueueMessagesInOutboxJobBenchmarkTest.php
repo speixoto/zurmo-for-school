@@ -119,7 +119,7 @@
         {
             $timeSpent  = $this->generateAndProcessCampaignItems($count);
             echo PHP_EOL. $count . ' items took ' . $timeSpent . ' seconds';
-            $this->assertTrue($timeSpent <= $expectedTime);
+            $this->assertLessThanOrEqual($expectedTime, $timeSpent);
         }
 
         public function generateAndProcessCampaignItems($count)

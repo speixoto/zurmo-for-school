@@ -117,7 +117,7 @@
             // no need to multiply by $count
             // this is all sql with no php in the core logic of generation so the time spent
             // remains constant for the most part.
-            $this->assertTrue($timeSpent <= $this->singleItemExpectedTime);
+            $this->assertLessThanOrEqual($this->singleItemExpectedTime, $timeSpent);
         }
 
         public function generateCampaignItemsForDueCampaigns($count)
