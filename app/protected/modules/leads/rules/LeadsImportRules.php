@@ -45,6 +45,15 @@
         }
 
         /**
+         * Overriding to make sure it returns LeadsModule and not ContactsModule
+         * @return array
+         */
+        public static function getModuleClassNames()
+        {
+            return array('LeadsModule');
+        }
+
+        /**
          * Get the display label used to describe the import rules.
          * @return string
          */

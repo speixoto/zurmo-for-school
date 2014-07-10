@@ -43,7 +43,7 @@
 
         protected static function resolveLabel()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Image');
+            return Zurmo::t('Core', 'Image');
         }
 
         protected function resolveDefaultContent()
@@ -69,6 +69,14 @@
             return 'content[image]';
         }
 
+        protected function resolveNonEditableWrapperHtmlOptions()
+        {
+            $htmlOptions            = parent::resolveNonEditableWrapperHtmlOptions();
+            $frontendProperties     = ArrayUtil::getArrayValue($this->properties, 'frontend');
+            $htmlOptions['align']   = ArrayUtil::getArrayValue($frontendProperties, 'float');
+            return $htmlOptions;
+        }
+
         protected function resolveContentElementParams()
         {
             $params                     = parent::resolveContentElementParams();
@@ -87,7 +95,6 @@
                 $properties['alt']                   = ArrayUtil::getArrayValue($frontendProperties, 'alt');
                 $properties['htmlOptions']['width']  = ArrayUtil::getArrayValue($frontendProperties, 'width');
                 $properties['htmlOptions']['height'] = ArrayUtil::getArrayValue($frontendProperties, 'height');
-                $properties['htmlOptions']['align']  = ArrayUtil::getArrayValue($frontendProperties, 'float');
             }
             return $properties;
         }

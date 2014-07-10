@@ -68,7 +68,7 @@
                                             'ButtonWidthStaticDropDownFormElement',
                                             'width',
                                             static::resolveDefaultParams(
-                                                Zurmo::t('EmailTemplatesModule', 'Width')));
+                                                Zurmo::t('Core', 'Width')));
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementBackendPropertiesEditableElementUtil',
                                             'AlignmentStaticDropDownFormElement',

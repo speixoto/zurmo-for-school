@@ -1344,7 +1344,8 @@
                          'line-height'      => 'validateInteger',
                          'border-top-width' => 'validateInteger',
                          'divider-padding'  => 'validateInteger',
-                         'height'           => 'validateInteger');
+                         'height'           => 'validateInteger',
+                         'href'             => 'validateUrl');
         }
 
 //todo: properly use Cvalidator for this
@@ -1362,6 +1363,20 @@
             {
                 return true;
             }
+        }
+
+        protected function validateUrl($value)
+        {
+            if ($value == null)
+            {
+                return true;
+            }
+            $validator = new CUrlValidator();
+            if (!$validator->validateValue($value))
+            {
+                return Zurmo::t('EmailTemplatesModule', 'Use a valid URL.');
+            }
+            return true;
         }
 
         public static function getPropertiesSuffixMappedArray()

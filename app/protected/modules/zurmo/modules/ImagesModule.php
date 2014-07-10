@@ -69,7 +69,7 @@
 
         protected static function getSingularModuleLabel($language)
         {
-            return Zurmo::t('ImagesModule', 'Image', array(), null, $language);
+            return Zurmo::t('Core', 'Image', array(), null, $language);
         }
 
         protected static function getPluralModuleLabel($language)
