@@ -142,7 +142,11 @@
                 $this->fail('NotFoundException exception is thrown.');
             }
             $prefix = RedBeanModelsCache::getCachePrefix($modelIdentifier, RedBeanModelsCache::$cacheType);
-            $cachedData = Yii::app()->cache->get($prefix . $modelIdentifier);
+            $cachedData = false;
+            if (isset(Yii::app()->cache))
+            {
+                $cachedData = Yii::app()->cache->get($prefix . $modelIdentifier);
+            }
             $this->assertFalse($cachedData);
         }
     }

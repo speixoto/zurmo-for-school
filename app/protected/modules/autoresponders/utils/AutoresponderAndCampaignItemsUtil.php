@@ -63,6 +63,12 @@
             assert('static::$itemClass === "AutoresponderItem" || static::$itemClass === "CampaignItem"');
             $contact                    = static::resolveContact($item);
             $itemOwnerModel             = static::resolveItemOwnerModel($item);
+            if ($itemOwnerModel->id < 0)
+            {
+                // the corresponding autoresponder/campaign has been deleted already.
+                $item->delete();
+                return false;
+            }
             static::$personId           = $contact->getClassId('Person');
 
             if (static::skipMessage($contact, $itemOwnerModel))
