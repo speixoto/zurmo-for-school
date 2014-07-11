@@ -35,33 +35,33 @@
      ********************************************************************************/
 
     /**
-     * Form to edit and view the global marketing configuration values in the user interface.
+     * Class to adapt system configuration values into a system configuration form.
+     * Saves global values from a system configuration form.
      */
-    class MarketingConfigurationForm extends ConfigurationForm
+    class ZurmoSystemConfigurationFormAdapter
     {
-        public $autoresponderOrCampaignFooterPlainText;
-        public $autoresponderOrCampaignFooterRichText;
-
-        public function rules()
+        /**
+         * Creates a form populated with the system configuration global stored values.
+         * @return ZurmoSystemConfigurationForm
+         */
+        public static function makeFormFromSystemConfiguration()
         {
-            return array(
-                array('autoresponderOrCampaignFooterPlainText', 'required'),
-                array('autoresponderOrCampaignFooterPlainText', 'type',    'type' => 'string'),
-                array('autoresponderOrCampaignFooterRichText',  'required'),
-                array('autoresponderOrCampaignFooterRichText',  'type',    'type' => 'string'),
-            );
+            $form                                         = new ZurmoSystemConfigurationForm();
+            $form->autoresponderOrCampaignBatchSize       = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
+            $form->campaignItemsToCreatePageSize          = CampaignItemsUtil::getCreatePageSize();
+            return $form;
         }
 
-        public function attributeLabels()
+        /**
+         * Given a SystemConfigurationForm, save the system configuration global values.
+         */
+        public static function setConfigurationFromForm(ZurmoSystemConfigurationForm $form)
         {
-            return array(
-                'autoresponderOrCampaignFooterPlainText' => Zurmo::t('MarketingModule',
-                                                                     'MarketingModuleSingularLabel Footer(Plain Text)',
-                                                                     LabelUtil::getTranslationParamsForAllModules()),
-                'autoresponderOrCampaignFooterRichText'  => Zurmo::t('MarketingModule',
-                                                                     'MarketingModuleSingularLabel Footer(Rich Text)',
-                                                                     LabelUtil::getTranslationParamsForAllModules())
-            );
+            if (Yii::app()->user->userModel->isRootUser)
+            {
+                AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize((int)$form->autoresponderOrCampaignBatchSize);
+                CampaignItemsUtil::setCreatePageSize((int)$form->campaignItemsToCreatePageSize);
+            }
         }
     }
 ?>
