@@ -149,7 +149,7 @@
          */
         public function processGetActualPermissionsAsNonOptimized()
         {
-            return (bool)Yii::app()->params['processNamedSecurableActualPermissionsAsOptimized'];
+            return (bool)Yii::app()->params['processNamedSecurableActualPermissionsAsNonOptimized'];
         }
 
         /**

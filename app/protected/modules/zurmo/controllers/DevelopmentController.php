@@ -163,7 +163,7 @@
             }
             else
             {
-                $pageSize = 50;
+                $pageSize = 25;
             }
 
             $namedSecurableItems = array();
