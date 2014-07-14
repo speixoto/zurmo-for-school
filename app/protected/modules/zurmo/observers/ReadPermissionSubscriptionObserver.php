@@ -86,8 +86,8 @@
         public function attachEventsByModelClassName($modelClassName)
         {
             assert('is_string($modelClassName)');
-            $modelClassName::model()->attachEventHandler('onAfterOwnerChange',
-                                        array($this, 'readPermissionSubscriptionOnAfterOwnerChange'));
+            $modelClassName::model()->attachEventHandler('onAfterOwnerChangeAfterSave',
+                                        array($this, 'readPermissionSubscriptionOnAfterOwnerChangeAfterSave'));
             $modelClassName::model()->attachEventHandler('onAfterSave',
                                         array($this, 'readPermissionSubscriptionOnAfterSave'));
             $modelClassName::model()->attachEventHandler('onAfterDelete',
@@ -99,7 +99,7 @@
          * @param CEvent $event
          * @return bool
          */
-        public function readPermissionSubscriptionOnAfterOwnerChange(CEvent $event)
+        public function readPermissionSubscriptionOnAfterOwnerChangeAfterSave(CEvent $event)
         {
             if ($this->enabled)
             {

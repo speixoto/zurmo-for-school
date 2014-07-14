@@ -168,17 +168,25 @@
         {
             assert('is_int($accountId)');
             $tableName = static::getAccountSubscriptionTempBuildTableName();
-            $sql = "insert into $tableName (accountid) values ($accountId)";
-            ZurmoRedBean::exec($sql);
+            // Need to check if accountId already exist in table,
+            // because save and owner change observer events are triggered during adding new account
+            $sql = "select * from $tableName where accountid='$accountId'";
+            $results = ZurmoRedBean::getAll($sql);
+            if (!is_array($results) || empty($results))
+            {
+                $sql = "insert into $tableName (accountid) values ($accountId)";
+                ZurmoRedBean::exec($sql);
+            }
         }
 
-        /**
-         * Clean account temp build table(delete all records from it)
+        /*
+         * Delete account id to account temp build table
          */
-        protected static function cleanAccountBuildTable()
+        protected static function deleteAccountIdFromBuildTable($accountId)
         {
+            assert('is_int($accountId)');
             $tableName = static::getAccountSubscriptionTempBuildTableName();
-            $sql = "delete from $tableName";
+            $sql = "delete from $tableName where accountid='$accountId'";
             ZurmoRedBean::exec($sql);
         }
 
@@ -190,8 +198,7 @@
         {
             assert('is_int($accountId)');
             static::addAccountIdToBuildTable($accountId);
-            static::updateAllReadSubscriptionTables(new MessageLogger(), 'Account', true);
-            static::cleanAccountBuildTable();
+            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccountFromBuildTable', 5);
         }
 
         protected static function getModelTableName($modelClassName)
@@ -219,12 +226,12 @@
          * Update read subscription table for all users and models
          * @param MessageLogger $messageLogger
          * @param null | array $modelClassNames
-         * @param bool $updateOnlyRecordsFromBuildTable - if true and modelClassName is 'Account' refresh account read
+         * @param array $arrayOfModelIdsToUpdate
          * permission subscription table just for account ids that exist in account temp build table
          * @return bool
          */
         public static function updateAllReadSubscriptionTables(MessageLogger $messageLogger, $modelClassNames = null,
-                                                               $updateOnlyRecordsFromBuildTable = null)
+                                                               $arrayOfModelIdsToUpdate = array())
         {
             $loggedUser = Yii::app()->user->userModel;
             $users = User::getAll();
@@ -235,6 +242,12 @@
 
             foreach ($users as $user)
             {
+                if ($user->isSystemUser)
+                {
+                    $messageLogger->addDebugMessage(Zurmo::t('ZurmoModule',
+                        'Skipping system user with userID: {id}', array('{id}' => $user->id)));
+                    continue;
+                }
                 $messageLogger->addDebugMessage(Zurmo::t('ZurmoModule',
                     'Starting read permission building for userID: {id}', array('{id}' => $user->id)));
                 $startTime = microtime(true);
@@ -258,7 +271,7 @@
                         {
                             static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
                                 Yii::app()->user->userModel, $updateStartTimestamp, false,
-                                $messageLogger, $updateOnlyRecordsFromBuildTable);
+                                $messageLogger, $arrayOfModelIdsToUpdate);
                         }
                     }
                 }
@@ -276,18 +289,48 @@
         }
 
         /**
+         * @param MessageLogger $messageLogger
+         * @param null $modelClassName
+         */
+        public static function updateReadSubscriptionTableFromBuildTable(MessageLogger $messageLogger, $modelClassName = null)
+        {
+            if ($modelClassName == 'Account')
+            {
+                // ToDO: Add pagination - Ivica: I do not think we need it
+                $accountIds = static::getAccountIdsArrayFromBuildTable();
+                ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger, array($modelClassName), $accountIds);
+                if ($modelClassName == 'Account' && !empty($accountIds))
+                {
+                    foreach ($accountIds as $accountId)
+                    {
+                        static::deleteAccountIdFromBuildTable((int)$accountId);
+                    }
+                }
+            }
+        }
+
+        /**
+         * Rebuild All Read Permission Subscription Data
+         */
+        public static function rebuildAllReadPermissionSubscriptionData()
+        {
+            //self::updateAllReadSubscriptionTables(new MessageLogger());
+            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdate', 5);
+        }
+
+        /**
          * Update models in read subscription table based on modelId and userId(userId is used implicitly in getSubsetIds)
          * @param string $modelClassName
          * @param User $user
          * @param bool $onlyOwnedModels
          * @param int $updateStartTimestamp
          * @param MessageLogger $messageLogger
-         * @param bool | null $updateOnlyRecordsFromBuildTable - if true and modelClassName is 'Account' refresh account read
+         * @param array $arrayOfModelIdsToUpdate
          * permission subscription table just for account ids that exist in account temp build table
          */
         public static function updateReadSubscriptionTableByModelClassNameAndUser($modelClassName, User $user, $updateStartTimestamp,
                                                                                   $onlyOwnedModels = false, MessageLogger $messageLogger,
-                                                                                  $updateOnlyRecordsFromBuildTable = null)
+                                                                                  $arrayOfModelIdsToUpdate = array())
         {
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
             assert('is_int($updateStartTimestamp)');
@@ -297,14 +340,18 @@
             $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($lastReadPermissionUpdateTimestamp);
             $updateDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($updateStartTimestamp);
 
-            if (isset($updateOnlyRecordsFromBuildTable) && $updateOnlyRecordsFromBuildTable == true &&
-                $modelClassName == 'Account')
+            if ($modelClassName == 'Account' && !empty($arrayOfModelIdsToUpdate))
             {
-                $accountIds = static::getAccountIdsArrayFromBuildTable();
+                // We can not provide empty array for oneOf, so in this case we just use non-existing negative id
+                // ToDo: Not sure if there is better way to archive this
+                if (empty($arrayOfModelIdsToUpdate))
+                {
+                    $arrayOfModelIdsToUpdate = array('-999');
+                }
                 $metadata['clauses'][1] = array(
                     'attributeName' => 'id',
                     'operatorType'  => 'oneOf',
-                    'value'         => $accountIds,
+                    'value'         => $arrayOfModelIdsToUpdate,
                 );
                 $metadata['structure'] = "1";
             }
@@ -331,7 +378,6 @@
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             $where  = RedBeanModelDataProvider::makeWhere($modelClassName, $metadata, $joinTablesAdapter);
             $userModelIds = $modelClassName::getSubsetIds($joinTablesAdapter, null, null, $where);
-
             $endTime = microtime(true);
             $executionTimeMs = $endTime - $startTime;
             $messageLogger->addDebugMessage(Zurmo::t('ZurmoModule',
@@ -342,8 +388,7 @@
             $sql = "SELECT modelid FROM $tableName WHERE userid = " . $user->id .
                 " AND subscriptiontype = " . static::TYPE_ADD;
 
-            if (isset($updateOnlyRecordsFromBuildTable) && $updateOnlyRecordsFromBuildTable == true &&
-                $modelClassName == 'Account')
+            if ($modelClassName == 'Account' && !empty($arrayOfModelIdsToUpdate))
             {
                 $accountIds = static::getAccountIdsArrayFromBuildTable();
                 if (!empty($accountIds))

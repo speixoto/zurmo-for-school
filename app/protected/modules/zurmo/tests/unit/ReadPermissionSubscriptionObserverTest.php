@@ -51,8 +51,7 @@
             self::$johnny = UserTestHelper::createBasicUser('Johnny');
             ContactsModule::loadStartingData();
 
-            $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
-            $everyoneGroup->save();
+            Yii::app()->readPermissionSubscriptionObserver->enabled = true;
         }
 
         public function setUp()
@@ -124,16 +123,19 @@
             $billy = self::$billy;
             Yii::app()->user->userModel = $super;
 
+            $job = new ReadPermissionSubscriptionUpdateForAccountFromBuildTableJob();
+
             // Clean contact table
             $sql = "SELECT * FROM account_read_subscription";
             $rows = ZurmoRedBean::getAll($sql);
             $this->assertTrue(empty($rows));
 
             $account1 = AccountTestHelper::createAccountByNameForOwner('First Account', $super);
-
+            sleep(1);
+            $this->assertTrue($job->run());
             $sql = "SELECT * FROM account_read_subscription order by userid";
             $rows = ZurmoRedBean::getAll($sql);
-            $this->assertEquals(3, count($rows)); // Third record belongs to backendjobuser
+            $this->assertEquals(2, count($rows)); // Third record belongs to backendjobuser
 
             $this->assertEquals($super->id, $rows[0]['userid']);
             $this->assertEquals($account1->id, $rows[0]['modelid']);
@@ -145,9 +147,11 @@
 
             // Test deletion
             $account1->delete();
+            sleep(1);
+            $this->assertTrue($job->run());
             $sql = "SELECT * FROM account_read_subscription order by userid";
             $rows2 = ZurmoRedBean::getAll($sql);
-            $this->assertEquals(3, count($rows2));
+            $this->assertEquals(2, count($rows2));
             $this->assertEquals($super->id, $rows2[0]['userid']);
             $this->assertEquals($account1->id, $rows2[0]['modelid']);
             $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows2[0]['subscriptiontype']);
@@ -165,9 +169,11 @@
             $this->assertTrue(empty($rows));
 
             $account2 = AccountTestHelper::createAccountByNameForOwner('Second Account', $super);
+            sleep(1);
+            $this->assertTrue($job->run());
             $sql = "SELECT * FROM account_read_subscription order by userid";
             $rows = ZurmoRedBean::getAll($sql);
-            $this->assertEquals(3, count($rows));
+            $this->assertEquals(2, count($rows));
 
             $this->assertEquals($super->id, $rows[0]['userid']);
             $this->assertEquals($account2->id, $rows[0]['modelid']);
@@ -179,9 +185,11 @@
 
             $account2->owner = self::$billy;
             $this->assertTrue($account2->save());
+            sleep(1);
+            $this->assertTrue($job->run());
             $sql = "SELECT * FROM account_read_subscription order by userid";
             $rows = ZurmoRedBean::getAll($sql);
-            $this->assertEquals(3, count($rows));
+            $this->assertEquals(2, count($rows));
             $this->assertEquals($super->id, $rows[0]['userid']);
             $this->assertEquals($account2->id, $rows[0]['modelid']);
             $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
@@ -200,10 +208,12 @@
             ZurmoRedBean::exec($sql);
             $johnny = self::$johnny;
             $account3 = AccountTestHelper::createAccountByNameForOwner('Third Account', $johnny);
+            sleep(1);
+            $this->assertTrue($job->run());
 
             $sql = "SELECT * FROM account_read_subscription order by userid";
             $rows = ZurmoRedBean::getAll($sql);
-            $this->assertEquals(4, count($rows)); // Forth record belongs to backendjobuser
+            $this->assertEquals(3, count($rows)); // Forth record belongs to backendjobuser
 
             $this->assertEquals($super->id, $rows[0]['userid']);
             $this->assertEquals($account3->id, $rows[0]['modelid']);
@@ -218,18 +228,18 @@
             $account3Id = $account3->id;
             $account3->forgetAll();
             $account3 = Account::getById($account3Id);
-            $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
-            $account3->removePermissions($everyoneGroup, Permission::READ);
             $this->assertTrue($account3->save());
             $account3->forgetAll();
-            ReadPermissionsOptimizationUtil::rebuild();
 
+            PermissionsCache::forgetAll();
             $account3 = Account::getById($account3Id);
             $account3->owner = $super;
             $this->assertTrue($account3->save());
+            sleep(1);
+            $this->assertTrue($job->run());
             $sql = "SELECT * FROM account_read_subscription order by userid";
             $rows = ZurmoRedBean::getAll($sql);
-            $this->assertEquals(4, count($rows)); // Forth record belongs to backendjobuser
+            $this->assertEquals(3, count($rows)); // Forth record belongs to backendjobuser
 
             $this->assertEquals($super->id, $rows[0]['userid']);
             $this->assertEquals($account3->id, $rows[0]['modelid']);
@@ -239,7 +249,6 @@
             $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
             $this->assertEquals($johnny->id, $rows[2]['userid']);
             $this->assertEquals($account3->id, $rows[2]['modelid']);
-            // ToDo: Fix failure below
             $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[2]['subscriptiontype']);
         }
     }

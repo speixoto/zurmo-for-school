@@ -43,7 +43,7 @@
             ContactsModule::loadStartingData();
             $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
             $everyoneGroup->save();
-            Yii::app()->readPermissionSubscriptionObserver->enabled = false;
+            //Yii::app()->readPermissionSubscriptionObserver->enabled = false;
         }
 
         public function setUp()
