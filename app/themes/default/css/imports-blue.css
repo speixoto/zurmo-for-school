@@ -4604,12 +4604,12 @@ div.wide.form .errorMessage {
   left: -28000px;
   top: -28000px;
   display: none;
-  max-width: 280px;
   min-width: 50px;
   font-size: 10.5px;
   line-height: 12px;
   border-width: 1px;
   border-style: solid;
+  white-space: nowrap;
 }
 .ui-tooltip-fluid {
   display: block;
@@ -7941,10 +7941,6 @@ body .overlay-view .after-form-details-content a:hover {
   position: relative;
   top: 1px;
   color: #282A76;
-}
-.tabs-nav .simple-link {
-  position: relative;
-  bottom: -9px;
 }
 .tabs-nav label {
   float: none;
