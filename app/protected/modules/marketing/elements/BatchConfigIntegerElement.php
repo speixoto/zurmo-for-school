@@ -56,5 +56,14 @@
                 return Yii::app()->numberFormatter->formatDecimal((int)$this->model->{$this->attribute});
             }
         }
+
+        protected function getDisabledValue()
+        {
+            if (!Yii::app()->user->userModel->isRootUser)
+            {
+                return 'disabled';
+            }
+            return parent::getDisabledValue();
+        }
     }
 ?>

@@ -63,6 +63,16 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'autoresponderOrCampaignBatchSize',
+                                                      'type'          => 'BatchConfigInteger'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'autoresponderOrCampaignFooterPlainText',
                                                       'type'          => 'TextAreaWithPreviewLink'),
                                             ),
