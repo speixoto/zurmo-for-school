@@ -8932,19 +8932,10 @@ a + .autoresponder-stats {
   background-size: 100%;
 }
 #kanban-board {
-  *zoom: 1;
   display: table;
   vertical-align: top;
   height: 100%;
   width: 100%;
-}
-#kanban-board:before,
-#kanban-board:after {
-  content: " ";
-  display: table;
-}
-#kanban-board:after {
-  clear: both;
 }
 .drop-zone-container {
   padding: 37px 2px 2px 2px;
