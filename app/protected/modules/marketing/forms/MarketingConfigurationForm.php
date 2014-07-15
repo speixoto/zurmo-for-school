@@ -39,12 +39,16 @@
      */
     class MarketingConfigurationForm extends ConfigurationForm
     {
+        public $autoresponderOrCampaignBatchSize;
         public $autoresponderOrCampaignFooterPlainText;
         public $autoresponderOrCampaignFooterRichText;
 
         public function rules()
         {
             return array(
+                array('autoresponderOrCampaignBatchSize',       'required'),
+                array('autoresponderOrCampaignBatchSize',       'type',      'type' => 'integer'),
+                array('autoresponderOrCampaignBatchSize',       'numerical', 'min' => 1),
                 array('autoresponderOrCampaignFooterPlainText', 'required'),
                 array('autoresponderOrCampaignFooterPlainText', 'type',    'type' => 'string'),
                 array('autoresponderOrCampaignFooterRichText',  'required'),
@@ -55,6 +59,9 @@
         public function attributeLabels()
         {
             return array(
+                'autoresponderOrCampaignBatchSize'       => Zurmo::t('MarketingModule',
+                                                                     'AutorespondersModuleSingularLabel/CampaignsModuleSingularLabel batch size',
+                                                                     LabelUtil::getTranslationParamsForAllModules()),
                 'autoresponderOrCampaignFooterPlainText' => Zurmo::t('MarketingModule',
                                                                      'MarketingModuleSingularLabel Footer(Plain Text)',
                                                                      LabelUtil::getTranslationParamsForAllModules()),
