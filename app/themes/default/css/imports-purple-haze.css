@@ -4604,12 +4604,12 @@ div.wide.form .errorMessage {
   left: -28000px;
   top: -28000px;
   display: none;
-  max-width: 280px;
   min-width: 50px;
   font-size: 10.5px;
   line-height: 12px;
   border-width: 1px;
   border-style: solid;
+  white-space: nowrap;
 }
 .ui-tooltip-fluid {
   display: block;
@@ -7942,10 +7942,6 @@ body .overlay-view .after-form-details-content a:hover {
   top: 1px;
   color: #713b8a;
 }
-.tabs-nav .simple-link {
-  position: relative;
-  bottom: -9px;
-}
 .tabs-nav label {
   float: none;
   line-height: 26px;
@@ -8932,19 +8928,10 @@ a + .autoresponder-stats {
   background-size: 100%;
 }
 #kanban-board {
-  *zoom: 1;
   display: table;
   vertical-align: top;
   height: 100%;
   width: 100%;
-}
-#kanban-board:before,
-#kanban-board:after {
-  content: " ";
-  display: table;
-}
-#kanban-board:after {
-  clear: both;
 }
 .drop-zone-container {
   padding: 37px 2px 2px 2px;
