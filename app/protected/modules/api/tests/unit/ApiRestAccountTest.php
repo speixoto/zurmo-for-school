@@ -41,7 +41,6 @@
     {
         public function testGetAccount()
         {
-            exit;
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
@@ -1342,16 +1341,11 @@
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('It is not allowed to set read only attribute: createdDateTime.', $response['message']);
 
-            // Now use scenario name that allow us to set all values
+            // For update, it is not allowed to set created and modified date time
             $data['modelScenario']       = 'importModel';
             $response = $this->createApiCallWithRelativeUrl('update/' . $account->id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
-            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-
-            RedBeanModel::forgetAll();
-            $account = Account::getById($response['data']['id']);
-            $this->assertEquals($account->name, $response['data']['name']);
-            $this->assertEquals($account->createdDateTime, $response['data']['createdDateTime']);
+            $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
         }
 
         protected function getApiControllerClassName()
