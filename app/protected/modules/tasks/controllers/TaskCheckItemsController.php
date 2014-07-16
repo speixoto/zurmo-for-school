@@ -135,11 +135,17 @@
          * @param int $id
          * @param int $sort
          */
-        public function actionUpdateSortViaAjax($id, $sort)
+        public function actionUpdateSortViaAjax()
         {
-            $taskCheckListItem = TaskCheckListItem::getById(intval($id));
-            $taskCheckListItem->sort = intval($sort);
-            $taskCheckListItem->unrestrictedSave();
+            if(isset($_GET['SortedTaskCheckListItems']) && is_array($_GET['SortedTaskCheckListItems']))
+            {
+                foreach($_GET['SortedTaskCheckListItems'] as $sortIndex=>$checkListItemId)
+                {
+                    $taskCheckListItem = TaskCheckListItem::getById(intval($checkListItemId));
+                    $taskCheckListItem->sortOrder = $sortIndex;
+                    $taskCheckListItem->unrestrictedSave();
+                }
+            }
         }
 
         /**

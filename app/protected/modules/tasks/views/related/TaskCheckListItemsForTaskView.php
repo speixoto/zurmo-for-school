@@ -143,7 +143,7 @@
                                                $checkBox . '<p>' . $checkboxLabel . '</p>');
                 $itemContent .= $this->renderHiddenEditableTextField($checkListItem->id, $checkListItem->name);
                 $itemContent .= $this->attachActionsToCheckListItem();
-                $content     .= ZurmoHtml::tag('li', array('class' => 'check-list-item clearfix'), $itemContent);
+                $content     .= ZurmoHtml::tag('li', array('class' => 'check-list-item clearfix', 'id' => 'SortedTaskCheckListItem_' . $checkListItem->id), $itemContent);
             }
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.modules.tasks.elements.assets')) . '/TaskUtils.js',
@@ -280,25 +280,19 @@
                                                                 items: 'li',
                                                                 update: function(event, ui)
                                                                 {
-                                                                    $('.taskcheckitemslist li').each
-                                                                    (function(index)
+                                                                    serial = $('.taskcheckitemslist').sortable('serialize', { key: 'SortedTaskCheckListItems[]' });
+                                                                    $.ajax(
                                                                     {
-                                                                        $.ajax(
+                                                                        url : '" . $url . "',
+                                                                        type : 'GET',
+                                                                        data : serial,
+                                                                        success : function(data)
                                                                         {
-                                                                            url : '" . $url . "?id=' + $(this).find('.checkListItem').val(),
-                                                                            type : 'GET',
-                                                                            data : {
-                                                                                        sort : $(this).offset().top
-                                                                                   },
-                                                                            dataType: 'json',
-                                                                            success : function(data)
-                                                                            {
-                                                                                //console.log('success');
-                                                                            },
-                                                                            error : function()
-                                                                            {
-                                                                            }
-                                                                        });
+                                                                            //console.log('success');
+                                                                        },
+                                                                        error : function()
+                                                                        {
+                                                                        }
                                                                     });
                                                                 }
                                                             });
