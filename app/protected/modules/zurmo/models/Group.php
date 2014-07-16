@@ -467,6 +467,10 @@
             {
                 ReadPermissionsOptimizationUtil::groupAddedToGroup($this);
             }
+            if (isset($this->originalAttributeValues['group']))
+            {
+                ReadPermissionsSubscriptionUtil::groupParentHasChanged();
+            }
             parent::afterSave();
         }
 
@@ -507,6 +511,10 @@
             PermissionsCache::forgetAll();
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
+            if (isset($this->originalAttributeValues['group']))
+            {
+                ReadPermissionsSubscriptionUtil::groupHasBeenDeleted();
+            }
         }
     }
 ?>

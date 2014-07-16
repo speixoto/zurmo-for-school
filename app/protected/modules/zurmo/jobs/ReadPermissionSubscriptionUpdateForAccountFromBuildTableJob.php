@@ -67,7 +67,6 @@
         public function run()
         {
             ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableFromBuildTable($this->getMessageLogger(), 'Account');
-            //static::cleanAccountBuildTable();
             return true;
         }
     }

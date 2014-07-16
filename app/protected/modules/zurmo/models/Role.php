@@ -113,6 +113,10 @@
             {
                 ReadPermissionsOptimizationUtil::roleParentSet($this);
             }
+            if (isset($this->originalAttributeValues['role']))
+            {
+                ReadPermissionsSubscriptionUtil::roleParentHasChanged();
+            }
             parent::afterSave();
         }
 
@@ -153,6 +157,10 @@
             PermissionsCache::forgetAll();
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
+            if (isset($this->originalAttributeValues['role']))
+            {
+                ReadPermissionsSubscriptionUtil::roleHasBeenDeleted();
+            }
         }
 
         protected function beforeValidate()

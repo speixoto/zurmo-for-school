@@ -43,7 +43,6 @@
             ContactsModule::loadStartingData();
             $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
             $everyoneGroup->save();
-            //Yii::app()->readPermissionSubscriptionObserver->enabled = false;
         }
 
         public function setUp()
@@ -469,6 +468,30 @@
             $sql = "SELECT * FROM account_read_subscription";
             $rows = ZurmoRedBean::getAll($sql);
             $this->assertTrue(empty($rows));
+        }
+
+        public function testGroupChangeOrDelete()
+        {
+            // 1. Check add user to group test
+            // create account and new group, and allow access to account for group
+            // add user to group
+            // in account table there should be accountId and userId with add option
+
+            // 2. remove user from group and save
+            // in account table there should be accountId and userId with delete option
+
+            // 3. add user to group and test again
+
+            // 4. change group privilege not to be able to accesss account, and test
+
+            // 5. Change group parent the way that user gain and lost access to account and test
+
+            // 6. delete group test
+        }
+
+        public function testRoleChangeOrDelete()
+        {
+
         }
     }
 ?>

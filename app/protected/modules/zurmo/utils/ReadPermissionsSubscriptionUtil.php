@@ -113,13 +113,12 @@
                         'default' => 'NULL', // Not Coding Standard
                     ),
                 ),
-                'indexes' =>
-                    array('userid_modelid' =>
-                              array(
-                                  'columns' => array('userid', 'modelid'),
-                                  'unique' => true,
-                              ),
+                'indexes' => array('userid_modelid' =>
+                    array(
+                        'columns' => array('userid', 'modelid'),
+                        'unique' => true,
                     ),
+                ),
             )
             );
         }
@@ -316,6 +315,38 @@
         {
             //self::updateAllReadSubscriptionTables(new MessageLogger());
             Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdate', 5);
+        }
+
+        /**
+         * Update all account read permissions tables, because group is changed
+         */
+        public static function groupParentHasChanged()
+        {
+            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+        }
+
+        /**
+         * Update all account read permissions tables, because group is deleted
+         */
+        public static function groupHasBeenDeleted()
+        {
+            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+        }
+
+        /**
+         * Update all account read permissions tables, because role is changed
+         */
+        public static function roleParentHasChanged()
+        {
+            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+        }
+
+        /**
+         * Update all account read permissions tables, because role is deleted
+         */
+        public static function roleHasBeenDeleted()
+        {
+            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
         }
 
         /**
