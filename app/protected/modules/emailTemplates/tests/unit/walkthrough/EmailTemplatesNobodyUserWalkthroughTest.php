@@ -72,7 +72,6 @@
             $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
         }
 
-
         public function testAllDefaultControllerActions()
         {
             $this->user->setRight('ContactsModule', ContactsModule::getAccessRight());

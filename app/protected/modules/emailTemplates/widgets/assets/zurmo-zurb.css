@@ -9,6 +9,7 @@ div img {
     font-weight: inherit;
     color: inherit;
     text-align: inherit;
+	margin:0 0 10px 0;
 }
 
 .simple-divider,
@@ -16,10 +17,12 @@ div img {
     width: 100%;
     text-align: center;
 }
+
 .fancy-divider td{
     width: 100%;
     text-align: center;
 }
+
 .fancy-divider img{
     margin: 0 auto /*!important*/;
     float: none /*!important*/;
