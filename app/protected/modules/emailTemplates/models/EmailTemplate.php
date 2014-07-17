@@ -155,6 +155,7 @@
                     'htmlContent',
                     'textContent',
                     'serializedData',
+                    'isFeatured',
                 ),
                 'rules' => array(
                     array('type',                       'required'),
@@ -186,6 +187,7 @@
                     array('textContent',                'EmailTemplateMergeTagsValidator'),
                     array('serializedData',             'type', 'type' => 'string'),
                     array('serializedData',             'EmailTemplateSerializedDataValidator'),
+                    array('isFeatured',                 'type',     'type'  => 'boolean'),
                 ),
                 'elements' => array(
                     'htmlContent'                   => 'TextArea',

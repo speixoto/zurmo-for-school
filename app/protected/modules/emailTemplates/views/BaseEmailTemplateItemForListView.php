@@ -143,6 +143,14 @@
 
         protected function resolveThumbnail()
         {
+            if ($this->model->isFeatured)
+            {
+                if ($thumbnail = Yii::app()->custom->resolveThumbnailForFeaturedEmailTemplate())
+                {
+                    return $thumbnail;
+                }
+                return ZurmoHtml::icon($this->icon);
+            }
             return ZurmoHtml::icon($this->icon);
         }
 

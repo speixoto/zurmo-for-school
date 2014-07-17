@@ -221,6 +221,7 @@
                         $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step')
                                                                 .next().addClass('current-step');
                         ";
+            Yii::app()->custom->resolveAdditionalScriptContentForEmailTemplate($stepCount, $script);
             return $script;
         }
 
