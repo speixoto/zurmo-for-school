@@ -470,12 +470,191 @@
             $this->assertTrue(empty($rows));
         }
 
-        public function testGroupChangeOrDelete()
+        /**
+         * Create new account, new basic user and new group.
+         * Add user to group, allow group to access new account
+         * After job is completed record for new account and new user should be in account_read_subscription.
+         * Test group deletion
+         */
+        public function testGroupChangeOrDeleteScenario1()
         {
-            // 1. Check add user to group test
-            // create account and new group, and allow access to account for group
-            // add user to group
-            // in account table there should be accountId and userId with add option
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $johnny = UserTestHelper::createBasicUser('Johnny');
+            $job = new ReadPermissionSubscriptionUpdateForAccountJob();
+            Yii::app()->jobQueue->deleteAll();
+
+            $this->deleteAllModelsAndRecordsFromReadPermissionTable('Account');
+            $account = AccountTestHelper::createAccountByNameForOwner('First Account', $super);
+            sleep(1);
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(0, count($queuedJobs));
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(1, count($rows)); // Third record belongs to backendjobuser
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+
+            $group = new Group();
+            $group->name = 'Group1';
+            $this->assertTrue($group->save());
+            $group->users->add($johnny);
+            $this->assertTrue($group->save());
+
+            // Because we save group, new queued job will be created, but read permission table should stay same
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(1, count($rows)); // Third record belongs to backendjobuser
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+
+            // Now add permissions to group
+            $account->addPermissions($group, Permission::READ);
+            $this->assertTrue($account->save());
+            $group::forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+
+            // Because user is added to group, and group have read access to account, this account should be in
+            // read permission table for user
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(2, count($rows)); // Third record belongs to backendjobuser
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($johnny->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
+
+            // Test delete group
+            $group = Group::getByName('Group1');
+            $group->delete();
+            $group::forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+
+            // Because user is added to group, and group have read access to account, this account should be in
+            // read permission table for user
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(2, count($rows)); // Third record belongs to backendjobuser
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($johnny->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[1]['subscriptiontype']);
+
+        }
+
+        /**
+         * Remove user from group, and in this case user and account should still exist in table but with TYPE_DELETE
+         * Also in this scenario test when user is added again to the group, after it is removed from group
+         * @depends testGroupChangeOrDeleteScenario1
+         */
+        public function testGroupChangeOrDeleteScenario2()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $job = new ReadPermissionSubscriptionUpdateForAccountJob();
+            Yii::app()->jobQueue->deleteAll();
+            $this->deleteAllModelsAndRecordsFromReadPermissionTable('Account');
+            $johnny = User::getByUsername('johnny');
+
+            $account = AccountTestHelper::createAccountByNameForOwner('Second Account', $super);
+            sleep(1);
+
+            $group = new Group();
+            $group->name = 'Group2';
+            $this->assertTrue($group->save());
+            $group->users->add($johnny);
+            $this->assertTrue($group->save());
+
+            $account->addPermissions($group, Permission::READ);
+            $this->assertTrue($account->save());
+            $group::forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+            $this->assertTrue($job->run());
+
+            // Check if everything is added correctly
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(2, count($rows)); // Third record belongs to backendjobuser
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($johnny->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
+
+            // Remove user from group
+            $group->users->remove($johnny);
+            $this->assertTrue($group->save());
+            $group::forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+
+            // Because user is added to group, and group have read access to account, this account should be in
+            // read permission table for user
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(2, count($rows)); // Third record belongs to backendjobuser
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($johnny->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[1]['subscriptiontype']);
+
+
+            // Now add user to group again and test
+            $group->users->add($johnny);
+            $this->assertTrue($group->save());
+            $group::forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+
+            // Because user is added to group, and group have read access to account, this account should be in
+            // read permission table for user
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(2, count($rows)); // Third record belongs to backendjobuser
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($johnny->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
 
             // 2. remove user from group and save
             // in account table there should be accountId and userId with delete option
@@ -489,9 +668,115 @@
             // 6. delete group test
         }
 
+        /**
+         * Remove permissions from group to access account, and in this case user should be removed from group
+         * @depends testGroupChangeOrDeleteScenario2
+         */
+        public function testGroupChangeOrDeleteScenario3()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $job = new ReadPermissionSubscriptionUpdateForAccountJob();
+
+            $johnny = User::getByUsername('johnny');
+            $group = Group::getByName('Group2');
+            $accounts = Account::getByName('Second Account');
+            $account = $accounts[0];
+
+            $account->removePermissions($group, Permission::READ);
+            $this->assertTrue($account->save());
+            $group::forgetAll(); // ToDo: We need this line
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            // ToDo: Fix this issue - job is not queued, because we save $account, not group
+            // ToDo: It is unclear why it works in testGroupChangeOrDeleteScenario1 when we addPermission for group
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+
+            // Because user is added to group, and group have read access to account, this account should be in
+            // read permission table for user
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(2, count($rows)); // Third record belongs to backendjobuser
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($johnny->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[1]['subscriptiontype']);
+            // 5. Change group parent the way that user gain and lost access to account and test
+        }
+
+        /**
+         * Test nested groups
+         */
+        public function testGroupChangeOrDeleteScenario4()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $job = new ReadPermissionSubscriptionUpdateForAccountJob();
+            $johnny = User::getByUsername('johnny');
+            $this->deleteAllModelsAndRecordsFromReadPermissionTable('Account');
+
+            $account = AccountTestHelper::createAccountByNameForOwner('Third Account', $super);
+            sleep(1);
+
+            $parentGroup = new Group();
+            $parentGroup->name = 'Parent';
+            $this->assertTrue($parentGroup->save());
+
+            $group = new Group();
+            $group->name = 'Child';
+            $group->group = $parentGroup;
+            $saved = $group->save();
+            $this->assertTrue($saved);
+            $group->users->add($johnny);
+            $this->assertTrue($group->save());
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+
+            $account->addPermissions($parentGroup, Permission::READ); // ToDo: If we use $account->addPermissions($group, Permission::READ); it will work fine???
+            $this->assertTrue($account->save());
+            $parentGroup::forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+
+            // Now remove permission and test again
+            $account->addPermissions($parentGroup, Permission::READ);
+            $this->assertTrue($account->save());
+            $parentGroup::forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+        }
+
         public function testRoleChangeOrDelete()
         {
 
+        }
+
+        protected function deleteAllModelsAndRecordsFromReadPermissionTable($modelClassName)
+        {
+            $models = $modelClassName::getAll();
+            foreach ($models as $model)
+            {
+                $model->delete();
+            }
+            $tableName = ReadPermissionsSubscriptionUtil::getSubscriptionTableName($modelClassName);
+            $sql = "DELETE FROM $tableName";
+            ZurmoRedBean::exec($sql);
         }
     }
 ?>

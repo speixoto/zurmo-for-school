@@ -320,6 +320,14 @@
         /**
          * Update all account read permissions tables, because group is changed
          */
+        public static function groupHasChanged()
+        {
+            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+        }
+
+        /**
+         * Update all account read permissions tables, because group parent is changed
+         */
         public static function groupParentHasChanged()
         {
             Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);

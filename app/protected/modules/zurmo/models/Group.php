@@ -467,9 +467,14 @@
             {
                 ReadPermissionsOptimizationUtil::groupAddedToGroup($this);
             }
+            // ToDO: WHy we need this case below?
             if (isset($this->originalAttributeValues['group']))
             {
                 ReadPermissionsSubscriptionUtil::groupParentHasChanged();
+            }
+            else
+            {
+                ReadPermissionsSubscriptionUtil::groupHasChanged();
             }
             parent::afterSave();
         }
@@ -511,7 +516,12 @@
             PermissionsCache::forgetAll();
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
+            // ToDO: WHy we need this case below?
             if (isset($this->originalAttributeValues['group']))
+            {
+                ReadPermissionsSubscriptionUtil::groupHasBeenDeleted();
+            }
+            else
             {
                 ReadPermissionsSubscriptionUtil::groupHasBeenDeleted();
             }
