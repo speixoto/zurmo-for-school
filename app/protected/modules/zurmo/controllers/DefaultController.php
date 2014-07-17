@@ -179,48 +179,6 @@
             echo $view->render();
         }
 
-        public function actionSystemConfigurationEdit()
-        {
-            if (Yii::app()->user->userModel->isRootUser)
-            {
-                $breadCrumbLinks = array(
-                    Zurmo::t('ZurmoModule', 'System Configuration'),
-                );
-                $form               = ZurmoSystemConfigurationFormAdapter::makeFormFromSystemConfiguration();
-                $postData           = PostUtil::getData();
-                $postVariableName   = get_class($form);
-                if (isset($postData[$postVariableName]))
-                {
-                    $form->setAttributes($postData[$postVariableName]);
-                    if ($form->validate())
-                    {
-                        ZurmoSystemConfigurationFormAdapter::setConfigurationFromForm($form);
-                        Yii::app()->user->setFlash('notification',
-                            Zurmo::t('ZurmoModule', 'System configuration saved successfully.')
-                        );
-                        $this->redirect(Yii::app()->createUrl('configuration/default/index'));
-                    }
-                }
-                $editView = new ZurmoSystemConfigurationEditAndDetailsView(
-                    'Edit',
-                    $this->getId(),
-                    $this->getModule()->getId(),
-                    $form);
-                $editView->setCssClasses( array('AdministrativeArea') );
-                $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::makeViewWithBreadcrumbsForCurrentUser(
-                        $this, $editView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
-                echo $view->render();
-            }
-            else
-            {
-                $messageView = new AccessFailureView();
-                $view = new AccessFailurePageView($messageView);
-                echo $view->render();
-                Yii::app()->end(0, false);
-            }
-
-        }
-
         public function actionGlobalSearchAutoComplete($term)
         {
             $scopeData = GlobalSearchUtil::resolveGlobalSearchScopeFromGetData($_GET);
