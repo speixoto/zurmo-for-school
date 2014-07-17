@@ -898,6 +898,14 @@ section {
   border-top: 1px solid #353535;
   border-bottom: none;
 }
+#user-switcher a {
+  color: #cccccc;
+  font-weight: bold;
+  text-decoration: underline;
+}
+#user-switcher a:hover {
+  color: #fff;
+}
 #user-switcher .mini-button {
   top: 7px;
 }
@@ -905,8 +913,13 @@ section {
   cursor: pointer;
   float: right;
   text-decoration: none;
+  position: relative;
+  font-weight: normal;
 }
 #user-switcher .reset-user i {
+  position: absolute;
+  left: -18px;
+  top: -7px;
   margin-right: 5px;
   color: #BCC98E;
 }
