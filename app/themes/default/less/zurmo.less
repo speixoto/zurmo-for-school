@@ -681,18 +681,13 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 		border-top: 1px solid #353535;
 		border-bottom: none;
 	}
-	/*a{
-		font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
-		font-size:12px;
-		line-height: 1;
-		display: inline;
-		margin: 0;
-		padding: 0;
+	a{
+		color:#cccccc;
+		font-weight: bold;
 		text-decoration: underline;
-	}*/
-	input{
-		//width: 80%;
-		//float: left;
+		&:hover{
+			color: #fff;
+		}
 	}
 	.mini-button {
 		top:7px;
@@ -701,25 +696,17 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 		cursor:pointer;
 		float: right;
 		text-decoration: none;
+		position: relative;
+		font-weight: normal;
 		i{
+			position: absolute;
+			left:-18px;
+			top:-7px;
 			margin-right:5px;
 			color: @themeColor2;
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #GlobalSearchAndShortcutsCreateMenuView{
 	height:40px;
