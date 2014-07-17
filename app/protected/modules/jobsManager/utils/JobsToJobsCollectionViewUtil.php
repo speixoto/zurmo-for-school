@@ -77,7 +77,10 @@
             $jobsData      = array();
             foreach ($jobClassNames as $jobClassName)
             {
-                $jobsData[$jobClassName::getType()] = self::getJobDataByType($jobClassName::getType());
+                if ($jobClassName::showInJobManagerToRunManually())
+                {
+                    $jobsData[$jobClassName::getType()] = self::getJobDataByType($jobClassName::getType());
+                }
             }
             return $jobsData;
         }

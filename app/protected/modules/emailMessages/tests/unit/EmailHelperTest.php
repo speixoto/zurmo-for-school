@@ -92,7 +92,7 @@
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             $queuedJobs = Yii::app()->jobQueue->getAll();
             $this->assertEquals(1, count($queuedJobs));
-            $this->assertEquals('ProcessOutboundEmail', $queuedJobs[0][0]);
+            $this->assertEquals('ProcessOutboundEmail', $queuedJobs[0][0]['jobType']);
         }
 
         /**

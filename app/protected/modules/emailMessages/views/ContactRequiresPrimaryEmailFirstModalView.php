@@ -119,5 +119,19 @@
                     'update' => '#modalContainer',
                 ));
         }
+
+        protected function renderAfterFormLayout($form)
+        {
+            parent::renderAfterFormLayout($form);
+            $formId = static::getFormId();
+            // Begin Not Coding Standard
+            Yii::app()->clientScript->registerScript('emailModalSubmitOnEnter',
+                                                    "$('input').keypress(function(event) {
+                                                    if (event.which == 13) {
+                                                       $('#{$formId}').find('.form-toolbar').find('a:first').click();
+                                                    }
+                                                });");
+            // End Not Coding Standard
+        }
     }
 ?>

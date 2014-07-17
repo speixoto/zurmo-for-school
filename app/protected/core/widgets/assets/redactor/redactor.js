@@ -5982,14 +5982,6 @@
 
 			this.modalClose();
 		},
-
-        zurmoImageShow: function()
-        {
-            this.selectionAll();
-            this.insertHtmlAdvanced('', true);
-            this.imageShow();
-        },
-
 		// IMAGE
 		imageShow: function()
 		{

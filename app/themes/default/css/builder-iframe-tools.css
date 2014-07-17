@@ -110,3 +110,7 @@ td.wrapper {
 .element-wrapper:after {
   clear: both;
 }
+.empty-builder-image-element {
+  height: 120px;
+  background: url("../images/email-builder/image-placeholder.png") center center no-repeat;
+}

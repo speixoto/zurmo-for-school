@@ -36,6 +36,15 @@
 
     class FileModel extends Item
     {
+        public function __toString()
+        {
+            if (trim($this->name) == '')
+            {
+                return Zurmo::t('Core', '(Unnamed)');
+            }
+            return $this->name;
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
@@ -83,7 +92,7 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'name' => Zurmo::t('ZurmoModule', 'Owner', array(), null, $language),
+                    'name' => Zurmo::t('Core', 'Name', array(), null, $language),
                     'size' => Zurmo::t('Core', 'Size',  array(), null, $language),
                     'type' => Zurmo::t('Core', 'Type',  array(), null, $language),
                 )

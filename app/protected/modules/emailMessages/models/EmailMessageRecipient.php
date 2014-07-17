@@ -116,6 +116,7 @@
                     'type'                => 'EmailMessageRecipientTypeDropDown',
 
                 ),
+                'personsOrAccountsModelClassNames' => array('Contact', 'User', 'Account')
             );
             return $metadata;
         }

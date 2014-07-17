@@ -182,8 +182,10 @@
             $content = $this->runControllerWithExitExceptionAndGetContent('zurmo/fileModel/upload');
             //Confirm the file has actually been uploaded
             $files = FileModel::getAll();
-            $compareJsonString = '[{"name":"testNote.txt","type":"text\/plain","size":"6.34KB","id":' . // Not Coding Standard
-                                    $files[0]->id . '}]';
+            // Begin Not Coding Standard
+            $compareJsonString = '[{"name":"testNote.txt","type":"text\/plain","size":"6.34KB","id":' .
+                                    $files[0]->id . ',"thumbnail_url":null}]';
+            // End Not Coding Standard
             $this->assertEquals($compareJsonString, $content);
             $fileModels = FileModel::getAll();
             $this->assertEquals(1, count($fileModels));

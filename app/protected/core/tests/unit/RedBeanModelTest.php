@@ -83,6 +83,8 @@
                         'TestSelfRelatingModel',
                         'TestSimplestModel',
                         'Y',
+                        'X',
+                        'P'
                         );
         }
 
@@ -1568,6 +1570,37 @@
             $i     = I::getById($iId);
             $this->assertEquals($i->j, $jSame);
             $this->assertEquals($i->j, J::getById($jId));
+        }
+
+        public function testRelatedValidation()
+        {
+            $x          = new X();
+            $p          = new P();
+            $b          = new B();
+            $x->prel    = $p;
+            $x->brel    = $b;
+            $this->assertFalse($x->validate());
+            $this->assertEquals('Prel cannot be blank.', $x->getError('prel'));
+            $this->assertEquals('Brel cannot be blank.', $x->getError('brel'));
+            //After save errors
+            $x          = new X();
+            $p          = new P();
+            $this->assertTrue($p->save(false));
+            $id = $p->id;
+            unset($p);
+            $p = P::getById($id);
+
+            $b          = new B();
+            $b->b       = 'Hello';
+            $this->assertTrue($b->save());
+            $id         = $b->id;
+            unset($b);
+            $b = B::getById($id);
+
+            $x->prel    = $p;
+            $x->brel    = $b;
+            $this->assertFalse($x->save());
+            $this->assertEquals('There was a problem validating Prel.', $x->getError('prel'));
         }
     }
 ?>

@@ -102,7 +102,7 @@
             InQueueUtil::resolveToAddJobToQueueAfterSaveOfModel($byTimeWorkflowInQueue, 'abc');
             $jobs = Yii::app()->jobQueue->getAll();
             $this->assertCount(1, $jobs);
-            $this->assertEquals('abc', $jobs[5][0]);
+            $this->assertEquals('abc', $jobs[5][0]['jobType']);
 
             //now test with processDateTime set
             Yii::app()->jobQueue->deleteAll();
