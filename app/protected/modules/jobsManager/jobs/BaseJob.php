@@ -150,5 +150,13 @@
             }
             return $this->messageLogger;
         }
+
+        /**
+         * @returns bool if the job should appear in Job Manager list to be run manually.
+         */
+        public static function showInJobManagerToRunManually()
+        {
+            return true;
+        }
     }
 ?>

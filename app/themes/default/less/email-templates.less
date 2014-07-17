@@ -120,6 +120,7 @@
 
 .tabs-nav{
     border-bottom: 1px solid #dfdfdf;
+	line-height: 1;
     a{
         display: inline-block;
         padding:0 12px;
@@ -133,6 +134,7 @@
         font-weight: 700;
         color: #666;
         .t-shadow(0 1px 0 #fff);
+	    vertical-align: bottom;
     }
     a:hover,
     a.active-tab{
@@ -143,8 +145,14 @@
 	    color: @themeColor;
     }
 	.simple-link{
-		position: relative;
-		bottom: -9px;
+		//position: relative;
+		//bottom: 0;
+	}
+	label{
+		float: none;
+		line-height: 26px;
+		margin: 0;
+		cursor: pointer;
 	}
 }
 

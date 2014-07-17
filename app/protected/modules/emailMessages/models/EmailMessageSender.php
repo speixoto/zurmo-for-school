@@ -77,6 +77,7 @@
                     array('fromName',    'type',    'type' => 'string'),
                     array('fromName',    'length',  'max' => 128),
                 ),
+                'personsOrAccountsModelClassNames' => array('Contact', 'User', 'Account')
             );
             return $metadata;
         }

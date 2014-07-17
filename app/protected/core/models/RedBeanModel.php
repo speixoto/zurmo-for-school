@@ -1408,7 +1408,9 @@
             if ($attributeName == 'id' ||
                 ($this->isAttributeReadOnly($attributeName) && !$this->isAllowedToSetReadOnlyAttribute($attributeName)))
             {
-                throw new NotSupportedException();
+                $message = Zurmo::t('Core', 'It is not allowed to set read only attribute: {attributeName}.',
+                    array('{attributeName}' => $attributeName));
+                throw new NotSupportedException($message);
             }
             else
             {

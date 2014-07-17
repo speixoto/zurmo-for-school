@@ -45,6 +45,15 @@
         }
 
         /**
+         * Overriding to make sure it returns LeadsModule and not ContactsModule
+         * @return array
+         */
+        public static function getModuleClassNames()
+        {
+            return array('LeadsModule');
+        }
+
+        /**
          * Get the display label used to describe the import rules.
          * @return string
          */
@@ -71,6 +80,15 @@
             return array_merge(parent::getNonImportableAttributeNames(), array('state', 'account',
                 'primaryAddress__latitude', 'primaryAddress__longitude', 'primaryAddress__invalid',
                 'secondaryAddress__latitude', 'secondaryAddress__longitude', 'secondaryAddress__invalid'));
+        }
+
+        /**
+         * Get fields for which dedupe rules will be executed
+         * @return array
+         */
+        public static function getDedupeAttributes()
+        {
+            return array('primaryEmail__emailAddress', 'secondaryEmail__emailAddress', 'FullName');
         }
     }
 ?>

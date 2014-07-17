@@ -58,7 +58,7 @@
             $this->assertTrue($exportItem->save());
             $queuedJobs = Yii::app()->jobQueue->getAll();
             $this->assertEquals(1, count($queuedJobs));
-            $this->assertEquals('Export', $queuedJobs[0][0]);
+            $this->assertEquals('Export', $queuedJobs[0][0]['jobType']);
 
             //Now edit existing exportItem. The queuedJobs should not change
             $exportItemId = $exportItem->id;
@@ -66,7 +66,7 @@
             $exportItem   = ExportItem::getById($exportItemId);
             $this->assertTrue($exportItem->save());
             $this->assertEquals(1, count($queuedJobs));
-            $this->assertEquals('Export', $queuedJobs[0][0]);
+            $this->assertEquals('Export', $queuedJobs[0][0]['jobType']);
 
             //Now create a new export item that is already complete, should not create a queue job.
             $idsToExport = array(1, 2, 3);
@@ -79,7 +79,7 @@
             $this->assertTrue($exportItem->save());
             $queuedJobs = Yii::app()->jobQueue->getAll();
             $this->assertEquals(1, count($queuedJobs));
-            $this->assertEquals('Export', $queuedJobs[0][0]);
+            $this->assertEquals('Export', $queuedJobs[0][0]['jobType']);
         }
     }
 ?>

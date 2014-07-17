@@ -68,16 +68,19 @@
             asort($moduleClassNamesAndLabels);
             foreach ($moduleClassNamesAndLabels as $moduleClassName => $label)
             {
-                $route = $this->moduleId . '/' . $this->controllerId . '/modulesMenu/';
-                $content .= '<li>';
-                $content .= '<h4>'. $label . '</h4>';
-                $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Configure') ),
-                    Yii::app()->createUrl($route,
-                        array(
-                            'moduleClassName' => $moduleClassName,
-                        )
-                    ), array('class' => 'white-button'));
-                $content .= '</li>';
+                if (RightsUtil::canUserAccessModule($moduleClassName, Yii::app()->user->userModel))
+                {
+                    $route = $this->moduleId . '/' . $this->controllerId . '/modulesMenu/';
+                    $content .= ZurmoHtml::openTag('li');
+                    $content .= '<h4>'. $label . '</h4>';
+                    $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Configure') ),
+                        Yii::app()->createUrl($route,
+                            array(
+                                'moduleClassName' => $moduleClassName,
+                            )
+                        ), array('class' => 'white-button'));
+                    $content .= ZurmoHtml::closeTag('li');
+                }
             }
             $content .= '</ul>';
             return $content;
