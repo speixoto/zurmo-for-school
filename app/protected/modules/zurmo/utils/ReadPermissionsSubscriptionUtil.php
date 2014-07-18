@@ -313,12 +313,11 @@
          */
         public static function rebuildAllReadPermissionSubscriptionData()
         {
-            //self::updateAllReadSubscriptionTables(new MessageLogger());
             Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdate', 5);
         }
 
         /**
-         * Update all account read permissions tables, because group is changed
+         * Update all account read permissions items, because group is changed
          */
         public static function groupHasChanged()
         {
@@ -326,7 +325,7 @@
         }
 
         /**
-         * Update all account read permissions tables, because group parent is changed
+         * Update all account read permissions items, because group parent is changed
          */
         public static function groupParentHasChanged()
         {
@@ -334,9 +333,57 @@
         }
 
         /**
-         * Update all account read permissions tables, because group is deleted
+         * Update all account read permissions items, because group is deleted
          */
         public static function groupHasBeenDeleted()
+        {
+            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+        }
+
+        /**
+         * Update all account read permissions items when permissions for item  is added to group
+         */
+        public static function securableItemGivenPermissionsForGroup()
+        {
+            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+        }
+
+        /**
+         * Update all account read permissions items when permissions for item is removed from group
+         */
+        public static function securableItemLostPermissionsForGroup()
+        {
+            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+        }
+
+        /**
+         * Update all account read permissions items when permissions for item is added to user
+         */
+        public static function securableItemGivenPermissionsForUser()
+        {
+            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+        }
+
+        /**
+         * Update all account read permissions items when permissions for item is removed from user
+         */
+        public static function securableItemLostPermissionsForUser()
+        {
+            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+        }
+
+        /**
+         * Update all account read permissions items when user is added to group
+         */
+        public static function userAddedToGroup()
+        {
+            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+        }
+
+        /**
+         * Update all account read permissions items when user is removed from group
+         */
+        public static function userRemovedFromGroup()
         {
             Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
         }

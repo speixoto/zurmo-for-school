@@ -60,6 +60,12 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        public static function tearDownAfterClass()
+        {
+            Yii::app()->readPermissionSubscriptionObserver->enabled = false;
+            parent::tearDownAfterClass();
+        }
+
         public function testOnCreateOwnerChangeAndDeleteModel()
         {
             $super = User::getByUsername('super');
@@ -124,6 +130,7 @@
             Yii::app()->user->userModel = $super;
 
             $job = new ReadPermissionSubscriptionUpdateForAccountFromBuildTableJob();
+            Yii::app()->jobQueue->deleteAll();
 
             // Clean contact table
             $sql = "SELECT * FROM account_read_subscription";
@@ -132,10 +139,16 @@
 
             $account1 = AccountTestHelper::createAccountByNameForOwner('First Account', $super);
             sleep(1);
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccountFromBuildTable', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
             $this->assertTrue($job->run());
+
             $sql = "SELECT * FROM account_read_subscription order by userid";
             $rows = ZurmoRedBean::getAll($sql);
-            $this->assertEquals(2, count($rows)); // Third record belongs to backendjobuser
+            $this->assertEquals(2, count($rows));
 
             $this->assertEquals($super->id, $rows[0]['userid']);
             $this->assertEquals($account1->id, $rows[0]['modelid']);
@@ -148,7 +161,12 @@
             // Test deletion
             $account1->delete();
             sleep(1);
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccountFromBuildTable', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
             $this->assertTrue($job->run());
+
             $sql = "SELECT * FROM account_read_subscription order by userid";
             $rows2 = ZurmoRedBean::getAll($sql);
             $this->assertEquals(2, count($rows2));
@@ -170,7 +188,12 @@
 
             $account2 = AccountTestHelper::createAccountByNameForOwner('Second Account', $super);
             sleep(1);
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccountFromBuildTable', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
             $this->assertTrue($job->run());
+
             $sql = "SELECT * FROM account_read_subscription order by userid";
             $rows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(2, count($rows));
@@ -186,7 +209,13 @@
             $account2->owner = self::$billy;
             $this->assertTrue($account2->save());
             sleep(1);
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccountFromBuildTable', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
             $this->assertTrue($job->run());
+
             $sql = "SELECT * FROM account_read_subscription order by userid";
             $rows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(2, count($rows));
@@ -197,7 +226,6 @@
             $this->assertEquals($account2->id, $rows[1]['modelid']);
             $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
 
-            // ToDo: Test owner change when second user do not have permissions to read account
             // Clean account table
             $accounts = Account::getAll();
             foreach ($accounts as $account)
@@ -209,11 +237,15 @@
             $johnny = self::$johnny;
             $account3 = AccountTestHelper::createAccountByNameForOwner('Third Account', $johnny);
             sleep(1);
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccountFromBuildTable', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
             $this->assertTrue($job->run());
 
             $sql = "SELECT * FROM account_read_subscription order by userid";
             $rows = ZurmoRedBean::getAll($sql);
-            $this->assertEquals(3, count($rows)); // Forth record belongs to backendjobuser
+            $this->assertEquals(3, count($rows));
 
             $this->assertEquals($super->id, $rows[0]['userid']);
             $this->assertEquals($account3->id, $rows[0]['modelid']);
@@ -236,10 +268,16 @@
             $account3->owner = $super;
             $this->assertTrue($account3->save());
             sleep(1);
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccountFromBuildTable', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
             $this->assertTrue($job->run());
+
             $sql = "SELECT * FROM account_read_subscription order by userid";
             $rows = ZurmoRedBean::getAll($sql);
-            $this->assertEquals(3, count($rows)); // Forth record belongs to backendjobuser
+            $this->assertEquals(3, count($rows));
 
             $this->assertEquals($super->id, $rows[0]['userid']);
             $this->assertEquals($account3->id, $rows[0]['modelid']);

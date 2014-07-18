@@ -103,7 +103,7 @@
         {
             if ($this->enabled)
             {
-                if ($event->sender->id > 0) // ToDo: Check with Jason why we need this
+                if ($event->sender->id > 0)
                 {
                     if (get_class($event->sender) == 'Account')
                     {
@@ -144,6 +144,12 @@
                             $event->sender->owner
                         );
                     }
+                }
+                elseif (!$event->sender->getIsNewModel() && get_class($event->sender) == 'Account' &&
+                        $event->sender->arePermissionsChanged())
+                {
+                    // When read permissions for account are changed, for example when group can access account
+                    ReadPermissionsSubscriptionUtil::updateAccountReadSubscriptionTableBasedOnBuildTable($event->sender->id);
                 }
             }
             return true;

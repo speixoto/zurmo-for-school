@@ -51,6 +51,11 @@
         private $_permitablesToAttachAfterSave  = array();
 
         /**
+         * @var bool
+         */
+        private $permissionsChanged  = false;
+
+        /**
          * Permitables we should remove from model in afterSave()
          * @var array
          */
@@ -365,6 +370,7 @@
                 $permission->type        = $type;
                 $permission->permissions = $permissions;
                 $this->permissions->add($permission);
+                $this->permissionsChanged = true;
                 return true;
             }
             else
@@ -414,6 +420,7 @@
             {
                 PermissionsCache::forgetSecurableItem($this);
             }
+            $this->permissionsChanged = true;
         }
 
         public function removeAllPermissions()
@@ -505,6 +512,7 @@
         {
             parent::afterSave();
             $this->resolvePermitablesToUpdate();
+            $this->permissionsChanged = false;
         }
 
         /**
@@ -657,6 +665,11 @@
                 return true;
             }
             return false;
+        }
+
+        public function arePermissionsChanged()
+        {
+            return $this->permissionsChanged;
         }
     }
 ?>

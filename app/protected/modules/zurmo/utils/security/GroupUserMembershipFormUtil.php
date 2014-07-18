@@ -134,10 +134,12 @@
             foreach ($removedUsers as $user)
             {
                 ReadPermissionsOptimizationUtil::userRemovedFromGroup($group, $user);
+                ReadPermissionsSubscriptionUtil::userRemovedFromGroup();
             }
             foreach ($addedUsers as $user)
             {
                 ReadPermissionsOptimizationUtil::userAddedToGroup($group, $user);
+                ReadPermissionsSubscriptionUtil::userAddedToGroup();
             }
             return true;
         }
