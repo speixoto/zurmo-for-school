@@ -35,33 +35,35 @@
      ********************************************************************************/
 
     /**
-     * Form to edit and view the global marketing configuration values in the user interface.
+     * Filter used by controllers to ascertain whether
+     * the current user has root level right
      */
-    class MarketingConfigurationForm extends ConfigurationForm
+    class RootUserAccessControllerFilter extends CFilter
     {
-        public $autoresponderOrCampaignFooterPlainText;
-        public $autoresponderOrCampaignFooterRichText;
+        public $moduleClassName;
 
-        public function rules()
+        public $rightName;
+
+        protected function preFilter($filterChain)
         {
-            return array(
-                array('autoresponderOrCampaignFooterPlainText', 'required'),
-                array('autoresponderOrCampaignFooterPlainText', 'type',    'type' => 'string'),
-                array('autoresponderOrCampaignFooterRichText',  'required'),
-                array('autoresponderOrCampaignFooterRichText',  'type',    'type' => 'string'),
-            );
+            if (Yii::app()->user->userModel->isRootUser)
+            {
+                return true;
+            }
+            static::processAccessFailure();
+            Yii::app()->end(0, false);
         }
 
-        public function attributeLabels()
+        protected static function processAccessFailure()
         {
-            return array(
-                'autoresponderOrCampaignFooterPlainText' => Zurmo::t('MarketingModule',
-                                                                     'MarketingModuleSingularLabel Footer(Plain Text)',
-                                                                     LabelUtil::getTranslationParamsForAllModules()),
-                'autoresponderOrCampaignFooterRichText'  => Zurmo::t('MarketingModule',
-                                                                     'MarketingModuleSingularLabel Footer(Rich Text)',
-                                                                     LabelUtil::getTranslationParamsForAllModules())
-            );
+            static::renderAccessFailureContent();
+        }
+
+        protected static function renderAccessFailureContent()
+        {
+            $messageView = new AccessFailureView();
+            $view        = new AccessFailurePageView($messageView);
+            echo $view->render();
         }
     }
 ?>

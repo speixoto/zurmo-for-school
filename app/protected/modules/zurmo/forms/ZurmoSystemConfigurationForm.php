@@ -35,32 +35,27 @@
      ********************************************************************************/
 
     /**
-     * Form to edit and view the global marketing configuration values in the user interface.
+     * Form to edit and view the system configuration values in the system configuration.
      */
-    class MarketingConfigurationForm extends ConfigurationForm
+    class ZurmoSystemConfigurationForm extends ConfigurationForm
     {
-        public $autoresponderOrCampaignFooterPlainText;
-        public $autoresponderOrCampaignFooterRichText;
+        public $autoresponderOrCampaignBatchSize;
 
         public function rules()
         {
             return array(
-                array('autoresponderOrCampaignFooterPlainText', 'required'),
-                array('autoresponderOrCampaignFooterPlainText', 'type',    'type' => 'string'),
-                array('autoresponderOrCampaignFooterRichText',  'required'),
-                array('autoresponderOrCampaignFooterRichText',  'type',    'type' => 'string'),
+                array('autoresponderOrCampaignBatchSize',       'required'),
+                array('autoresponderOrCampaignBatchSize',       'type',      'type' => 'integer'),
+                array('autoresponderOrCampaignBatchSize',       'numerical', 'min' => 1),
             );
         }
 
         public function attributeLabels()
         {
             return array(
-                'autoresponderOrCampaignFooterPlainText' => Zurmo::t('MarketingModule',
-                                                                     'MarketingModuleSingularLabel Footer(Plain Text)',
+                'autoresponderOrCampaignBatchSize'       => Zurmo::t('MarketingModule',
+                                                                     'AutorespondersModuleSingularLabel/CampaignsModuleSingularLabel batch size',
                                                                      LabelUtil::getTranslationParamsForAllModules()),
-                'autoresponderOrCampaignFooterRichText'  => Zurmo::t('MarketingModule',
-                                                                     'MarketingModuleSingularLabel Footer(Rich Text)',
-                                                                     LabelUtil::getTranslationParamsForAllModules())
             );
         }
     }

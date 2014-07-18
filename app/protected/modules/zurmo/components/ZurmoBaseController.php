@@ -42,6 +42,8 @@
 
         const ADMIN_VIEW_MOBILE_CHECK_FILTER_PATH = 'application.modules.zurmo.controllers.filters.AdminViewMobileCheckControllerFilter';
 
+        const ROOT_USER_ACCESS_FILTER_PATH = 'application.modules.zurmo.controllers.filters.RootUserAccessControllerFilter';
+
         public function filters()
         {
             $moduleClassName = $this->resolveModuleClassNameForFilters();

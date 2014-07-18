@@ -35,33 +35,51 @@
      ********************************************************************************/
 
     /**
-     * Form to edit and view the global marketing configuration values in the user interface.
+     * Edit and details view for the system configuration view.
      */
-    class MarketingConfigurationForm extends ConfigurationForm
+    class ZurmoSystemConfigurationEditAndDetailsView extends EditAndDetailsView
     {
-        public $autoresponderOrCampaignFooterPlainText;
-        public $autoresponderOrCampaignFooterRichText;
-
-        public function rules()
+        public function getTitle()
         {
-            return array(
-                array('autoresponderOrCampaignFooterPlainText', 'required'),
-                array('autoresponderOrCampaignFooterPlainText', 'type',    'type' => 'string'),
-                array('autoresponderOrCampaignFooterRichText',  'required'),
-                array('autoresponderOrCampaignFooterRichText',  'type',    'type' => 'string'),
-            );
+            return Zurmo::t('ZurmoModule', 'System Configuration');
         }
 
-        public function attributeLabels()
+        public static function getDefaultMetadata()
         {
-            return array(
-                'autoresponderOrCampaignFooterPlainText' => Zurmo::t('MarketingModule',
-                                                                     'MarketingModuleSingularLabel Footer(Plain Text)',
-                                                                     LabelUtil::getTranslationParamsForAllModules()),
-                'autoresponderOrCampaignFooterRichText'  => Zurmo::t('MarketingModule',
-                                                                     'MarketingModuleSingularLabel Footer(Rich Text)',
-                                                                     LabelUtil::getTranslationParamsForAllModules())
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type' => 'SaveButton',        'renderType' => 'Edit'),
+                            array('type' => 'ConfigurationLink', 'label' => "eval:Zurmo::t('Core', 'Cancel')"),
+                            array('type' => 'EditLink',          'renderType' => 'Details'),
+                        ),
+                    ),
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'autoresponderOrCampaignBatchSize',
+                                                      'type'          => 'BatchConfigInteger'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
             );
+            return $metadata;
+        }
+
+        protected function getNewModelTitleLabel()
+        {
+            return null;
         }
     }
 ?>
