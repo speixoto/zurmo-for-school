@@ -61,10 +61,19 @@
             $javaScript  = "$(document).ready(function () { ";
             $javaScript .= "$('#rssReader$id').rssfeed('{$this->url}', { ";
             $javaScript .= "limit: {$this->limit}, linktarget: '{$this->linkTarget}'";
+            $javaScript .= $this->getSslFlag();
             $javaScript .= "});";
             $javaScript .= "});";
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $id, $javaScript);
             echo '<div id = "rssReader' . $id . '"></div>';
+        }
+
+        private function getSslFlag()
+        {
+            if(Yii::app()->request->isSecureConnection)
+            {
+                return ', ssl: true';
+            }
         }
     }
 ?>
