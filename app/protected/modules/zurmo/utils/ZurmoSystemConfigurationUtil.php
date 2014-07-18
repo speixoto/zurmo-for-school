@@ -35,34 +35,14 @@
      ********************************************************************************/
 
     /**
-     * Form to edit and view the system configuration values in the system configuration.
+     * Helper class for working with campaignItem
      */
-    class ZurmoSystemConfigurationForm extends ConfigurationForm
-    {
-        public $autoresponderOrCampaignBatchSize;
+    class ZurmoSystemConfigurationUtil extends BatchSizeConfigUtil
+    {   
+        const CONFIG_KEY             = 'PageListSizeMaxLimit';
+
+        const CONFIG_MODULE_NAME     = 'ZurmoModule';
         
-        public $pageListSizeMaxLimit;
-
-        public function rules()
-        {
-            return array(
-                array('autoresponderOrCampaignBatchSize',       'required'),
-                array('autoresponderOrCampaignBatchSize',       'type',      'type' => 'integer'),
-                array('autoresponderOrCampaignBatchSize',       'numerical', 'min' => 1),
-                array('pageListSizeMaxLimit', 'required'),
-                array('pageListSizeMaxLimit', 'type', 'type' => 'integer'),
-                array('pageListSizeMaxLimit', 'numerical', 'min' => 1),
-            );
-        }
-
-        public function attributeLabels()
-        {
-            return array(
-                'autoresponderOrCampaignBatchSize'       => Zurmo::t('MarketingModule',
-                                                                     'AutorespondersModuleSingularLabel/CampaignsModuleSingularLabel batch size',
-                                                                     LabelUtil::getTranslationParamsForAllModules()),
-                'pageListSizeMaxLimit'          => Zurmo::t('ZurmoModule', 'Page list size maximum limit'),
-            );
-        }
+        const CONFIG_DEFAULT_VALUE   = 100;
     }
 ?>

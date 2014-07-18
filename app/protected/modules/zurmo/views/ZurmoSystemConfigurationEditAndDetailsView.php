@@ -69,6 +69,16 @@
                                         ),
                                     )
                                 ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'pageListSizeMaxLimit', 
+                                                      'type' => 'Integer'),
+                                            ),
+                                        ),
+                                    )
+                                ),
                             ),
                         ),
                     ),

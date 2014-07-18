@@ -60,7 +60,7 @@
                 array('timeZone',                               'required'),
                 array('listPageSize',                           'required'),
                 array('listPageSize',                           'type',      'type' => 'integer'),
-                array('listPageSize',                           'numerical', 'min' => 1),
+                array('listPageSize',                           'numerical', 'min' => 1, 'max' => ZurmoSystemConfigurationUtil::getBatchSize()),
                 array('subListPageSize',                        'required'),
                 array('subListPageSize',                        'type',      'type' => 'integer'),
                 array('subListPageSize',                        'numerical', 'min' => 1),
