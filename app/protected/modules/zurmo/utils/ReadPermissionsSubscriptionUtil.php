@@ -321,7 +321,7 @@
          */
         public static function groupParentHasChanged()
         {
-            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+            self::runJobForAccountsWhenRoleOrGroupChanged();
         }
 
         /**
@@ -329,7 +329,7 @@
          */
         public static function groupHasBeenDeleted()
         {
-            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+            self::runJobForAccountsWhenRoleOrGroupChanged();
         }
 
         /**
@@ -337,7 +337,7 @@
          */
         public static function securableItemGivenPermissionsForGroup()
         {
-            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+            self::runJobForAccountsWhenRoleOrGroupChanged();
         }
 
         /**
@@ -345,7 +345,7 @@
          */
         public static function securableItemLostPermissionsForGroup()
         {
-            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+            self::runJobForAccountsWhenRoleOrGroupChanged();
         }
 
         /**
@@ -353,7 +353,7 @@
          */
         public static function securableItemGivenPermissionsForUser()
         {
-            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+            self::runJobForAccountsWhenRoleOrGroupChanged();
         }
 
         /**
@@ -361,7 +361,16 @@
          */
         public static function securableItemLostPermissionsForUser()
         {
-            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+            self::runJobForAccountsWhenRoleOrGroupChanged();
+        }
+
+        /**
+         * Update all read permissions, when new user is created
+         */
+        public static function userCreated()
+        {
+            // This should update only current user privileges
+            self::runJobForAccountsWhenRoleOrGroupChanged();
         }
 
         /**
@@ -369,7 +378,7 @@
          */
         public static function userAddedToGroup()
         {
-            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+            self::runJobForAccountsWhenRoleOrGroupChanged();
         }
 
         /**
@@ -377,21 +386,51 @@
          */
         public static function userRemovedFromGroup()
         {
-            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+            self::runJobForAccountsWhenRoleOrGroupChanged();
         }
 
         /**
-         * Update all account read permissions tables, because role is changed
+         * Update all account read permissions items when user is added to role
          */
-        public static function roleParentHasChanged()
+        public static function userAddedToRole()
         {
-            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+            self::runJobForAccountsWhenRoleOrGroupChanged();
+        }
+
+        /**
+         * Update all account read permissions items when user is removed from role
+         */
+        public static function userBeingRemovedFromRole()
+        {
+            self::runJobForAccountsWhenRoleOrGroupChanged();
+        }
+
+        /**
+         * Update all account read permissions tables, because role parent is set
+         */
+        public static function roleParentSet()
+        {
+            self::runJobForAccountsWhenRoleOrGroupChanged();
+        }
+
+        /**
+         * Update all account read permissions tables, because role parent is removed
+         */
+        public static function roleParentBeingRemoved()
+        {
+            self::runJobForAccountsWhenRoleOrGroupChanged();
+            echo "TRIGGER ROLE_PARENT_REMOVED";
         }
 
         /**
          * Update all account read permissions tables, because role is deleted
          */
         public static function roleHasBeenDeleted()
+        {
+            self::runJobForAccountsWhenRoleOrGroupChanged();
+        }
+
+        protected static function runJobForAccountsWhenRoleOrGroupChanged()
         {
             Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
         }

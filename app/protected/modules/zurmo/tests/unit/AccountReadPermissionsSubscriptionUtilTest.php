@@ -36,11 +36,47 @@
 
     class AccountReadPermissionsSubscriptionUtilTest extends ZurmoBaseTest
     {
+        protected static $johnny;
+
+        protected static $billy;
+
+        protected static $david;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            self::$johnny = UserTestHelper::createBasicUser('Johnny');
+            self::$billy = UserTestHelper::createBasicUser('Billy');
+            self::$david = UserTestHelper::createBasicUser('David');
             Yii::app()->readPermissionSubscriptionObserver->enabled = true;
+
+            $role1 = new Role();
+            $role1->name = 'Role1';
+            assert($role1->save());
+
+            $role2 = new Role();
+            $role2->name = 'Role2';
+            assert($role2->save());
+
+            $role3 = new Role();
+            $role3->name = 'Role3';
+            assert($role3->save());
+
+            $role4 = new Role();
+            $role4->name = 'Role4';
+            assert($role4->save());
+
+            $role5 = new Role();
+            $role5->name = 'Role5';
+            assert($role5->save());
+
+            $role3->roles->add($role2);
+            $role2->roles->add($role1);
+            $role5->roles->add($role4);
+            assert($role3->save());
+            assert($role2->save());
+            assert($role5->save());
         }
 
         public function setUp()
@@ -64,7 +100,7 @@
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            $johnny = UserTestHelper::createBasicUser('Johnny');
+            $johnny = self::$johnny;
             $job = new ReadPermissionSubscriptionUpdateForAccountJob();
             $jobBasedOnBuildTable = new ReadPermissionSubscriptionUpdateForAccountFromBuildTableJob();
             Yii::app()->jobQueue->deleteAll();
@@ -117,7 +153,7 @@
             // Now add permissions to group
             $account->addPermissions($group, Permission::READ);
             $this->assertTrue($account->save());
-            $group::forgetAll();
+            RedBeanModel::forgetAll();
             ReadPermissionsOptimizationUtil::rebuild();
 
             $queuedJobs = Yii::app()->jobQueue->getAll();
@@ -141,7 +177,7 @@
             // Test delete group
             $group = Group::getByName('Group1');
             $group->delete();
-            $group::forgetAll();
+            RedBeanModel::forgetAll();
             ReadPermissionsOptimizationUtil::rebuild();
             $queuedJobs = Yii::app()->jobQueue->getAll();
             $this->assertEquals(1, count($queuedJobs[5]));
@@ -176,7 +212,7 @@
             $jobBasedOnBuildTable = new ReadPermissionSubscriptionUpdateForAccountFromBuildTableJob();
             Yii::app()->jobQueue->deleteAll();
             $this->deleteAllModelsAndRecordsFromReadPermissionTable('Account');
-            $johnny = User::getByUsername('johnny');
+            $johnny = self::$johnny;
 
             $account = AccountTestHelper::createAccountByNameForOwner('Second Account', $super);
             Yii::app()->jobQueue->deleteAll();
@@ -190,7 +226,7 @@
 
             $account->addPermissions($group, Permission::READ);
             $this->assertTrue($account->save());
-            $group::forgetAll();
+            RedBeanModel::forgetAll();
             ReadPermissionsOptimizationUtil::rebuild();
 
             $queuedJobs = Yii::app()->jobQueue->getAll();
@@ -221,7 +257,7 @@
             $form = GroupUserMembershipFormUtil::setFormFromCastedPost($form, $fakePostData);
             $saved = GroupUserMembershipFormUtil::setMembershipFromForm($form, $group);
             $this->assertTrue($saved);
-            $group::forgetAll();
+            RedBeanModel::forgetAll();
             ReadPermissionsOptimizationUtil::rebuild();
 
             $queuedJobs = Yii::app()->jobQueue->getAll();
@@ -255,7 +291,7 @@
             $form = GroupUserMembershipFormUtil::setFormFromCastedPost($form, $fakePostData);
             $saved = GroupUserMembershipFormUtil::setMembershipFromForm($form, $group);
             $this->assertTrue($saved);
-            $group::forgetAll();
+            RedBeanModel::forgetAll();
             ReadPermissionsOptimizationUtil::rebuild();
 
             $queuedJobs = Yii::app()->jobQueue->getAll();
@@ -287,14 +323,14 @@
             Yii::app()->user->userModel = $super;
             $jobBasedOnBuildTable = new ReadPermissionSubscriptionUpdateForAccountFromBuildTableJob();
 
-            $johnny = User::getByUsername('johnny');
+            $johnny = self::$johnny;
             $group = Group::getByName('Group2');
             $accounts = Account::getByName('Second Account');
             $account = $accounts[0];
 
             $account->removePermissions($group, Permission::READ);
             $this->assertTrue($account->save());
-            $group::forgetAll();
+            RedBeanModel::forgetAll();
             ReadPermissionsOptimizationUtil::rebuild();
 
             $queuedJobs = Yii::app()->jobQueue->getAll();
@@ -326,7 +362,7 @@
             $job = new ReadPermissionSubscriptionUpdateForAccountJob();
             $jobBasedOnBuildTable = new ReadPermissionSubscriptionUpdateForAccountFromBuildTableJob();
 
-            $johnny = User::getByUsername('johnny');
+            $johnny = self::$johnny;
             $this->deleteAllModelsAndRecordsFromReadPermissionTable('Account');
 
             $account = AccountTestHelper::createAccountByNameForOwner('Third Account', $super);
@@ -362,7 +398,7 @@
             // Add permissions for parentGroup to READ account
             $account->addPermissions($parentGroup, Permission::READ);
             $this->assertTrue($account->save());
-            $parentGroup::forgetAll();
+            RedBeanModel::forgetAll();
             ReadPermissionsOptimizationUtil::rebuild();
 
             $queuedJobs = Yii::app()->jobQueue->getAll();
@@ -384,7 +420,7 @@
             // Remove permissions from parentGroup to READ account
             $account->removePermissions($parentGroup, Permission::READ);
             $this->assertTrue($account->save());
-            $parentGroup::forgetAll();
+            RedBeanModel::forgetAll();
             ReadPermissionsOptimizationUtil::rebuild();
 
             $queuedJobs = Yii::app()->jobQueue->getAll();
@@ -404,9 +440,608 @@
             $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[1]['subscriptiontype']);
         }
 
-        public function testRoleChangeOrDelete()
+        /**
+         * Create new account, new basic user and new role, and add it to user - job should be triggered
+         * Test role deletion - job should be triggered
+         */
+        public function testRoleChangeOrDeleteScenario1()
         {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $johnny = self::$johnny;
+            $job = new ReadPermissionSubscriptionUpdateForAccountJob();
+            $jobBasedOnBuildTable = new ReadPermissionSubscriptionUpdateForAccountFromBuildTableJob();
+            Yii::app()->jobQueue->deleteAll();
 
+            $this->deleteAllModelsAndRecordsFromReadPermissionTable('Account');
+            $account = AccountTestHelper::createAccountByNameForOwner('First Account For Roles', $super);
+            Yii::app()->jobQueue->deleteAll();
+            sleep(1);
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(0, count($queuedJobs));
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(1, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+
+            // Set user role
+            $role1 = Role::getByName('Role1');
+            $johnny->role = $role1;
+            $this->assertTrue($johnny->save());
+
+            // Because we save role, new queued job will be created, but read permission table should stay same
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(1, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+
+            Yii::app()->jobQueue->deleteAll();
+            $johnny->role = null;
+            $this->assertTrue($johnny->save());
+
+            // Because we save role, new queued job will be created, but read permission table should stay same
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(1, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+        }
+
+        /**
+         * Test role nestings
+         * 1. role3->role2->role1(role3 is parent of role2 which is parent of role1), $role5->role4
+         * 2. create account for user1
+         * 3. user2 have role3, user1 have role1, user3 role5
+         * 4. user1 get access to account1, user2 should have accesss to it, and it should be in read permission table
+         * 5. remove role1 from role2, and test, user2 should lost access to the account
+         * 6. change group parent of role1 to be role4, user3 should get access to the account
+         * 7. revert role nesting
+         */
+        public function testRoleChangeOrDeleteScenario2()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $job = new ReadPermissionSubscriptionUpdateForAccountJob();
+            $jobBasedOnBuildTable = new ReadPermissionSubscriptionUpdateForAccountFromBuildTableJob();
+            Yii::app()->jobQueue->deleteAll();
+
+            $this->deleteAllModelsAndRecordsFromReadPermissionTable('Account');
+            Yii::app()->jobQueue->deleteAll();
+            sleep(1);
+
+            $user1 = self::$johnny;
+            $user2 = self::$billy;
+            $user3 = self::$david;
+
+            $account = AccountTestHelper::createAccountByNameForOwner('Second Account For Roles', $user1);
+            Yii::app()->jobQueue->deleteAll();
+
+            // Set user role
+            $role1 = Role::getByName('Role1');
+            $role2 = Role::getByName('Role2');
+            $role3 = Role::getByName('Role3');
+            $role4 = Role::getByName('Role4');
+            $role5 = Role::getByName('Role5');
+
+            $user1->role = $role1;
+            $this->assertTrue($user1->save());
+            Yii::app()->jobQueue->deleteAll();
+            $user2->role = $role3;
+            $this->assertTrue($user2->save());
+            $user3->role = $role5;
+            $this->assertTrue($user3->save());
+            RedBeanModel::forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(3, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($user1->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
+            $this->assertEquals($user2->id, $rows[2]['userid']);
+            $this->assertEquals($account->id, $rows[2]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[2]['subscriptiontype']);
+
+            // Remove role1 from role2
+            Yii::app()->jobQueue->deleteAll();
+            $role2->roles->remove($role1);
+            $this->assertTrue($role2->save());
+            RedBeanModel::forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            // ToDO: Check Role.php afterSave() function, because ReadPermissionsSubscriptionUtil::roleParentSet(); event is not trigered
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(3, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($user1->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
+            $this->assertEquals($user2->id, $rows[2]['userid']);
+            $this->assertEquals($account->id, $rows[2]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[2]['subscriptiontype']);
+
+            // Now add role1 as child of role4
+            Yii::app()->jobQueue->deleteAll();
+            $role4->roles->add($role1);
+            $this->assertTrue($role4->save());
+            RedBeanModel::forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            // ToDO: Check Role.php afterSave() function, because ReadPermissionsSubscriptionUtil::roleParentSet(); event is not trigered
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(4, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($user1->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
+            $this->assertEquals($user2->id, $rows[2]['userid']);
+            $this->assertEquals($account->id, $rows[2]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[2]['subscriptiontype']);
+            $this->assertEquals($user3->id, $rows[3]['userid']);
+            $this->assertEquals($account->id, $rows[3]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[3]['subscriptiontype']);
+
+            // Revert role nesting
+            $role4->roles->remove($role1);
+            $this->assertTrue($role4->save());
+            $role2->roles->add($role1);
+            $this->assertTrue($role2->save());
+        }
+
+        /**
+         * Test parent role deletions
+         * 1. r3->r2->r1
+         * 2. user2 have role3, user1 have role1
+         * 3. create account for user1, user2 should get access to it
+         * 4. delete role2, user2 should lost access to account
+         * 5. make r3->r1 relationship
+         * 6. u2 should get access to the account
+         * 7. delete r3, user2 will lost access to the account
+         * @depends testRoleChangeOrDeleteScenario2
+         */
+        public function testRoleChangeOrDeleteScenario3()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $job = new ReadPermissionSubscriptionUpdateForAccountJob();
+            $jobBasedOnBuildTable = new ReadPermissionSubscriptionUpdateForAccountFromBuildTableJob();
+            Yii::app()->jobQueue->deleteAll();
+
+            $this->deleteAllModelsAndRecordsFromReadPermissionTable('Account');
+            Yii::app()->jobQueue->deleteAll();
+            sleep(1);
+
+            $user1 = self::$johnny;
+            $user2 = self::$billy;
+
+            $account = AccountTestHelper::createAccountByNameForOwner('Third Account For Roles', $user1);
+            Yii::app()->jobQueue->deleteAll();
+
+            // Set user role
+            $role1 = Role::getByName('Role1');
+            $role2 = Role::getByName('Role2');
+            $role3 = Role::getByName('Role3');
+
+            // Just to trigger role changes
+            $user1->role = null;
+            $this->assertTrue($user1->save());
+            RedBeanModel::forgetAll();
+
+            // ToDO: Check User.php afterSave() function, because ReadPermissionsSubscriptionUtil::userAddedToRole() event is not trigered
+            // ToDo: and I had to move code outside if statement, similar to issue with ROle.php::aferSave()
+            $user1->role = $role1;
+            $this->assertTrue($user1->save());
+            Yii::app()->jobQueue->deleteAll();
+            $user2->role = $role3;
+            $this->assertTrue($user2->save());
+            RedBeanModel::forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(3, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($user1->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
+            $this->assertEquals($user2->id, $rows[2]['userid']);
+            $this->assertEquals($account->id, $rows[2]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[2]['subscriptiontype']);
+
+            // Delete role2
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($role2->delete());
+            RedBeanModel::forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(3, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($user1->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
+            $this->assertEquals($user2->id, $rows[2]['userid']);
+            $this->assertEquals($account->id, $rows[2]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[2]['subscriptiontype']);
+
+            // Set role3 to be parent of role1, $user2 should get access to the account
+            Yii::app()->jobQueue->deleteAll();
+            $role3->roles->add($role1);
+            $this->assertTrue($role3->save());
+            RedBeanModel::forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(3, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($user1->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
+            $this->assertEquals($user2->id, $rows[2]['userid']);
+            $this->assertEquals($account->id, $rows[2]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[2]['subscriptiontype']);
+
+            // Delete $role3
+            // ToDo: If we skip next two lines below, code will fail when we try to set $user->role=$role3, on the end of this function
+            $user2->role = null;
+            $this->assertTrue($user2->save());
+
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($role3->delete());
+            RedBeanModel::forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(3, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($user1->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
+            $this->assertEquals($user2->id, $rows[2]['userid']);
+            $this->assertEquals($account->id, $rows[2]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[2]['subscriptiontype']);
+
+            // Revert roles for next test
+            $role2 = new Role();
+            $role2->name = 'Role2';
+            $this->assertTrue($role2->save());
+
+            $role3 = new Role();
+            $role3->name = 'Role3';
+            $this->assertTrue($role3->save());
+
+            $role3->roles->add($role2);
+            $role2->roles->add($role1);
+            $this->assertTrue($role3->save());
+            $this->assertTrue($role2->save());
+
+            $user2->role = $role3;
+            $this->assertTrue($user2->save());
+            RedBeanModel::forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+        }
+
+        /**
+         * Test when user change role, from one to another to null
+         * @depends testRoleChangeOrDeleteScenario2
+         */
+        public function testRoleChangeOrDeleteScenario4()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $job = new ReadPermissionSubscriptionUpdateForAccountJob();
+            $jobBasedOnBuildTable = new ReadPermissionSubscriptionUpdateForAccountFromBuildTableJob();
+            Yii::app()->jobQueue->deleteAll();
+
+            $this->deleteAllModelsAndRecordsFromReadPermissionTable('Account');
+            Yii::app()->jobQueue->deleteAll();
+            sleep(1);
+
+            $user1 = self::$johnny;
+            $user2 = self::$billy;
+            $user3 = self::$david;
+
+            $account = AccountTestHelper::createAccountByNameForOwner('Forth Account For Roles', $user1);
+            Yii::app()->jobQueue->deleteAll();
+
+            // Set user role
+            $role1 = Role::getByName('Role1');
+            $role2 = Role::getByName('Role2');
+            $role3 = Role::getByName('Role3');
+            $role4 = Role::getByName('Role4');
+
+            // Just to trigger role changes
+            Yii::app()->jobQueue->deleteAll();
+            $user1->role = null;
+            $this->assertTrue($user1->save());
+            RedBeanModel::forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(2, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($user1->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
+
+            // Now set $role1 for $user1
+            Yii::app()->jobQueue->deleteAll();
+            $user1->role = $role1;
+            $this->assertTrue($user1->save());
+            RedBeanModel::forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(3, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($user1->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
+            $this->assertEquals($user2->id, $rows[2]['userid']);
+            $this->assertEquals($account->id, $rows[2]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[2]['subscriptiontype']);
+
+            // Now set $role1 for $user1
+            Yii::app()->jobQueue->deleteAll();
+            $user1->role = $role4;
+            $this->assertTrue($user1->save());
+            RedBeanModel::forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(4, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($user1->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
+            $this->assertEquals($user2->id, $rows[2]['userid']);
+            $this->assertEquals($account->id, $rows[2]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[2]['subscriptiontype']);
+            $this->assertEquals($user3->id, $rows[3]['userid']);
+            $this->assertEquals($account->id, $rows[3]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[3]['subscriptiontype']);
+
+            // Now set $role1 for $user1
+            Yii::app()->jobQueue->deleteAll();
+            $user1->role = null;
+            $this->assertTrue($user1->save());
+            RedBeanModel::forgetAll();
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(4, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($user1->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
+            $this->assertEquals($user2->id, $rows[2]['userid']);
+            $this->assertEquals($account->id, $rows[2]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[2]['subscriptiontype']);
+            $this->assertEquals($user3->id, $rows[3]['userid']);
+            $this->assertEquals($account->id, $rows[3]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[3]['subscriptiontype']);
+        }
+
+        /**
+         * Test cases when:
+         * 1. user is created
+         * 2. permissions for user to access account are added
+         * 3. permissions for user to access account are removed
+         * 4. permissions for user to access account are added after they are being removed
+         */
+        public function testUserCreationsAndPermissions()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $this->deleteAllModelsAndRecordsFromReadPermissionTable('Account');
+            Yii::app()->jobQueue->deleteAll();
+            $job = new ReadPermissionSubscriptionUpdateForAccountJob();
+            $jobBasedOnBuildTable = new ReadPermissionSubscriptionUpdateForAccountFromBuildTableJob();
+            $account = AccountTestHelper::createAccountByNameForOwner('First Account For Users', $super);
+            Yii::app()->jobQueue->deleteAll();
+            sleep(1);
+
+            $user = new User();
+            $user->username     = 'smith';
+            $user->lastName     = 'Smitson';
+            $user->setPassword(strtolower('password'));
+            $this->assertTrue($user->save());
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(1, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+
+            // Test add read permissions to user for account
+            $account->addPermissions($user, Permission::READ);
+            $this->assertTrue($account->save());
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccountFromBuildTable', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($jobBasedOnBuildTable->run());
+
+            // Check if everything is added correctly
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(2, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($user->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
+
+            // Test remove read permissions from user for account
+            $account->removePermissions($user, Permission::READ);
+            $this->assertTrue($account->save());
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccountFromBuildTable', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($jobBasedOnBuildTable->run());
+
+            // Because user is added to group, and group have read access to account, this account should be in
+            // read permission table for user
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(2, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($user->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[1]['subscriptiontype']);
+
+            // Test add read permissions AGAIN to user for account
+            $account->addPermissions($user, Permission::READ);
+            $this->assertTrue($account->save());
+            ReadPermissionsOptimizationUtil::rebuild();
+
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccountFromBuildTable', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($jobBasedOnBuildTable->run());
+
+            // Check if everything is added correctly
+            $sql = "SELECT * FROM account_read_subscription order by userid";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(2, count($rows));
+            $this->assertEquals($super->id, $rows[0]['userid']);
+            $this->assertEquals($account->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+            $this->assertEquals($user->id, $rows[1]['userid']);
+            $this->assertEquals($account->id, $rows[1]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
         }
 
         protected function deleteAllModelsAndRecordsFromReadPermissionTable($modelClassName)

@@ -112,11 +112,10 @@
                 $this->role != null && $this->role->id > 0)
             {
                 ReadPermissionsOptimizationUtil::roleParentSet($this);
+                //ReadPermissionsSubscriptionUtil::roleParentSet();
             }
-            if (isset($this->originalAttributeValues['role']))
-            {
-                ReadPermissionsSubscriptionUtil::roleParentHasChanged();
-            }
+            // ToDO: this should be in if, check why it is not working if we put it there
+            ReadPermissionsSubscriptionUtil::roleParentSet();
             parent::afterSave();
         }
 
@@ -132,6 +131,7 @@
                     $role = unserialize(serialize($this));
                     $role->role = Role::getById($this->originalAttributeValues['role'][1]);
                     ReadPermissionsOptimizationUtil::roleParentBeingRemoved($role);
+                    ReadPermissionsSubscriptionUtil::roleParentBeingRemoved();
                     assert('$this->originalAttributeValues["role"][1] != $this->role->id');
                 }
                 return true;
@@ -157,10 +157,7 @@
             PermissionsCache::forgetAll();
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
-            if (isset($this->originalAttributeValues['role']))
-            {
-                ReadPermissionsSubscriptionUtil::roleHasBeenDeleted();
-            }
+            ReadPermissionsSubscriptionUtil::roleHasBeenDeleted();
         }
 
         protected function beforeValidate()
