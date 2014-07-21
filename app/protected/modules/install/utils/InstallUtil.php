@@ -615,6 +615,22 @@
         }
 
         /**
+         * Set User as Root user.
+         */
+        public static function setSuperUserAsRootUser($username)
+        {
+            $user = User::getByUsername($username);
+            $user->setIsRootUser();
+            $saved = $user->save();
+
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            return $user;
+        }
+
+        /**
          * creates user account to be used in backend tasks such as actions and jobs
          * @return User
          */
@@ -1083,6 +1099,7 @@
                 $rules                      = new EnableMinifyNotificationRules();
                 NotificationsUtil::submit($message, $rules);
             }
+            static::setSuperUserAsRootUser('super');
             $messageStreamer->add(Zurmo::t('InstallModule', 'Installation Complete.'));
             Yii::app()->params['isFreshInstall']    = false;
         }
