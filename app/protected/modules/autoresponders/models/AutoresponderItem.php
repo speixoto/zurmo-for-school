@@ -148,7 +148,7 @@
             $searchAttributeData['structure'] = '(1 and 2)';
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
-            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'processDateTime');
+            return self::getSubset($joinTablesAdapter, $offset, $pageSize, $where, 'processDateTime');
         }
 
         /**

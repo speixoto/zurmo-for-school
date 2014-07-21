@@ -55,9 +55,25 @@
             else
             {
                 return array(
-                    'name' => $this->attribute
+                    'name' => $this->attribute,
+                    'value'  => array($this, 'renderDataCellContent'),
+
                 );
             }
+        }
+
+        public function renderDataCellContent($data, $row)
+        {
+            return $this->renderValue($data->{$this->attribute});
+        }
+
+        public function renderValue($value)
+        {
+            if ($value > 0)
+            {
+                return $value;
+            }
+            return null;
         }
     }
 ?>

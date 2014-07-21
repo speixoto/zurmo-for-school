@@ -1367,6 +1367,10 @@
 
         protected function validateUrl($value)
         {
+            if ($value == null)
+            {
+                return true;
+            }
             $validator = new CUrlValidator();
             if (!$validator->validateValue($value))
             {

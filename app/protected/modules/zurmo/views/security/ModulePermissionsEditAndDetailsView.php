@@ -143,7 +143,6 @@
                             }
                         }
                     }
-                    
                 }
                 ksort($rowTitlesAndContent);
                 foreach ($rowTitlesAndContent as $rowcontent)

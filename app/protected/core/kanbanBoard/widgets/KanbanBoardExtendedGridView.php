@@ -123,7 +123,7 @@
             elseif ($modelsCount > 0)
             {
                 $counter = 0;
-                echo "<div id=\"kanban-board\" class=\"clearfix\">";
+                echo "<div id=\"kanban-board\">";
                 foreach ($columnsData as $attributeValue => $attributeValueAndData)
                 {
                     echo '<div class="kanban-column" style="width:'.$width.'%;">'; // Not Coding Standard
