@@ -283,7 +283,7 @@
             }
             return parent::bypassReadPermissionsOptimizationToSqlQueryBasedOnWhere($where);
         }
-
+/**
         public function checkPermissionsHasAnyOf($requiredPermissions)
         {
             $currentUser = Yii::app()->user->userModel;
@@ -301,6 +301,7 @@
                 }
             }
         }
+ * **/
 
         /**
          * Returns the SearchAttributeData array to search for all previouslyCreatedBuilderTemplates
