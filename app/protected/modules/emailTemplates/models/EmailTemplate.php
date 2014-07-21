@@ -284,7 +284,7 @@
             return parent::bypassReadPermissionsOptimizationToSqlQueryBasedOnWhere($where);
         }
 
-        protected function checkPermissionsHasAnyOf($requiredPermissions)
+        public function checkPermissionsHasAnyOf($requiredPermissions)
         {
             $currentUser = Yii::app()->user->userModel;
             $effectivePermissions = $this->getEffectivePermissions($currentUser);
