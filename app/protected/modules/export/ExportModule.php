@@ -46,7 +46,7 @@
          * or to be exported via asynchronous via background job.
          * @var int
          */
-        public static $asynchronousThreshold = 50;
+        public static $asynchronousThreshold = 3;
 
         /**
          * Page size for asynchronus paging when processing export
