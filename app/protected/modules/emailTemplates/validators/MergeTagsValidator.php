@@ -61,7 +61,8 @@
                 $mergeTagsUtil      = MergeTagsUtilFactory::make($this->type, $this->language, $object->$attribute);
                 $invalidTags        = array();
                 $mergeTagCount      = $mergeTagsUtil->extractMergeTagsPlaceHolders();
-                if ($mergeTagCount && !$mergeTagsUtil->resolveMergeTagsArrayToAttributes($model, $invalidTags, null))
+                $params             = $this->resolveMergeTagParams();
+                if ($mergeTagCount && !$mergeTagsUtil->resolveMergeTagsArrayToAttributes($model, $invalidTags, null, false, $params))
                 {
                     $passedValidation = false;
                     if (!empty($invalidTags))
@@ -81,6 +82,13 @@
                 }
             }
             return $passedValidation;
+        }
+
+        protected function resolveMergeTagParams()
+        {
+            // TODO: @Shoaibi: Critical0: We have to send in dummy data to allow resolution of unsubscribe
+            // and manage subscriptions merge tags.
+            return GlobalMarketingFooterUtil::resolveFooterMergeTagsArray(1, 2, 3, 'AutoresponderItem', false, true);
         }
     }
 ?>

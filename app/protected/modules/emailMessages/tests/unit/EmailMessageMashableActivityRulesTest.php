@@ -49,7 +49,7 @@
             ContactsModule::loadStartingData();
             RedBeanModel::forgetAll();
             //do the rebuild to ensure the tables get created properly.
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()
@@ -120,7 +120,7 @@
         {
             //TODO: @sergio: Fix where and sql asserts
             Yii::app()->user->userModel = User::getByUsername('benny');
-            $mungeIds = ReadPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
+            $mungeIds = AllPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
             $quote               = DatabaseCompatibilityUtil::getQuote();
             $rules               = new EmailMessageMashableActivityRules();
             $searchAttributeData = $rules->resolveSearchAttributesDataByRelatedItemId(5);

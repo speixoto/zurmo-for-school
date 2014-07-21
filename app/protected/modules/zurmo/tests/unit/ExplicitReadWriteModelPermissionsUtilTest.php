@@ -39,7 +39,7 @@
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             SecurityTestHelper::createSuperAdmin();
             $everyoneGroup        = Group::getByName(Group::EVERYONE_GROUP_NAME);
             assert($everyoneGroup->save()); // Not Coding Standard

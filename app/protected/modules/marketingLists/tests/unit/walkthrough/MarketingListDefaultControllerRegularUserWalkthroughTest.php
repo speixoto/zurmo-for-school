@@ -50,7 +50,7 @@
 
             static::$listOwnedBySuper = MarketingListTestHelper::createMarketingListByName('MarketingListName',
                                                                                             'MarketingList Description');
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()

@@ -53,12 +53,12 @@
                 $modelClassName::hasReadPermissionsOptimization() &&$moduleClassName != null &&
                 is_subclass_of($moduleClassName, 'SecurableModule'))
             {
-                $permission = PermissionsUtil::getActualPermissionDataForReadByModuleNameForCurrentUser($moduleClassName);
+                $permission = PermissionsUtil::getActualPermissionDataForReadByModuleNameForUser($moduleClassName);
                 if ($permission == Permission::NONE || $permission == Permission::DENY)
                 {
                     $indexes   = array();
                     $indexes[] = 'owner__User';
-                    $mungeIds           = ReadPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
+                    $mungeIds           = AllPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
                     if (count($mungeIds) > 0 && $permission == Permission::NONE)
                     {
                         $indexes[] = 'ReadOptimization';

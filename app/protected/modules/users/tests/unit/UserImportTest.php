@@ -131,8 +131,7 @@
             $importResultsUtil->processStatusAndMessagesForEachRow();
 
             //Confirm that 10 models where created.
-            $users = User::getAll();
-            $this->assertEquals(11, count($users));
+            $this->assertEquals(11, User::getCount());
             $activeUser   = User::getByUsername('myusername7');
             $userStatus   = UserStatusUtil::makeByUser($activeUser);
             $this->assertTrue($userStatus->isActive());

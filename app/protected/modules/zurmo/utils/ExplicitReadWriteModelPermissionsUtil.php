@@ -227,11 +227,12 @@
          * can effectively add permissions even if the current user is no longer the owner.
          * @param SecurableItem $securableItem
          * @param ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions
-         * @return boolean
-         * @throws NotSupportedException()
+         * @param bool $validate
+         * @return bool|void
+         * @throws NotSupportedException
          */
         public static function resolveExplicitReadWriteModelPermissions(SecurableItem $securableItem,
-                                  ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions)
+                                  ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions, $validate = false)
         {
             assert('$securableItem->id > 0');
             $optimizeReadPermissions = $securableItem::hasReadPermissionsOptimization();
@@ -246,13 +247,13 @@
                     {
                         if ($permitable instanceof Group)
                         {
-                            ReadPermissionsOptimizationUtil::
-                            securableItemGivenPermissionsForGroup($securableItem, $permitable);
+                            AllPermissionsOptimizationUtil::
+                            securableItemGivenReadPermissionsForGroup($securableItem, $permitable);
                         }
                         elseif ($permitable instanceof User)
                         {
-                            ReadPermissionsOptimizationUtil::
-                            securableItemGivenPermissionsForUser($securableItem, $permitable);
+                            AllPermissionsOptimizationUtil::
+                            securableItemGivenReadPermissionsForUser($securableItem, $permitable);
                         }
                         else
                         {
@@ -271,12 +272,12 @@
                     {
                         if ($permitable instanceof Group)
                         {
-                            ReadPermissionsOptimizationUtil::
+                            AllPermissionsOptimizationUtil::
                             securableItemGivenPermissionsForGroup($securableItem, $permitable);
                         }
                         elseif ($permitable instanceof User)
                         {
-                            ReadPermissionsOptimizationUtil::
+                            AllPermissionsOptimizationUtil::
                             securableItemGivenPermissionsForUser($securableItem, $permitable);
                         }
                         else
@@ -296,13 +297,13 @@
                     {
                         if ($permitable instanceof Group)
                         {
-                            ReadPermissionsOptimizationUtil::
-                            securableItemLostPermissionsForGroup($securableItem, $permitable);
+                            AllPermissionsOptimizationUtil::
+                            securableItemLostReadPermissionsForGroup($securableItem, $permitable);
                         }
                         elseif ($permitable instanceof User)
                         {
-                            ReadPermissionsOptimizationUtil::
-                            securableItemLostPermissionsForUser($securableItem, $permitable);
+                            AllPermissionsOptimizationUtil::
+                            securableItemLostReadPermissionsForUser($securableItem, $permitable);
                         }
                         else
                         {
@@ -322,12 +323,12 @@
                     {
                         if ($permitable instanceof Group)
                         {
-                            ReadPermissionsOptimizationUtil::
+                            AllPermissionsOptimizationUtil::
                             securableItemLostPermissionsForGroup($securableItem, $permitable);
                         }
                         elseif ($permitable instanceof User)
                         {
-                            ReadPermissionsOptimizationUtil::
+                            AllPermissionsOptimizationUtil::
                             securableItemLostPermissionsForUser($securableItem, $permitable);
                         }
                         else
@@ -345,7 +346,7 @@
                     $securableItem->setDoNotProcessWorkflowOnSave();
                     $setBackToProcess = true;
                 }
-                $saved = $securableItem->save();
+                $saved = $securableItem->save($validate);
                 if ($setBackToProcess)
                 {
                     $securableItem->setProcessWorkflowOnSave();

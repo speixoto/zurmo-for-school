@@ -46,6 +46,7 @@
             RedBeanModelsCache::forgetAll();
             RedBeansCache::forgetAll();
             PermissionsCache::forgetAll();
+            AllPermissionsOptimizationCache::forgetAll();
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
             GeneralCache::forgetAll();

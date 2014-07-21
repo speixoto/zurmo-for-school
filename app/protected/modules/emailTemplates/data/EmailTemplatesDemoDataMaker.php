@@ -68,7 +68,7 @@
                 $saved                      = $emailTemplate->save();
                 assert('$saved');
                 $emailTemplate = EmailTemplate::getById($emailTemplate->id);
-                ReadPermissionsOptimizationUtil::
+                AllPermissionsOptimizationUtil::
                     securableItemGivenPermissionsForGroup($emailTemplate, Group::getByName(Group::EVERYONE_GROUP_NAME));
                 $emailTemplate->save();
                 $emailTemplates[]           = $emailTemplate->id;

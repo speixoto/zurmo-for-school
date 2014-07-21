@@ -98,7 +98,7 @@
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             $authenticationData = $this->login();
             $headers = array(
                 'Accept: application/json',
@@ -245,7 +245,7 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $billy  = User::getByUsername('billy');
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             $authenticationData = $this->login();
             $headers = array(
                 'Accept: application/json',
@@ -392,7 +392,7 @@
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             $authenticationData = $this->login();
             $headers = array(
                 'Accept: application/json',
@@ -724,11 +724,6 @@
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals('My Company 3', $response['data']['name']);
-
-            $response = $this->createApiCallWithRelativeUrl('delete/' . $accounts[0]->id, 'DELETE', $headers);
-            $response = json_decode($response, true);
-            $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
-            $this->assertEquals('You do not have permissions for this action.', $response['message']);
 
             // Test with privileged user
             $authenticationData = $this->login();

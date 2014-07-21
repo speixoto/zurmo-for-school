@@ -33,7 +33,7 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-    class AutoresponderItemsUtilTest extends ZurmoBaseTest
+    class AutoresponderItemsUtilTest extends AutoresponderOrCampaignBaseTest
     {
         // We don't need to add separate tests for tracking scenarios here because we have already gained more than
         //  sufficient coverage in AutoresponderItemActivityUtilTest and EmailMessageActivityUtilTest for those.
@@ -60,7 +60,7 @@
         public function testProcessDueAutoresponderItemThrowsExceptionWhenNoContactIsAvailable()
         {
             $autoresponderItem          = new AutoresponderItem();
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
         }
 
         /**
@@ -86,7 +86,7 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
         }
 
         /**
@@ -109,10 +109,10 @@
                                                                                                $processDateTime,
                                                                                                $autoresponder,
                                                                                                $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -130,10 +130,10 @@
                                                                                                $processDateTime,
                                                                                                $autoresponder,
                                                                                                $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -169,10 +169,10 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -228,10 +228,10 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -284,10 +284,10 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -354,10 +354,10 @@
                                                                                                     $processDateTime,
                                                                                                     $autoresponder,
                                                                                                     $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -386,7 +386,7 @@
                 $this->assertEquals($file->type, $emailMessage->files[$index]->type);
                 $this->assertEquals($file->size, $emailMessage->files[$index]->size);
                 //AutoresponderItem should share the Attachments content from Autoresponder
-                $this->assertEquals($file->fileContent, $emailMessage->files[$index]->fileContent);
+                $this->assertEquals($file->fileContent->content, $emailMessage->files[$index]->fileContent->content);
             }
             $headersArray               = array('zurmoItemId' => $autoresponderItem->id,
                                                 'zurmoItemClass' => get_class($autoresponderItem),
@@ -423,7 +423,7 @@
                                                                                                     $processDateTime,
                                                                                                     $autoresponder,
                                                                                                     $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $personId                   = $contact->getClassId('Person');
             $activities                 = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
@@ -462,10 +462,10 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
             $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
             $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
@@ -522,7 +522,7 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
             $this->assertNotEquals($autoresponder->textContent, $emailMessage->content->textContent);
@@ -548,8 +548,8 @@
                                                                                             'CustomFromName',
                                                                                             'custom@from.com');
             $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 10',
-                                                                '{{UNSUBSCRIBE_URL}}',
-                                                                '{{UNSUBSCRIBE_URL}}',
+                                                                GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag(),
+                                                                GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag(),
                                                                 1,
                                                                 Autoresponder::OPERATION_SUBSCRIBE,
                                                                 true,
@@ -560,18 +560,16 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $textContent                = $autoresponderItem->emailMessage->content->textContent;
             $htmlContent                = $autoresponderItem->emailMessage->content->htmlContent;
             $this->assertNotEquals($autoresponder->textContent, $textContent);
             $this->assertNotEquals($autoresponder->htmlContent, $htmlContent);
-            $this->assertTrue(strpos($textContent, 'Unsubscribe: localhost') !== false);
+            $this->assertTrue(strpos($textContent, 'localhost') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/unsubscribe?hash='));
-            $this->assertTrue(strpos($htmlContent, '<a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, 'localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/unsubscribe?hash='));
-            $this->assertTrue(strpos($htmlContent, '">Unsubscribe</a>') !== false);
-            $this->assertEquals(1, substr_count($htmlContent, '">Unsubscribe</a>'));
             $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost') !== false);
             $this->assertTrue(strpos($htmlContent, '/tracking/default/track?id=') !== false);
             $this->assertTrue(strpos($htmlContent, '/marketingLists/external/manageSubscriptions') === false);
@@ -592,8 +590,8 @@
                                                                                                 'CustomFromName',
                                                                                                 'custom@from.com');
             $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 11',
-                                                                                '{{MANAGE_SUBSCRIPTIONS_URL}}',
-                                                                                '{{MANAGE_SUBSCRIPTIONS_URL}}',
+                                                                                GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag(),
+                                                                                GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag(),
                                                                                 1,
                                                                                 Autoresponder::OPERATION_SUBSCRIBE,
                                                                                 true,
@@ -604,18 +602,16 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $textContent                = $autoresponderItem->emailMessage->content->textContent;
             $htmlContent                = $autoresponderItem->emailMessage->content->htmlContent;
             $this->assertNotEquals($autoresponder->textContent, $textContent);
             $this->assertNotEquals($autoresponder->htmlContent, $htmlContent);
-            $this->assertTrue(strpos($textContent, 'Manage Subscriptions: localhost') !== false);
+            $this->assertTrue(strpos($textContent, 'localhost') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, '<a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, 'localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, '">Manage Subscriptions</a>') !== false);
-            $this->assertEquals(1, substr_count($htmlContent, '">Manage Subscriptions</a>'));
             $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost') !== false);
             $this->assertTrue(strpos($htmlContent, '/tracking/default/track?id=') !== false);
             $this->assertTrue(strpos($htmlContent, '/marketingLists/external/unsubscribe') === false);
@@ -636,10 +632,10 @@
                                                                                             'CustomFromName',
                                                                                             'custom@from.com');
             $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 12',
-                                                                            '{{UNSUBSCRIBE_URL}},' . // Not Coding Standard
-                                                                                ' {{MANAGE_SUBSCRIPTIONS_URL}}',
-                                                                            '{{UNSUBSCRIBE_URL}},' . // Not Coding Standard
-                                                                                ' {{MANAGE_SUBSCRIPTIONS_URL}}',
+                                                                            GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag() . ', ' . // Not Coding Standard
+                                                                            GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag(),
+                                                                            GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag() . ', ' . // Not Coding Standard
+                                                                            GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag(),
                                                                             1,
                                                                             Autoresponder::OPERATION_SUBSCRIBE,
                                                                             true,
@@ -650,26 +646,22 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $textContent                = $autoresponderItem->emailMessage->content->textContent;
             $htmlContent                = $autoresponderItem->emailMessage->content->htmlContent;
             $this->assertNotEquals($autoresponder->textContent, $textContent);
             $this->assertNotEquals($autoresponder->htmlContent, $htmlContent);
-            $this->assertTrue(strpos($textContent, 'Unsubscribe: localhost') !== false);
+            $this->assertTrue(strpos($textContent, 'localhost') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/unsubscribe?hash='));
-            $this->assertTrue(strpos($htmlContent, '<a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, 'localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/unsubscribe?hash='));
-            $this->assertTrue(strpos($htmlContent, '">Unsubscribe</a>') !== false);
-            $this->assertEquals(1, substr_count($htmlContent, '">Unsubscribe</a>'));
             $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost') !== false);
             $this->assertTrue(strpos($htmlContent, '/tracking/default/track?id=') !== false);
-            $this->assertTrue(strpos($textContent, ', Manage Subscriptions: localhost') !== false);
+            $this->assertEquals(2, substr_count($textContent, 'localhost'));
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, ', <a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, ', localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, '">Manage Subscriptions</a>') !== false);
-            $this->assertEquals(1, substr_count($htmlContent, '">Manage Subscriptions</a>'));
             $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost') !== false);
             $this->assertTrue(strpos($htmlContent, '/tracking/default/track?id=') !== false);
         }
@@ -701,7 +693,7 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $textContent                = $autoresponderItem->emailMessage->content->textContent;
             $htmlContent                = $autoresponderItem->emailMessage->content->htmlContent;
@@ -712,18 +704,16 @@
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/unsubscribe?hash='));
             $this->assertTrue(strpos($textContent, '/marketingLists/external/manageSubscriptions?hash=') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, 'HTML<br /><br /><a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, 'HTML<br /><br /><a href="localhost/') !== false);
             $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost') !== false);
             $this->assertTrue(strpos($htmlContent, '/tracking/default/track?id=') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/tracking/default/track?id='));
             $this->assertTrue(strpos($htmlContent, '/marketingLists/external/unsubscribe?hash=') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/unsubscribe?hash='));
-            $this->assertTrue(strpos($htmlContent, '">Unsubscribe</a><br /><a href="localhost') !== false);
-            $this->assertEquals(1, substr_count($htmlContent, '">Unsubscribe</a><br /><a href="localhost'));
+            $this->assertTrue(strpos($htmlContent, '<br /><a href="localhost/') !== false);
+            $this->assertEquals(2, substr_count($htmlContent, '<br /><a href="localhost/'));
             $this->assertTrue(strpos($htmlContent, '/marketingLists/external/manageSubscriptions?hash=') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, '">Manage Subscriptions</a>') !== false);
-            $this->assertEquals(1, substr_count($htmlContent, '">Manage Subscriptions</a>'));
         }
     }
 ?>
