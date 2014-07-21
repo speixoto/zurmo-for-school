@@ -228,9 +228,9 @@
                                                 'the Global Marketing Footer(Plain Text).</li>') !== false);
             $this->assertTrue(strpos($content, '<li><strong>[[GLOBAL^MARKETING^FOOTER^HTML]]</strong> : prints the ' .
                                                 'Global Marketing Footer(Rich Text).</li>') !== false);
-            $this->assertTrue(strpos($content, '<li><strong>{{UNSUBSCRIBE_URL}}</strong> : prints unsubscribe' .
+            $this->assertTrue(strpos($content, '<li><strong>' . GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag() . '</strong> : prints unsubscribe' .
                                                 ' url.</li>') !== false);
-            $this->assertTrue(strpos($content, '<li><strong>{{MANAGE_SUBSCRIPTIONS_URL}}</strong> : prints manage' .
+            $this->assertTrue(strpos($content, '<li><strong>' . GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag() . '</strong> : prints manage' .
                                                 ' subscriptions url.</li>') !== false);
         }
 
@@ -1057,8 +1057,8 @@
             $contact         = ContactTestHelper::createContactByNameForOwner('test', $this->user);
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'marketing 01');
             $emailTemplate   = EmailTemplate::getById($emailTemplateId);
-            $unsubscribePlaceholder         = GlobalMarketingFooterUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
-            $manageSubscriptionsPlaceholder = GlobalMarketingFooterUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $unsubscribePlaceholder         = GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag();
+            $manageSubscriptionsPlaceholder = GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag();
             $emailTemplate->textContent = "Test text content with contact tag: [[FIRST^NAME]] {$unsubscribePlaceholder}";
             $emailTemplate->htmlContent = "Test html content with contact tag: [[FIRST^NAME]] {$manageSubscriptionsPlaceholder}";
             $this->assertTrue($emailTemplate->save());

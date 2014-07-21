@@ -76,7 +76,7 @@ exit;
 
         public function testCachingNamedSecurableItemActualPermissions()
         {
-            if (PermissionsCache::supportsAndAllowsMemcache())
+            if (PermissionsCache::supportsAndAllowsMemcache() || PermissionsCache::supportsAndAllowsDatabaseCaching())
             {
                 Yii::app()->user->userModel = User::getByUsername('super');
                 $super = User::getByUsername('super');
@@ -108,6 +108,7 @@ exit;
                 $this->assertEquals($combinedPermissions, $combinedPermissionsFromCache);
 
                 PermissionsCache::forgetSecurableItem($account);
+                AllPermissionsOptimizationCache::forgetSecurableItemForRead($account);
                 try
                 {
                     PermissionsCache::getCombinedPermissions($account, $super);

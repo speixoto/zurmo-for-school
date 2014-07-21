@@ -173,5 +173,20 @@
                    "       person.lastname       like '$partialName%' or "    .
                    "       $fullNameSql like '$partialName%') ";
         }
-   }
+
+        /**
+         * Updates `where` part of query to exclude rootUsers
+         * @param $exclude bool
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param $where
+         */
+        protected static function excludeRootUsers($exclude, RedBeanModelJoinTablesQueryAdapter & $joinTablesAdapter,
+                                                    & $where)
+        {
+            if ($exclude)
+            {
+                $where  = "  ((_user.isrootuser is null OR _user.isrootuser = 0) and (${where}))";
+            }
+        }
+    }
 ?>

@@ -5864,8 +5864,6 @@ a.close-ModalGameNotification.simple-link {
   margin-right: 10px;
   margin-left: -35px;
   font-size: 11px;
-  line-height: 27px;
-  display: inline-block;
 }
 .UserSocialItemsForPortletView {
   margin-right: 20px !important;
@@ -10936,7 +10934,7 @@ div.special-pager .hidden.next:after {
   line-height: 1.5;
 }
 #game-notification a {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #ccc;
   font-size: 12px;
   line-height: 1;
   display: inline;

@@ -56,6 +56,8 @@
                                 'ownersEmailSignature'              => 'resolveOwnersEmailSignature',
                                 'globalMarketingFooterHtml'         => 'resolveGlobalMarketingFooterHtml',
                                 'globalMarketingFooterPlainText'    => 'resolveGlobalMarketingFooterPlainText',
+                                'unsubscribeUrl'                    => 'resolveUnsubscribeUrl',
+                                'manageSubscriptionsUrl'            => 'resolveManageSubscriptionsUrl',
                                 );
 
         public static function isSpecialMergeTag($attributeName, $timeQualifier)
@@ -63,14 +65,14 @@
             return (empty($timeQualifier) && array_key_exists($attributeName, static::$specialAttributesResolver));
         }
 
-        public static function resolve($attributeName, $model = null)
+        public static function resolve($attributeName, $model = null, $params = array())
         {
             $methodName                         = static::$specialAttributesResolver[$attributeName];
             // we send $model to all, those which need it use it, other get it as optional param.
-            $resolvedSpecialMergeTagContent     = static::$methodName($model);
+            $resolvedSpecialMergeTagContent     = static::$methodName($model, $params);
             if (in_array($attributeName, static::$containsNestedMergeTags))
             {
-                static::resolveContentForNestedMergeTags($resolvedSpecialMergeTagContent, $model);
+                static::resolveContentForNestedMergeTags($resolvedSpecialMergeTagContent, $model, $params);
             }
             return $resolvedSpecialMergeTagContent;
         }
@@ -106,7 +108,7 @@
 
         protected static function resolveLastYear()
         {
-            return date('Y') - 1 ;
+            return static::resolveCurrentYear() - 1 ;
         }
 
         /**
@@ -114,10 +116,7 @@
          */
         protected static function resolveOwnersAvatarSmall($model)
         {
-            if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
-            {
-                return $model->owner->getAvatarImage(32, true);
-            }
+            return static::resolveOwnersAvatar($model, 32);
         }
 
         /**
@@ -125,10 +124,7 @@
          */
         protected static function resolveOwnersAvatarMedium($model)
         {
-            if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
-            {
-                return $model->owner->getAvatarImage(64, true);
-            }
+            return static::resolveOwnersAvatar($model, 64);
         }
 
         /**
@@ -137,9 +133,14 @@
          */
         protected static function resolveOwnersAvatarLarge($model)
         {
+            return static::resolveOwnersAvatar($model, 128);
+        }
+
+        protected static function resolveOwnersAvatar($model, $size)
+        {
             if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
             {
-                return $model->owner->getAvatarImage(128, true);
+                return $model->owner->getAvatarImage($size, true);
             }
         }
 
@@ -147,13 +148,21 @@
          * Will only grab first available email signature for user if available
          * @param $model
          */
-        protected static function resolveOwnersEmailSignature($model)
+        protected static function resolveOwnersEmailSignature($model, $params = array())
         {
             if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
             {
                 if ($model->owner->emailSignatures->count() > 0)
                 {
-                    return $model->owner->emailSignatures[0]->htmlContent;
+                    $isHtmlContent  = ArrayUtil::getArrayValue($params, 'isHtmlContent', true);
+                    if ($isHtmlContent)
+                    {
+                        return $model->owner->emailSignatures[0]->htmlContent;
+                    }
+                    else
+                    {
+                        return $model->owner->emailSignatures[0]->textContent;
+                    }
                 }
             }
         }
@@ -168,16 +177,44 @@
             return GlobalMarketingFooterUtil::getContentByType(false, true);
         }
 
-        protected static function resolveContentForNestedMergeTags(& $resolvedSpecialMergeTagContent, $model = null)
+        protected static function resolveUnsubscribeUrl($model, $params = array())
         {
-            $language   = null;
-            $type       = EmailTemplate::TYPE_WORKFLOW;
+            $content    = static::resolveGlobalMarketingFooterUrl('resolveUnsubscribeUrlByArray', $params);
+            return $content;
+        }
+
+        protected static function resolveManageSubscriptionsUrl($model, $params = array())
+        {
+            $content    = static::resolveGlobalMarketingFooterUrl('resolveManageSubscriptionsUrlByArray', $params);
+            return $content;
+        }
+
+        protected static function resolveGlobalMarketingFooterUrl($method, $params = array())
+        {
+            try
+            {
+                $content = GlobalMarketingFooterUtil::$method($params);
+                return $content;
+            }
+            catch (NotSupportedException $e)
+            {
+                return MergeTagsToModelAttributesAdapter::PROPERTY_NOT_FOUND;
+            }
+        }
+
+        protected static function resolveContentForNestedMergeTags(& $resolvedSpecialMergeTagContent, $model = null, $params = array())
+        {
+            $language               = null;
+            $type                   = EmailTemplate::TYPE_WORKFLOW;
+            $invalidTags            = array();
+            $language               = null;
+            $errorOnFirstMissing    = false;
             if ($model instanceof Contact)
             {
                 $type   = EmailTemplate::TYPE_CONTACT;
             }
             $util                           = MergeTagsUtilFactory::make($type, $language, $resolvedSpecialMergeTagContent);
-            $resolvedContent                = $util->resolveMergeTags($model);
+            $resolvedContent                = $util->resolveMergeTags($model, $invalidTags, $language, $errorOnFirstMissing, $params);
             if ($resolvedContent !== false)
             {
                 $resolvedSpecialMergeTagContent = $resolvedContent;

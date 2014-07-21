@@ -77,8 +77,15 @@
             }
             if (!empty($permissionToCheck))
             {
-                $permission = $this->model->getEffectivePermissions($this->user);
-                return $permissionToCheck == ($permission & $permissionToCheck);
+                try
+                {
+                    $this->model->checkPermissionsHasAnyOf($permissionToCheck, $this->user);
+                    return true;
+                }
+                catch(AccessDeniedSecurityException $e)
+                {
+                    return false;
+                }
             }
             return true;
         }

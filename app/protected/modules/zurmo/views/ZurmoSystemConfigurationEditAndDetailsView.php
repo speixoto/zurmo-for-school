@@ -35,30 +35,51 @@
      ********************************************************************************/
 
     /**
-     * Controller Class for managing currency actions.
-     *
+     * Edit and details view for the system configuration view.
      */
-    class ZurmoReadPermissionsController extends Controller
+    class ZurmoSystemConfigurationEditAndDetailsView extends EditAndDetailsView
     {
-        public function filters()
+        public function getTitle()
         {
-            return array(
-                array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH,
-                    'moduleClassName' => 'ZurmoModule',
-                    'rightName' => ZurmoModule::RIGHT_ACCESS_ADMINISTRATION, //Use this right until a more specific right is in place.
-               ),
-            );
+            return Zurmo::t('ZurmoModule', 'System Configuration');
         }
 
-        public function actionRebuildMunge()
+        public static function getDefaultMetadata()
         {
-            ReadPermissionsOptimizationUtil::rebuild();
-            echo Zurmo::t('ZurmoModule', 'Read permissions rebuild complete.') . "<BR>";
-            if (SHOW_QUERY_DATA)
-            {
-                echo PageView::makeShowQueryDataContent();
-            }
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type' => 'SaveButton',        'renderType' => 'Edit'),
+                            array('type' => 'ConfigurationLink', 'label' => "eval:Zurmo::t('Core', 'Cancel')"),
+                            array('type' => 'EditLink',          'renderType' => 'Details'),
+                        ),
+                    ),
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'autoresponderOrCampaignBatchSize',
+                                                      'type'          => 'BatchConfigInteger'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
+        }
+
+        protected function getNewModelTitleLabel()
+        {
+            return null;
         }
     }
 ?>

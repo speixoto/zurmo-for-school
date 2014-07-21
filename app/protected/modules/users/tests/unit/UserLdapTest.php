@@ -93,7 +93,7 @@
 
             // Now attempt to login as bill a user in zurmo but not on ldap
             $bill               = User::getByUsername('abcdefg');
-            $this->assertEquals(md5('abcdefgN4'), $bill->hash);
+            $this->assertEquals($bill, User::authenticate('abcdefg', 'abcdefgN4'));
             $bill->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB, RIGHT::ALLOW);
             $this->assertTrue($bill->save());
 

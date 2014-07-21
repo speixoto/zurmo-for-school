@@ -95,5 +95,146 @@
             print_r($className::getMetadata());
             echo "</pre>";
         }
+
+        /**
+         * This is a not so fancy way of doing what actionRebuildSecurityCache is doing. It is not paged
+         * and really only for development use until this performance improvement is fully stable.
+         * todo: can remove this method at some point in the future.
+         * @throws NotSupportedException
+         */
+        public function actionRebuildAllNamedSecurableActualPermissions()
+        {
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
+            {
+                throw new NotSupportedException();
+            }
+            $namedSecurableItems = array();
+            $modules             = Module::getModuleObjects();
+            foreach ($modules as $module)
+            {
+                if($module instanceof SecurableModule)
+                {
+                    $namedSecurableItems[] = NamedSecurableItem::getByName(get_class($module));
+                }
+            }
+            foreach(User::getAll() as $user)
+            {
+                if(!$user->isSuperAdministrator() && !$user->isSystemUser)
+                {
+                    echo 'Processing named securable cache for user: ' . strval($user) . "<BR>";
+                    foreach($namedSecurableItems as $namedSecurableItem)
+                    {
+                        $namedSecurableItem->getActualPermissions($user);
+                        //echo '-processing for module: ' . $namedSecurableItem->name . "<BR>";
+                    }
+                    echo 'Current memory usage: ' . Yii::app()->performance->getMemoryUsage() . "<BR>";
+                }
+                else
+                {
+                    echo 'Skipping adding named securable cache for user: ' . strval($user) . "<BR>";
+                }
+                if(!$user->isSystemUser)
+                {
+                    echo 'Processing actual rights cache for user: ' . strval($user) . "<BR>";
+                    RightsUtil::cacheAllRightsByPermitable($user);
+                    echo 'Current memory usage: ' . Yii::app()->performance->getMemoryUsage() . "<BR>";
+                }
+                else
+                {
+                    echo 'Skipping adding actual rights cache for user: ' . strval($user) . "<BR>";
+                }
+            }
+        }
+
+        public function actionRebuildSecurityCache($User_page = 1, $continue = false)
+        {
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
+            {
+                $failureMessageContent = Zurmo::t('Core', 'You must be a super administrator to rebuild the security cache.');
+                $messageView           = new AccessFailureView($failureMessageContent);
+                $view                  = new AccessFailurePageView($messageView);
+                echo $view->render();
+                Yii::app()->end(0, false);
+            }
+            if($User_page == 1)
+            {
+                //to more quickly show the view to the user. To give a better indication of what is happening.
+                $pageSize = 1;
+            }
+            else
+            {
+                $pageSize = 25;
+            }
+
+            $namedSecurableItems = array();
+            $modules             = Module::getModuleObjects();
+            foreach ($modules as $module)
+            {
+                if($module instanceof SecurableModule)
+                {
+                    $namedSecurableItems[] = NamedSecurableItem::getByName(get_class($module));
+                }
+            }
+
+            if($continue)
+            {
+                $page = static::getMassActionProgressStartFromGet('User_page', $pageSize);
+            }
+            else
+            {
+                $page = 1;
+            }
+            $title = Zurmo::t('ZurmoModule', 'Rebuilding Cache');
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'isSystemUser',
+                    'operatorType'         => 'equals',
+                    'value'                => 0,
+                ),
+                2 => array(
+                    'attributeName'        => 'isSystemUser',
+                    'operatorType'         => 'isNull',
+                    'value'                => null,
+                )
+            );
+            $searchAttributeData['structure'] = '1 or 2';
+            $dataProvider = RedBeanModelDataProviderUtil::
+                                makeDataProvider($searchAttributeData, 'User', 'RedBeanModelDataProvider', null, false, $pageSize);
+            $selectedRecordCount = $dataProvider->getTotalItemCount();
+            $users = $dataProvider->getData();
+            foreach($users as $user)
+            {
+                if(!$user->isSuperAdministrator())
+                {
+                    foreach($namedSecurableItems as $namedSecurableItem)
+                    {
+                        $namedSecurableItem->getActualPermissions($user);
+                    }
+                }
+                RightsUtil::cacheAllRightsByPermitable($user);
+            }
+            $rebuildView = new RebuildSecurityCacheProgressView(
+                            $this->getId(),
+                            $this->getModule()->getId(),
+                            new User(),
+                            $selectedRecordCount,
+                            $page,
+                            $pageSize,
+                            $User_page,
+                            'rebuildSecurityCache',
+                            $title
+            );
+            if(!$continue)
+            {
+                $view = new ZurmoPageView(ZurmoDefaultAdminViewUtil::
+                    makeStandardViewForCurrentUser($this, $rebuildView));
+                echo $view->render();
+                Yii::app()->end(0, false);
+            }
+            else
+            {
+                echo $rebuildView->renderRefreshJSONScript();
+            }
+        }
     }
 ?>
