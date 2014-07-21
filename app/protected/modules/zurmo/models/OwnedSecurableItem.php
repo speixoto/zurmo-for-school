@@ -344,7 +344,8 @@
             {
                 $permission = PermissionsUtil::getActualPermissionDataForReadByModuleNameForUser($moduleClassName);
 
-                if (($permission == Permission::NONE || $permission == Permission::DENY) && !static::bypassReadPermissionsOptimizationToSqlQueryBasedOnWhere($where))
+                if (($permission == Permission::NONE || $permission == Permission::DENY)
+                    && !static::bypassReadPermissionsOptimizationToSqlQueryBasedOnWhere($where))
                 {
                     $quote                               = DatabaseCompatibilityUtil::getQuote();
                     $modelAttributeToDataProviderAdapter = new OwnedSecurableItemIdToDataProviderAdapter(
