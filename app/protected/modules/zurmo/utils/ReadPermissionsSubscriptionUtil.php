@@ -335,33 +335,41 @@
         /**
          * Update all account read permissions items when permissions for item  is added to group
          */
-        public static function securableItemGivenPermissionsForGroup()
+        public static function securableItemGivenPermissionsForGroup(SecurableItem $securableItem)
         {
-            self::runJobForAccountsWhenRoleOrGroupChanged();
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
+            $account      = $securableItem->castDown(array($modelDerivationPathToItem));
+            self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->accountId);
         }
 
         /**
          * Update all account read permissions items when permissions for item is removed from group
          */
-        public static function securableItemLostPermissionsForGroup()
+        public static function securableItemLostPermissionsForGroup(SecurableItem $securableItem)
         {
-            self::runJobForAccountsWhenRoleOrGroupChanged();
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
+            $account      = $securableItem->castDown(array($modelDerivationPathToItem));
+            self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->accountId);
         }
 
         /**
          * Update all account read permissions items when permissions for item is added to user
          */
-        public static function securableItemGivenPermissionsForUser()
+        public static function securableItemGivenPermissionsForUser(SecurableItem $securableItem)
         {
-            self::runJobForAccountsWhenRoleOrGroupChanged();
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
+            $account      = $securableItem->castDown(array($modelDerivationPathToItem));
+            self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->accountId);
         }
 
         /**
          * Update all account read permissions items when permissions for item is removed from user
          */
-        public static function securableItemLostPermissionsForUser()
+        public static function securableItemLostPermissionsForUser(SecurableItem $securableItem)
         {
-            self::runJobForAccountsWhenRoleOrGroupChanged();
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
+            $account      = $securableItem->castDown(array($modelDerivationPathToItem));
+            self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->accountId);
         }
 
         /**
@@ -419,7 +427,6 @@
         public static function roleParentBeingRemoved()
         {
             self::runJobForAccountsWhenRoleOrGroupChanged();
-            echo "TRIGGER ROLE_PARENT_REMOVED";
         }
 
         /**
@@ -431,6 +438,11 @@
         }
 
         protected static function runJobForAccountsWhenRoleOrGroupChanged()
+        {
+            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+        }
+
+        protected static function runJobForAccountsWhenAccountPermissionsChanged()
         {
             Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
         }

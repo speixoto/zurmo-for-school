@@ -248,13 +248,13 @@
                         {
                             ReadPermissionsOptimizationUtil::
                             securableItemGivenPermissionsForGroup($securableItem, $permitable);
-                            ReadPermissionsSubscriptionUtil::securableItemGivenPermissionsForGroup();
+                            ReadPermissionsSubscriptionUtil::securableItemGivenPermissionsForGroup($securableItem);
                         }
                         elseif ($permitable instanceof User)
                         {
                             ReadPermissionsOptimizationUtil::
                             securableItemGivenPermissionsForUser($securableItem, $permitable);
-                            ReadPermissionsSubscriptionUtil::securableItemGivenPermissionsForUser();
+                            ReadPermissionsSubscriptionUtil::securableItemGivenPermissionsForUser($securableItem);
                         }
                         else
                         {
