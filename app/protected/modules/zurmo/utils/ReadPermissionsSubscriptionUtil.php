@@ -349,7 +349,7 @@
         {
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
             $account      = $securableItem->castDown(array($modelDerivationPathToItem));
-            self::updateAccountReadSu   bscriptionTableBasedOnBuildTable($account->id);
+            self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->id);
         }
 
         /**
@@ -410,6 +410,7 @@
          */
         public static function userBeingRemovedFromRole()
         {
+            // ToDo: update jobs just for one user
             self::runJobForAccountsWhenRoleOrGroupChanged();
         }
 
