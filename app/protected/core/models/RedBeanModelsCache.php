@@ -185,7 +185,6 @@
         {
             $className  = get_class($model);
             return static::supportsAndAllowsMemcacheByModelClassName($className);
-
         }
 
         protected static function supportsAndAllowsMemcacheByModelClassName($modelClassName)

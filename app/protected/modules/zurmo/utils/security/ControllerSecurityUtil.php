@@ -57,7 +57,7 @@
                 $securableItem->checkPermissionsHasAnyOf($permissionToCheck);
                 return true;
             }
-            catch(AccessDeniedSecurityException $e)
+            catch (AccessDeniedSecurityException $e)
             {
                 return false;
             }

@@ -82,7 +82,7 @@
                     $this->model->checkPermissionsHasAnyOf($permissionToCheck, $this->user);
                     return true;
                 }
-                catch(AccessDeniedSecurityException $e)
+                catch (AccessDeniedSecurityException $e)
                 {
                     return false;
                 }

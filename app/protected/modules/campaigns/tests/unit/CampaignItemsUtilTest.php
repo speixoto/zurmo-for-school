@@ -451,7 +451,6 @@
             $marketingListId    = $marketingList->id;
             for ($i = 0; $i < 5; $i++)
             {
-
                 $contact    = ContactTestHelper::createContactByNameForOwner('campaignContact ' . $i, $this->user);
                 MarketingListMemberTestHelper::createMarketingListMember($i % 2, $marketingList, $contact);
             }

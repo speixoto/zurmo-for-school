@@ -261,7 +261,7 @@
          */
         protected function resolveIsReadOnlySupported()
         {
-            if((bool)Yii::app()->params['processReadMungeAsWriteMunge'])
+            if ((bool)Yii::app()->params['processReadMungeAsWriteMunge'])
             {
                 return new NotSupportedException();
             }

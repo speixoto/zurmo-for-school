@@ -53,14 +53,14 @@
         public static function checkPermissionsHasAnyOf($requiredPermissions, OwnedSecurableItem $ownedSecurableItem, User $user)
         {
             assert('is_int($requiredPermissions)');
-            if($requiredPermissions == Permission::READ)
+            if ($requiredPermissions == Permission::READ)
             {
                 return static::resolveAndCheckPermissionsForRead($requiredPermissions, $ownedSecurableItem, $user);
             }
-            elseif(in_array($requiredPermissions, array(Permission::READ, Permission::WRITE, Permission::DELETE,
+            elseif (in_array($requiredPermissions, array(Permission::READ, Permission::WRITE, Permission::DELETE,
                                                         Permission::CHANGE_PERMISSIONS, Permission::CHANGE_OWNER)))
             {
-                if((bool)Yii::app()->params['processReadMungeAsWriteMunge'])
+                if ((bool)Yii::app()->params['processReadMungeAsWriteMunge'])
                 {
                     //Forcing use of Permission::READ since it is expected you are always using read/write together
                     //as explicit permissions if processReadMungeAsWriteMunge is true
@@ -95,7 +95,7 @@
         {
             try
             {
-                if(AllPermissionsOptimizationCache::getHasReadPermissionOnSecurableItem($ownedSecurableItem, $user))
+                if (AllPermissionsOptimizationCache::getHasReadPermissionOnSecurableItem($ownedSecurableItem, $user))
                 {
                     return true;
                 }
@@ -104,7 +104,7 @@
                     throw new AccessDeniedSecurityException($user, $requiredPermissions, Permission::NONE);
                 }
             }
-            catch(NotFoundException $e)
+            catch (NotFoundException $e)
             {
                 try
                 {
@@ -113,7 +113,7 @@
                         $ownedSecurableItem, $user, $hasReadPermission);
                     return $hasReadPermission;
                 }
-                catch(AccessDeniedSecurityException $e)
+                catch (AccessDeniedSecurityException $e)
                 {
                     $hasReadPermission = false;
                     AllPermissionsOptimizationCache::cacheHasReadPermissionOnSecurableItem(
@@ -143,11 +143,11 @@
                 {
                     $quote          = DatabaseCompatibilityUtil::getQuote();
                     $mungeTableName = ReadPermissionsOptimizationUtil::getMungeTableName($modelClassName);
-                    $sql            = "select id from " . $mungeTableName. " where {$quote}securableitem_id{$quote} = " .
+                    $sql            = "select id from " . $mungeTableName . " where {$quote}securableitem_id{$quote} = " .
                                       $ownedSecurableItem->getClassId('SecurableItem') . " and {$quote}munge_id{$quote} in ('" .
                                       join("', '", $mungeIds) . "') limit 1";
                     $id = ZurmoRedBean::getCol($sql);
-                    if(!empty($id))
+                    if (!empty($id))
                     {
                         return true;
                     }
@@ -161,7 +161,7 @@
                     throw new NotSupportedException();
                 }
             }
-            elseif($permission == Permission::DENY)
+            elseif ($permission == Permission::DENY)
             {
                 throw new AccessDeniedSecurityException($user, $requiredPermissions, Permission::DENY);
             }
@@ -405,7 +405,7 @@
             {
                 return AllPermissionsOptimizationCache::getMungeIdsByUser($user);
             }
-            catch(NotFoundException $e)
+            catch (NotFoundException $e)
             {
                 list($roleId, $groupIds) = self::getUserRoleIdAndGroupIds($user);
                 $mungeIds = array("U$user->id");

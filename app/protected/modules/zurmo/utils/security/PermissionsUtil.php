@@ -189,7 +189,7 @@
         public static function getActualPermissionDataForReadByModuleNameForUser($moduleClassName, User $user = null)
         {
             assert('is_string($moduleClassName)');
-            if($user == null)
+            if ($user == null)
             {
                 $user = Yii::app()->user->userModel;
             }

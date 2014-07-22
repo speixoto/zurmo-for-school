@@ -85,7 +85,7 @@
                     $this->setPrimaryUser(Yii::app()->user->userModel->username);
                     $this->packSessionAndCookies();
                 }
-                else if ($this->username == $primaryUser)
+                elseif ($this->username == $primaryUser)
                 {
                     // we don't want to remember primary user anymore as we are there.
                     $this->unsetPrimaryUser();

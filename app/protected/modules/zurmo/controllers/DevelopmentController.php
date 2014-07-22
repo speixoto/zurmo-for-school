@@ -112,17 +112,17 @@
             $modules             = Module::getModuleObjects();
             foreach ($modules as $module)
             {
-                if($module instanceof SecurableModule)
+                if ($module instanceof SecurableModule)
                 {
                     $namedSecurableItems[] = NamedSecurableItem::getByName(get_class($module));
                 }
             }
-            foreach(User::getAll() as $user)
+            foreach (User::getAll() as $user)
             {
-                if(!$user->isSuperAdministrator() && !$user->isSystemUser)
+                if (!$user->isSuperAdministrator() && !$user->isSystemUser)
                 {
                     echo 'Processing named securable cache for user: ' . strval($user) . "<BR>";
-                    foreach($namedSecurableItems as $namedSecurableItem)
+                    foreach ($namedSecurableItems as $namedSecurableItem)
                     {
                         $namedSecurableItem->getActualPermissions($user);
                         //echo '-processing for module: ' . $namedSecurableItem->name . "<BR>";
@@ -133,7 +133,7 @@
                 {
                     echo 'Skipping adding named securable cache for user: ' . strval($user) . "<BR>";
                 }
-                if(!$user->isSystemUser)
+                if (!$user->isSystemUser)
                 {
                     echo 'Processing actual rights cache for user: ' . strval($user) . "<BR>";
                     RightsUtil::cacheAllRightsByPermitable($user);
@@ -156,7 +156,7 @@
                 echo $view->render();
                 Yii::app()->end(0, false);
             }
-            if($User_page == 1)
+            if ($User_page == 1)
             {
                 //to more quickly show the view to the user. To give a better indication of what is happening.
                 $pageSize = 1;
@@ -170,13 +170,13 @@
             $modules             = Module::getModuleObjects();
             foreach ($modules as $module)
             {
-                if($module instanceof SecurableModule)
+                if ($module instanceof SecurableModule)
                 {
                     $namedSecurableItems[] = NamedSecurableItem::getByName(get_class($module));
                 }
             }
 
-            if($continue)
+            if ($continue)
             {
                 $page = static::getMassActionProgressStartFromGet('User_page', $pageSize);
             }
@@ -202,11 +202,11 @@
                                 makeDataProvider($searchAttributeData, 'User', 'RedBeanModelDataProvider', null, false, $pageSize);
             $selectedRecordCount = $dataProvider->getTotalItemCount();
             $users = $dataProvider->getData();
-            foreach($users as $user)
+            foreach ($users as $user)
             {
-                if(!$user->isSuperAdministrator())
+                if (!$user->isSuperAdministrator())
                 {
-                    foreach($namedSecurableItems as $namedSecurableItem)
+                    foreach ($namedSecurableItems as $namedSecurableItem)
                     {
                         $namedSecurableItem->getActualPermissions($user);
                     }
@@ -224,7 +224,7 @@
                             'rebuildSecurityCache',
                             $title
             );
-            if(!$continue)
+            if (!$continue)
             {
                 $view = new ZurmoPageView(ZurmoDefaultAdminViewUtil::
                     makeStandardViewForCurrentUser($this, $rebuildView));

@@ -642,9 +642,9 @@
             'create function create_item(user_id int)
             returns int
             begin
-              insert into `item` ( `id`, `createddatetime`,`modifieddatetime`,
+              insert into `item` ( `id`, `createddatetime`, `modifieddatetime`,
                     `createdbyuser__user_id`, `modifiedbyuser__user_id` )
-                    VALUES ( NULL,  NOW() , NOW(), user_id, user_id  );
+                    VALUES ( null,  NOW() , NOW(), user_id, user_id  );
                return last_insert_id();
             end;',
 
@@ -1678,7 +1678,7 @@
 
                   declare cursor0 cursor for select `campaign`.`id`, `campaign`.`marketinglist_id` from `campaign`
                         where ((`campaign`.`status` = active_status) and (`campaign`.`sendondatetime` < NOW()));
-                  declare continue handler for not found set loop0_eof = TRUE;
+                  declare continue handler for not found set loop0_eof = true;
                   open cursor0;
                         loop0: loop
                               fetch cursor0 into campaign_id, marketinglist_id;

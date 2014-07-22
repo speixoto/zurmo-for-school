@@ -126,7 +126,7 @@
         public function testGetUsersByPartialFullNameWithAutoCompleteOptionsAsExcludeRootUsers()
         {
             UserTestHelper::createBasicUser('Root');
-            ZurmoRedBean::exec('UPDATE _user SET isrootuser=1 WHERE username="root";');
+            ZurmoRedBean::exec('UPDATE _user SET isrootuser = 1 WHERE username = "root";');
 
             $users = UserSearch::getUsersByPartialFullName('Root', 5);
             $this->assertEquals(1, count($users));
@@ -134,6 +134,5 @@
             $users = UserSearch::getUsersByPartialFullName('Root', 5, $autoCompleteOptions);
             $this->assertEquals(0, count($users));
         }
-
     }
 ?>
