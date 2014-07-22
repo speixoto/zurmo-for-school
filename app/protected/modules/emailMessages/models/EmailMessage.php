@@ -46,6 +46,11 @@
 
         public static function getAllByFolderType($type)
         {
+            static::getAllByFolderType($type, null);
+        }
+
+        public static function getByFolderType($type, $count)
+        {
             assert('is_string($type)');
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
@@ -59,7 +64,7 @@
             $searchAttributeData['structure'] = '1';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('EmailMessage');
             $where = RedBeanModelDataProvider::makeWhere('EmailMessage', $searchAttributeData, $joinTablesAdapter);
-            return self::getSubset($joinTablesAdapter, null, null, $where, null);
+            return self::getSubset($joinTablesAdapter, null, $count, $where, null);
         }
 
         public function __toString()

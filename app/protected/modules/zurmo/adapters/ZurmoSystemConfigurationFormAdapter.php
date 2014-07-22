@@ -48,6 +48,7 @@
         {
             $form                                         = new ZurmoSystemConfigurationForm();
             $form->autoresponderOrCampaignBatchSize       = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
+            $form->outboundEmailBatchSize                 = OutboundEmailBatchSizeConfigUtil::getBatchSize();
             return $form;
         }
 
@@ -59,6 +60,7 @@
             if (Yii::app()->user->userModel->isRootUser)
             {
                 AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize((int)$form->autoresponderOrCampaignBatchSize);
+                OutboundEmailBatchSizeConfigUtil::setBatchSize((int)$form->outboundEmailBatchSize);
             }
         }
     }
