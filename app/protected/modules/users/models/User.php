@@ -252,12 +252,10 @@
                 $this->role != null && $this->role->id > 0)
             {
                 ReadPermissionsOptimizationUtil::userAddedToRole($this);
-                //ReadPermissionsSubscriptionUtil::userAddedToRole();
+                ReadPermissionsSubscriptionUtil::userAddedToRole();
                 $this->onChangeRights();
                 $this->onChangePolicies();
             }
-            // ToDO: this should be in if, check why it is not working if we put it there
-            ReadPermissionsSubscriptionUtil::userAddedToRole();
 
             if ($this->isNewModel)
             {

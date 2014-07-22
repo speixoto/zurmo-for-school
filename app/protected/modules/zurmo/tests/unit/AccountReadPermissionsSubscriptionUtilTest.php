@@ -569,15 +569,17 @@
             $this->assertEquals($account->id, $rows[2]['modelid']);
             $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[2]['subscriptiontype']);
 
-            // Remove role1 from role2
+            // Remove role1 from role2 - this is way how it works in uI
+            //$role2->roles->remove($role1);
+            //$this->assertTrue($role2->save());
             Yii::app()->jobQueue->deleteAll();
-            $role2->roles->remove($role1);
-            $this->assertTrue($role2->save());
+            $role1->role = null;
+            $this->assertTrue($role1->save());
+            $role1->forget();
             RedBeanModel::forgetAll();
             ReadPermissionsOptimizationUtil::rebuild();
 
             $queuedJobs = Yii::app()->jobQueue->getAll();
-            // ToDO: Check Role.php afterSave() function, because ReadPermissionsSubscriptionUtil::roleParentSet(); event is not trigered
             $this->assertEquals(1, count($queuedJobs[5]));
             $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
             Yii::app()->jobQueue->deleteAll();
@@ -596,15 +598,15 @@
             $this->assertEquals($account->id, $rows[2]['modelid']);
             $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[2]['subscriptiontype']);
 
-            // Now add role1 as child of role4
+            // Now add role4 as parent of role1
             Yii::app()->jobQueue->deleteAll();
-            $role4->roles->add($role1);
-            $this->assertTrue($role4->save());
+            $role1 = Role::getByName('Role1');
+            $role1->role = $role4;
+            $this->assertTrue($role1->save());
             RedBeanModel::forgetAll();
             ReadPermissionsOptimizationUtil::rebuild();
 
             $queuedJobs = Yii::app()->jobQueue->getAll();
-            // ToDO: Check Role.php afterSave() function, because ReadPermissionsSubscriptionUtil::roleParentSet(); event is not trigered
             $this->assertEquals(1, count($queuedJobs[5]));
             $this->assertEquals('ReadPermissionSubscriptionUpdateForAccount', $queuedJobs[5][0]['jobType']);
             Yii::app()->jobQueue->deleteAll();
@@ -668,14 +670,11 @@
             $role3 = Role::getByName('Role3');
 
             // Just to trigger role changes
-            $user1->role = null;
-            $this->assertTrue($user1->save());
-            RedBeanModel::forgetAll();
+            $user2->role = $role1;
+            $this->assertTrue($user2->save());
+            $user2->forget();
+            $user2 = User::getByUsername('billy');
 
-            // ToDO: Check User.php afterSave() function, because ReadPermissionsSubscriptionUtil::userAddedToRole() event is not trigered
-            // ToDo: and I had to move code outside if statement, similar to issue with ROle.php::aferSave()
-            $user1->role = $role1;
-            $this->assertTrue($user1->save());
             Yii::app()->jobQueue->deleteAll();
             $user2->role = $role3;
             $this->assertTrue($user2->save());
@@ -728,8 +727,8 @@
 
             // Set role3 to be parent of role1, $user2 should get access to the account
             Yii::app()->jobQueue->deleteAll();
-            $role3->roles->add($role1);
-            $this->assertTrue($role3->save());
+            $role1->role = $role3;
+            $this->assertTrue($role1->save());
             RedBeanModel::forgetAll();
             ReadPermissionsOptimizationUtil::rebuild();
 
@@ -751,11 +750,6 @@
             $this->assertEquals($user2->id, $rows[2]['userid']);
             $this->assertEquals($account->id, $rows[2]['modelid']);
             $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[2]['subscriptiontype']);
-
-            // Delete $role3
-            // ToDo: If we skip next two lines below, code will fail when we try to set $user->role=$role3, on the end of this function
-            $user2->role = null;
-            $this->assertTrue($user2->save());
 
             Yii::app()->jobQueue->deleteAll();
             $this->assertTrue($role3->delete());
@@ -795,6 +789,8 @@
             $this->assertTrue($role3->save());
             $this->assertTrue($role2->save());
 
+            $user2->forget();
+            $user2 = User::getByUsername('billy');
             $user2->role = $role3;
             $this->assertTrue($user2->save());
             RedBeanModel::forgetAll();

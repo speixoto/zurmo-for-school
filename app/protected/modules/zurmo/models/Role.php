@@ -112,10 +112,8 @@
                 $this->role != null && $this->role->id > 0)
             {
                 ReadPermissionsOptimizationUtil::roleParentSet($this);
-                //ReadPermissionsSubscriptionUtil::roleParentSet();
+                ReadPermissionsSubscriptionUtil::roleParentSet();
             }
-            // ToDO: this should be in if, check why it is not working if we put it there
-            ReadPermissionsSubscriptionUtil::roleParentSet();
             parent::afterSave();
         }
 
