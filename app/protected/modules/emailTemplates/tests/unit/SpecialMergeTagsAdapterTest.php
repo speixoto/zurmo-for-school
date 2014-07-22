@@ -270,7 +270,6 @@
             }
             $resolved               = SpecialMergeTagsAdapter::resolve('unsubscribeUrl', $model, $params);
             $this->assertEquals(MergeTagsToModelAttributesAdapter::PROPERTY_NOT_FOUND, $resolved);
-
         }
 
         /**
@@ -353,7 +352,6 @@
             }
             $resolved               = SpecialMergeTagsAdapter::resolve('manageSubscriptionsUrl', $model, $params);
             $this->assertEquals(MergeTagsToModelAttributesAdapter::PROPERTY_NOT_FOUND, $resolved);
-
         }
 
         /**
@@ -417,7 +415,6 @@
             $expectedReversed       = EmailMessageActivityUtil::resolveQueryStringArrayForHash($expectedHash);
             $resolvedReversed       = EmailMessageActivityUtil::resolveQueryStringArrayForHash($resolvedHash);
             $this->assertEquals($expectedReversed, $resolvedReversed);
-
         }
 
         protected static function extractHashFromUrl($url)

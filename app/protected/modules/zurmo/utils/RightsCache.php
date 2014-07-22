@@ -47,13 +47,13 @@
             {
                 return parent::getEntry($identifier, $default, $cacheDefaultValue);
             }
-            catch(NotFoundException $e)
+            catch (NotFoundException $e)
             {
                 if (static::supportsAndAllowsDatabaseCaching())
                 {
                     $row = ZurmoRedBean::getRow("select entry from actual_rights_cache " .
-                                                "where identifier = '" . $identifier. "'");
-                    if($row != null && isset($row['entry']))
+                                                "where identifier = '" . $identifier . "'");
+                    if ($row != null && isset($row['entry']))
                     {
                         //Calling parent because we don't need to re-cache the db cache item
                         parent::cacheEntry($identifier, $row['entry']);

@@ -141,7 +141,6 @@
             $this->assertTrue($project->save());
             AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($project, $nobody);
 
-
             //Now the nobody user can access the details view.
             Yii::app()->user->userModel = $nobody;
             $this->setGetArray(array('id' => $project->id));
@@ -180,7 +179,6 @@
             $this->assertTrue($project->save());
             AllPermissionsOptimizationUtil::securableItemLostPermissionsForUser($project, $nobody);
 
-
             //Test nobody, access to detail should fail.
             Yii::app()->user->userModel = $nobody;
             $this->setGetArray(array('id' => $project->id));
@@ -217,7 +215,6 @@
             $childRole->forget();
             $childRole = Role::getById($childRoleId);
 
-
             //create project owned by super
 
             $project2 = ProjectTestHelper::createProjectByNameForOwner('testingParentRolePermission', $super);
@@ -234,7 +231,6 @@
             $project2->addPermissions($userInChildRole, Permission::READ);
             $this->assertTrue($project2->save());
             AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($project2, $userInChildRole);
-
 
             //Test userInChildRole, access to details should not fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -257,7 +253,6 @@
             AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForUser($project2, $userInChildRole);
             AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($project2, $userInChildRole);
 
-
             //Test userInChildRole, access to edit should not fail.
             Yii::app()->user->userModel = $userInChildRole;
             $this->setGetArray(array('id' => $project2->id));
@@ -276,7 +271,6 @@
             $project2->addPermissions($userInChildRole, Permission::READ_WRITE_CHANGE_PERMISSIONS, Permission::DENY);
             $this->assertTrue($project2->save());
             AllPermissionsOptimizationUtil::securableItemLostPermissionsForUser($project2, $userInChildRole);
-
 
             //Test userInChildRole, access to detail should fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -389,7 +383,6 @@
             $project3->addPermissions($parentGroup, Permission::READ_WRITE_CHANGE_PERMISSIONS, Permission::DENY);
             $this->assertTrue($project3->save());
             AllPermissionsOptimizationUtil::securableItemLostPermissionsForGroup($project3, $parentGroup);
-
 
             //Test userInChildGroup, access to detail should fail.
             Yii::app()->user->userModel = $userInChildGroup;
