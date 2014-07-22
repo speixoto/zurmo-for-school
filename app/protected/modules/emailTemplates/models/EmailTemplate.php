@@ -288,14 +288,17 @@
 
         public function checkPermissionsHasAnyOf($requiredPermissions, User $user = null)
         {
-            $currentUser = Yii::app()->user->userModel;
-            $effectivePermissions = $this->getEffectivePermissions($currentUser);
+            if ($user == null)
+            {
+                $user = Yii::app()->user->userModel;
+            }
+            $effectivePermissions = $this->getEffectivePermissions($user);
             if (($effectivePermissions & $requiredPermissions) == 0)
             {
                 $this->setTreatCurrentUserAsOwnerForPermissions(true);
                 if (!$this->isPredefinedBuilderTemplate())
                 {
-                    throw new AccessDeniedSecurityException($currentUser, $requiredPermissions, $effectivePermissions);
+                    throw new AccessDeniedSecurityException($user, $requiredPermissions, $effectivePermissions);
                 }
                 else
                 {
