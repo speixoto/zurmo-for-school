@@ -234,8 +234,12 @@
                     {
                         $inputValue   = $this->model->$attribute->$relatedAttribute;
                         $displayValue = $this->resolveDisplayedValueForRelatedAttribute($attribute, $relatedAttribute);
+                        if (empty($displayValue) && $this->element instanceof DropDownElement && !empty($this->element->params) && $this->element->params['addBlank'])
+                        {
+                            $displayValue = Zurmo::t('Core', '(None)');
+                        }
                     }
-                    if ($inputValue != null)
+                    if ($displayValue != null)
                     {
                         if ($this->element instanceof ModelElement)
                         {
