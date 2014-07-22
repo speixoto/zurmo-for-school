@@ -42,6 +42,8 @@
 
         const ADMIN_VIEW_MOBILE_CHECK_FILTER_PATH = 'application.modules.zurmo.controllers.filters.AdminViewMobileCheckControllerFilter';
 
+        const ROOT_USER_ACCESS_FILTER_PATH = 'application.modules.zurmo.controllers.filters.RootUserAccessControllerFilter';
+
         public function filters()
         {
             $moduleClassName = $this->resolveModuleClassNameForFilters();
@@ -85,14 +87,6 @@
         public function __construct($id, $module = null)
         {
             parent::__construct($id, $module);
-        }
-
-        /**
-         * Override if the module is a nested module such as groups or roles.
-         */
-        public function resolveAndGetModuleId()
-        {
-            return $this->getModule()->getId();
         }
 
         public static function getRightsFilterPath()

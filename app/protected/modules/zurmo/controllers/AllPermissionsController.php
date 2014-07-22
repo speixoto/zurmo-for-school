@@ -34,29 +34,31 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ReadPermissionsOptimizationUtilTest extends ZurmoBaseTest
+    /**
+     * Controller Class for managing read/write permissions and munge rebuild
+     *
+     */
+    class ZurmoAllPermissionsController extends Controller
     {
-        public static function setUpBeforeClass()
+        public function filters()
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
+            return array(
+                array(
+                    ZurmoBaseController::RIGHTS_FILTER_PATH,
+                    'moduleClassName' => 'ZurmoModule',
+                    'rightName' => ZurmoModule::RIGHT_ACCESS_ADMINISTRATION, //Use this right until a more specific right is in place.
+               ),
+            );
         }
 
-        public function setUp()
+        public function actionRebuildMunge()
         {
-            parent::setUp();
-            Yii::app()->user->userModel = User::getByUsername('super');
-        }
-
-        public function testGetMungeIdsByUserIncludesEveryoneGroup()
-        {
-            Yii::app()->user->userModel = User::getByUsername('super');
-            $mungeIds = ReadPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
-            $this->assertEquals(2, count($mungeIds));
-            $group = Group::getByName(Group::EVERYONE_GROUP_NAME);
-            $group->save();
-            $mungeIds = ReadPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
-            $this->assertEquals(3, count($mungeIds));
+            AllPermissionsOptimizationUtil::rebuild();
+            echo Zurmo::t('ZurmoModule', 'All permissions rebuild complete.') . "<BR>";
+            if (SHOW_QUERY_DATA)
+            {
+                echo PageView::makeShowQueryDataContent();
+            }
         }
     }
 ?>

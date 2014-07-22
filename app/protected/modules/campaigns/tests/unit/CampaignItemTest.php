@@ -33,7 +33,7 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-    class CampaignItemTest extends ZurmoBaseTest
+    class CampaignItemTest extends AutoresponderOrCampaignBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -409,70 +409,7 @@
         }
 
         /**
-         * @depends testCreateAndGetCampaignItemById
-         */
-        public function testAddNewItem()
-        {
-            $processed          = 0;
-            $contact            = ContactTestHelper::createContactByNameForOwner('campaignContact', Yii::app()->user->userModel);
-            $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 04');
-            $campaign           = CampaignTestHelper::createCampaign('campaign 03',
-                                                                        'subject 03',
-                                                                        'text 03',
-                                                                        'html 03',
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        $marketingList);
-            $saved              = CampaignItem::addNewItem($processed, $contact, $campaign);
-            $this->assertTrue($saved);
-            $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0,
-                                                                                        $campaign->id);
-            $this->assertNotEmpty($campaignItems);
-            $this->assertCount(1, $campaignItems);
-        }
-
-        /**
-         * @depends testAddNewItem
-         */
-        public function testRegisterCampaignItemsByCampaign()
-        {
-            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 05');
-            $campaign                   = CampaignTestHelper::createCampaign('campaign 04',
-                                                                                'subject 04',
-                                                                                'text 04',
-                                                                                'html 04',
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                $marketingList);
-            $this->assertNotNull($campaign);
-            $contacts           = array();
-            $contacts[]         = ContactTestHelper::createContactByNameForOwner('campaignContact 01',
-                                                                                        Yii::app()->user->userModel);
-            $contacts[]         = ContactTestHelper::createContactByNameForOwner('campaignContact 02',
-                                                                                        Yii::app()->user->userModel);
-            $contacts[]         = ContactTestHelper::createContactByNameForOwner('campaignContact 03',
-                                                                                        Yii::app()->user->userModel);
-            $contacts[]         = ContactTestHelper::createContactByNameForOwner('campaignContact 04',
-                                                                                        Yii::app()->user->userModel);
-            $contacts[]         = ContactTestHelper::createContactByNameForOwner('campaignContact 05',
-                                                                                        Yii::app()->user->userModel);
-
-            CampaignItem::registerCampaignItemsByCampaign($campaign, $contacts);
-            $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaign->id);
-            $this->assertNotEmpty($campaignItems);
-            $this->assertCount(5, $campaignItems);
-        }
-
-        /**
-         * @depends testRegisterCampaignItemsByCampaign
+         * @depends testDeleteCampaignItem
          */
         public function testIsQueued()
         {
@@ -498,7 +435,7 @@
             $campaignItem   = CampaignItemTestHelper::createCampaignItem(0, $campaign, $contact);
             $this->assertNotNull($campaignItem);
             $this->assertFalse($campaignItem->isQueued());
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $this->assertTrue($campaignItem->isQueued());
         }
 
@@ -561,7 +498,7 @@
             $campaignItem   = CampaignItemTestHelper::createCampaignItem(0, $campaign, $contact);
             $this->assertNotNull($campaignItem);
             $this->assertFalse($campaignItem->isSent());
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $this->assertFalse($campaignItem->isSent()); // Folder is outbox at the end of processDueItem and hence it fails
             $box                                    = EmailBox::resolveAndGetByName(EmailBox::CAMPAIGNS_NAME);
             $campaignItem->emailMessage->folder     = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_SENT);
@@ -596,7 +533,7 @@
             $campaignItem   = CampaignItemTestHelper::createCampaignItem(0, $campaign, $contact);
             $this->assertNotNull($campaignItem);
             $this->assertFalse($campaignItem->hasFailedToSend());
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $this->assertFalse($campaignItem->hasFailedToSend()); // Folder is outbox at the end of processDueItem and hence it fails
             $box                                    = EmailBox::resolveAndGetByName(EmailBox::CAMPAIGNS_NAME);
             $campaignItem->emailMessage->folder     = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX_FAILURE);

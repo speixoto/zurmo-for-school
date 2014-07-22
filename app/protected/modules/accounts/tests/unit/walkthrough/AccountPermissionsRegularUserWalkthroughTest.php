@@ -47,14 +47,14 @@
             SecurityTestHelper::createSuperAdmin();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
 
             //Add the nobody user to an account, but only read only.
             $nobody = User::getByUsername('nobody');
             $account = AccountTestHelper::createAccountByNameForOwner('superAccountReadableByNobody',  Yii::app()->user->userModel);
             $account->addPermissions($nobody, Permission::READ, Permission::ALLOW);
             assert($account->save()); // Not Coding Standard
-            ReadPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($account, $nobody);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($account, $nobody);
 
             //Give the nobody user rights to the accounts module.
             $nobody->setRight('AccountsModule', AccountsModule::RIGHT_ACCESS_ACCOUNTS);

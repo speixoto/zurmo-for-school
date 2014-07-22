@@ -90,6 +90,7 @@
 
             TestDatabaseUtil::deleteRowsFromAllTablesExceptLog();
             PermissionsCache::forgetAll();
+            AllPermissionsOptimizationCache::forgetAll();
             RedBeanModel::forgetAll();
             RedBeanDatabase::close();
             assert('!RedBeanDatabase::isSetup()'); // Not Coding Standard

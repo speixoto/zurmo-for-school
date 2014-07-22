@@ -48,7 +48,7 @@
 
             self::$asynchronousThreshold = ExportModule::$asynchronousThreshold;
             ExportModule::$asynchronousThreshold = 3;
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public static function tearDownAfterClass()
@@ -142,7 +142,7 @@
             foreach ($contacts as $contact)
             {
                 $contact->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
-                ReadPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($contact, $nobody);
+                AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($contact, $nobody);
                 $this->assertTrue($contact->save());
             }
             //Now the nobody user should be able to access the edit view and still the details view.

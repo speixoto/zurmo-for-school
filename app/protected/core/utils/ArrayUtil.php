@@ -40,15 +40,15 @@
     class ArrayUtil
     {
         /**
-         * Returns value of $array[$element] if $element is defined, otherwise if not defined will return null
+         * Returns value of $array[$element] if $element is defined, otherwise if not defined will return a defaultValue
          */
-        public static function getArrayValue($array, $element)
+        public static function getArrayValue($array, $element, $defaultValue = null)
         {
             if (isset($array[$element]))
             {
                 return $array[$element];
             }
-            return null;
+            return $defaultValue;
         }
 
         /**
@@ -307,6 +307,31 @@
                 }
             }
             return $haystack;
+        }
+
+        /**
+         * Set a key to default value if it doesn't exist
+         * @param array $array
+         * @param $key
+         * @param bool $defaultValue
+         */
+        public static function setToDefaultValueIfMissing(array & $array, $key, $defaultValue = false)
+        {
+            if (!isset($array[$key]))
+            {
+                $array[$key]    = $defaultValue;
+            }
+        }
+
+        /**
+         * Check if an array contains all keys
+         * @param array $array
+         * @param array $keys
+         * @return bool
+         */
+        public static function arrayHasKeys(array $array, array $keys)
+        {
+            return count(array_intersect($keys, array_keys($array))) == count($keys);
         }
     }
 ?>

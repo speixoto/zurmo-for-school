@@ -134,7 +134,7 @@
 
             $compareData = array();
             $compareData['column_1']   = array();
-            $compareData['column_1'][] = 'Is too long. Maximum length is 32. This value will truncated upon import.';
+            $compareData['column_1'][] = 'Is too long. Maximum length is 60. This value will truncated upon import.';
             $this->assertEquals($compareData, unserialize($data[8]->serializedAnalysisMessages));
             $this->assertEquals(ImportDataAnalyzer::STATUS_WARN, $data[8]->analysisStatus);
 

@@ -49,6 +49,10 @@
 
         protected $mergeTagsUtil;
 
+        protected static $userHash;
+
+        protected static $emailTemplateUserHash;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -113,10 +117,11 @@
             $likeContactState1->name                            = 'Customer';
             $likeContactState1->order                           = 0;
 
+            static::$userHash                                   = StringUtil::generateRandomString(60);
             $users                                              = User::getAll();
             $user1                                              = new User();
             $user1->lastName                                    = 'Kevin';
-            $user1->hash                                        = 'rieWoy3aijohP6chaigaokohs1oovohf';
+            $user1->hash                                        = static::$userHash;
             $user1->language                                    = 'es';
             $user1->timeZone                                    = 'America/Chicago';
             $user1->username                                    = 'dave';
@@ -200,6 +205,7 @@
             $manyModel2->name                                   = 'newOriginalName';
             self::$emailTemplate->hasMany->add($manyModel2);
 
+            static::$emailTemplateUserHash                      = StringUtil::generateRandomString(60);
             self::$emailTemplate->string                        = 'def';
             self::$emailTemplate->firstName                     = 'Jane';
             self::$emailTemplate->lastName                      = 'Bond';
@@ -229,7 +235,7 @@
             self::$emailTemplate->likeContactState->name        = 'New';
             self::$emailTemplate->likeContactState->order       = 1;
             self::$emailTemplate->user->lastName                = 'Dean';
-            self::$emailTemplate->user->hash                    = 'teo8eghaipaC5ahngahleiyaebofu6oo';
+            self::$emailTemplate->user->hash                    = static::$emailTemplateUserHash;
             self::$emailTemplate->user->language                = 'en';
             self::$emailTemplate->user->timeZone                = 'America/Denver';
             self::$emailTemplate->user->username                = 'deandavis';
@@ -756,8 +762,8 @@
                                                 ' [[USER__USERNAME]] [[USER__CURRENCY]] [[USER__CURRENCY__CODE]] ' .
                                                 'Old: [[WAS%USER__HASH]] [[WAS%USER__LAST^NAME]] [[WAS%USER__LANGUAGE]]' .
                                                 ' [[WAS%USER__TIME^ZONE]] [[WAS%USER__USERNAME]]';
-            $compareContent                 = 'user: Current: teo8eghaipaC5ahngahleiyaebofu6oo Dean en America/Denver'.
-                                                ' deandavis USD USD Old: rieWoy3aijohP6chaigaokohs1oovohf Kevin es '.
+            $compareContent                 = 'user: Current: ' . static::$emailTemplateUserHash . ' Dean en America/Denver'.
+                                                ' deandavis USD USD Old: ' . static::$userHash . ' Kevin es '.
                                                 'America/Chicago dave';
             $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);

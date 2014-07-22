@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class EmailNotificationUtilTest extends ZurmoBaseTest
+    class EmailNotificationUtilTest extends AutoresponderOrCampaignBaseTest
     {
         public $super;
 

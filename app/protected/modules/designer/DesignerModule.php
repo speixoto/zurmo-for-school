@@ -59,19 +59,6 @@
                     'right'            => self::RIGHT_ACCESS_DESIGNER,
                 ),
             );
-            $modules = Module::getModuleObjects();
-            foreach ($modules as $module)
-            {
-                $moduleTreeMenuItems = $module->getDesignerMenuItems();
-                if ($module->isEnabled() &&
-                    !empty($moduleTreeMenuItems))
-                {
-                    $tabMenuItems[0]['items'][] = array(
-                        'label' => Zurmo::t('DesignerModule', $module::getModuleLabelByTypeAndLanguage('Plural')),
-                        'url'   => array('/designer/default/modulesMenu', 'moduleClassName' => get_class($module)),
-                    );
-                }
-            }
             return $tabMenuItems;
         }
 

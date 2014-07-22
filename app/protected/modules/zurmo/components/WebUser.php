@@ -36,7 +36,9 @@
 
     class WebUser extends CWebUser
     {
-        protected $userModel = null;
+        protected $userModel    = null;
+
+        protected $switched     = false;
 
         /**
          * @param string $attributeName
@@ -48,10 +50,11 @@
             assert('$attributeName != ""');
             try
             {
-                if ($attributeName != 'isGuest' && $this->userModel === null)
+                if ($attributeName != 'isGuest' && ($this->userModel === null || $this->switched))
                 {
-                    $username = parent::__get('username');
-                    $this->userModel = User::getByUsername($username);
+                    $username           = parent::__get('username');
+                    $this->userModel    = User::getByUsername($username);
+                    $this->switched     = false;
                 }
                 if ($attributeName == 'userModel')
                 {
@@ -181,6 +184,23 @@
                 $this->updateFlash();
             }
             $this->updateAuthStatus();
+        }
+
+        public function removeStateKeyPrefixFromKey($key)
+        {
+            $prefix     = $this->getStateKeyPrefix();
+            $key        = str_replace($prefix, '', $key);
+            return $key;
+        }
+
+        public function setSwitched($value)
+        {
+            $this->switched = $value;
+        }
+
+        public function getSwitched()
+        {
+            return $this->switched;
         }
     }
 ?>

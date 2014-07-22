@@ -106,7 +106,7 @@
             $benny = User::getByUsername('benny');
             Yii::app()->user->userModel = $benny;
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('OwnedSecurableTestItem');
-            $mungeIds = ReadPermissionsOptimizationUtil::getMungeIdsByUser($benny);
+            $mungeIds = AllPermissionsOptimizationUtil::getMungeIdsByUser($benny);
             $subsetSql = OwnedSecurableTestItem::makeSubsetOrCountSqlQuery('ownedsecurabletestitem',
                                                     $joinTablesAdapter, 1, 5, null, null);
             $compareSubsetSql  = "select distinct {$quote}ownedsecurabletestitem{$quote}.{$quote}id{$quote} id ";
@@ -219,7 +219,6 @@
 
             //Now confirm that the query is just on the owner only, no munge.
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('OwnedSecurableTestItem');
-            $mungeIds = ReadPermissionsOptimizationUtil::getMungeIdsByUser($benny);
             $subsetSql = OwnedSecurableTestItem::makeSubsetOrCountSqlQuery('ownedsecurabletestitem',
                                                     $joinTablesAdapter, 1, 5, null, null);
             $compareSubsetSql  = "select {$quote}ownedsecurabletestitem{$quote}.{$quote}id{$quote} id ";
@@ -250,7 +249,7 @@
             $this->assertTrue($saved);
             $aUser = User::getByUsername('aaa');
             Yii::app()->user->userModel = $aUser;
-            $mungeIds = ReadPermissionsOptimizationUtil::getMungeIdsByUser($aUser);
+            $mungeIds = AllPermissionsOptimizationUtil::getMungeIdsByUser($aUser);
 
             $model = new OwnedSecurableTestItem();
             $model->member = 'test4';

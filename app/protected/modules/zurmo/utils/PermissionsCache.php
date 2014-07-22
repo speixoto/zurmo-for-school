@@ -83,7 +83,7 @@
 
             if (static::supportsAndAllowsMemcache())
             {
-                $prefix = static::getCachePrefix($securableItemModelIdentifer, static::$cacheType);
+                $prefix = static::getCachePrefix($securableItemModelIdentifer);
                 $serializedData = Yii::app()->cache->get($prefix . $securableItemModelIdentifer);
                 if ($serializedData !== false)
                 {
@@ -115,7 +115,8 @@
          * @param Permitable $permitable
          * @param int $combinedPermissions
          */
-        public static function cacheCombinedPermissions(SecurableItem $securableItem, Permitable $permitable, $combinedPermissions)
+        public static function cacheCombinedPermissions(SecurableItem $securableItem, Permitable $permitable,
+                                                        $combinedPermissions)
         {
             assert('is_int($combinedPermissions) || ' .
                    'is_numeric($combinedPermissions[0]) && is_string($combinedPermissions[0])');
@@ -138,7 +139,7 @@
 
             if (static::supportsAndAllowsMemcache())
             {
-                $prefix = static::getCachePrefix($securableItemModelIdentifer, static::$cacheType);
+                $prefix = static::getCachePrefix($securableItemModelIdentifer);
                 $permitablesCombinedPermissions = Yii::app()->cache->get($prefix . $securableItemModelIdentifer);
                 if ($permitablesCombinedPermissions === false)
                 {
@@ -166,12 +167,15 @@
          * @param string $namedSecurableItemName
          * @param object $permitable
          * @param array $actualPermissions
+         * @param $cacheToDatabase
          */
-        public static function cacheNamedSecurableItemActualPermissions($namedSecurableItemName, $permitable, $actualPermissions)
+        public static function cacheNamedSecurableItemActualPermissions($namedSecurableItemName, $permitable, $actualPermissions,
+                                                                        $cacheToDatabase = true)
         {
             assert('is_string($namedSecurableItemName)');
             assert('$permitable instanceof Permitable');
             assert('is_array($actualPermissions)');
+            assert('is_bool($cacheToDatabase)');
             $cacheKeyName = $namedSecurableItemName . get_class($permitable) . $permitable->id . 'ActualPermissions';
             if (static::supportsAndAllowsPhpCaching())
             {
@@ -179,15 +183,28 @@
             }
             if (static::supportsAndAllowsMemcache())
             {
-                $prefix = static::getCachePrefix($cacheKeyName, static::$cacheType);
+                $prefix = static::getCachePrefix($cacheKeyName);
                 Yii::app()->cache->set($prefix . $cacheKeyName, serialize($actualPermissions));
+            }
+            if (static::supportsAndAllowsDatabaseCaching() && $cacheToDatabase)
+            {
+                if ($permitable->getClassId('Permitable') > 0)
+                {
+                    ZurmoRedBean::exec("insert into named_securable_actual_permissions_cache
+                                     (securableitem_name, permitable_id, allow_permissions, deny_permissions)
+                                     values ('" . $namedSecurableItemName . "', " . $permitable->getClassId('Permitable') . ", " .
+                                                  $actualPermissions[0] . ", " . $actualPermissions[1] . ") on duplicate key
+                                     update allow_permissions = " . $actualPermissions[0] . " AND deny_permissions = " .
+                                     $actualPermissions[1]);
+                }
             }
         }
 
         /**
          * Given the name of a named securable item, return the cached entry if available.
-         * @param string $namedSecurableItemName
-         * @param Permitable $permitable
+         * @param $namedSecurableItemName
+         * @param $permitable
+         * @return mixed
          * @throws NotFoundException
          */
         public static function getNamedSecurableItemActualPermissions($namedSecurableItemName, $permitable)
@@ -204,13 +221,29 @@
             }
             if (static::supportsAndAllowsMemcache())
             {
-                $prefix = static::getCachePrefix($cacheKeyName, static::$cacheType);
+                $prefix = static::getCachePrefix($cacheKeyName);
                 $serializedData = Yii::app()->cache->get($prefix . $cacheKeyName);
                 if ($serializedData !== false)
                 {
                     $actualPermissions = unserialize($serializedData);
                     assert('is_array($actualPermissions)');
                     return $actualPermissions;
+                }
+            }
+            if (static::supportsAndAllowsDatabaseCaching())
+            {
+                if ($permitable->getClassId('Permitable') > 0)
+                {
+                    $row = ZurmoRedBean::getRow("select allow_permissions, deny_permissions " .
+                                                "from named_securable_actual_permissions_cache " .
+                                                "where securableitem_name = '" . $namedSecurableItemName . "' and " .
+                                                "permitable_id = '" . $permitable->getClassId('Permitable'). "'");
+                    if ($row != null && isset($row['allow_permissions']) && isset($row['deny_permissions']))
+                    {
+                        static::cacheNamedSecurableItemActualPermissions($namedSecurableItemName, $permitable,
+                                    array($row['allow_permissions'], $row['deny_permissions']), false);
+                        return array($row['allow_permissions'], $row['deny_permissions']);
+                    }
                 }
             }
             throw new NotFoundException();
@@ -231,7 +264,7 @@
             $permitableModelIdentifier = $permitable->getModelIdentifier();
             if (static::supportsAndAllowsMemcache())
             {
-                $prefix = static::$modulePermissionsDataCachePrefix . static::getCachePrefix(static::$cacheType);
+                $prefix = static::getCachePrefix($permitableModelIdentifier) . static::$modulePermissionsDataCachePrefix;
                 $serializedData = Yii::app()->cache->get($prefix . $permitableModelIdentifier);
                 if ($serializedData !== false)
                 {
@@ -255,7 +288,7 @@
             $permitableModelIdentifier   = $permitable->getModelIdentifier();
             if (static::supportsAndAllowsMemcache())
             {
-                $prefix = static::$modulePermissionsDataCachePrefix . static::getCachePrefix(static::$cacheType);
+                $prefix = static::getCachePrefix($permitableModelIdentifier) . static::$modulePermissionsDataCachePrefix;
 
                 Yii::app()->cache->set($prefix . $permitableModelIdentifier, serialize($data));
             }
@@ -278,14 +311,15 @@
 
             if (static::supportsAndAllowsMemcache())
             {
-                $prefix = static::getCachePrefix($securableItemModelIdentifer, static::$cacheType);
+                $prefix = static::getCachePrefix($securableItemModelIdentifer);
                 Yii::app()->cache->delete($prefix . $securableItemModelIdentifer);
             }
 
             if (SECURITY_OPTIMIZED && static::supportsAndAllowsDatabaseCaching() && $forgetDbLevelCache)
             {
                 $securableItemId = $securableItem->getClassID('SecurableItem');
-                ZurmoDatabaseCompatibilityUtil::callProcedureWithoutOuts("clear_cache_securableitem_actual_permissions($securableItemId)");
+                ZurmoDatabaseCompatibilityUtil::
+                    callProcedureWithoutOuts("clear_cache_securableitem_actual_permissions($securableItemId)");
             }
         }
 
@@ -302,7 +336,11 @@
             {
                 ZurmoDatabaseCompatibilityUtil::callProcedureWithoutOuts("clear_cache_all_actual_permissions()");
             }
-
+            if (static::supportsAndAllowsDatabaseCaching() && $forgetDbLevelCache)
+            {
+                ZurmoDatabaseCompatibilityUtil::
+                    callProcedureWithoutOuts("clear_cache_named_securable_all_actual_permissions()");
+            }
             static::clearMemcacheCache();
         }
     }

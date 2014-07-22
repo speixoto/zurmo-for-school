@@ -39,6 +39,9 @@
         const EMAIL_CONFIGURATION_FILTER_PATH =
               'application.modules.emailMessages.controllers.filters.EmailConfigurationCheckControllerFilter';
 
+        const USER_SWITCHER_RIGHTS_FILTER_PATH =
+                'application.modules.zurmo.controllers.filters.UserSwitcherRightsControllerFilter';
+
         /**
          * Override to exclude modalSearchList and autoComplete
          * since these are available to all users regardless
@@ -51,8 +54,11 @@
         {
             $filters = array();
             $filters[] = array(
+                static::USER_SWITCHER_RIGHTS_FILTER_PATH . ' + switchTo',
+            );
+            $filters[] = array(
                     ZurmoBaseController::RIGHTS_FILTER_PATH .
-                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, ' .
+                    ' - modalList, - switchTo, autoComplete, details, profile, edit, auditEventsModalList, changePassword, ' .
                     'configurationEdit, emailConfiguration, securityDetails, ' .
                     'autoCompleteForMultiSelectAutoComplete, confirmTimeZone, changeAvatar, gameDashboard',
                     'moduleClassName' => 'UsersModule',
@@ -654,6 +660,20 @@
         protected function resolveStateMetadataAdapterClassNameForExport()
         {
             return 'NonSystemUsersStateMetadataAdapter';
+        }
+
+        public function actionSwitchTo($username)
+        {
+            $identity   = new SwitchUserIdentity($username, null);
+            if ($identity->authenticate())
+            {
+                Yii::app()->user->login($identity);
+                $this->redirect(Yii::app()->user->returnUrl);
+            }
+            else
+            {
+                throw new NotSupportedException("Can not switch user");
+            }
         }
     }
 ?>

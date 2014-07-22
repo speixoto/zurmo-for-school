@@ -66,7 +66,7 @@
                 $saved                      = $marketingList->save();
                 assert('$saved');
                 $marketingList = MarketingList::getById($marketingList->id);
-                ReadPermissionsOptimizationUtil::
+                AllPermissionsOptimizationUtil::
                     securableItemGivenPermissionsForGroup($marketingList, Group::getByName(Group::EVERYONE_GROUP_NAME));
                 $marketingList->save();
                 $marketingLists[]           = $marketingList->id;
