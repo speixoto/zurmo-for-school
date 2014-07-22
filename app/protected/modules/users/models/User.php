@@ -1115,10 +1115,12 @@
 
         /**
          * Make active users query search attributes data.
+         * @param bool $includeRootUser
          * @return array
          */
         public static function makeActiveUsersQuerySearchAttributeData($includeRootUser = false)
         {
+            assert('is_bool($includeRootUser)');
             $searchAttributeData['clauses'] = array(
                 1 => array(
                     'attributeName'        => 'isActive',
@@ -1137,7 +1139,7 @@
                 ),
             );
             $searchAttributeData['structure'] = '1 and (2 or 3)';
-            if ($includeRootUser == false) 
+            if ($includeRootUser == false)
             {
                 $searchAttributeData['clauses'][4] = array(
                     'attributeName'        => 'isRootUser',
