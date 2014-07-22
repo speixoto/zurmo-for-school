@@ -339,7 +339,7 @@
         {
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
             $account      = $securableItem->castDown(array($modelDerivationPathToItem));
-            self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->accountId);
+            self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->id);
         }
 
         /**
@@ -349,7 +349,7 @@
         {
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
             $account      = $securableItem->castDown(array($modelDerivationPathToItem));
-            self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->accountId);
+            self::updateAccountReadSu   bscriptionTableBasedOnBuildTable($account->id);
         }
 
         /**
@@ -359,7 +359,7 @@
         {
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
             $account      = $securableItem->castDown(array($modelDerivationPathToItem));
-            self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->accountId);
+            self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->id);
         }
 
         /**
@@ -369,7 +369,7 @@
         {
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
             $account      = $securableItem->castDown(array($modelDerivationPathToItem));
-            self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->accountId);
+            self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->id);
         }
 
         /**
@@ -426,6 +426,7 @@
          */
         public static function roleParentBeingRemoved()
         {
+            // ToDo: This event is not called - check why
             self::runJobForAccountsWhenRoleOrGroupChanged();
         }
 

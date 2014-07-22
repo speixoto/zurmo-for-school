@@ -275,13 +275,13 @@
                         {
                             ReadPermissionsOptimizationUtil::
                             securableItemGivenPermissionsForGroup($securableItem, $permitable);
-                            ReadPermissionsSubscriptionUtil::securableItemGivenPermissionsForGroup();
+                            ReadPermissionsSubscriptionUtil::securableItemGivenPermissionsForGroup($securableItem);
                         }
                         elseif ($permitable instanceof User)
                         {
                             ReadPermissionsOptimizationUtil::
                             securableItemGivenPermissionsForUser($securableItem, $permitable);
-                            ReadPermissionsSubscriptionUtil::securableItemGivenPermissionsForUser();
+                            ReadPermissionsSubscriptionUtil::securableItemGivenPermissionsForUser($securableItem);
                         }
                         else
                         {
@@ -302,13 +302,13 @@
                         {
                             ReadPermissionsOptimizationUtil::
                             securableItemLostPermissionsForGroup($securableItem, $permitable);
-                            ReadPermissionsSubscriptionUtil::securableItemLostPermissionsForGroup();
+                            ReadPermissionsSubscriptionUtil::securableItemLostPermissionsForGroup($securableItem);
                         }
                         elseif ($permitable instanceof User)
                         {
                             ReadPermissionsOptimizationUtil::
                             securableItemLostPermissionsForUser($securableItem, $permitable);
-                            ReadPermissionsSubscriptionUtil::securableItemLostPermissionsForUser();
+                            ReadPermissionsSubscriptionUtil::securableItemLostPermissionsForUser($securableItem);
                         }
                         else
                         {
@@ -330,13 +330,13 @@
                         {
                             ReadPermissionsOptimizationUtil::
                             securableItemLostPermissionsForGroup($securableItem, $permitable);
-                            ReadPermissionsSubscriptionUtil::securableItemLostPermissionsForGroup();
+                            ReadPermissionsSubscriptionUtil::securableItemLostPermissionsForGroup($securableItem);
                         }
                         elseif ($permitable instanceof User)
                         {
                             ReadPermissionsOptimizationUtil::
                             securableItemLostPermissionsForUser($securableItem, $permitable);
-                            ReadPermissionsSubscriptionUtil::securableItemLostPermissionsForUser();
+                            ReadPermissionsSubscriptionUtil::securableItemLostPermissionsForUser($securableItem);
                         }
                         else
                         {
