@@ -482,7 +482,7 @@
         public function checkPermissionsHasAnyOf($requiredPermissions, User $user = null)
         {
             assert('is_int($requiredPermissions)');
-            if($user == null)
+            if ($user == null)
             {
                 $user = Yii::app()->user->userModel;
             }

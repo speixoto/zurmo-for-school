@@ -48,7 +48,7 @@
             $content   = '<div id = "FlashMessageBar"></div>';
             $flashData = Yii::app()->user->getFlashes();
             $script    = null;
-            foreach($flashData as $flashMessage)
+            foreach ($flashData as $flashMessage)
             {
                 $script .= "
                 $('#FlashMessageBar').jnotifyAddMessage(

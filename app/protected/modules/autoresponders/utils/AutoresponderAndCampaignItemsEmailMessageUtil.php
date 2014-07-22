@@ -57,7 +57,7 @@
 
         const EMAIL_MESSAGE_ID                          = "@emailMessageId";
 
-        const NULL_FLAG                                 = "!~~NULL~~!";
+        const NULL_FLAG                                 = "!~~NULL~~!"; // Not Coding Standard
 
         public static function resolveAndSaveEmailMessage($textContent, $htmlContent, Item $itemOwnerModel,
                                                     Contact $contact, MarketingList $marketingList, $itemId, $folderId)
@@ -96,10 +96,13 @@
             }
             else
             {
-                if (!empty($marketingList->fromName) && !empty($marketingList->fromAddress)) {
+                if (!empty($marketingList->fromName) && !empty($marketingList->fromAddress))
+                {
                     $fromAddress = $marketingList->fromAddress;
                     $fromName = $marketingList->fromName;
-                } else {
+                }
+                else
+                {
                     $userToSendMessagesFrom = BaseControlUserConfigUtil::getUserToRunAs();
                     $fromAddress = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
                     $fromName = strval($userToSendMessagesFrom);

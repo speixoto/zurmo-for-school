@@ -67,7 +67,7 @@
         }
 
         /**
-         * Based on the current user, return the importRules types and thier display labels.  Only include import rules
+         * Based on the current user, return the importRules types and their display labels.  Only include import rules
          * that the user has a right to access its corresponding module.
          * @return array of import rules types and display labels.
          */

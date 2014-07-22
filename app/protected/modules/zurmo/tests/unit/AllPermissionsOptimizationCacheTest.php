@@ -75,9 +75,9 @@
             if (AllPermissionsOptimizationCache::supportsAndAllowsMemcache())
             {
                 $super = User::getByUsername('super');
-                AllPermissionsOptimizationCache::cacheMungeIdsByUser($super, array(3,4,5));
+                AllPermissionsOptimizationCache::cacheMungeIdsByUser($super, array(3, 4, 5));
                 $mungeIds = AllPermissionsOptimizationCache::getMungeIdsByUser($super);
-                $this->assertEquals(array(3,4,5), $mungeIds);
+                $this->assertEquals(array(3, 4, 5), $mungeIds);
                 $oldValue = Yii::app()->params['showFlashMessageWhenSecurityCacheShouldBeRebuilt'];
                 Yii::app()->params['showFlashMessageWhenSecurityCacheShouldBeRebuilt'] = true;
                 $this->assertEquals(0, count(Yii::app()->user->getFlashes()));

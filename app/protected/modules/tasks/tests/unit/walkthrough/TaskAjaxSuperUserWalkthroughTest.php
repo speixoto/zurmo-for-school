@@ -230,7 +230,6 @@
             $this->assertTrue($task->save());
             AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($task, $myuser);
 
-
             //Test nobody with elevated rights.
             Yii::app()->user->userModel = User::getByUsername('myuser');
 
