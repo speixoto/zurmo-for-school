@@ -598,6 +598,7 @@
             $user->firstName    = 'Super';
             $user->lastName     = 'User';
             $user->setPassword($password);
+            $user->setIsRootUser();
             $saved = $user->save();
             if (!$saved)
             {
@@ -608,22 +609,6 @@
             $group->users->add($user);
             $saved = $group->save();
             if (!$saved)
-            {
-                throw new FailedToSaveModelException();
-            }
-            return $user;
-        }
-
-        /**
-         * Set User as Root user.
-         */
-        public static function setSuperUserAsRootUser($username)
-        {
-            $user = User::getByUsername($username);
-            $user->setIsRootUser();
-            $saved = $user->save();
-
-            if(!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -1099,7 +1084,6 @@
                 $rules                      = new EnableMinifyNotificationRules();
                 NotificationsUtil::submit($message, $rules);
             }
-            static::setSuperUserAsRootUser('super');
             $messageStreamer->add(Zurmo::t('InstallModule', 'Installation Complete.'));
             Yii::app()->params['isFreshInstall']    = false;
         }

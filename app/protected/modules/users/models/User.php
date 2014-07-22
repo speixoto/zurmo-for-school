@@ -1115,7 +1115,7 @@
          * Make active users query search attributes data.
          * @return array
          */
-        public static function makeActiveUsersQuerySearchAttributeData()
+        public static function makeActiveUsersQuerySearchAttributeData($includeRootUser = false)
         {
             $searchAttributeData['clauses'] = array(
                 1 => array(
@@ -1144,7 +1144,14 @@
                     'value'                => null,
                 )
             );
-            $searchAttributeData['structure'] = '1 and (2 or 3) and (4 or 5)';
+            if ($includeRootUser == false)
+            {
+                $searchAttributeData['structure'] = '1 and (2 or 3) and (4 or 5)';
+            }
+            else
+            {
+                $searchAttributeData['structure'] = '1 and (4 or 5)';
+            }
             return $searchAttributeData;
         }
 
@@ -1152,9 +1159,9 @@
          * Get active users.
          * @return array
          */
-        public static function getActiveUsers()
+        public static function getActiveUsers($includeRootUser = false)
         {
-            $searchAttributeData    = self::makeActiveUsersQuerySearchAttributeData();
+            $searchAttributeData    = self::makeActiveUsersQuerySearchAttributeData($includeRootUser);
             $joinTablesAdapter      = new RedBeanModelJoinTablesQueryAdapter('User');
             $where                  = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
             return User::getSubset($joinTablesAdapter, null, null, $where);
