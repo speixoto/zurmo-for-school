@@ -48,7 +48,7 @@
         {
             $form                                   = new ZurmoSystemConfigurationForm();
             $form->autoresponderOrCampaignBatchSize = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
-            $form->pageListSizeMaxLimit             = ZurmoSystemConfigurationUtil::getBatchSize();
+            $form->listPageSizeMaxLimit             = ZurmoSystemConfigurationUtil::getBatchSize();
             return $form;
         }
 
@@ -58,7 +58,7 @@
         public static function setConfigurationFromForm(ZurmoSystemConfigurationForm $form)
         {
             AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize((int)$form->autoresponderOrCampaignBatchSize);
-            ZurmoSystemConfigurationUtil::setBatchSize((int)$form->pageListSizeMaxLimit);
+            ZurmoSystemConfigurationUtil::setBatchSize((int)$form->listPageSizeMaxLimit);
         }
     }
 ?>

@@ -39,7 +39,7 @@
      */
     class ZurmoSystemConfigurationUtil extends BatchSizeConfigUtil
     {   
-        const CONFIG_KEY             = 'PageListSizeMaxLimit';
+        const CONFIG_KEY             = 'ListPageSizeMaxLimit';
 
         const CONFIG_MODULE_NAME     = 'ZurmoModule';
         

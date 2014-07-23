@@ -73,7 +73,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'pageListSizeMaxLimit', 
+                                                array('attributeName' => 'listPageSizeMaxLimit', 
                                                       'type' => 'Integer'),
                                             ),
                                         ),

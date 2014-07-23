@@ -41,7 +41,7 @@
     {
         public $autoresponderOrCampaignBatchSize;
         
-        public $pageListSizeMaxLimit;
+        public $listPageSizeMaxLimit;
 
         public function rules()
         {
@@ -49,9 +49,9 @@
                 array('autoresponderOrCampaignBatchSize',       'required'),
                 array('autoresponderOrCampaignBatchSize',       'type',      'type' => 'integer'),
                 array('autoresponderOrCampaignBatchSize',       'numerical', 'min' => 1),
-                array('pageListSizeMaxLimit', 'required'),
-                array('pageListSizeMaxLimit', 'type', 'type' => 'integer'),
-                array('pageListSizeMaxLimit', 'numerical', 'min' => 1),
+                array('listPageSizeMaxLimit', 'required'),
+                array('listPageSizeMaxLimit', 'type', 'type' => 'integer'),
+                array('listPageSizeMaxLimit', 'numerical', 'min' => 1),
             );
         }
 
@@ -61,7 +61,7 @@
                 'autoresponderOrCampaignBatchSize'       => Zurmo::t('MarketingModule',
                                                                      'AutorespondersModuleSingularLabel/CampaignsModuleSingularLabel batch size',
                                                                      LabelUtil::getTranslationParamsForAllModules()),
-                'pageListSizeMaxLimit'          => Zurmo::t('ZurmoModule', 'Page list size maximum limit'),
+                'listPageSizeMaxLimit'          => Zurmo::t('ZurmoModule', 'List page size maximum limit'),
             );
         }
     }
