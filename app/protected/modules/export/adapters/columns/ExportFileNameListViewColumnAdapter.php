@@ -47,13 +47,26 @@
             );
         }
 
+        /**
+         * Renders file name column.
+         * @param ExportItem $data
+         * @return string
+         * @throws NotSupportedException
+         */
         public static function renderFileNameCol($data)
         {
             $content    = '<strong>' . $data->exportFileName . '.' . $data->exportFileType . '</strong>';
             $content    .= self::renderStatus($data);
+            $content    .= self::renderCancelButton($data);
             return $content;
         }
 
+        /**
+         * Renders status.
+         * @param ExportItem $data
+         * @return string
+         * @throws NotSupportedException
+         */
         protected static function renderStatus($data)
         {
             $status         = '<div class="continuum"><div class="clearfix">';
@@ -66,7 +79,8 @@
             }
             elseif($isCompleted == 0 && $jobStatus == 1)
             {
-                $status .= '<div class="export-item-stage-status stage-running"><i>●</i><span>Running 500/1000</span></div>';
+                $status .= '<div class="export-item-stage-status stage-running"><i>●</i><span>' . Zurmo::t('ExportModule', 'Running') .
+                    ' ' .  $data->processOffset . '/' . $dataProvider->getPagination()->getPageSize() . '</span></div>';
             }
             elseif($isCompleted == 0 && $jobStatus == 0)
             {
@@ -79,6 +93,39 @@
             }
             $status         .= '</div></div>';
             return $status;
+        }
+
+        /**
+         * Renders cancel button.
+         * @param ExportItem $data
+         * @return string
+         * @throws NotSupportedException
+         */
+        public static function renderCancelButton($data)
+        {
+            $value = (int)$data->isJobRunning;
+            $url   = Yii::app()->createUrl('export/default/cancel', array('id' => $data->id));
+            if($value == 0)
+            {
+                $cancelBtn  = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Cancel')), $url, array('class' => 'white-button'));
+                if((int)$data->cancelExport == 0)
+                {
+                    return $cancelBtn;
+                }
+                else
+                {
+                    return Zurmo::t('ExportModule', 'Cancel Pending');
+                }
+            }
+            elseif($value == 1)
+            {
+                $cancelBtn  = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Cancel')), $url, array('class' => 'white-button disabled'));
+                return $cancelBtn;
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>
