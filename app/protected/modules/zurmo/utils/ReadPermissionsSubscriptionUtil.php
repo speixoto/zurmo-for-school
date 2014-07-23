@@ -377,7 +377,7 @@
          */
         public static function userCreated()
         {
-            // This should update only current user privileges
+            // ToDo: update jobs just for one user if needed for performance reasons
             self::runJobForAccountsWhenRoleOrGroupChanged();
         }
 
@@ -386,6 +386,7 @@
          */
         public static function userAddedToGroup()
         {
+            // ToDo: update jobs just for one user if needed for performance reasons
             self::runJobForAccountsWhenRoleOrGroupChanged();
         }
 
@@ -394,6 +395,7 @@
          */
         public static function userRemovedFromGroup()
         {
+            // ToDo: update jobs just for one user if needed for performance reasons
             self::runJobForAccountsWhenRoleOrGroupChanged();
         }
 
@@ -402,6 +404,7 @@
          */
         public static function userAddedToRole()
         {
+            // ToDo: update jobs just for one user if needed for performance reasons
             self::runJobForAccountsWhenRoleOrGroupChanged();
         }
 
@@ -410,7 +413,7 @@
          */
         public static function userBeingRemovedFromRole()
         {
-            // ToDo: update jobs just for one user
+            // ToDo: update jobs just for one user if needed for performance reasons
             self::runJobForAccountsWhenRoleOrGroupChanged();
         }
 

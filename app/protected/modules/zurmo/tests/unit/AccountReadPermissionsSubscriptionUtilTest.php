@@ -1040,6 +1040,58 @@
             $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[1]['subscriptiontype']);
         }
 
+        public function testSecurableItemGivenOrLostPermissionsForGroup()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $this->deleteAllModelsAndRecordsFromReadPermissionTable('Account');
+            Yii::app()->jobQueue->deleteAll();
+            $job = new ReadPermissionSubscriptionUpdateForAccountJob();
+            $jobBasedOnBuildTable = new ReadPermissionSubscriptionUpdateForAccountFromBuildTableJob();
+            $account = AccountTestHelper::createAccountByNameForOwner('Test Account 1', $super);
+            Yii::app()->jobQueue->deleteAll();
+            sleep(1);
+
+            ReadPermissionsSubscriptionUtil::securableItemGivenPermissionsForGroup($account);
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccountFromBuildTable', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+
+            ReadPermissionsSubscriptionUtil::securableItemLostPermissionsForGroup($account);
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccountFromBuildTable', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+        }
+
+        public function testsecurableItemGivenOrLostPermissionsForUser()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $this->deleteAllModelsAndRecordsFromReadPermissionTable('Account');
+            Yii::app()->jobQueue->deleteAll();
+            $job = new ReadPermissionSubscriptionUpdateForAccountJob();
+            $jobBasedOnBuildTable = new ReadPermissionSubscriptionUpdateForAccountFromBuildTableJob();
+            $account = AccountTestHelper::createAccountByNameForOwner('Test Account 2', $super);
+            Yii::app()->jobQueue->deleteAll();
+            sleep(1);
+
+            $user = self::$johnny;
+
+            ReadPermissionsSubscriptionUtil::securableItemGivenPermissionsForUser($account);
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccountFromBuildTable', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+
+            ReadPermissionsSubscriptionUtil::securableItemLostPermissionsForUser($account);
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs[5]));
+            $this->assertEquals('ReadPermissionSubscriptionUpdateForAccountFromBuildTable', $queuedJobs[5][0]['jobType']);
+            Yii::app()->jobQueue->deleteAll();
+        }
+
         protected function deleteAllModelsAndRecordsFromReadPermissionTable($modelClassName)
         {
             $models = $modelClassName::getAll();
