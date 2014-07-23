@@ -73,23 +73,13 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'listPageSizeMaxLimit', 
-                                                      'type'          => 'BatchConfigInteger'),
+                                                array('attributeName' => 'outboundEmailBatchSize',
+                                                    'type'          => 'BatchConfigInteger'),
                                             ),
                                         ),
                                     )
                                 ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'outboundEmailBatchSize', 
-                                                      'type'          => 'BatchConfigInteger'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),    
+                            ),
                         ),
                     ),
                 ),
