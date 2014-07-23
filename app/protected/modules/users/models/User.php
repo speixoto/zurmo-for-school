@@ -1115,10 +1115,12 @@
 
         /**
          * Make active users query search attributes data.
+         * @param bool $includeRootUser
          * @return array
          */
-        public static function makeActiveUsersQuerySearchAttributeData()
+        public static function makeActiveUsersQuerySearchAttributeData($includeRootUser = false)
         {
+            assert('is_bool($includeRootUser)');
             $searchAttributeData['clauses'] = array(
                 1 => array(
                     'attributeName'        => 'isActive',
@@ -1126,27 +1128,31 @@
                     'value'                => true,
                 ),
                 2 => array(
-                    'attributeName'        => 'isRootUser',
+                    'attributeName'        => 'isSystemUser',
                     'operatorType'         => 'equals',
                     'value'                => 0,
                 ),
                 3 => array(
+                    'attributeName'        => 'isSystemUser',
+                    'operatorType'         => 'isNull',
+                    'value'                => null,
+                ),
+            );
+            $searchAttributeData['structure'] = '1 and (2 or 3)';
+            if ($includeRootUser == false)
+            {
+                $searchAttributeData['clauses'][4] = array(
+                    'attributeName'        => 'isRootUser',
+                    'operatorType'         => 'equals',
+                    'value'                => 0,
+                );
+                $searchAttributeData['clauses'][5] = array(
                     'attributeName'        => 'isRootUser',
                     'operatorType'         => 'isNull',
                     'value'                => null,
-                ),
-                4 => array(
-                    'attributeName'        => 'isSystemUser',
-                    'operatorType'         => 'equals',
-                    'value'                => 0,
-                ),
-                5 => array(
-                    'attributeName'        => 'isSystemUser',
-                    'operatorType'         => 'isNull',
-                    'value'                => null,
-                )
-            );
-            $searchAttributeData['structure'] = '1 and (2 or 3) and (4 or 5)';
+                );
+                $searchAttributeData['structure'] = '1 and (2 or 3) and (4 or 5)';
+            }
             return $searchAttributeData;
         }
 
@@ -1154,9 +1160,9 @@
          * Get active users.
          * @return array
          */
-        public static function getActiveUsers()
+        public static function getActiveUsers($includeRootUser = false)
         {
-            $searchAttributeData    = self::makeActiveUsersQuerySearchAttributeData();
+            $searchAttributeData    = self::makeActiveUsersQuerySearchAttributeData($includeRootUser);
             $joinTablesAdapter      = new RedBeanModelJoinTablesQueryAdapter('User');
             $where                  = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
             return User::getSubset($joinTablesAdapter, null, null, $where);

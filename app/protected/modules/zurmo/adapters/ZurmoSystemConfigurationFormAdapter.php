@@ -46,9 +46,9 @@
          */
         public static function makeFormFromSystemConfiguration()
         {
-            $form                                   = new ZurmoSystemConfigurationForm();
-            $form->autoresponderOrCampaignBatchSize = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
-            $form->listPageSizeMaxLimit             = ZurmoSystemConfigurationUtil::getBatchSize();
+            $form                                         = new ZurmoSystemConfigurationForm();
+            $form->autoresponderOrCampaignBatchSize       = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
+            $form->outboundEmailBatchSize                 = OutboundEmailBatchSizeConfigUtil::getBatchSize();
             return $form;
         }
 
@@ -57,8 +57,11 @@
          */
         public static function setConfigurationFromForm(ZurmoSystemConfigurationForm $form)
         {
-            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize((int)$form->autoresponderOrCampaignBatchSize);
-            ZurmoSystemConfigurationUtil::setBatchSize((int)$form->listPageSizeMaxLimit);
+            if (Yii::app()->user->userModel->isRootUser)
+            {
+                AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize((int)$form->autoresponderOrCampaignBatchSize);
+                OutboundEmailBatchSizeConfigUtil::setBatchSize((int)$form->outboundEmailBatchSize);
+            }
         }
     }
 ?>

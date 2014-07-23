@@ -113,7 +113,7 @@
             {
                 $searchAttributeData = EmailTemplate::getPredefinedBuilderTemplatesSearchAttributeData();
             }
-            $dataProvider   = RedBeanModelDataProviderUtil::makeDataProvider($searchAttributeData, 'EmailTemplate', 'RedBeanModelDataProvider', null, false, 10);
+            $dataProvider   = RedBeanModelDataProviderUtil::makeDataProvider($searchAttributeData, 'EmailTemplate', 'RedBeanModelDataProvider', 'isFeatured', true, 10);
             return $dataProvider;
         }
 
@@ -123,7 +123,7 @@
             $content =  '
                             <div class="pills">
                                     <a href="#" class="filter-link active" data-filter="' . static::FILTER_BY_PREDEFINED_TEMPLATES . '">Layouts</a>
-                                    <a href="#" class="filter-link" data-filter="' . static::FILTER_BY_PREVIOUSLY_CREATED_TEMPLATES . '">Saved Templates</a>
+                                    <a href="#" id="saved-templates-link" class="filter-link" data-filter="' . static::FILTER_BY_PREVIOUSLY_CREATED_TEMPLATES . '">Saved Templates</a>
                             </div>
                         ';
             $content .= $this->renderCloseSelectTemplatesButton();

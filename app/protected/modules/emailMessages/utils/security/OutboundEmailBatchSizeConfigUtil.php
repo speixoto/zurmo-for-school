@@ -35,36 +35,14 @@
      ********************************************************************************/
 
     /**
-     * Form to edit and view the system configuration values in the system configuration.
+     * Class OutboundEmailBatchSizeConfigUtil
      */
-    class ZurmoSystemConfigurationForm extends ConfigurationForm
+    class OutboundEmailBatchSizeConfigUtil extends BatchSizeConfigUtil
     {
-        public $autoresponderOrCampaignBatchSize;
+        const CONFIG_KEY             = 'OutboundEmailBatchSize';
 
-        public $outboundEmailBatchSize;
+        const CONFIG_MODULE_NAME     = 'EmailMessagesModule';
 
-        public function rules()
-        {
-            return array(
-                array('autoresponderOrCampaignBatchSize',       'required'),
-                array('autoresponderOrCampaignBatchSize',       'type',      'type' => 'integer'),
-                array('autoresponderOrCampaignBatchSize',       'numerical', 'min' => 1),
-                array('outboundEmailBatchSize',                 'required'),
-                array('outboundEmailBatchSize',                 'type',      'type' => 'integer'),
-                array('outboundEmailBatchSize',                 'numerical', 'min' => 1),
-            );
-        }
-
-        public function attributeLabels()
-        {
-            return array(
-                'autoresponderOrCampaignBatchSize'       => Zurmo::t('MarketingModule',
-                                                                     'AutorespondersModuleSingularLabel/CampaignsModuleSingularLabel batch size',
-                                                                     LabelUtil::getTranslationParamsForAllModules()),
-                'outboundEmailBatchSize'                  => Zurmo::t('EmailMessagesModule',
-                                                                      'Outbound EmailMessagesModuleSingularLabel batch size',
-                                                                       LabelUtil::getTranslationParamsForAllModules()),
-            );
-        }
+        const CONFIG_DEFAULT_VALUE   = 300;
     }
 ?>

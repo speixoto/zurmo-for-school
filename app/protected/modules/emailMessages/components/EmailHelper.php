@@ -357,14 +357,15 @@
          * or cron.  This will process all emails in a TYPE_OUTBOX folder or TYPE_OUTBOX_ERROR folder. If the message
          * has already been sent 3 times then it will be moved to a failure folder.
          */
-        public function sendQueued()
+        public function sendQueued($count = null)
         {
-            $queuedEmailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
+            assert('is_int($count) || $count == null');
+            $queuedEmailMessages = EmailMessage::getByFolderType(EmailFolder::TYPE_OUTBOX, $count);
             foreach ($queuedEmailMessages as $emailMessage)
             {
                 $this->sendImmediately($emailMessage);
             }
-            $queuedEmailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX_ERROR);
+            $queuedEmailMessages = EmailMessage::getByFolderType(EmailFolder::TYPE_OUTBOX_ERROR, $count);
             foreach ($queuedEmailMessages as $emailMessage)
             {
                 if ($emailMessage->sendAttempts < 3)
