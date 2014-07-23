@@ -33,46 +33,52 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
-    class ExportListView extends SecuredListView
+    /**
+     * Column adapter for status value for export list view.
+     */
+    class ExportFileNameListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        public static function getDefaultMetadata()
+        public function renderGridViewData()
         {
-            $metadata = array(
-                'global' => array(
-                    'nonPlaceableAttributeNames' => array(
-                        'processOffset',
-                        'serializedData',
-                        'exportFileModel',
-                        'modelClassName'
-                    ),
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'exportFileName', 'type' => 'ExportFileName'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-
+            return array(
+                    'name'  => $this->attribute,
+                    'value' => 'ExportFileNameListViewColumnAdapter::renderFileNameCol($data)',
+                    'type'  => 'raw',
             );
-            return $metadata;
         }
 
-        /**
-         * @return bool
-         */
-        public function getRowsAreSelectable()
+        public static function renderFileNameCol($data)
         {
-            return false;
+            $content    = '<strong>' . $data->exportFileName . '.' . $data->exportFileType . '</strong>';
+            $content    .= self::renderStatus($data);
+            return $content;
+        }
+
+        protected static function renderStatus($data)
+        {
+            $status         = '<div class="continuum"><div class="clearfix">';
+            $isCompleted    = (int)$data->isCompleted;
+            $jobStatus      = (int)$data->isJobRunning;
+            $dataProvider   = unserialize($data->serializedData);
+            if($isCompleted == 1)
+            {
+                $status .= '<div class="export-item-stage-status stage-true"><i>●</i><span>' . Zurmo::t('ExportModule', 'Completed') . '</span></div>';
+            }
+            elseif($isCompleted == 0 && $jobStatus == 1)
+            {
+                $status .= '<div class="export-item-stage-status stage-running"><i>●</i><span>Running 500/1000</span></div>';
+            }
+            elseif($isCompleted == 0 && $jobStatus == 0)
+            {
+                $status .= '<div class="export-item-stage-status stage-pending"><i>●</i><span>' . Zurmo::t('ExportModule', 'Pending')
+                    . ' ' . $data->processOffset . '/' . $dataProvider->getPagination()->getPageSize() . '</span></div>';
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            $status         .= '</div></div>';
+            return $status;
         }
     }
 ?>
