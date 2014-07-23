@@ -74,24 +74,22 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'listPageSizeMaxLimit', 
-                                                      'type' => 'Integer'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'outboundEmailBatchSize',
                                                       'type'          => 'BatchConfigInteger'),
                                             ),
                                         ),
                                     )
                                 ),
-                            ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'outboundEmailBatchSize', 
+                                                      'type'          => 'BatchConfigInteger'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),    
                         ),
                     ),
                 ),

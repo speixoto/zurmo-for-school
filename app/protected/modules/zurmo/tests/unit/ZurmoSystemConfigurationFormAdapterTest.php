@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class MarketingConfigurationFormAdapterTest extends ZurmoBaseTest
+    class ZurmoSystemConfigurationFormAdapterTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -44,33 +44,34 @@
 
         public function testMakeFormAndSetConfigurationFromForm()
         {
-            $form = MarketingConfigurationFormAdapter::makeFormFromMarketingConfiguration();
-            // $this->assertEquals(AutoresponderOrCampaignBatchSizeConfigUtil::CONFIG_DEFAULT_VALUE,           $form->autoresponderOrCampaignBatchSize);
-            $this->assertEquals(GlobalMarketingFooterUtil::getContentByType(false),  $form->autoresponderOrCampaignFooterPlainText);
-            $this->assertEquals(GlobalMarketingFooterUtil::getContentByType(true),   $form->autoresponderOrCampaignFooterRichText);
+            $form = ZurmoSystemConfigurationFormAdapter::makeFormFromSystemConfiguration();
+            $this->assertEquals(AutoresponderOrCampaignBatchSizeConfigUtil::CONFIG_DEFAULT_VALUE, $form->autoresponderOrCampaignBatchSize);
+            $this->assertEquals(AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize(),       $form->autoresponderOrCampaignBatchSize);
+            $this->assertEquals(OutboundEmailBatchSizeConfigUtil::getBatchSize(),                 $form->outboundEmailBatchSize);
+            $this->assertEquals(ZurmoSystemConfigurationUtil::getBatchSize(),                     $form->listPageSizeMaxLimit);
 
             //User is not root so he cant change batch size
-            // $form->autoresponderOrCampaignBatchSize         = 20;
-            $form->autoresponderOrCampaignFooterPlainText   = 'abc';
-            $form->autoresponderOrCampaignFooterRichText    = 'def';
-            MarketingConfigurationFormAdapter::setConfigurationFromForm($form);
-            $form = MarketingConfigurationFormAdapter::makeFormFromMarketingConfiguration();
-            // $this->assertEquals(AutoresponderOrCampaignBatchSizeConfigUtil::CONFIG_DEFAULT_VALUE, $form->autoresponderOrCampaignBatchSize);
-            $this->assertEquals('abc',                                                            $form->autoresponderOrCampaignFooterPlainText);
-            $this->assertEquals('def',                                                            $form->autoresponderOrCampaignFooterRichText);
+            $form->autoresponderOrCampaignBatchSize = 20;
+            $form->outboundEmailBatchSize           = 30;
+            $form->listPageSizeMaxLimit             = 10;
+            ZurmoSystemConfigurationFormAdapter::setConfigurationFromForm($form);
+            $form = ZurmoSystemConfigurationFormAdapter::makeFormFromSystemConfiguration();
+            $this->assertEquals(AutoresponderOrCampaignBatchSizeConfigUtil::CONFIG_DEFAULT_VALUE, $form->autoresponderOrCampaignBatchSize);
+            $this->assertEquals(OutboundEmailBatchSizeConfigUtil::getBatchSize(),                 $form->outboundEmailBatchSize);
+            $this->assertEquals(ZurmoSystemConfigurationUtil::getBatchSize(),                     $form->listPageSizeMaxLimit);
 
             //User is root so he can change batch size
             $super = User::getByUsername('super');
             $super->setIsRootUser();
             Yii::app()->user->userModel = $super;
-            // $form->autoresponderOrCampaignBatchSize         = 20;
-            $form->autoresponderOrCampaignFooterPlainText   = 'cba';
-            $form->autoresponderOrCampaignFooterRichText    = 'fed';
-            MarketingConfigurationFormAdapter::setConfigurationFromForm($form);
-            $form = MarketingConfigurationFormAdapter::makeFormFromMarketingConfiguration();
-            // $this->assertEquals(20,     $form->autoresponderOrCampaignBatchSize);
-            $this->assertEquals('cba',  $form->autoresponderOrCampaignFooterPlainText);
-            $this->assertEquals('fed',  $form->autoresponderOrCampaignFooterRichText);
+            $form->autoresponderOrCampaignBatchSize = 20;
+            $form->outboundEmailBatchSize           = 30;
+            $form->listPageSizeMaxLimit             = 10;
+            ZurmoSystemConfigurationFormAdapter::setConfigurationFromForm($form);
+            $form = ZurmoSystemConfigurationFormAdapter::makeFormFromSystemConfiguration();
+            $this->assertEquals(20,  $form->autoresponderOrCampaignBatchSize);
+            $this->assertEquals(30, $form->outboundEmailBatchSize);
+            $this->assertEquals(10, $form->listPageSizeMaxLimit);
         }
     }
 ?>

@@ -54,9 +54,9 @@
                 array('outboundEmailBatchSize',                 'required'),
                 array('outboundEmailBatchSize',                 'type',      'type' => 'integer'),
                 array('outboundEmailBatchSize',                 'numerical', 'min' => 1),
-                array('listPageSizeMaxLimit', 'required'),
-                array('listPageSizeMaxLimit', 'type', 'type' => 'integer'),
-                array('listPageSizeMaxLimit', 'numerical', 'min' => 1),
+                array('listPageSizeMaxLimit',                   'required'),
+                array('listPageSizeMaxLimit',                   'type', 'type' => 'integer'),
+                array('listPageSizeMaxLimit',                   'numerical', 'min' => 1),
             );
         }
 
