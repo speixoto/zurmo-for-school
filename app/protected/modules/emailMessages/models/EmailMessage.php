@@ -46,7 +46,7 @@
 
         public static function getAllByFolderType($type)
         {
-            static::getByFolderType($type, null);
+            return static::getByFolderType($type, null);
         }
 
         public static function getByFolderType($type, $count)
