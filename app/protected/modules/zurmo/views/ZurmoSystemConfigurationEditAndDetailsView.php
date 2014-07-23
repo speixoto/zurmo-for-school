@@ -76,7 +76,7 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'outboundEmailBatchSize',
-                                                      'type'          => 'BatchConfigInteger'),
+                                                    'type'          => 'BatchConfigInteger'),
                                             ),
                                         ),
                                     )
