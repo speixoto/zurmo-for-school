@@ -87,7 +87,7 @@
 
         protected function renderScreenOptions()
         {
-            if ($this->model->modelClassName != '')
+            if ($this->model->modelClassName != '' && !$this->model->isFeatured)
             {
                 $linkText       = ZurmoHtml::icon('icon-details') . '<span class="button-label"></span>' . ZurmoHtml::icon('icon-trigger');
                 $link           = ZurmoHtml::link($linkText, '', array('class' => 'button-action-trigger'));
@@ -149,7 +149,6 @@
                 {
                     return $thumbnail;
                 }
-                return ZurmoHtml::icon($this->icon);
             }
             return ZurmoHtml::icon($this->icon);
         }
