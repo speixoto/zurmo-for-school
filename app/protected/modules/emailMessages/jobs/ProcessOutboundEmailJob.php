@@ -72,7 +72,12 @@
          */
         public function run()
         {
-            return Yii::app()->emailHelper->sendQueued();
+            return Yii::app()->emailHelper->sendQueued($this->resolveBatchSize());
+        }
+
+        protected function resolveBatchSize()
+        {
+            return OutboundEmailBatchSizeConfigUtil::getBatchSize();
         }
     }
 ?>

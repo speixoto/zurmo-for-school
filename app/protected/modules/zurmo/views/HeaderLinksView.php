@@ -68,6 +68,8 @@
 
         const USER_SWITCHER_WRAPPER_SWICHED_CLASS       = 'switched-user';
 
+	    const USER_SWITCHER_INPUT_ID                    = 'User_username_name';
+
         /**
          * @param array $settingsMenuItems
          * @param array $userMenuItems
@@ -210,6 +212,9 @@
                 $("#' . static::USER_SWITCHER_LINK_ID . '").unbind("click.visibility").bind("click.visibility",  function(event)
                  {
                     $("#' . static::USER_SWITCHER_WRAPPER_ID .'").toggleClass("' . static::USER_SWITCHER_WRAPPER_OPEN_CLASS . '");
+                    if($("#' . static::USER_SWITCHER_WRAPPER_ID .'").hasClass("' . static::USER_SWITCHER_WRAPPER_OPEN_CLASS . '")){
+                        $("#' . static::USER_SWITCHER_INPUT_ID .'").focus();
+                    }
                  });
                 ');
         }
