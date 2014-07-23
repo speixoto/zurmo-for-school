@@ -149,7 +149,6 @@
                 {
                     return $thumbnail;
                 }
-                return ZurmoHtml::icon($this->icon);
             }
             return ZurmoHtml::icon($this->icon);
         }
