@@ -112,7 +112,7 @@
                     try
                     {
                         //Update the job run status for the export item.
-                        $exportItem->isJobRunning = 1;
+                        $exportItem->isJobRunning = true;
                         $exportItem->save();
                         $message = Zurmo::t('ExportModule', 'Update the job running status for export item with ID: {id} to true', array('{id}' => $exportItem->id));
                         $this->getMessageLogger()->addInfoMessage($message);
@@ -122,11 +122,11 @@
                     {
                         $message = Zurmo::t('ExportModule', 'Export Item could not be processed due a SecurityException ' . $e->getMessage());
                         $this->getMessageLogger()->addInfoMessage($message);
-                        $exportItem->isJobRunning = 0;
+                        $exportItem->isJobRunning = false;
                         $exportItem->save();
                         $this->processCompletedWithSecurityExceptionExportItem($exportItem);
                     }
-                    $exportItem->isJobRunning = 0;
+                    $exportItem->isJobRunning = false;
                     $exportItem->save();
                     $message = Zurmo::t('ExportModule', 'Update the job running status for export item with ID: {id} to false', array('{id}' => $exportItem->id));
                     $this->getMessageLogger()->addInfoMessage($message);

@@ -134,6 +134,10 @@
             parent::afterSave();
         }
 
+        /**
+         * Get the export items which got cancelled.
+         * @return array
+         */
         public static function getCancelledItems()
         {
             return self::getSubset(null, null, null, "cancelExport = 1");

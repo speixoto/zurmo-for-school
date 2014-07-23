@@ -99,19 +99,6 @@
         {
             $metadata = array();
             $metadata['global'] = array(
-                'designerMenuItems' => array(
-                    'showFieldsLink' => true,
-                    'showGeneralLink' => true,
-                    'showLayoutsLink' => true,
-                    'showMenusLink' => true,
-                ),
-                'adminTabMenuItems' => array(
-                    array(
-                        'label' => "eval:Zurmo::t('ExportModule', 'Export')",
-                        'url'   => array('/export/default/list'),
-                        'right' => self::RIGHT_ACCESS_EXPORT,
-                    ),
-                ),
                 'configureMenuItems' => array(
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
@@ -120,10 +107,7 @@
                         'route'            => '/export/default/list',
                         'right'            => self::RIGHT_ACCESS_EXPORT,
                     ),
-                ),
-                'globalSearchAttributeNames' => array(
-                    'exportFileName',
-                ),
+                )
             );
             return $metadata;
         }
@@ -142,6 +126,14 @@
         public static function getGlobalSearchFormClassName()
         {
             return 'ExportSearchForm';
+        }
+
+        /**
+         * @return boolean
+         */
+        public static function modelsAreNeverGloballySearched()
+        {
+            return true;
         }
     }
 ?>

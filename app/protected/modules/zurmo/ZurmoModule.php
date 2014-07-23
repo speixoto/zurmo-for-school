@@ -189,8 +189,7 @@
                     'users',
                     'roles',
                     'workflows',
-                    'contactWebForms',
-                    'export'
+                    'contactWebForms'
                 ),
                 'tabMenuItemsModuleOrdering' => array(
                     'home',
