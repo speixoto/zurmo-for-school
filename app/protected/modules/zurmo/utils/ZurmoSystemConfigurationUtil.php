@@ -35,35 +35,14 @@
      ********************************************************************************/
 
     /**
-     * Class to adapt system configuration values into a configuration form.
-     * Saves global values from a configuration form.
+     * Helper class for working with campaignItem
      */
-    class ZurmoSystemConfigurationFormAdapter
-    {
-        /**
-         * Creates a form populated with the system configuration global stored values.
-         * @return ZurmoSystemConfigurationForm
-         */
-        public static function makeFormFromSystemConfiguration()
-        {
-            $form                                         = new ZurmoSystemConfigurationForm();
-            $form->autoresponderOrCampaignBatchSize       = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
-            $form->outboundEmailBatchSize                 = OutboundEmailBatchSizeConfigUtil::getBatchSize();
-            $form->listPageSizeMaxLimit                   = ZurmoSystemConfigurationUtil::getBatchSize();
-            return $form;
-        }
+    class ZurmoSystemConfigurationUtil extends BatchSizeConfigUtil
+    {   
+        const CONFIG_KEY             = 'ListPageSizeMaxLimit';
 
-        /**
-         * Given a SystemConfigurationForm, save the system configuration global values.
-         */
-        public static function setConfigurationFromForm(ZurmoSystemConfigurationForm $form)
-        {
-            if (Yii::app()->user->userModel->isRootUser)
-            {
-                AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize((int)$form->autoresponderOrCampaignBatchSize);
-                OutboundEmailBatchSizeConfigUtil::setBatchSize((int)$form->outboundEmailBatchSize);
-                ZurmoSystemConfigurationUtil::setBatchSize((int)$form->listPageSizeMaxLimit);
-            }
-        }
+        const CONFIG_MODULE_NAME     = 'ZurmoModule';
+        
+        const CONFIG_DEFAULT_VALUE   = 100;
     }
 ?>
