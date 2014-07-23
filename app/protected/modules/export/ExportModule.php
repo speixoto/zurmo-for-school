@@ -46,19 +46,19 @@
          * or to be exported via asynchronous via background job.
          * @var int
          */
-        public static $asynchronousThreshold = 3;
+        public static $asynchronousThreshold = 1000;
 
         /**
          * Page size for asynchronus paging when processing export
          * @var int
          */
-        public static $asynchronousPageSize  = 10;
+        public static $asynchronousPageSize  = 500;
 
         /**
          * How many total models to process in a given export job run
          * @var int
          */
-        public static $asynchronousMaximumModelsToProcess = 20;
+        public static $asynchronousMaximumModelsToProcess = 2500;
 
         public static function getTranslatedRightsLabels()
         {
