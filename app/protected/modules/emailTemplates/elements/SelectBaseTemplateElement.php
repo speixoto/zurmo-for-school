@@ -105,15 +105,20 @@
         {
             $modelClassName = $this->resolveModelClassName();
             $filterBy = ArrayUtil::getArrayValue(GetUtil::getData(), 'filterBy');
+            $sortAttribute  = null;
+            $sortDescending = false;
             if ($filterBy == static::FILTER_BY_PREVIOUSLY_CREATED_TEMPLATES)
             {
                 $searchAttributeData = EmailTemplate::getPreviouslyCreatedBuilderTemplateSearchAttributeData($modelClassName, false);
+                $sortAttribute       = 'isFeatured';
+                $sortDescending      = true;
             }
             else
             {
                 $searchAttributeData = EmailTemplate::getPredefinedBuilderTemplatesSearchAttributeData();
+                $sortAttribute       = 'id';
             }
-            $dataProvider   = RedBeanModelDataProviderUtil::makeDataProvider($searchAttributeData, 'EmailTemplate', 'RedBeanModelDataProvider', 'isFeatured', true, 10);
+            $dataProvider   = RedBeanModelDataProviderUtil::makeDataProvider($searchAttributeData, 'EmailTemplate', 'RedBeanModelDataProvider', $sortAttribute, $sortDescending, 10);
             return $dataProvider;
         }
 
