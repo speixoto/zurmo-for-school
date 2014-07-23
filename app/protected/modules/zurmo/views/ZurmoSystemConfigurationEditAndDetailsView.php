@@ -69,8 +69,6 @@
                                         ),
                                     )
                                 ),
-                            ),
-                            'rows' => array(
                                 array('cells' =>
                                     array(
                                         array(
