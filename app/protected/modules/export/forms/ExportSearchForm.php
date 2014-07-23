@@ -34,35 +34,14 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class SearchAndListView extends GridView
+    class ExportSearchForm extends OwnedSearchForm
     {
-        public function __construct($controllerId,
-                                    $moduleId,
-                                    ModelForm $searchModel,
-                                    RedBeanModel $listModel,
-                                    $moduleName,
-                                    CDataProvider $dataProvider,
-                                    $selectedIds)
+        /**
+         * @return string containing redbean model class name
+         */
+        protected static function getRedBeanModelClassName()
         {
-            parent::__construct(3, 1);
-            $moduleClassName = $moduleName . 'Module';
-            $titleBarView = new TitleBarView (  $moduleClassName::getModuleLabelByTypeAndLanguage('Plural'),
-                                                Zurmo::t('ZurmoModule', 'Home'), 1);
-            $this->setView($titleBarView, 0, 0);
-            $searchViewClassName = $moduleName . 'SearchView';
-            $this->setView(new $searchViewClassName($searchModel, get_class($listModel)), 1, 0);
-            $listViewClassName   = $moduleName . 'ListView';
-            $this->setView(new $listViewClassName($controllerId,
-                                                  $moduleId,
-                                                  get_class($listModel),
-                                                  $dataProvider,
-                                                  $selectedIds,
-                                                  null, array(), $searchModel->getListAttributesSelector()), 2, 0);
-        }
-
-        public function isUniqueToAPage()
-        {
-            return true;
+            return 'ExportItem';
         }
     }
 ?>

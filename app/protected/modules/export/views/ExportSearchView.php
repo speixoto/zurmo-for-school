@@ -34,35 +34,42 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class SearchAndListView extends GridView
+    class ExportSearchView extends SavedDynamicSearchView
     {
-        public function __construct($controllerId,
-                                    $moduleId,
-                                    ModelForm $searchModel,
-                                    RedBeanModel $listModel,
-                                    $moduleName,
-                                    CDataProvider $dataProvider,
-                                    $selectedIds)
+        public static function getDefaultMetadata()
         {
-            parent::__construct(3, 1);
-            $moduleClassName = $moduleName . 'Module';
-            $titleBarView = new TitleBarView (  $moduleClassName::getModuleLabelByTypeAndLanguage('Plural'),
-                                                Zurmo::t('ZurmoModule', 'Home'), 1);
-            $this->setView($titleBarView, 0, 0);
-            $searchViewClassName = $moduleName . 'SearchView';
-            $this->setView(new $searchViewClassName($searchModel, get_class($listModel)), 1, 0);
-            $listViewClassName   = $moduleName . 'ListView';
-            $this->setView(new $listViewClassName($controllerId,
-                                                  $moduleId,
-                                                  get_class($listModel),
-                                                  $dataProvider,
-                                                  $selectedIds,
-                                                  null, array(), $searchModel->getListAttributesSelector()), 2, 0);
+            $metadata = array(
+                'global' => array(
+                    'panels' => array(
+                        array(
+                            'locked' => true,
+                            'title'  => 'Basic Search',
+                            'rows'   => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'anyMixedAttributes',
+                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                        array(
+                            'advancedSearchType' => static::ADVANCED_SEARCH_TYPE_DYNAMIC,
+                            'rows'   => array(),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
 
-        public function isUniqueToAPage()
+        public static function getModelForMetadataClassName()
         {
-            return true;
+            return 'ExportSearchForm';
         }
     }
 ?>

@@ -1288,5 +1288,26 @@
         protected function beforeRedirect($model)
         {
         }
+
+        /**
+         * Make search and list view.
+         * @param SearchForm $searchModel
+         * @param string $moduleName
+         * @param RedBeanModelDataProvider $dataProvider
+         * @return \SearchAndListView
+         */
+        protected function makeSearchAndListView($searchModel, $moduleName, $dataProvider)
+        {
+            $listModel = $searchModel->getModel();
+            return new SearchAndListView(
+                $this->getId(),
+                $this->getModule()->getId(),
+                $searchModel,
+                $listModel,
+                $moduleName,
+                $dataProvider,
+                GetUtil::resolveSelectedIdsFromGet()
+            );
+        }
     }
 ?>

@@ -336,11 +336,13 @@
 
                     // Create background job
                     $exportItem = new ExportItem();
-                    $exportItem->isCompleted     = 0;
+                    $exportItem->isCompleted     = false;
                     $exportItem->exportFileType  = 'csv';
                     $exportItem->exportFileName  = $this->getModule()->getName();
                     $exportItem->modelClassName = $modelClassName;
                     $exportItem->serializedData  = $serializedData;
+                    $exportItem->isJobRunning    = false;
+                    $exportItem->cancelExport    = false;
                     $exportItem->save();
                     $exportItem->forget();
                     Yii::app()->user->setFlash('notification',
