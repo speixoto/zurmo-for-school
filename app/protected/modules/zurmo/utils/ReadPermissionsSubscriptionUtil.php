@@ -476,12 +476,6 @@
 
             if ($modelClassName == 'Account' && !empty($arrayOfModelIdsToUpdate))
             {
-                // We can not provide empty array for oneOf, so in this case we just use non-existing negative id
-                // ToDo: Not sure if there is better way to archive this
-                if (empty($arrayOfModelIdsToUpdate))
-                {
-                    $arrayOfModelIdsToUpdate = array('-999');
-                }
                 $metadata['clauses'][1] = array(
                     'attributeName' => 'id',
                     'operatorType'  => 'oneOf',
