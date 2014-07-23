@@ -188,7 +188,7 @@
             }
             if (static::supportsAndAllowsDatabaseCaching() && $cacheToDatabase)
             {
-                if($permitable->getClassId('Permitable') > 0)
+                if ($permitable->getClassId('Permitable') > 0)
                 {
                     ZurmoRedBean::exec("insert into named_securable_actual_permissions_cache
                                      (securableitem_name, permitable_id, allow_permissions, deny_permissions)
@@ -232,13 +232,13 @@
             }
             if (static::supportsAndAllowsDatabaseCaching())
             {
-                if($permitable->getClassId('Permitable') > 0)
+                if ($permitable->getClassId('Permitable') > 0)
                 {
                     $row = ZurmoRedBean::getRow("select allow_permissions, deny_permissions " .
                                                 "from named_securable_actual_permissions_cache " .
-                                                "where securableitem_name = '" . $namedSecurableItemName. "' and " .
+                                                "where securableitem_name = '" . $namedSecurableItemName . "' and " .
                                                 "permitable_id = '" . $permitable->getClassId('Permitable'). "'");
-                    if($row != null && isset($row['allow_permissions']) && isset($row['deny_permissions']))
+                    if ($row != null && isset($row['allow_permissions']) && isset($row['deny_permissions']))
                     {
                         static::cacheNamedSecurableItemActualPermissions($namedSecurableItemName, $permitable,
                                     array($row['allow_permissions'], $row['deny_permissions']), false);

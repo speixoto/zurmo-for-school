@@ -97,7 +97,7 @@
                     throw new NoCurrentUserSecurityException();
                 }
             }
-            if(Permission::ALL == $this->resolveEffectivePermissionsForOwnerAndCreatedByUser($permitable))
+            if (Permission::ALL == $this->resolveEffectivePermissionsForOwnerAndCreatedByUser($permitable))
             {
                 return Permission::ALL;
             }
@@ -344,8 +344,8 @@
             {
                 $permission = PermissionsUtil::getActualPermissionDataForReadByModuleNameForUser($moduleClassName);
 
-                if (($permission == Permission::NONE || $permission == Permission::DENY)
-                    && !static::bypassReadPermissionsOptimizationToSqlQueryBasedOnWhere($where))
+                if (($permission == Permission::NONE || $permission == Permission::DENY) &&
+                        !static::bypassReadPermissionsOptimizationToSqlQueryBasedOnWhere($where))
                 {
                     $quote                               = DatabaseCompatibilityUtil::getQuote();
                     $modelAttributeToDataProviderAdapter = new OwnedSecurableItemIdToDataProviderAdapter(
@@ -429,15 +429,15 @@
             assert('in_array($requiredPermissions,
                              array(Permission::READ, Permission::WRITE, Permission::DELETE,
                                    Permission::CHANGE_PERMISSIONS, Permission::CHANGE_OWNER))');
-            if($user == null)
+            if ($user == null)
             {
                 $user = Yii::app()->user->userModel;
             }
-            if(Permission::ALL == $this->resolveEffectivePermissionsForOwnerAndCreatedByUser($user))
+            if (Permission::ALL == $this->resolveEffectivePermissionsForOwnerAndCreatedByUser($user))
             {
                 return;
             }
-            elseif($this->isDeleting)
+            elseif ($this->isDeleting)
             {
                 //Avoid potential problems with accessing information already removed from munge.
                 //Potentially there could be some gap with doing this, but it improves performance on complex
@@ -446,11 +446,11 @@
             }
             else
             {
-                if(SECURITY_OPTIMIZED)
+                if (SECURITY_OPTIMIZED)
                 {
                     $modelClassName  = get_called_class();
                     $moduleClassName = $modelClassName::getModuleClassName();
-                    if(static::hasReadPermissionsOptimization() &&
+                    if (static::hasReadPermissionsOptimization() &&
                        $moduleClassName != null &&
                        is_subclass_of($moduleClassName, 'SecurableModule') &&
                        AllPermissionsOptimizationUtil::checkPermissionsHasAnyOf($requiredPermissions, $this, $user))

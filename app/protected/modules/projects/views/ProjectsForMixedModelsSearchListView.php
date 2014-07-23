@@ -34,36 +34,45 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class to adapt system configuration values into a configuration form.
-     * Saves global values from a configuration form.
-     */
-    class ZurmoSystemConfigurationFormAdapter
+    class ProjectsForMixedModelsSearchListView extends SecuredListView
     {
-        /**
-         * Creates a form populated with the system configuration global stored values.
-         * @return ZurmoSystemConfigurationForm
-         */
-        public static function makeFormFromSystemConfiguration()
+        public static function getDefaultMetadata()
         {
-            $form                                         = new ZurmoSystemConfigurationForm();
-            $form->autoresponderOrCampaignBatchSize       = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
-            $form->outboundEmailBatchSize                 = OutboundEmailBatchSizeConfigUtil::getBatchSize();
-            $form->listPageSizeMaxLimit                   = ZurmoSystemConfigurationUtil::getBatchSize();
-            return $form;
+            $metadata = array(
+                'global' => array(
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'owner', 'type' => 'User'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+
+            );
+            return $metadata;
         }
 
-        /**
-         * Given a SystemConfigurationForm, save the system configuration global values.
-         */
-        public static function setConfigurationFromForm(ZurmoSystemConfigurationForm $form)
+        public static function getDesignerRulesType()
         {
-            if (Yii::app()->user->userModel->isRootUser)
-            {
-                AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize((int)$form->autoresponderOrCampaignBatchSize);
-                OutboundEmailBatchSizeConfigUtil::setBatchSize((int)$form->outboundEmailBatchSize);
-                ZurmoSystemConfigurationUtil::setBatchSize((int)$form->listPageSizeMaxLimit);
-            }
+            return 'ForMixedModelsSearchListView';
         }
     }
 ?>

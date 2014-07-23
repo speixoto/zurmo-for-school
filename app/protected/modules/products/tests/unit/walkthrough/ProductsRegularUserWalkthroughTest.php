@@ -188,7 +188,6 @@
             $this->assertTrue($product->save());
             AllPermissionsOptimizationUtil::securableItemLostPermissionsForUser($product, $nobody);
 
-
             //Test nobody, access to detail should fail.
             Yii::app()->user->userModel = $nobody;
             $this->setGetArray(array('id' => $product->id));
@@ -242,7 +241,6 @@
             $this->assertTrue($product2->save());
             AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($product2, $userInChildRole);
 
-
             //Test userInChildRole, access to details should not fail.
             Yii::app()->user->userModel = $userInChildRole;
             $this->setGetArray(array('id' => $product2->id));
@@ -264,7 +262,6 @@
             AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForUser($product2, $userInChildRole);
             AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($product2, $userInChildRole);
 
-
             //Test userInChildRole, access to edit should not fail.
             Yii::app()->user->userModel = $userInChildRole;
             $this->setGetArray(array('id' => $product2->id));
@@ -283,7 +280,6 @@
             $product2->addPermissions($userInChildRole, Permission::READ_WRITE_CHANGE_PERMISSIONS, Permission::DENY);
             $this->assertTrue($product2->save());
             AllPermissionsOptimizationUtil::securableItemLostPermissionsForUser($product2, $userInChildRole);
-
 
             //Test userInChildRole, access to detail should fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -357,7 +353,6 @@
             $this->assertTrue($product3->save());
             AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForGroup($product3, $parentGroup);
 
-
             //Test userInParentGroup, access to details should not fail.
             Yii::app()->user->userModel = $userInParentGroup;
             $this->setGetArray(array('id' => $product3->id));
@@ -377,7 +372,6 @@
             $this->assertTrue($product3->save());
             AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForGroup($product3, $parentGroup);
             AllPermissionsOptimizationUtil::securableItemGivenPermissionsForGroup($product3, $parentGroup);
-
 
             //Test userInParentGroup, access to edit should not fail.
             Yii::app()->user->userModel = $userInParentGroup;

@@ -45,7 +45,7 @@
     class ZurmoDatabaseCompatibilityUtil
     {
         private static $storedFunctions = array(
-
+            // Begin Not Coding Standard
             // Permitables - Rights
 
             'create function get_permitable_explicit_actual_right(
@@ -684,14 +684,15 @@
                 call duplicate_filemodels(related_model_type, related_model_id, "emailmessage", @emailMessageId, user_id);
                 return @emailMessageId;
             end;',
+            // End Not Coding Standard
         );
 
         // MySQL functions cannot be recursive so we have
         // to do recursive functions with procedures.
 
-        // Begin Not Coding Standard
+        
         private static $storedProcedures = array(
-
+            // Begin Not Coding Standard
             // Users - Rights
 
             'create procedure recursive_get_user_actual_right(
@@ -1690,9 +1691,10 @@
                         end loop loop0;
                   close cursor0;
             end;',
+            // End Not Coding Standard
         );
 
-        // End Not Coding Standard
+        
         /**
          * @param $sql
          * @return string

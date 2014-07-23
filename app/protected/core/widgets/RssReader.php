@@ -70,7 +70,7 @@
 
         private function getSslFlag()
         {
-            if(Yii::app()->request->isSecureConnection)
+            if (Yii::app()->request->isSecureConnection)
             {
                 return ', ssl: true';
             }

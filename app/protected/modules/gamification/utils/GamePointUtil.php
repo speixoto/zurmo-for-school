@@ -80,7 +80,7 @@
             $leaderboardData = array();
             foreach ($rows as $row)
             {
-                if($user == null || $user->id == $row['userid'])
+                if ($user == null || $user->id == $row['userid'])
                 {
                     $leaderboardData[$row['userid']] = array(
                         'rank'         => StringUtil::resolveOrdinalIntegerAsStringContent(intval($rank)),

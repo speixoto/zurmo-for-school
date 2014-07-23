@@ -43,9 +43,11 @@
 
         protected function getOnSelectOptionForAutoComplete($idInputName)
         {
+            // Begin Not Coding Standard
             return 'js:function(event, ui){
                         switchUserByLabel(ui.item["'. $this->resolveOnSelectionOptionAttributeNameForAutoComplete() .'"]);
                     }';
+            // End Not Coding Standard
         }
 
         protected function renderControlEditable()

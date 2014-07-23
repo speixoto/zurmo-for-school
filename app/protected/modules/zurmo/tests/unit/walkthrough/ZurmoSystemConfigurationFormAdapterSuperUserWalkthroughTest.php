@@ -35,35 +35,47 @@
      ********************************************************************************/
 
     /**
-     * Class to adapt system configuration values into a configuration form.
-     * Saves global values from a configuration form.
+     * Walkthrough for the super user of marketing configuration
      */
-    class ZurmoSystemConfigurationFormAdapter
+    class ZurmoSystemConfigurationFormAdapterSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
-        /**
-         * Creates a form populated with the system configuration global stored values.
-         * @return ZurmoSystemConfigurationForm
-         */
-        public static function makeFormFromSystemConfiguration()
+        public static function setUpBeforeClass()
         {
-            $form                                         = new ZurmoSystemConfigurationForm();
-            $form->autoresponderOrCampaignBatchSize       = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
-            $form->outboundEmailBatchSize                 = OutboundEmailBatchSizeConfigUtil::getBatchSize();
-            $form->listPageSizeMaxLimit                   = ZurmoSystemConfigurationUtil::getBatchSize();
-            return $form;
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            $super->setIsRootUser();
+            Yii::app()->user->userModel = $super;
         }
 
-        /**
-         * Given a SystemConfigurationForm, save the system configuration global values.
-         */
-        public static function setConfigurationFromForm(ZurmoSystemConfigurationForm $form)
+        public function testSuperUserEditConfigurationForm()
         {
-            if (Yii::app()->user->userModel->isRootUser)
-            {
-                AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize((int)$form->autoresponderOrCampaignBatchSize);
-                OutboundEmailBatchSizeConfigUtil::setBatchSize((int)$form->outboundEmailBatchSize);
-                ZurmoSystemConfigurationUtil::setBatchSize((int)$form->listPageSizeMaxLimit);
-            }
+            //checking with blank values for required fields
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->setPostArray(array('save'                    => 'Save',
+                    'ZurmoSystemConfigurationForm'  => array(
+                        'autoresponderOrCampaignBatchSize' => '',
+                        'outboundEmailBatchSize'           => '',
+                        'listPageSizeMaxLimit'             => '',
+                    )
+                )
+            );
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/systemConfigurationEdit');
+            $this->assertFalse(strpos($content, 'Autoresponder/Campaign batch size cannot be blank.') === false);
+            $this->assertFalse(strpos($content, 'Outbound Email Message batch size cannot be blank.') === false);
+            $this->assertFalse(strpos($content, 'List page size maximum limit cannot be blank.') === false);
+
+            //checking with proper values for required fields
+            $this->setPostArray(array('save'                    => 'Save',
+                    'ZurmoSystemConfigurationForm'  => array(
+                        'autoresponderOrCampaignBatchSize' => '10',
+                        'outboundEmailBatchSize'           => '30',
+                        'listPageSizeMaxLimit'             => '10',
+                    )
+                )
+            );
+            $this->runControllerWithRedirectExceptionAndGetContent('zurmo/default/systemConfigurationEdit');
+            $this->assertEquals('System configuration saved successfully.', Yii::app()->user->getFlash('notification'));
         }
     }
 ?>

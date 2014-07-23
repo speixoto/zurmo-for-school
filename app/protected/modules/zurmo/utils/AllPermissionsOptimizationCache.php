@@ -279,7 +279,6 @@
             }
         }
 
-
         public static function forgetAll()
         {
             if (static::supportsAndAllowsPhpCaching())
@@ -302,7 +301,7 @@
          */
         protected static function resolveToSetFlashMessageOnForgetAll()
         {
-            if((bool)Yii::app()->params['showFlashMessageWhenSecurityCacheShouldBeRebuilt'])
+            if ((bool)Yii::app()->params['showFlashMessageWhenSecurityCacheShouldBeRebuilt'])
             {
                 Yii::app()->user->setFlash('permissionsOptimization',
                     Zurmo::t('ZurmoModule', 'The security cache should be rebuilt to improve performance. ' .

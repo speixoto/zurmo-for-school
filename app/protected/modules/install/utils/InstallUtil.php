@@ -598,6 +598,7 @@
             $user->firstName    = 'Super';
             $user->lastName     = 'User';
             $user->setPassword($password);
+            $user->setIsRootUser();
             $saved = $user->save();
             if (!$saved)
             {

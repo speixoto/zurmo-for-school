@@ -8473,14 +8473,26 @@ a + .autoresponder-stats {
   border-left: 1px solid #bababa;
 }
 .gmail-user-stage-status.stage-true i,
+.gmail-user-stage-status.stage-running i,
 .import-item-stage-status.stage-true i,
-.email-recipient-stage-status.stage-true i {
+.import-item-stage-status.stage-running i,
+.email-recipient-stage-status.stage-true i,
+.email-recipient-stage-status.stage-running i {
   color: #97c43d;
   -webkit-text-shadow: 0 0 5px #97c43d;
   -moz-text-shadow: 0 0 5px #97c43d;
   -ms-text-shadow: 0 0 5px #97c43d;
   -o-text-shadow: 0 0 5px #97c43d;
   text-shadow: 0 0 5px #97c43d;
+}
+.gmail-user-stage-status.stage-running i,
+.import-item-stage-status.stage-running i,
+.email-recipient-stage-status.stage-running i {
+  -o-animation: led-throb 0.25s;
+  -ms-animation: led-throb 0.25s;
+  -moz-animation: led-throb 0.25s;
+  -webkit-animation: led-throb 0.25s;
+  animation: led-throb 0.25s;
 }
 .gmail-user-stage-status.stage-false i,
 .import-item-stage-status.stage-false i,
@@ -8492,8 +8504,11 @@ a + .autoresponder-stats {
   -o-text-shadow: 0 0 5px #c43d53;
   text-shadow: 0 0 5px #c43d53;
 }
+.gmail-user-stage-status.stage-pending,
 .gmail-user-stage-status i,
+.import-item-stage-status.stage-pending,
 .import-item-stage-status i,
+.email-recipient-stage-status.stage-pending,
 .email-recipient-stage-status i {
   font-weight: bold;
   line-height: 1;
