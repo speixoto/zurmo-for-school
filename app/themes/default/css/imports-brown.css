@@ -975,6 +975,8 @@ a.simple-link .icon-x {
 }
 #install-form th {
   width: 26%;
+  vertical-align: top;
+  padding-top: 8px;
 }
 #install-form td {
   width: 37%;
@@ -1025,7 +1027,6 @@ a.simple-link .icon-x {
 .install-or {
   display: inline-block;
   position: relative;
-  top: -10px;
   margin: 0 10px;
 }
 .back-to-app-menu-item span {
@@ -2589,6 +2590,35 @@ table.configuration-list tr:last-child td {
 }
 .security-adhoc-sharing .icon:before {
   content: '\00EB';
+}
+.exported-filename {
+  line-height: 22px;
+}
+.exported-filename ~ .secondary-button {
+  float: right;
+  margin-right: 5px;
+}
+.exported-filename ~ .cancelled-export {
+  font-size: 11px;
+  float: right;
+  position: relative;
+  top: 3px;
+  margin-right: 5px;
+  padding: 2px 4px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  color: #fff !important;
+  background-color: #a82d31;
+  background-repeat: repeat-x;
+  background-image: -ms-linear-gradient(top,#c43d53,#a82d31);
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#c43d53),color-stop(100%,#a82d31));
+  background-image: -webkit-linear-gradient(top,#c43d53,#a82d31);
+  background-image: -o-linear-gradient(top,#c43d53,#a82d31);
+  background-image: -moz-linear-gradient(top,#c43d53,#a82d31);
+  background-image: linear-gradient(top,#c43d53,#a82d31);
 }
 .available-portlets {
   padding: 15px 15px 0 15px;
@@ -8509,13 +8539,13 @@ a + .autoresponder-stats {
   -o-text-shadow: 0 0 5px #c43d53;
   text-shadow: 0 0 5px #c43d53;
 }
-.gmail-user-stage-status.stage-pending,
+.gmail-user-stage-status.stage-pending i,
 .gmail-user-stage-status i,
-.import-item-stage-status.stage-pending,
+.import-item-stage-status.stage-pending i,
 .import-item-stage-status i,
-.export-item-stage-status.stage-pending,
+.export-item-stage-status.stage-pending i,
 .export-item-stage-status i,
-.email-recipient-stage-status.stage-pending,
+.email-recipient-stage-status.stage-pending i,
 .email-recipient-stage-status i {
   font-weight: bold;
   line-height: 1;
