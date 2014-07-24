@@ -79,7 +79,7 @@
         }
 
         /**
-         * Override to handle security/access resolution on links.
+         * Override to remove the last column.
          */
         protected function getCGridViewLastColumn()
         {
