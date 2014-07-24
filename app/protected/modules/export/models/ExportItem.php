@@ -88,7 +88,7 @@
                     array('isJobRunning',     'boolean'),
                     array('cancelExport',     'boolean'),
                 ),
-                'defaultSortAttribute' => 'modifiedDateTime',
+                'defaultSortAttribute' => 'id',
                 'noAudit' => array(
                     'modelClassName',
                     'processOffset',

@@ -114,7 +114,7 @@
                 }
                 else
                 {
-                    return Zurmo::t('ExportModule', 'Cancel Pending');
+                    return Zurmo::t('ExportModule', 'Cancelled');
                 }
             }
             elseif($value == 1)
