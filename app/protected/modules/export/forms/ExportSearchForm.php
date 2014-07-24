@@ -43,5 +43,15 @@
         {
             return 'ExportItem';
         }
+
+        /**
+         * Gets non searchable attributes.
+         * @return array
+         */
+        public static function getNonSearchableAttributes()
+        {
+            return array_merge(parent::getNonSearchableAttributes(), array('modelClassName', 'processOffset',
+                                                                           'serializedData', 'exportFileType', 'exportFileModel'));
+        }
     }
 ?>

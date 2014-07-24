@@ -34,56 +34,11 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ExportListView extends SecuredListView
+    /**
+     * Display the export file name.
+     */
+    class ExportFileNameElement extends TextElement
     {
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'global' => array(
-                    'nonPlaceableAttributeNames' => array(
-                        'processOffset',
-                        'serializedData',
-                        'exportFileModel',
-                        'modelClassName',
-                        'isCompleted',
-                        'isJobRunning',
-                        'cancelExport'
-                    ),
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'exportFileName', 'type' => 'ExportFileName'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-
-            );
-            return $metadata;
-        }
-
-        /**
-         * @return bool
-         */
-        public function getRowsAreSelectable()
-        {
-            return false;
-        }
-
-        /**
-         * Override to remove the last column.
-         */
-        protected function getCGridViewLastColumn()
-        {
-            return array();
-        }
+        protected static $moduleId = 'export';
     }
 ?>
