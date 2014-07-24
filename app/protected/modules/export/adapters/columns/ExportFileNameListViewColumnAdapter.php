@@ -55,7 +55,10 @@
          */
         public static function renderFileNameCol($data)
         {
-            $content    = '<strong>' . $data->exportFileName . '.' . $data->exportFileType . '</strong>';
+	        $filename    = ZurmoHtml::tag('strong', array(), $data->exportFileName . '.' . $data->exportFileType);
+	        $owner       = ZurmoHtml::tag('a', array('class' => 'simple-link', 'href' => Yii::app()->createUrl('users/default/details',
+                                                                                         array('id' => $data->owner->id))), $data->owner->getFullName());
+	        $content     = ZurmoHtml::tag('span', array('class' => 'exported-filename'), $filename . ' · ' . $owner);
             $content    .= self::renderStatus($data);
             $content    .= self::renderCancelButton($data);
             return $content;
@@ -107,19 +110,19 @@
             $url   = Yii::app()->createUrl('export/default/cancel', array('id' => $data->id));
             if($value == 0)
             {
-                $cancelBtn  = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Cancel')), $url, array('class' => 'white-button'));
+                $cancelBtn  = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Cancel')), $url, array('class' => 'secondary-button'));
                 if((int)$data->cancelExport == 0)
                 {
                     return $cancelBtn;
                 }
                 else
                 {
-                    return Zurmo::t('ExportModule', 'Cancelled');
+                    return ZurmoHtml::tag('span', array('class' => 'cancelled-export'), Zurmo::t('ExportModule', 'Cancelled'));
                 }
             }
             elseif($value == 1)
             {
-                $cancelBtn  = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Cancel')), $url, array('class' => 'white-button disabled'));
+                $cancelBtn  = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Cancel')), $url, array('class' => 'secondary-button disabled'));
                 return $cancelBtn;
             }
             else

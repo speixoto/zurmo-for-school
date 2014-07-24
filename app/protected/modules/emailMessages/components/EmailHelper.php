@@ -367,19 +367,27 @@
             {
                 $this->sendImmediately($emailMessage);
             }
-            if (count($queuedEmailMessages) < $count)
+            if ($count == null)
+            {
+                $queuedEmailMessages = EmailMessage::getByFolderType(EmailFolder::TYPE_OUTBOX_ERROR, null);
+            }
+            elseif (count($queuedEmailMessages) < $count)
             {
                 $queuedEmailMessages = EmailMessage::getByFolderType(EmailFolder::TYPE_OUTBOX_ERROR, $count - count($queuedEmailMessages));
-                foreach ($queuedEmailMessages as $emailMessage)
+            }
+            else
+            {
+                $queuedEmailMessages = array();
+            }
+            foreach ($queuedEmailMessages as $emailMessage)
+            {
+                if ($emailMessage->sendAttempts < 3)
                 {
-                    if ($emailMessage->sendAttempts < 3)
-                    {
-                        $this->sendImmediately($emailMessage);
-                    }
-                    else
-                    {
-                        $this->processMessageAsFailure($emailMessage);
-                    }
+                    $this->sendImmediately($emailMessage);
+                }
+                else
+                {
+                    $this->processMessageAsFailure($emailMessage);
                 }
             }
             return true;
