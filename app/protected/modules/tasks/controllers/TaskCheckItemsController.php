@@ -137,9 +137,9 @@
          */
         public function actionUpdateSortViaAjax()
         {
-            if(isset($_GET['SortedTaskCheckListItems']) && is_array($_GET['SortedTaskCheckListItems']))
+            if (isset($_GET['SortedTaskCheckListItems']) && is_array($_GET['SortedTaskCheckListItems']))
             {
-                foreach($_GET['SortedTaskCheckListItems'] as $sortIndex=>$checkListItemId)
+                foreach ($_GET['SortedTaskCheckListItems'] as $sortIndex => $checkListItemId)
                 {
                     $taskCheckListItem = TaskCheckListItem::getById(intval($checkListItemId));
                     $taskCheckListItem->sortOrder = $sortIndex;

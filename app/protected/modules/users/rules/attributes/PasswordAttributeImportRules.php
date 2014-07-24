@@ -91,7 +91,7 @@
                     $value = $mappingRuleData['defaultValue'];
                 }
             }
-            return array('hash' => md5($value));
+            return array('hash' => User::encryptPassword($value));
         }
     }
 ?>

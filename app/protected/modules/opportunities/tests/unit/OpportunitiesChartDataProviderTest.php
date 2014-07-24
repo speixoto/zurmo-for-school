@@ -43,7 +43,7 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             UserTestHelper::createBasicUser('jim');
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             OpportunityTestHelper::createOpportunityStagesIfDoesNotExist();
             OpportunityTestHelper::createOpportunitySourcesIfDoesNotExist();
             $currencies    = Currency::getAll();

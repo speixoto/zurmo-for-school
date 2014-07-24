@@ -45,20 +45,14 @@
         public function testMakeFormAndSetConfigurationFromForm()
         {
             $form = MarketingConfigurationFormAdapter::makeFormFromMarketingConfiguration();
-            $this->assertEquals(AutoresponderOrCampaignBatchSizeConfigUtil::CONFIG_DEFAULT_VALUE,           $form->autoresponderOrCampaignBatchSize);
-            $this->assertEquals(CampaignItemsUtil::DEFAULT_CAMPAIGNITEMS_TO_CREATE_PAGE_SIZE,               $form->campaignItemsToCreatePageSize);
             $this->assertEquals(GlobalMarketingFooterUtil::getContentByType(false),  $form->autoresponderOrCampaignFooterPlainText);
             $this->assertEquals(GlobalMarketingFooterUtil::getContentByType(true),   $form->autoresponderOrCampaignFooterRichText);
 
             //User is not root so he cant change batch size
-            $form->autoresponderOrCampaignBatchSize         = 20;
-            $form->campaignItemsToCreatePageSize            = 123;
             $form->autoresponderOrCampaignFooterPlainText   = 'abc';
             $form->autoresponderOrCampaignFooterRichText    = 'def';
             MarketingConfigurationFormAdapter::setConfigurationFromForm($form);
             $form = MarketingConfigurationFormAdapter::makeFormFromMarketingConfiguration();
-            $this->assertEquals(AutoresponderOrCampaignBatchSizeConfigUtil::CONFIG_DEFAULT_VALUE, $form->autoresponderOrCampaignBatchSize);
-            $this->assertEquals(CampaignItemsUtil::DEFAULT_CAMPAIGNITEMS_TO_CREATE_PAGE_SIZE,     $form->campaignItemsToCreatePageSize);
             $this->assertEquals('abc',                                                            $form->autoresponderOrCampaignFooterPlainText);
             $this->assertEquals('def',                                                            $form->autoresponderOrCampaignFooterRichText);
 
@@ -66,14 +60,10 @@
             $super = User::getByUsername('super');
             $super->setIsRootUser();
             Yii::app()->user->userModel = $super;
-            $form->autoresponderOrCampaignBatchSize         = 20;
-            $form->campaignItemsToCreatePageSize            = 123;
             $form->autoresponderOrCampaignFooterPlainText   = 'cba';
             $form->autoresponderOrCampaignFooterRichText    = 'fed';
             MarketingConfigurationFormAdapter::setConfigurationFromForm($form);
             $form = MarketingConfigurationFormAdapter::makeFormFromMarketingConfiguration();
-            $this->assertEquals(20,     $form->autoresponderOrCampaignBatchSize);
-            $this->assertEquals(123,    $form->campaignItemsToCreatePageSize);
             $this->assertEquals('cba',  $form->autoresponderOrCampaignFooterPlainText);
             $this->assertEquals('fed',  $form->autoresponderOrCampaignFooterRichText);
         }

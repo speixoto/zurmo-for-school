@@ -34,29 +34,56 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ReadPermissionsOptimizationUtilTest extends ZurmoBaseTest
+    class ExportListView extends SecuredListView
     {
-        public static function setUpBeforeClass()
+        public static function getDefaultMetadata()
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
+            $metadata = array(
+                'global' => array(
+                    'nonPlaceableAttributeNames' => array(
+                        'processOffset',
+                        'serializedData',
+                        'exportFileModel',
+                        'modelClassName',
+                        'isCompleted',
+                        'isJobRunning',
+                        'cancelExport'
+                    ),
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'exportFileName', 'type' => 'ExportFileName'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+
+            );
+            return $metadata;
         }
 
-        public function setUp()
+        /**
+         * @return bool
+         */
+        public function getRowsAreSelectable()
         {
-            parent::setUp();
-            Yii::app()->user->userModel = User::getByUsername('super');
+            return false;
         }
 
-        public function testGetMungeIdsByUserIncludesEveryoneGroup()
+        /**
+         * Override to remove the last column.
+         */
+        protected function getCGridViewLastColumn()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
-            $mungeIds = ReadPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
-            $this->assertEquals(2, count($mungeIds));
-            $group = Group::getByName(Group::EVERYONE_GROUP_NAME);
-            $group->save();
-            $mungeIds = ReadPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
-            $this->assertEquals(3, count($mungeIds));
+            return array();
         }
     }
 ?>

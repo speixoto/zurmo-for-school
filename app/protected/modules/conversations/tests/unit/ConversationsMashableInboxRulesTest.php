@@ -43,7 +43,7 @@
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
             Yii::app()->user->userModel = User::getByUsername('super');
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             $steven = UserTestHelper::createBasicUser('steven');
             //Give user access, create, delete for conversation rights.
             $steven->setRight('ConversationsModule', ConversationsModule::RIGHT_ACCESS_CONVERSATIONS);

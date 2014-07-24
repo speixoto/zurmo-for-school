@@ -38,7 +38,7 @@
      * A job for processing autoresponder messages that are not sent immediately when triggered
      */
 
-    class AutoresponderQueueMessagesInOutboxJob extends AutoresponderOrCampaignBaseJob
+    class AutoresponderQueueMessagesInOutboxJob extends AutoresponderOrCampaignQueueMessagesInOutboxBaseJob
     {
         /**
          * @see BaseJob::$loadJobQueueOnCleanupAndFallback
@@ -93,6 +93,7 @@
 
         protected function processRun()
         {
+            parent::processRun();
             $batchSize                   = $this->resolveBatchSize();
             if ($batchSize != null)
             {

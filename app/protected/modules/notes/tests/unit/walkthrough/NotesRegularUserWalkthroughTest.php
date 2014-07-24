@@ -163,6 +163,7 @@
             Yii::app()->user->userModel = $super;
             $superAccount->addPermissions($nobody, Permission::READ);
             $this->assertTrue($superAccount->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($superAccount, $nobody);
 
             //Now the nobody user can access the details view.
             Yii::app()->user->userModel = $nobody;
@@ -189,6 +190,7 @@
             Yii::app()->user->userModel = $super;
             $note->addPermissions($nobody, Permission::READ);
             $this->assertTrue($note->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($note, $nobody);
 
             //Now access to notes view by Nobody should not fail.
             Yii::app()->user->userModel = $nobody;
@@ -208,6 +210,8 @@
             Yii::app()->user->userModel = $super;
             $note->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($note->save());
+            AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForUser($note, $nobody);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($note, $nobody);
 
             //Now access to notes view and edit by Nobody should not fail.
             Yii::app()->user->userModel = $nobody;
@@ -227,6 +231,7 @@
             Yii::app()->user->userModel = $super;
             $note->removePermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($note->save());
+            AllPermissionsOptimizationUtil::securableItemLostPermissionsForUser($note, $nobody);
 
             //Now nobodys, access to edit, details and delete of notes should fail.
             Yii::app()->user->userModel = $nobody;
@@ -244,6 +249,7 @@
             Yii::app()->user->userModel = $super;
             $note->addPermissions($nobody, Permission::READ_WRITE_DELETE);
             $this->assertTrue($note->save());
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($note, $nobody);
 
             //Now nobodys, access to delete of notes should not fail.
             Yii::app()->user->userModel = $nobody;
@@ -269,6 +275,16 @@
             $parentRole->users->add($userInParentRole);
             $parentRole->roles->add($childRole);
             $this->assertTrue($parentRole->save());
+            $userInChildRole->forget();
+            $userInChildRole = User::getByUsername('nobody');
+            $userInParentRole->forget();
+            $userInParentRole = User::getByUsername('confused');
+            $parentRoleId = $parentRole->id;
+            $parentRole->forget();
+            $parentRole = Role::getById($parentRoleId);
+            $childRoleId = $childRole->id;
+            $childRole->forget();
+            $childRole = Role::getById($childRoleId);
 
             //create account owned by super
             $account2 = AccountTestHelper::createAccountByNameForOwner('AccountsParentRolePermission', $super);
@@ -282,6 +298,7 @@
             Yii::app()->user->userModel = $super;
             $account2->addPermissions($userInChildRole, Permission::READ);
             $this->assertTrue($account2->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($account2, $userInChildRole);
 
             //Test userInChildRole, access to details should not fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -325,6 +342,7 @@
             Yii::app()->user->userModel = $super;
             $note2->addPermissions($userInChildRole, Permission::READ);
             $this->assertTrue($note2->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($note2, $userInChildRole);
 
             //Test userInChildRole, access to notes details should not fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -358,6 +376,8 @@
             Yii::app()->user->userModel = $super;
             $note2->addPermissions($userInChildRole, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($note2->save());
+            AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForUser($note2, $userInChildRole);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($note2, $userInChildRole);
 
             //Test userInChildRole, access to notes edit should not fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -385,6 +405,7 @@
             Yii::app()->user->userModel = $super;
             $note2->removePermissions($userInChildRole, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($note2->save());
+            AllPermissionsOptimizationUtil::securableItemLostPermissionsForUser($note2, $userInChildRole);
 
             //Test userInChildRole, access to detail, edit and delete should fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -410,6 +431,7 @@
             Yii::app()->user->userModel = $super;
             $note2->addPermissions($userInChildRole, Permission::READ_WRITE_DELETE);
             $this->assertTrue($note2->save());
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($note2, $userInChildRole);
 
             //Test userInParentRole, access to delete should not fail.
             Yii::app()->user->userModel = $userInParentRole;
@@ -468,6 +490,7 @@
             Yii::app()->user->userModel = $super;
             $account3->addPermissions($parentGroup, Permission::READ);
             $this->assertTrue($account3->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForGroup($account3, $parentGroup);
 
             //Test userInParentGroup, access to details should not fail.
             Yii::app()->user->userModel = $userInParentGroup;
@@ -515,6 +538,7 @@
             Yii::app()->user->userModel = $super;
             $note3->addPermissions($parentGroup, Permission::READ);
             $this->assertTrue($note3->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForGroup($note3, $parentGroup);
 
             //Test userInParentGroup, access to notes details should not fail.
             Yii::app()->user->userModel = $userInParentGroup;
@@ -544,6 +568,8 @@
             Yii::app()->user->userModel = $super;
             $note3->addPermissions($parentGroup, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($note3->save());
+            AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForGroup($note3, $parentGroup);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForGroup($note3, $parentGroup);
 
             //Test userInParentGroup, access to edit notes should not fail.
             Yii::app()->user->userModel = $userInParentGroup;
@@ -570,6 +596,7 @@
             Yii::app()->user->userModel = $super;
             $note3->removePermissions($parentGroup, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($note3->save());
+            AllPermissionsOptimizationUtil::securableItemLostPermissionsForGroup($note3, $parentGroup);
 
             //Test userInChildGroup, access to notes detail, edit and delete should fail.
             Yii::app()->user->userModel = $userInChildGroup;
@@ -595,6 +622,7 @@
             Yii::app()->user->userModel = $super;
             $note3->addPermissions($parentGroup, Permission::READ_WRITE_DELETE);
             $this->assertTrue($note3->save());
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForGroup($note3, $parentGroup);
 
             //Test userInChildGroup, access to notes delete should not fail.
             Yii::app()->user->userModel = $userInChildGroup;

@@ -71,7 +71,7 @@
                 MarketingListMemberTestHelper::createMarketingListMember($unsubscribed, $marketingList2, $contact2);
             }
 
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()

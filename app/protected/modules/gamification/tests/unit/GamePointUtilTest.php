@@ -72,8 +72,16 @@
             $this->assertTrue(count($data) > 0);
             $data = GamePointUtil::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_MONTHLY);
             $this->assertTrue(count($data) > 0);
-            $data = GamePointUtil::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_OVERALL);
-            $this->assertTrue(count($data) > 0);
+            //Now test with new user, calling to that specific user
+            $sally = UserTestHelper::createBasicUser('sally');
+            $data = GamePointUtil::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_OVERALL, 1, null, null, $sally);
+            $this->assertTrue(count($data) == 0);
+            $data = GamePointUtil::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_WEEKLY,  1, null, null, $sally);
+            $this->assertTrue(count($data) == 0);
+            $data = GamePointUtil::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_MONTHLY, 1, null, null, $sally);
+            $this->assertTrue(count($data) == 0);
+            $data = GamePointUtil::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_OVERALL, 1, null, null, $sally);
+            $this->assertTrue(count($data) == 0);
         }
 
         public function testGetUserLeaderboardCount()

@@ -40,7 +40,7 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
             $everyoneGroup->save();
             $super                = User::getByUsername('super');
@@ -58,7 +58,7 @@
             $mission->status      = Mission::STATUS_AVAILABLE;
             $mission->addPermissions($everyoneGroup, Permission::READ_WRITE);
             assert($mission->save()); // Not Coding Standard
-            ReadPermissionsOptimizationUtil::securableItemGivenPermissionsForGroup($mission, $everyoneGroup);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForGroup($mission, $everyoneGroup);
         }
 
         public function setUp()

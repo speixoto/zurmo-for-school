@@ -111,7 +111,7 @@
             if (((isset($this->originalAttributeValues['role'])) || $this->isNewModel) &&
                 $this->role != null && $this->role->id > 0)
             {
-                ReadPermissionsOptimizationUtil::roleParentSet($this);
+                AllPermissionsOptimizationUtil::roleParentSet($this);
                 ReadPermissionsSubscriptionUtil::roleParentSet();
             }
             parent::afterSave();
@@ -128,7 +128,7 @@
                     //utilize the roleParentBeingRemoved method.
                     $role = unserialize(serialize($this));
                     $role->role = Role::getById($this->originalAttributeValues['role'][1]);
-                    ReadPermissionsOptimizationUtil::roleParentBeingRemoved($role);
+                    AllPermissionsOptimizationUtil::roleParentBeingRemoved($role);
                     ReadPermissionsSubscriptionUtil::roleParentBeingRemoved();
                     assert('$this->originalAttributeValues["role"][1] != $this->role->id');
                 }
@@ -146,7 +146,7 @@
             {
                 return false;
             }
-            ReadPermissionsOptimizationUtil::roleBeingDeleted($this);
+            AllPermissionsOptimizationUtil::roleBeingDeleted($this);
             return true;
         }
 
@@ -156,6 +156,7 @@
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
             ReadPermissionsSubscriptionUtil::roleHasBeenDeleted();
+            AllPermissionsOptimizationCache::forgetAll();
         }
 
         protected function beforeValidate()

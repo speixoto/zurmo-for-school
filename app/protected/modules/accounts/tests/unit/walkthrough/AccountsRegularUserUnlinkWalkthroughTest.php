@@ -46,7 +46,7 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             //Setup test data owned by the super user.
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             $simpleUser = UserTestHelper::createBasicUser('simpleUser');
         }
 

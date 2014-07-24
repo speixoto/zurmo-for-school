@@ -33,7 +33,7 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-    class GlobalMarketingFooterUtilTest extends ZurmoBaseTest
+    class GlobalMarketingFooterUtilTest extends AutoresponderOrCampaignBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -62,8 +62,8 @@
         public function testGetByContentTypeReturnsDefaultWithNoneSet()
         {
             $isHtmlContent                      = false;
-            $unsubscribeUrlPlaceHolder          = GlobalMarketingFooterUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
-            $manageSubscriptionsUrlPlaceHolder  = GlobalMarketingFooterUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $unsubscribeUrlPlaceHolder          = static::resolveUnsubscribeMergeTagContent($isHtmlContent);
+            $manageSubscriptionsUrlPlaceHolder  = static::resolveManageSubscriptionMergeTagContent($isHtmlContent);
             $recipientMention                   = 'This email was sent to [[PRIMARY^EMAIL]].';
             StringUtil::prependNewLine($unsubscribeUrlPlaceHolder, $isHtmlContent);
             StringUtil::prependNewLine($manageSubscriptionsUrlPlaceHolder, $isHtmlContent);
@@ -74,8 +74,8 @@
             $this->assertEquals($defaultFooter, $plainTextFooter);
 
             $isHtmlContent                      = true;
-            $unsubscribeUrlPlaceHolder          = GlobalMarketingFooterUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
-            $manageSubscriptionsUrlPlaceHolder  = GlobalMarketingFooterUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $unsubscribeUrlPlaceHolder          = static::resolveUnsubscribeMergeTagContent($isHtmlContent);
+            $manageSubscriptionsUrlPlaceHolder  = static::resolveManageSubscriptionMergeTagContent($isHtmlContent);
             $recipientMention                   = 'This email was sent to [[PRIMARY^EMAIL]].';
             StringUtil::prependNewLine($unsubscribeUrlPlaceHolder, $isHtmlContent);
             StringUtil::prependNewLine($manageSubscriptionsUrlPlaceHolder, $isHtmlContent);
@@ -99,6 +99,39 @@
             $richTextFooter = GlobalMarketingFooterUtil::getContentByType(true);
             $this->assertNotNull($richTextFooter);
             $this->assertEquals('rich', $richTextFooter);
+        }
+
+        protected function resolveUnsubscribeMergeTagContent($isHtmlContent)
+        {
+            return $this->resolveDefaultUnsubscribeUrlMergeTagContentMethod()->invokeArgs(null, array($isHtmlContent));
+        }
+
+        protected function resolveDefaultUnsubscribeUrlMergeTagContentMethod()
+        {
+            if (!isset($this->unsubscribeMethod))
+            {
+                $this->unsubscribeMethod    = $this->getGlobalMarketingFooterUtilMethod('resolveDefaultUnsubscribeUrlMergeTagContent');
+            }
+            return $this->unsubscribeMethod;
+        }
+
+        protected function resolveManageSubscriptionMergeTagContent($isHtmlContent)
+        {
+            return $this->resolveDefaultManageSubscriptionsUrlMergeTagContentMethod()->invokeArgs(null, array($isHtmlContent));
+        }
+
+        protected function resolveDefaultManageSubscriptionsUrlMergeTagContentMethod()
+        {
+            if (!isset($this->manageSubscriptionsMethod))
+            {
+                $this->manageSubscriptionsMethod  = $this->getGlobalMarketingFooterUtilMethod('resolveDefaultManageSubscriptionsUrlMergeTagContent');
+            }
+            return $this->manageSubscriptionsMethod;
+        }
+
+        protected function getGlobalMarketingFooterUtilMethod($methodName)
+        {
+            return static::getProtectedMethod('GlobalMarketingFooterUtil', $methodName);
         }
     }
 ?>

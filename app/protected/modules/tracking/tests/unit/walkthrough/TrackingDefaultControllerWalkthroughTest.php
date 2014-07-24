@@ -88,7 +88,7 @@
             $campaignItem                   = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             static::$campaignItemId         = $campaignItem->id;
 
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function testGuestUserCanAccessTrackActionAndReturnsNothingWithoutHash()
@@ -130,9 +130,7 @@
                 'keyTwo'    => 'valueTwo',
                 'keyThree'  => 'ValueThree',
             );
-            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod('EmailMessageActivityUtil',
-                                                                                    'resolveHashForQueryStringArray');
-            $hash       = $resolveHashForQueryStringArrayFunction->invokeArgs(null, array($queryStringArray));
+            $hash                   = StringUtil::resolveHashForQueryStringArray($queryStringArray);
             $this->setGetArray(array(
                 'id'    => $hash,
             ));
@@ -149,9 +147,7 @@
                 'modelType' => 'AutoresponderItem',
                 'personId'  => static::$personId,
             );
-            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod('EmailMessageActivityUtil',
-                                                                                    'resolveHashForQueryStringArray');
-            $hash       = $resolveHashForQueryStringArrayFunction->invokeArgs(null, array($queryStringArray));
+            $hash                   = StringUtil::resolveHashForQueryStringArray($queryStringArray);
             $this->setGetArray(array(
                 'id'    => $hash,
             ));
@@ -168,9 +164,7 @@
                 'modelType' => 'AutoresponderItem',
                 'personId'  => 200,
             );
-            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod('EmailMessageActivityUtil',
-                                                                                    'resolveHashForQueryStringArray');
-            $hash       = $resolveHashForQueryStringArrayFunction->invokeArgs(null, array($queryStringArray));
+            $hash                   = StringUtil::resolveHashForQueryStringArray($queryStringArray);
             $this->setGetArray(array(
                 'id'    => $hash,
             ));
@@ -187,9 +181,7 @@
                 'modelType' => 'AutoresponderItem',
                 'personId'  => static::$personId,
             );
-            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod('EmailMessageActivityUtil',
-                                                                                    'resolveHashForQueryStringArray');
-            $hash       = $resolveHashForQueryStringArrayFunction->invokeArgs(null, array($queryStringArray));
+            $hash                   = StringUtil::resolveHashForQueryStringArray($queryStringArray);
             $this->setGetArray(array(
                 'id'    => $hash,
             ));
@@ -220,9 +212,7 @@
                 'personId'  => static::$personId,
                 'url'       => 'http://www.zurmo.com',
             );
-            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod('EmailMessageActivityUtil',
-                                                                                    'resolveHashForQueryStringArray');
-            $hash       = $resolveHashForQueryStringArrayFunction->invokeArgs(null, array($queryStringArray));
+            $hash                   = StringUtil::resolveHashForQueryStringArray($queryStringArray);
             $this->setGetArray(array(
                 'id'    => $hash,
             ));
@@ -248,9 +238,7 @@
                 'modelType' => 'CampaignItem',
                 'personId'  => static::$personId,
             );
-            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod('EmailMessageActivityUtil',
-                                                                                    'resolveHashForQueryStringArray');
-            $hash       = $resolveHashForQueryStringArrayFunction->invokeArgs(null, array($queryStringArray));
+            $hash                   = StringUtil::resolveHashForQueryStringArray($queryStringArray);
             $this->setGetArray(array(
                 'id'    => $hash,
             ));
@@ -281,9 +269,7 @@
                 'personId'  => static::$personId,
                 'url'       => 'http://www.zurmo.com',
             );
-            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod('EmailMessageActivityUtil',
-                                                                                    'resolveHashForQueryStringArray');
-            $hash       = $resolveHashForQueryStringArrayFunction->invokeArgs(null, array($queryStringArray));
+            $hash                   = StringUtil::resolveHashForQueryStringArray($queryStringArray);
             $this->setGetArray(array(
                 'id'    => $hash,
             ));

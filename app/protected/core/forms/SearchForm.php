@@ -563,7 +563,8 @@
             {
                 $moduleClassName            = $this->getModelModuleClassName();
                 $metadata                   = $moduleClassName::getMetadata();
-                if ($metadata['global']['globalSearchAttributeNames'] != null)
+                if (isset($metadata['global']['globalSearchAttributeNames']) &&
+                    $metadata['global']['globalSearchAttributeNames'] != null)
                 {
                     foreach ($metadata['global']['globalSearchAttributeNames'] as $attributeName)
                     {

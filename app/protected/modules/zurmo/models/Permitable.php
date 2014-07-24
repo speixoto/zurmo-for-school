@@ -484,6 +484,11 @@
                 'foreignRelations' => array(
                     'Permission',
                 ),
+                'indexes' => array(
+                    'item_id' => array(
+                        'members' => array('item_id'),
+                        'unique' => false),
+                ),
             );
             return $metadata;
         }

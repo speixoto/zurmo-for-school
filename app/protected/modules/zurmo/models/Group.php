@@ -465,7 +465,7 @@
             if (((isset($this->originalAttributeValues['group'])) || $this->isNewModel) &&
                 $this->group != null && $this->group->id > 0)
             {
-                ReadPermissionsOptimizationUtil::groupAddedToGroup($this);
+                AllPermissionsOptimizationUtil::groupAddedToGroup($this);
                 ReadPermissionsSubscriptionUtil::groupParentHasChanged();
             }
             parent::afterSave();
@@ -482,7 +482,7 @@
                     //utilize the groupBeingRemovedFromGroup method.
                     $group = unserialize(serialize($this));
                     $group->group = Group::getById($this->originalAttributeValues['group'][1]);
-                    ReadPermissionsOptimizationUtil::groupBeingRemovedFromGroup($group);
+                    AllPermissionsOptimizationUtil::groupBeingRemovedFromGroup($group);
                     assert('$this->originalAttributeValues["group"][1] != $this->group->id');
                 }
                 return true;
@@ -499,7 +499,7 @@
             {
                 return false;
             }
-            ReadPermissionsOptimizationUtil::groupBeingDeleted($this);
+            AllPermissionsOptimizationUtil::groupBeingDeleted($this);
             return true;
         }
 
@@ -509,6 +509,7 @@
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
             ReadPermissionsSubscriptionUtil::groupHasBeenDeleted();
+            AllPermissionsOptimizationCache::forgetAll();
         }
     }
 ?>
