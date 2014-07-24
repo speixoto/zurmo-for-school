@@ -1102,6 +1102,10 @@
             $tableName = ReadPermissionsSubscriptionUtil::getSubscriptionTableName($modelClassName);
             $sql = "DELETE FROM $tableName";
             ZurmoRedBean::exec($sql);
+            $tableName = ReadPermissionsSubscriptionUtil::getAccountSubscriptionTempBuildTableName($modelClassName);
+            $sql = "DELETE FROM $tableName";
+            ZurmoRedBean::exec($sql);
+
         }
     }
 ?>
