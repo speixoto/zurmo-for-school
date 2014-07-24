@@ -140,5 +140,10 @@
         {
             return self::getSubset(null, null, null, "cancelExport = 1");
         }
+
+        public static function hasReadPermissionsOptimization()
+        {
+            return true;
+        }
     }
 ?>
