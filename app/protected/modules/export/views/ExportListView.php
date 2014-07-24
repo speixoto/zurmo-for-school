@@ -44,7 +44,10 @@
                         'processOffset',
                         'serializedData',
                         'exportFileModel',
-                        'modelClassName'
+                        'modelClassName',
+                        'isCompleted',
+                        'isJobRunning',
+                        'cancelExport'
                     ),
                     'panels' => array(
                         array(
@@ -73,6 +76,14 @@
         public function getRowsAreSelectable()
         {
             return false;
+        }
+
+        /**
+         * Override to handle security/access resolution on links.
+         */
+        protected function getCGridViewLastColumn()
+        {
+            return array();
         }
     }
 ?>

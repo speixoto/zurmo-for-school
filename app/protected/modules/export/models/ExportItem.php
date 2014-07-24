@@ -96,9 +96,7 @@
                     'exportFileModel',
                 ),
                 'elements' => array(
-                    'isCompleted'     => 'ExportStatus',
-                    'isJobRunning'    => 'ExportJobStatus',
-                    'cancelExport'    => 'CancelExport'
+                    'exportFileName'  => 'ExportFileName'
                 ),
                 'globalSearchAttributeNames' => array(
                     'exportFileName',
