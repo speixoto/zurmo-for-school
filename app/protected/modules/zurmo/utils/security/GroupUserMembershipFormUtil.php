@@ -139,6 +139,14 @@
             {
                 AllPermissionsOptimizationUtil::userAddedToGroup($group, $user);
             }
+            if (!empty($removedUsers))
+            {
+                ReadPermissionsSubscriptionUtil::userRemovedFromGroup();
+            }
+            if (!empty($addedUsers))
+            {
+                ReadPermissionsSubscriptionUtil::userAddedToGroup();
+            }
             return true;
         }
 

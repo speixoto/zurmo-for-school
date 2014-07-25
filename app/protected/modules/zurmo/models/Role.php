@@ -112,6 +112,7 @@
                 $this->role != null && $this->role->id > 0)
             {
                 AllPermissionsOptimizationUtil::roleParentSet($this);
+                ReadPermissionsSubscriptionUtil::roleParentSet();
             }
             parent::afterSave();
         }
@@ -128,6 +129,7 @@
                     $role = unserialize(serialize($this));
                     $role->role = Role::getById($this->originalAttributeValues['role'][1]);
                     AllPermissionsOptimizationUtil::roleParentBeingRemoved($role);
+                    ReadPermissionsSubscriptionUtil::roleParentBeingRemoved();
                     assert('$this->originalAttributeValues["role"][1] != $this->role->id');
                 }
                 return true;
@@ -153,6 +155,7 @@
             PermissionsCache::forgetAll();
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
+            ReadPermissionsSubscriptionUtil::roleHasBeenDeleted();
             AllPermissionsOptimizationCache::forgetAll();
         }
 

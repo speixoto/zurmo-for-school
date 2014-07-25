@@ -266,8 +266,14 @@
                 $this->role != null && $this->role->id > 0)
             {
                 AllPermissionsOptimizationUtil::userAddedToRole($this);
+                ReadPermissionsSubscriptionUtil::userAddedToRole();
                 $this->onChangeRights();
                 $this->onChangePolicies();
+            }
+
+            if ($this->isNewModel)
+            {
+                ReadPermissionsSubscriptionUtil::userCreated();
             }
             if (isset($this->originalAttributeValues['language']) && Yii::app()->user->userModel != null &&
                 Yii::app()->user->userModel == $this)
@@ -289,6 +295,8 @@
                 if (isset($this->originalAttributeValues['role']) && $this->originalAttributeValues['role'][1] > 0)
                 {
                     AllPermissionsOptimizationUtil::userBeingRemovedFromRole($this, Role::getById($this->originalAttributeValues['role'][1]));
+                    // ToDo: Maybe this should be after save, but even this shouldn't be issue, because jobs are starting with delay of 5 seconds
+                    ReadPermissionsSubscriptionUtil::userBeingRemovedFromRole();
                     $this->onChangeRights();
                     $this->onChangePolicies();
                 }

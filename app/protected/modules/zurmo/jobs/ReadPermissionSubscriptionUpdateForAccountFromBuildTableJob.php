@@ -34,49 +34,40 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BeginRequestTestBehavior extends BeginRequestBehavior
+    /**
+     * A job for updating read permission subscription table for accounts
+     */
+    class ReadPermissionSubscriptionUpdateForAccountFromBuildTableJob extends ReadPermissionSubscriptionUpdateJob
     {
-        public function attach($owner)
+        /**
+         * @returns Translated label that describes this job type.
+         */
+        public static function getDisplayName()
         {
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadWorkflowsObserver'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadReadPermissionSubscriptionObserver'));
+            return Zurmo::t('ZurmoModule', 'Read Permission Subscription Update For Account Table Job - Process Items From Build Table');
         }
 
         /**
-        * Import all files that need to be included(for lazy loading)
-        * @param $event
-        */
-        public function handleImports($event)
+         * @return The type of the NotificationRules
+         */
+        public static function getType()
         {
-            try
-            {
-                // we don't ue $default here as the computation of default on each request would take more time.
-                $filesToInclude = GeneralCache::getEntry('filesToIncludeForTests');
-            }
-            catch (NotFoundException $e)
-            {
-                $filesToInclude   = FileUtil::getFilesFromDir(Yii::app()->basePath . '/modules', Yii::app()->basePath . '/modules', 'application.modules', true);
-                $filesToIncludeFromFramework = FileUtil::getFilesFromDir(Yii::app()->basePath . '/core', Yii::app()->basePath . '/core', 'application.core', true);
-                $totalFilesToIncludeFromModules = count($filesToInclude);
-
-                foreach ($filesToIncludeFromFramework as $key => $file)
-                {
-                    $filesToInclude[$totalFilesToIncludeFromModules + $key] = $file;
-                }
-                GeneralCache::cacheEntry('filesToIncludeForTests', $filesToInclude);
-            }
-            foreach ($filesToInclude as $file)
-            {
-                Yii::import($file);
-            }
+            return 'ReadPermissionSubscriptionUpdateForAccountFromBuildTable';
         }
 
-        public function handleLoadReadPermissionSubscriptionObserver($event)
+        /**
+         * @returns bool if the job should appear in Job Manager list to be run manually.
+         * We should not show this job in list of manual jobs
+         */
+        public static function showInJobManagerToRunManually()
         {
-            parent::handleLoadReadPermissionSubscriptionObserver($event);
-            Yii::app()->readPermissionSubscriptionObserver->enabled = false;
+            return false;
+        }
+
+        public function run()
+        {
+            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableFromBuildTable($this->getMessageLogger(), 'Account');
+            return true;
         }
     }
 ?>

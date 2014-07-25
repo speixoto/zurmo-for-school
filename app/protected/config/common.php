@@ -252,6 +252,9 @@
             'phoneHelper' => array(
                 'class'          => 'application.core.components.PhoneHelper',
             ),
+            'readPermissionSubscriptionObserver' => array(
+                'class' => 'application.modules.zurmo.observers.ReadPermissionSubscriptionObserver',
+            ),
             'request' => array(
                 'class' => 'application.core.components.ZurmoHttpRequest',
                 'enableCsrfValidation' => true,

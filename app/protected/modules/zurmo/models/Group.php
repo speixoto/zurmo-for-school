@@ -466,6 +466,7 @@
                 $this->group != null && $this->group->id > 0)
             {
                 AllPermissionsOptimizationUtil::groupAddedToGroup($this);
+                ReadPermissionsSubscriptionUtil::groupParentHasChanged();
             }
             parent::afterSave();
         }
@@ -507,6 +508,7 @@
             PermissionsCache::forgetAll();
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
+            ReadPermissionsSubscriptionUtil::groupHasBeenDeleted();
             AllPermissionsOptimizationCache::forgetAll();
         }
     }
