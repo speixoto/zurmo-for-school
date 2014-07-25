@@ -83,7 +83,8 @@
                                             'accounts'      => 'Accounts',
                                             'contacts'      => 'Contacts',
                                             'leads'         => 'Leads',
-                                            'opportunities' => 'Opportunities'
+                                            'opportunities' => 'Opportunities',
+                                            'projects'      => 'Projects'
                                           );
             $this->assertEquals($compareData, $scopeModulesAndLabels);
         }

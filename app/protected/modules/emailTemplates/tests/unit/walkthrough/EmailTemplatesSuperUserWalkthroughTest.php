@@ -1556,7 +1556,7 @@
             $this->assertTrue(strpos($content, '<div class="pills">') !== false);
             $this->assertTrue(strpos($content, '<a href="#" class="filter-link active" ' .
                                                 'data-filter="1">Layouts</a>') !== false);
-            $this->assertTrue(strpos($content, '<a href="#" class="filter-link" data-filter="2">' .
+            $this->assertTrue(strpos($content, '<a href="#" id="saved-templates-link" class="filter-link" data-filter="2">' .
                                                 'Saved Templates</a>') !== false);
             $this->assertTrue(strpos($content, '<a class="simple-link closeme" href="#">') !== false);
             $this->assertTrue(strpos($content, '<span><i class="icon-x"></i></span>cancel</a></div>') !== false);
@@ -1886,8 +1886,8 @@
             $this->assertTrue(strpos($content, '<div class="pills">') !== false);
             $this->assertTrue(strpos($content, '<a href="#" class="filter-link active" ' .
                                                 'data-filter="1">Layouts</a>') !== false);
-            $this->assertTrue(strpos($content, '<a href="#" class="filter-link" data-filter="2">' .
-                                                'Saved Templates</a>') !== false);
+            $this->assertTrue(strpos($content, '<a href="#" id="saved-templates-link" class="filter-link" data-filter="2">' .
+                                               'Saved Templates</a>') !== false);
             $this->assertTrue(strpos($content, '<a class="simple-link closeme" href="#">') !== false);
             $this->assertTrue(strpos($content, '<span><i class="icon-x"></i></span>cancel</a></div>') !== false);
             $this->assertTrue(strpos($content, '<div class="templates-chooser-list clearfix" id="BuilderEmail' .

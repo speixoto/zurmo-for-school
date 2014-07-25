@@ -56,7 +56,8 @@
         public static function renderFileNameCol($data)
         {
 	        $filename    = ZurmoHtml::tag('strong', array(), $data->exportFileName . '.' . $data->exportFileType);
-	        $owner       = ZurmoHtml::tag('a', array('class' => 'simple-link', 'href' => '#'), 'Owner name link here');
+	        $owner       = ZurmoHtml::tag('a', array('class' => 'simple-link', 'href' => Yii::app()->createUrl('users/default/details',
+                                                                                         array('id' => $data->owner->id))), $data->owner->getFullName());
 	        $content     = ZurmoHtml::tag('span', array('class' => 'exported-filename'), $filename . ' · ' . $owner);
             $content    .= self::renderStatus($data);
             $content    .= self::renderCancelButton($data);
