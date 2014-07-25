@@ -79,6 +79,7 @@
                 Yii::app()->languageHelper->activateLanguagesForTesting();
                 Yii::app()->languageHelper->importMessagesForTesting();
             }
+            Yii::app()->jobQueue->deleteAll();
         }
 
         public static function tearDownAfterClass()
