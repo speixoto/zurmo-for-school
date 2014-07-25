@@ -64,7 +64,7 @@
             if ($this->imapManager->connect())
             {
                 $this->getMessageLogger()->addDebugMessage("Connected to imap server.");
-                $lastImapCheckTime = null;
+                $lastImapCheckTime = $this->getLastImapDropboxCheckTime();
                 if (isset($lastImapCheckTime) && $lastImapCheckTime != '')
                 {
                    $criteria = "SINCE \"{$lastImapCheckTime}\" UNDELETED";
@@ -86,9 +86,9 @@
                    foreach ($messages as $message)
                    {
                        $lastMessageCreatedTime = strtotime($message->createdDate);
-                       if ($lastMessageCreatedTime > strtotime($lastCheckTime))
+                       if (strtotime($message->createdDate) > strtotime($lastCheckTime))
                        {
-                           $lastCheckTime = $lastMessageCreatedTime;
+                           $lastCheckTime = $message->createdDate;
                        }
                        $this->getMessageLogger()->addDebugMessage('Processing Message id: ' . $message->uid);
                        if (!$this->processMessage($message))
@@ -102,8 +102,6 @@
                            $this->errorMessage .= $messageContent;
                            $this->getMessageLogger()->addDebugMessage($messageContent);
                        }
-                       $this->imapManager->deleteMessage($message->uid);
-                       $this->getMessageLogger()->addDebugMessage('Deleted Message id: ' . $message->uid);
                        if ($numberOfProcessedMessages++ >= static::CONFIG_DEFAULT_BATCH_VALUE)
                        {
                            $this->addDebugMessageBeforeFinishing($numberOfProcessedMessages - 1, $countOfMessages);
@@ -111,6 +109,7 @@
                            return (empty($this->errorMessage));
                        }
                    }
+                   $this->imapManager->expungeMessages();
                    if ($lastCheckTime != '')
                    {
                        $this->setLastImapDropboxCheckTime($lastCheckTime);
