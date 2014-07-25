@@ -337,9 +337,12 @@
          */
         public static function securableItemGivenPermissionsForGroup(SecurableItem $securableItem)
         {
-            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
-            $account      = $securableItem->castDown(array($modelDerivationPathToItem));
-            self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->id);
+            if ($securableItem instanceof Account)
+            {
+                $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
+                $account      = $securableItem->castDown(array($modelDerivationPathToItem));
+                self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->id);
+            }
         }
 
         /**
@@ -347,9 +350,12 @@
          */
         public static function securableItemLostPermissionsForGroup(SecurableItem $securableItem)
         {
-            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
-            $account      = $securableItem->castDown(array($modelDerivationPathToItem));
-            self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->id);
+            if ($securableItem instanceof Account)
+            {
+                $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
+                $account      = $securableItem->castDown(array($modelDerivationPathToItem));
+                self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->id);
+            }
         }
 
         /**
@@ -357,9 +363,12 @@
          */
         public static function securableItemGivenPermissionsForUser(SecurableItem $securableItem)
         {
-            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
-            $account      = $securableItem->castDown(array($modelDerivationPathToItem));
-            self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->id);
+            if ($securableItem instanceof Account)
+            {
+                $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
+                $account      = $securableItem->castDown(array($modelDerivationPathToItem));
+                self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->id);
+            }
         }
 
         /**
@@ -367,9 +376,12 @@
          */
         public static function securableItemLostPermissionsForUser(SecurableItem $securableItem)
         {
-            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
-            $account      = $securableItem->castDown(array($modelDerivationPathToItem));
-            self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->id);
+            if ($securableItem instanceof Account)
+            {
+                $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
+                $account      = $securableItem->castDown(array($modelDerivationPathToItem));
+                self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->id);
+            }
         }
 
         /**
