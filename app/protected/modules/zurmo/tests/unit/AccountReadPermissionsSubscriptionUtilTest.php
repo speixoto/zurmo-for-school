@@ -228,6 +228,7 @@
             $this->assertTrue($account->save());
             RedBeanModel::forgetAll();
             ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationCache::forgetAll();
 
             $queuedJobs = Yii::app()->jobQueue->getAll();
             $this->assertEquals(1, count($queuedJobs[5]));
