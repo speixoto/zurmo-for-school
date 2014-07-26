@@ -79,7 +79,7 @@ EOD;
             {
                 $this->usageError('The specified user is not a super administrator.');
             }
-            if(User::getRootUserCount() > 0)
+            if (User::getRootUserCount() > 0)
             {
                 echo 'There is already a root user. A new one cannot be specified.';
                 Yii::app()->end();
@@ -88,7 +88,7 @@ EOD;
             Yii::app()->user->userModel->hideFromSelecting   = true;
             Yii::app()->user->userModel->hideFromLeaderboard = true;
             $saved = Yii::app()->user->userModel->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }

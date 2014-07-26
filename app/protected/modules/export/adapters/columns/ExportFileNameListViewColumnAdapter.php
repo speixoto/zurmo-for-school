@@ -55,10 +55,10 @@
          */
         public static function renderFileNameCol($data)
         {
-	        $filename    = ZurmoHtml::tag('strong', array(), $data->exportFileName . '.' . $data->exportFileType);
-	        $owner       = ZurmoHtml::tag('a', array('class' => 'simple-link', 'href' => Yii::app()->createUrl('users/default/details',
+            $filename    = ZurmoHtml::tag('strong', array(), $data->exportFileName . '.' . $data->exportFileType);
+            $owner       = ZurmoHtml::tag('a', array('class' => 'simple-link', 'href' => Yii::app()->createUrl('users/default/details',
                                                                                          array('id' => $data->owner->id))), $data->owner->getFullName());
-	        $content     = ZurmoHtml::tag('span', array('class' => 'exported-filename'), $filename . ' · ' . $owner);
+            $content     = ZurmoHtml::tag('span', array('class' => 'exported-filename'), $filename . ' · ' . $owner);
             $content    .= self::renderStatus($data);
             $content    .= self::renderCancelButton($data);
             return $content;
@@ -76,16 +76,16 @@
             $isCompleted    = (int)$data->isCompleted;
             $jobStatus      = (int)$data->isJobRunning;
             $dataProvider   = unserialize($data->serializedData);
-            if($isCompleted == 1)
+            if ($isCompleted == 1)
             {
                 $status .= '<div class="export-item-stage-status stage-true"><i>●</i><span>' . Zurmo::t('ExportModule', 'Completed') . '</span></div>';
             }
-            elseif($isCompleted == 0 && $jobStatus == 1)
+            elseif ($isCompleted == 0 && $jobStatus == 1)
             {
                 $status .= '<div class="export-item-stage-status stage-running"><i>●</i><span>' . Zurmo::t('ExportModule', 'Running') .
                     ' ' .  $data->processOffset . '/' . $dataProvider->getPagination()->getPageSize() . '</span></div>';
             }
-            elseif($isCompleted == 0 && $jobStatus == 0)
+            elseif ($isCompleted == 0 && $jobStatus == 0)
             {
                 $status .= '<div class="export-item-stage-status stage-pending"><i>●</i><span>' . Zurmo::t('ExportModule', 'Pending')
                     . ' ' . $data->processOffset . '/' . $dataProvider->getPagination()->getPageSize() . '</span></div>';
@@ -108,10 +108,10 @@
         {
             $value = (int)$data->isJobRunning;
             $url   = Yii::app()->createUrl('export/default/cancel', array('id' => $data->id));
-            if($value == 0)
+            if ($value == 0)
             {
                 $cancelBtn  = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Cancel')), $url, array('class' => 'secondary-button'));
-                if((int)$data->cancelExport == 0)
+                if ((int)$data->cancelExport == 0)
                 {
                     return $cancelBtn;
                 }
@@ -120,7 +120,7 @@
                     return ZurmoHtml::tag('span', array('class' => 'cancelled-export'), Zurmo::t('ExportModule', 'Cancelled'));
                 }
             }
-            elseif($value == 1)
+            elseif ($value == 1)
             {
                 $cancelBtn  = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Cancel')), $url, array('class' => 'secondary-button disabled'));
                 return $cancelBtn;

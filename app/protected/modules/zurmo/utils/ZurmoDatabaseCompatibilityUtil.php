@@ -45,7 +45,6 @@
     class ZurmoDatabaseCompatibilityUtil
     {
         private static $storedFunctions = array(
-            // Begin Not Coding Standard
             // Permitables - Rights
 
             'create function get_permitable_explicit_actual_right(
@@ -642,9 +641,9 @@
             'create function create_item(user_id int)
             returns int
             begin
-              insert into `item` ( `id`, `createddatetime`,`modifieddatetime`,
+              insert into `item` ( `id`, `createddatetime`, `modifieddatetime`,
                     `createdbyuser__user_id`, `modifiedbyuser__user_id` )
-                    VALUES ( NULL,  NOW() , NOW(), user_id, user_id  );
+                    VALUES ( NULL,  NOW() , NOW(), user_id, user_id  ); # Not Coding Standard
                return last_insert_id();
             end;',
 
@@ -684,15 +683,12 @@
                 call duplicate_filemodels(related_model_type, related_model_id, "emailmessage", @emailMessageId, user_id);
                 return @emailMessageId;
             end;',
-            // End Not Coding Standard
         );
 
         // MySQL functions cannot be recursive so we have
         // to do recursive functions with procedures.
 
-        
         private static $storedProcedures = array(
-            // Begin Not Coding Standard
             // Users - Rights
 
             'create procedure recursive_get_user_actual_right(
@@ -1679,7 +1675,7 @@
 
                   declare cursor0 cursor for select `campaign`.`id`, `campaign`.`marketinglist_id` from `campaign`
                         where ((`campaign`.`status` = active_status) and (`campaign`.`sendondatetime` < NOW()));
-                  declare continue handler for not found set loop0_eof = TRUE;
+                  declare continue handler for not found set loop0_eof = TRUE; # Not Coding Standard
                   open cursor0;
                         loop0: loop
                               fetch cursor0 into campaign_id, marketinglist_id;
@@ -1691,10 +1687,8 @@
                         end loop loop0;
                   close cursor0;
             end;',
-            // End Not Coding Standard
         );
 
-        
         /**
          * @param $sql
          * @return string

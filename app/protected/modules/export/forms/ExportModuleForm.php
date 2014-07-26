@@ -36,6 +36,5 @@
 
     class ExportModuleForm extends GlobalSearchEnabledModuleForm
     {
-        
     }
 ?>

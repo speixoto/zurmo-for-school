@@ -38,11 +38,11 @@
      * Helper class for working with campaignItem
      */
     class ZurmoSystemConfigurationUtil extends BatchSizeConfigUtil
-    {   
+    {
         const CONFIG_KEY             = 'ListPageSizeMaxLimit';
 
         const CONFIG_MODULE_NAME     = 'ZurmoModule';
-        
+
         const CONFIG_DEFAULT_VALUE   = 100;
     }
 ?>

@@ -53,30 +53,30 @@
 
             $role1 = new Role();
             $role1->name = 'Role1';
-            assert($role1->save());
+            assert($role1->save()); // Not Coding Standard
 
             $role2 = new Role();
             $role2->name = 'Role2';
-            assert($role2->save());
+            assert($role2->save()); // Not Coding Standard
 
             $role3 = new Role();
             $role3->name = 'Role3';
-            assert($role3->save());
+            assert($role3->save()); // Not Coding Standard
 
             $role4 = new Role();
             $role4->name = 'Role4';
-            assert($role4->save());
+            assert($role4->save()); // Not Coding Standard
 
             $role5 = new Role();
             $role5->name = 'Role5';
-            assert($role5->save());
+            assert($role5->save()); // Not Coding Standard
 
             $role3->roles->add($role2);
             $role2->roles->add($role1);
             $role5->roles->add($role4);
-            assert($role3->save());
-            assert($role2->save());
-            assert($role5->save());
+            assert($role3->save()); // Not Coding Standard
+            assert($role2->save()); // Not Coding Standard
+            assert($role5->save()); // Not Coding Standard
         }
 
         public function setUp()
@@ -196,7 +196,6 @@
             $this->assertEquals($johnny->id, $rows[1]['userid']);
             $this->assertEquals($account->id, $rows[1]['modelid']);
             $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[1]['subscriptiontype']);
-
         }
 
         /**
@@ -278,7 +277,6 @@
             $this->assertEquals($johnny->id, $rows[1]['userid']);
             $this->assertEquals($account->id, $rows[1]['modelid']);
             $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_DELETE, $rows[1]['subscriptiontype']);
-
 
             // Now add user to group again and test
             //$group->users->add($johnny);
@@ -394,7 +392,6 @@
             $this->assertEquals($super->id, $rows[0]['userid']);
             $this->assertEquals($account->id, $rows[0]['modelid']);
             $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
-
 
             // Add permissions for parentGroup to READ account
             $account->addPermissions($parentGroup, Permission::READ);
@@ -1110,7 +1107,6 @@
             $tableName = ReadPermissionsSubscriptionUtil::getAccountSubscriptionTempBuildTableName($modelClassName);
             $sql = "DELETE FROM $tableName";
             ZurmoRedBean::exec($sql);
-
         }
     }
 ?>

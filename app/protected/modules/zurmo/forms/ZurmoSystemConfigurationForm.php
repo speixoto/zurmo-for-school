@@ -42,7 +42,7 @@
         public $autoresponderOrCampaignBatchSize;
 
         public $outboundEmailBatchSize;
-        
+
         public $listPageSizeMaxLimit;
 
         public function rules()
