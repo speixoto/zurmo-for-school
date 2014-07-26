@@ -44,6 +44,7 @@
      */
     class ZurmoDatabaseCompatibilityUtil
     {
+        // Begin Not Coding Standard
         private static $storedFunctions = array(
             // Permitables - Rights
 
@@ -643,7 +644,7 @@
             begin
               insert into `item` ( `id`, `createddatetime`, `modifieddatetime`,
                     `createdbyuser__user_id`, `modifiedbyuser__user_id` )
-                    VALUES ( NULL,  NOW() , NOW(), user_id, user_id  ); # Not Coding Standard
+                    VALUES ( NULL,  NOW() , NOW(), user_id, user_id  );
                return last_insert_id();
             end;',
 
@@ -684,6 +685,7 @@
                 return @emailMessageId;
             end;',
         );
+        // End Not Coding Standard
 
         // MySQL functions cannot be recursive so we have
         // to do recursive functions with procedures.
