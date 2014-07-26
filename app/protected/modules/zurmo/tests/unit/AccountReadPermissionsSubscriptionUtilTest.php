@@ -604,8 +604,12 @@
             $role1 = Role::getByName('Role1');
             $role1->role = $role4;
             $this->assertTrue($role1->save());
+            $role4->forgetAll();
+            $role2->forgetAll();
             RedBeanModel::forgetAll();
             ReadPermissionsOptimizationUtil::rebuild();
+            $role4 = Role::getByName('Role4');
+            $role2 = Role::getByName('Role2');
 
             $queuedJobs = Yii::app()->jobQueue->getAll();
             $this->assertEquals(1, count($queuedJobs[5]));
