@@ -689,7 +689,7 @@
 
         // MySQL functions cannot be recursive so we have
         // to do recursive functions with procedures.
-
+        // Begin Not Coding Standard
         private static $storedProcedures = array(
             // Users - Rights
 
@@ -1677,7 +1677,7 @@
 
                   declare cursor0 cursor for select `campaign`.`id`, `campaign`.`marketinglist_id` from `campaign`
                         where ((`campaign`.`status` = active_status) and (`campaign`.`sendondatetime` < NOW()));
-                  declare continue handler for not found set loop0_eof = TRUE; # Not Coding Standard
+                  declare continue handler for not found set loop0_eof = TRUE;
                   open cursor0;
                         loop0: loop
                               fetch cursor0 into campaign_id, marketinglist_id;
@@ -1690,6 +1690,7 @@
                   close cursor0;
             end;',
         );
+        // End Not Coding Standard
 
         /**
          * @param $sql
