@@ -46,7 +46,7 @@
             SecurityTestHelper::createSuperAdmin();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
 
             //create everyone group
             $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);

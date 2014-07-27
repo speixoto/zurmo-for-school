@@ -122,5 +122,17 @@
             $autoCompleteOptions    = ArrayUtil::encodeAutoCompleteOptionsArray(array('anOptionsThatdoesNotExist' => true));
             UserSearch::getUsersByPartialFullName('A', 5, $autoCompleteOptions);
         }
+
+        public function testGetUsersByPartialFullNameWithAutoCompleteOptionsAsExcludeRootUsers()
+        {
+            UserTestHelper::createBasicUser('Root');
+            ZurmoRedBean::exec('UPDATE _user SET isrootuser=1 WHERE username="root";'); // Not Coding Standard
+
+            $users = UserSearch::getUsersByPartialFullName('Root', 5);
+            $this->assertEquals(1, count($users));
+            $autoCompleteOptions    = ArrayUtil::encodeAutoCompleteOptionsArray(array('excludeRootUsers' => true));
+            $users = UserSearch::getUsersByPartialFullName('Root', 5, $autoCompleteOptions);
+            $this->assertEquals(0, count($users));
+        }
     }
 ?>

@@ -168,15 +168,22 @@
         public function testResolveGlobalMarketingFooterHtmlWithValidNestedMergeTag()
         {
             $model                  = Yii::app()->user->userModel;
+            $params                 = array('personId'          => 1,
+                                            'marketingListId'   => 2,
+                                            'modelId'           => 3,
+                                            'modelType'         => 'AutoresponderItem',
+                                            'createNewActivity' => true,
+                                            'preview'           => false);
             $footer                 = GlobalMarketingFooterUtil::getContentByType(true, true);
-            $footer                 .= '<br/>This email was sent to [[PRIMARY^EMAIL]].';
             GlobalMarketingFooterUtil::setContentByType($footer, true);
-            $resolvedFooter         = SpecialMergeTagsAdapter::resolve('globalMarketingFooterHtml', $model);
+            $resolvedFooter         = SpecialMergeTagsAdapter::resolve('globalMarketingFooterHtml', $model, $params);
             $expectedFooter         = GlobalMarketingFooterUtil::getContentByType(true, false);
             $this->assertNotNull($resolvedFooter);
+            // resolved one would be without merge tags, expected would have those.
             $this->assertNotEquals($expectedFooter, $resolvedFooter);
             $this->assertFalse(strpos($resolvedFooter, 'PRIMARY^EMAIL') !== false);
-            $this->assertTrue(strpos($resolvedFooter, '(None)') !== false);
+            $this->assertTrue(strpos($expectedFooter, 'PRIMARY^EMAIL') !== false);
+            $this->assertFalse(strpos($expectedFooter, '(None)') !== false);
         }
 
         /**
@@ -212,15 +219,22 @@
         public function testResolveGlobalMarketingFooterPlainTextWithValidNestedMergeTag()
         {
             $model                  = Yii::app()->user->userModel;
+            $params                 = array('personId'          => 1,
+                                            'marketingListId'   => 2,
+                                            'modelId'           => 3,
+                                            'modelType'         => 'AutoresponderItem',
+                                            'createNewActivity' => true,
+                                            'preview'           => false);
             $footer                 = GlobalMarketingFooterUtil::getContentByType(false, true);
-            $footer                 .= ' This email was sent to [[PRIMARY^EMAIL]].';
             GlobalMarketingFooterUtil::setContentByType($footer, false);
-            $resolvedFooter         = SpecialMergeTagsAdapter::resolve('globalMarketingFooterPlainText', $model);
+            $resolvedFooter         = SpecialMergeTagsAdapter::resolve('globalMarketingFooterPlainText', $model, $params);
             $expectedFooter         = GlobalMarketingFooterUtil::getContentByType(false, false);
             $this->assertNotNull($resolvedFooter);
+            // resolved one would be without merge tags, expected would have those.
             $this->assertNotEquals($expectedFooter, $resolvedFooter);
             $this->assertFalse(strpos($resolvedFooter, 'PRIMARY^EMAIL') !== false);
-            $this->assertTrue(strpos($resolvedFooter, '(None)') !== false);
+            $this->assertTrue(strpos($expectedFooter, 'PRIMARY^EMAIL') !== false);
+            $this->assertFalse(strpos($expectedFooter, '(None)') !== false);
         }
 
         /**
@@ -237,6 +251,178 @@
             $this->assertNotNull($resolvedFooter);
             $this->assertEquals($expectedFooter, $resolvedFooter);
             $this->assertTrue(strpos($resolvedFooter, 'INVALID^TAG') !== false);
+        }
+
+        /**
+         * @depends testResolveGlobalMarketingFooterPlainTextWithInvalidNestedMergeTag
+         */
+        public function testResolveUnsubscribeUrlWithoutAnyParams()
+        {
+            $model                  = Yii::app()->user->userModel;
+            $params                 = array();
+            try
+            {
+                $expected = GlobalMarketingFooterUtil::resolveUnsubscribeUrlByArray($params);
+                $this->fail('Missing NotSupportedException due to invalid hash');
+            }
+            catch (NotSupportedException $e)
+            {
+            }
+            $resolved               = SpecialMergeTagsAdapter::resolve('unsubscribeUrl', $model, $params);
+            $this->assertEquals(MergeTagsToModelAttributesAdapter::PROPERTY_NOT_FOUND, $resolved);
+        }
+
+        /**
+         * @depends testResolveUnsubscribeUrlWithoutAnyParams
+         */
+        public function testResolveUnsubscribeUrlWithMissingSomeParams()
+        {
+            $model                  = Yii::app()->user->userModel;
+            $params                 = array('personId' => 1, 'marketingListId' => 2);
+            try
+            {
+                $expected = GlobalMarketingFooterUtil::resolveUnsubscribeUrlByArray($params);
+                $this->fail('Missing NotSupportedException due to invalid hash');
+            }
+            catch (NotSupportedException $e)
+            {
+            }
+            $resolved               = SpecialMergeTagsAdapter::resolve('unsubscribeUrl', $model, $params);
+            $this->assertEquals(MergeTagsToModelAttributesAdapter::PROPERTY_NOT_FOUND, $resolved);
+        }
+
+        /**
+         * @depends testResolveUnsubscribeUrlWithoutAnyParams
+         */
+        public function testResolveUnsubscribeUrlWithMissingSomeOptionalParams()
+        {
+            $model                  = Yii::app()->user->userModel;
+            $params                 = array('personId'          => 1,
+                                            'marketingListId'   => 2,
+                                            'modelId'           => 3,
+                                            'modelType'         => 'AutoresponderItem');
+            $expected               = GlobalMarketingFooterUtil::resolveUnsubscribeUrlByArray($params);
+            $this->assertTrue(strpos($expected, 'marketingLists/external/unsubscribe?hash=') !== false);
+            $resolved               = SpecialMergeTagsAdapter::resolve('unsubscribeUrl', $model, $params);
+            $this->assertTrue(strpos($resolved, 'marketingLists/external/unsubscribe?hash=') !== false);
+            $expectedHash           = static::extractHashFromUrl($expected);
+            $resolvedHash           = static::extractHashFromUrl($resolved);
+            $expectedReversed       = EmailMessageActivityUtil::resolveQueryStringArrayForHash($expectedHash);
+            $resolvedReversed       = EmailMessageActivityUtil::resolveQueryStringArrayForHash($resolvedHash);
+            $this->assertEquals($expectedReversed, $resolvedReversed);
+        }
+
+        /**
+         * @depends testResolveUnsubscribeUrlWithMissingSomeOptionalParams
+         */
+        public function testResolveUnsubscribeUrlWithoutModel()
+        {
+            $model                  = null;
+            $params                 = array('personId'          => 1,
+                                            'marketingListId'   => 2,
+                                            'modelId'           => 3,
+                                            'modelType'         => 'AutoresponderItem',
+                                            'createNewActivity' => true,
+                                            'preview'           => false);
+            $expected               = GlobalMarketingFooterUtil::resolveUnsubscribeUrlByArray($params);
+            $this->assertTrue(strpos($expected, 'marketingLists/external/unsubscribe?hash=') !== false);
+            $resolved               = SpecialMergeTagsAdapter::resolve('unsubscribeUrl', $model, $params);
+            $this->assertTrue(strpos($resolved, 'marketingLists/external/unsubscribe?hash=') !== false);
+            $expectedHash           = static::extractHashFromUrl($expected);
+            $resolvedHash           = static::extractHashFromUrl($resolved);
+            $expectedReversed       = EmailMessageActivityUtil::resolveQueryStringArrayForHash($expectedHash);
+            $resolvedReversed       = EmailMessageActivityUtil::resolveQueryStringArrayForHash($resolvedHash);
+            $this->assertEquals($expectedReversed, $resolvedReversed);
+        }
+
+        /**
+         * @depends testResolveUnsubscribeUrlWithoutModel
+         */
+        public function testResolveManageSubscriptionsUrlWithoutAnyParams()
+        {
+            $model                  = Yii::app()->user->userModel;
+            $params                 = array();
+            try
+            {
+                $expected = GlobalMarketingFooterUtil::resolveManageSubscriptionsUrlByArray($params);
+                $this->fail('Missing NotSupportedException due to invalid hash');
+            }
+            catch (NotSupportedException $e)
+            {
+            }
+            $resolved               = SpecialMergeTagsAdapter::resolve('manageSubscriptionsUrl', $model, $params);
+            $this->assertEquals(MergeTagsToModelAttributesAdapter::PROPERTY_NOT_FOUND, $resolved);
+        }
+
+        /**
+         * @depends testResolveManageSubscriptionsUrlWithoutAnyParams
+         */
+        public function testResolveManageSubscriptionsUrlWithMissingSomeParams()
+        {
+            $model                  = Yii::app()->user->userModel;
+            $params                 = array('personId' => 1, 'marketingListId' => 2);
+            try
+            {
+                $expected = GlobalMarketingFooterUtil::resolveManageSubscriptionsUrlByArray($params);
+                $this->fail('Missing NotSupportedException due to invalid hash');
+            }
+            catch (NotSupportedException $e)
+            {
+            }
+            $resolved               = SpecialMergeTagsAdapter::resolve('manageSubscriptionsUrl', $model, $params);
+            $this->assertEquals(MergeTagsToModelAttributesAdapter::PROPERTY_NOT_FOUND, $resolved);
+        }
+
+        /**
+         * @depends testResolveManageSubscriptionsUrlWithoutAnyParams
+         */
+        public function testResolveManageSubscriptionsUrlWithMissingSomeOptionalParams()
+        {
+            $model                  = Yii::app()->user->userModel;
+            $params                 = array('personId'          => 1,
+                                                'marketingListId'   => 2,
+                                                'modelId'           => 3,
+                                                'modelType'         => 'AutoresponderItem');
+            $expected               = GlobalMarketingFooterUtil::resolveManageSubscriptionsUrlByArray($params);
+            $this->assertTrue(strpos($expected, 'marketingLists/external/manageSubscriptions?hash=') !== false);
+            $resolved               = SpecialMergeTagsAdapter::resolve('manageSubscriptionsUrl', $model, $params);
+            $this->assertTrue(strpos($resolved, 'marketingLists/external/manageSubscriptions?hash=') !== false);
+            $expectedHash           = static::extractHashFromUrl($expected);
+            $resolvedHash           = static::extractHashFromUrl($resolved);
+            $expectedReversed       = EmailMessageActivityUtil::resolveQueryStringArrayForHash($expectedHash);
+            $resolvedReversed       = EmailMessageActivityUtil::resolveQueryStringArrayForHash($resolvedHash);
+            $this->assertEquals($expectedReversed, $resolvedReversed);
+        }
+
+        /**
+         * @depends testResolveManageSubscriptionsUrlWithMissingSomeOptionalParams
+         */
+        public function testResolveManageSubscriptionsUrlWithoutModel()
+        {
+            $model                  = null;
+            $params                 = array('personId'          => 1,
+                                            'marketingListId'   => 2,
+                                            'modelId'           => 3,
+                                            'modelType'         => 'AutoresponderItem',
+                                            'createNewActivity' => true,
+                                            'preview'           => false);
+            $expected               = GlobalMarketingFooterUtil::resolveManageSubscriptionsUrlByArray($params);
+            $this->assertTrue(strpos($expected, 'marketingLists/external/manageSubscriptions?hash=') !== false);
+            $resolved               = SpecialMergeTagsAdapter::resolve('manageSubscriptionsUrl', $model, $params);
+            $this->assertTrue(strpos($resolved, 'marketingLists/external/manageSubscriptions?hash=') !== false);
+            $expectedHash           = static::extractHashFromUrl($expected);
+            $resolvedHash           = static::extractHashFromUrl($resolved);
+            $expectedReversed       = EmailMessageActivityUtil::resolveQueryStringArrayForHash($expectedHash);
+            $resolvedReversed       = EmailMessageActivityUtil::resolveQueryStringArrayForHash($resolvedHash);
+            $this->assertEquals($expectedReversed, $resolvedReversed);
+        }
+
+        protected static function extractHashFromUrl($url)
+        {
+            $hashPosition       = strpos($url, '?hash=') + 6;
+            $previewPosition    = strpos($url, '&preview');
+            $length             = ($previewPosition)? $previewPosition - strlen($url) : strlen($url) - $hashPosition;
+            return substr($url, $hashPosition, $length);
         }
     }
 ?>

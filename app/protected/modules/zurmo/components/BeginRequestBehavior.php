@@ -514,8 +514,7 @@
 
         public function handleLoadReadPermissionSubscriptionObserver($event)
         {
-            $readPermissionSubscriptionObserver = new ReadPermissionSubscriptionObserver();
-            $readPermissionSubscriptionObserver->init();
+            Yii::app()->readPermissionSubscriptionObserver; // runs init()
         }
 
         public function handleLoadContactLatestActivityDateTimeObserver($event)

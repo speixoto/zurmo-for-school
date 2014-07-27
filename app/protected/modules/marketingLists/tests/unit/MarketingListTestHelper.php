@@ -42,7 +42,11 @@
             $marketingList  = static::populateMarketingListByName($name, $description, $fromName,
                                                                                 $fromAddress, $anyoneCanSubscribe);
             $saved          = $marketingList->save();
-            assert('$saved');
+            if (!$saved)
+            {
+                var_dump($marketingList->getErrors());
+                throw new FailedToSaveModelException();
+            }
             return $marketingList;
         }
 

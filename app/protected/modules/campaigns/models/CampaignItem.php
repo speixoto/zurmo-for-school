@@ -252,33 +252,6 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
 
-        public static function registerCampaignItemsByCampaign($campaign, $contacts)
-        {
-            foreach ($contacts as $contact)
-            {
-                if (!static::addNewItem(0, $contact, $campaign))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        public static function addNewItem($processed, $contact, $campaign)
-        {
-            $campaignItem                       = new self;
-            $campaignItem->processed            = $processed;
-            $campaignItem->contact              = $contact;
-            $campaignItem->campaign             = $campaign;
-            $saved                              = $campaignItem->unrestrictedSave();
-            assert('$saved');
-            if (!$saved)
-            {
-                throw new FailedToSaveModelException();
-            }
-            return $saved;
-        }
-
         /**
          * Return true if the related email message in on the outbox folder
          * @return bool

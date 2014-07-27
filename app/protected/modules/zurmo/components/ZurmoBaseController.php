@@ -42,6 +42,8 @@
 
         const ADMIN_VIEW_MOBILE_CHECK_FILTER_PATH = 'application.modules.zurmo.controllers.filters.AdminViewMobileCheckControllerFilter';
 
+        const ROOT_USER_ACCESS_FILTER_PATH = 'application.modules.zurmo.controllers.filters.RootUserAccessControllerFilter';
+
         public function filters()
         {
             $moduleClassName = $this->resolveModuleClassNameForFilters();
@@ -85,14 +87,6 @@
         public function __construct($id, $module = null)
         {
             parent::__construct($id, $module);
-        }
-
-        /**
-         * Override if the module is a nested module such as groups or roles.
-         */
-        public function resolveAndGetModuleId()
-        {
-            return $this->getModule()->getId();
         }
 
         public static function getRightsFilterPath()
@@ -1293,6 +1287,27 @@
          */
         protected function beforeRedirect($model)
         {
+        }
+
+        /**
+         * Make search and list view.
+         * @param SearchForm $searchModel
+         * @param string $moduleName
+         * @param RedBeanModelDataProvider $dataProvider
+         * @return \SearchAndListView
+         */
+        protected function makeSearchAndListView($searchModel, $moduleName, $dataProvider)
+        {
+            $listModel = $searchModel->getModel();
+            return new SearchAndListView(
+                $this->getId(),
+                $this->getModule()->getId(),
+                $searchModel,
+                $listModel,
+                $moduleName,
+                $dataProvider,
+                GetUtil::resolveSelectedIdsFromGet()
+            );
         }
     }
 ?>

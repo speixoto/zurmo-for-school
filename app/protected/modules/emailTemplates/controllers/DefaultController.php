@@ -277,15 +277,12 @@
                 $contact        = Contact::getById($contactId);
                 $textContent    = $emailTemplate->textContent;
                 $htmlContent    = $emailTemplate->htmlContent;
-                AutoresponderAndCampaignItemsUtil::resolveContentForMergeTags($textContent, $htmlContent, $contact);
-                $unsubscribePlaceholder         = GlobalMarketingFooterUtil::
-                                                                                            UNSUBSCRIBE_URL_PLACEHOLDER;
-                $manageSubscriptionsPlaceholder = GlobalMarketingFooterUtil::
-                                                                                MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
-                $textContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder), null,
-                                                                                                            $textContent);
-                $htmlContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder), null,
-                                                                                                            $htmlContent);
+                GlobalMarketingFooterUtil::removeFooterMergeTags($textContent);
+                GlobalMarketingFooterUtil::removeFooterMergeTags($htmlContent);
+                // we have already stripped off the merge tags that could introduce problems,
+                // no need to send actual data for personId, modelId, modelType and marketingListId.
+                AutoresponderAndCampaignItemsUtil::resolveContentsForMergeTags($textContent, $htmlContent, $contact,
+                                                                                null, null, null, null);
                 $emailTemplate->setTreatCurrentUserAsOwnerForPermissions(true);
                 $emailTemplate->textContent = $textContent;
                 $emailTemplate->htmlContent = $htmlContent;

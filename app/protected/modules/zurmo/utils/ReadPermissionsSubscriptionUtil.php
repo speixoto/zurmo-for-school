@@ -53,6 +53,7 @@
                 $readPermissionsSubscriptionTableName  = static::getSubscriptionTableName($modelClassName);
                 static::recreateTable($readPermissionsSubscriptionTableName);
             }
+            static::recreateAccountBuildTable();
             ModelCreationApiSyncUtil::buildTable();
         }
 
@@ -67,46 +68,52 @@
                 $schema, new MessageLogger());
         }
 
+        public static function recreateAccountBuildTable()
+        {
+            $schema = static::getReadSubscriptionTableSchemaForAccountTempTable();
+            CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition(
+                $schema, new MessageLogger());
+        }
+
         protected static function getReadSubscriptionTableSchemaByName($tableName)
         {
             assert('is_string($tableName) && $tableName  != ""');
             return array($tableName =>  array(
                 'columns' => array(
-                array(
-                    'name' => 'userid',
-                    'type' => 'INT(11)',
-                    'unsigned' => 'UNSIGNED',
-                    'notNull' => 'NOT NULL', // Not Coding Standard
-                    'collation' => null,
-                    'default' => null,
+                    array(
+                        'name' => 'userid',
+                        'type' => 'INT(11)',
+                        'unsigned' => 'UNSIGNED',
+                        'notNull' => 'NOT NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => null,
+                    ),
+                    array(
+                        'name' => 'modelid',
+                        'type' => 'INT(11)',
+                        'unsigned' => 'UNSIGNED',
+                        'notNull' => 'NOT NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => null,
+                    ),
+                    array(
+                        'name' => 'modifieddatetime',
+                        'type' => 'DATETIME',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'NULL', // Not Coding Standard
+                    ),
+                    array(
+                        'name' => 'subscriptiontype',
+                        'type' => 'TINYINT(4)',
+                        'unsigned' => null,
+                        'notNull' => 'NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => 'NULL', // Not Coding Standard
+                    ),
                 ),
-                array(
-                    'name' => 'modelid',
-                    'type' => 'INT(11)',
-                    'unsigned' => 'UNSIGNED',
-                    'notNull' => 'NOT NULL', // Not Coding Standard
-                    'collation' => null,
-                    'default' => null,
-                ),
-                array(
-                    'name' => 'modifieddatetime',
-                    'type' => 'DATETIME',
-                    'unsigned' => null,
-                    'notNull' => 'NULL', // Not Coding Standard
-                    'collation' => null,
-                    'default' => 'NULL', // Not Coding Standard
-                ),
-                array(
-                    'name' => 'subscriptiontype',
-                    'type' => 'TINYINT(4)',
-                    'unsigned' => null,
-                    'notNull' => 'NULL', // Not Coding Standard
-                    'collation' => null,
-                    'default' => 'NULL', // Not Coding Standard
-                ),
-            ),
-            'indexes' =>
-                array('userid_modelid' =>
+                'indexes' => array('userid_modelid' =>
                     array(
                         'columns' => array('userid', 'modelid'),
                         'unique' => true,
@@ -114,6 +121,83 @@
                 ),
             )
             );
+        }
+
+        /*
+         * Schema for temp build table for accounts.
+         * After account is created, deleted, or its owner is changed we don't want to rebuild read permission subscription
+         * table for all accounts, but just for those that are actually created/deleted/changed owner.
+         * So we eep list of these account ids in this temp table, and after account read permission table is updated,
+         * we need to remove accounts from temp table.
+         */
+        protected static function getReadSubscriptionTableSchemaForAccountTempTable()
+        {
+            $tableName = static::getAccountSubscriptionTempBuildTableName();
+            return array($tableName =>  array(
+                'columns' => array(
+                    array(
+                        'name' => 'accountid',
+                        'type' => 'INT(11)',
+                        'unsigned' => 'UNSIGNED',
+                        'notNull' => 'NOT NULL', // Not Coding Standard
+                        'collation' => null,
+                        'default' => null,
+                    ),
+                ),
+                'indexes' => array(),
+                ),
+            );
+        }
+
+        /**
+         * Get array odf all account ids from account temp build table
+         * @return array
+         */
+        protected static function getAccountIdsArrayFromBuildTable()
+        {
+            $tableName = static::getAccountSubscriptionTempBuildTableName();
+            $sql = "select accountid from " . $tableName;
+            return ZurmoRedBean::getCol($sql);
+        }
+
+        /*
+         * Add account id to account temp build table
+         */
+        protected static function addAccountIdToBuildTable($accountId)
+        {
+            assert('is_int($accountId)');
+            $tableName = static::getAccountSubscriptionTempBuildTableName();
+            // Need to check if accountId already exist in table,
+            // because save and owner change observer events are triggered during adding new account
+            $sql = "select * from $tableName where accountid='$accountId'";
+            $results = ZurmoRedBean::getAll($sql);
+            if (!is_array($results) || empty($results))
+            {
+                $sql = "insert into $tableName (accountid) values ($accountId)";
+                ZurmoRedBean::exec($sql);
+            }
+        }
+
+        /*
+         * Delete account id to account temp build table
+         */
+        protected static function deleteAccountIdFromBuildTable($accountId)
+        {
+            assert('is_int($accountId)');
+            $tableName = static::getAccountSubscriptionTempBuildTableName();
+            $sql = "delete from $tableName where accountid='$accountId'";
+            ZurmoRedBean::exec($sql);
+        }
+
+        /*
+         * Based on account id, we add account id to account temp build table, refrsh account read permission
+         * subscription table for account ids in temp build table, and delete all records from account temp build table
+         */
+        public static function updateAccountReadSubscriptionTableBasedOnBuildTable($accountId)
+        {
+            assert('is_int($accountId)');
+            static::addAccountIdToBuildTable($accountId);
+            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccountFromBuildTable', 5);
         }
 
         protected static function getModelTableName($modelClassName)
@@ -129,39 +213,65 @@
         }
 
         /**
+         * Get able name for account temp build table
+         * @return string
+         */
+        public static function getAccountSubscriptionTempBuildTableName()
+        {
+            return 'account_read_subscription_temp_build';
+        }
+
+        /**
          * Update read subscription table for all users and models
          * @param MessageLogger $messageLogger
+         * @param null | array $modelClassNames
+         * @param array $arrayOfModelIdsToUpdate
+         * permission subscription table just for account ids that exist in account temp build table
          * @return bool
          */
-        public static function updateAllReadSubscriptionTables(MessageLogger $messageLogger)
+        public static function updateAllReadSubscriptionTables(MessageLogger $messageLogger, $modelClassNames = null,
+                                                               $arrayOfModelIdsToUpdate = array())
         {
             $loggedUser = Yii::app()->user->userModel;
             $users = User::getAll();
             $updateStartTimestamp = time();
             static::setReadPermissionUpdateStatus(static::STATUS_STARTED);
-
             $messageLogger->addDebugMessage(Zurmo::t('ZurmoModule',
                 'Starting read permission building for all users.'));
 
             foreach ($users as $user)
             {
+                if ($user->isSystemUser)
+                {
+                    $messageLogger->addDebugMessage(Zurmo::t('ZurmoModule',
+                        'Skipping system user with userID: {id}', array('{id}' => $user->id)));
+                    continue;
+                }
                 $messageLogger->addDebugMessage(Zurmo::t('ZurmoModule',
                     'Starting read permission building for userID: {id}', array('{id}' => $user->id)));
                 $startTime = microtime(true);
                 Yii::app()->user->userModel = $user;
-                $modelClassNames = PathUtil::getAllReadSubscriptionModelClassNames();
+
+                if (!is_array($modelClassNames) || empty($modelClassNames))
+                {
+                    $modelClassNames = PathUtil::getAllReadSubscriptionModelClassNames();
+                }
                 if (!empty($modelClassNames) && is_array($modelClassNames))
                 {
                     foreach ($modelClassNames as $modelClassName)
                     {
-                        $onlyOwnedModels = false;
                         if ($modelClassName != 'Account')
                         {
-                            $onlyOwnedModels = true;
+                            static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
+                                Yii::app()->user->userModel, $updateStartTimestamp, true,
+                                $messageLogger);
                         }
-                        static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
-                            Yii::app()->user->userModel, $updateStartTimestamp, $onlyOwnedModels,
-                            $messageLogger);
+                        else
+                        {
+                            static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
+                                Yii::app()->user->userModel, $updateStartTimestamp, false,
+                                $messageLogger, $arrayOfModelIdsToUpdate);
+                        }
                     }
                 }
                 $endTime = microtime(true);
@@ -178,15 +288,195 @@
         }
 
         /**
+         * @param MessageLogger $messageLogger
+         * @param null $modelClassName
+         */
+        public static function updateReadSubscriptionTableFromBuildTable(MessageLogger $messageLogger, $modelClassName = null)
+        {
+            if ($modelClassName == 'Account')
+            {
+                // ToDO: Add pagination - Ivica: I do not think we need it
+                $accountIds = static::getAccountIdsArrayFromBuildTable();
+                ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger, array($modelClassName), $accountIds);
+                if ($modelClassName == 'Account' && !empty($accountIds))
+                {
+                    foreach ($accountIds as $accountId)
+                    {
+                        static::deleteAccountIdFromBuildTable((int)$accountId);
+                    }
+                }
+            }
+        }
+
+        /**
+         * Rebuild All Read Permission Subscription Data
+         */
+        public static function rebuildAllReadPermissionSubscriptionData()
+        {
+            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdate', 5);
+        }
+
+        /**
+         * Update all account read permissions items, because group parent is changed
+         */
+        public static function groupParentHasChanged()
+        {
+            self::runJobForAccountsWhenRoleOrGroupChanged();
+        }
+
+        /**
+         * Update all account read permissions items, because group is deleted
+         */
+        public static function groupHasBeenDeleted()
+        {
+            self::runJobForAccountsWhenRoleOrGroupChanged();
+        }
+
+        /**
+         * Update all account read permissions items when permissions for item  is added to group
+         */
+        public static function securableItemGivenPermissionsForGroup(SecurableItem $securableItem)
+        {
+            if ($securableItem instanceof Account)
+            {
+                $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
+                $account      = $securableItem->castDown(array($modelDerivationPathToItem));
+                self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->id);
+            }
+        }
+
+        /**
+         * Update all account read permissions items when permissions for item is removed from group
+         */
+        public static function securableItemLostPermissionsForGroup(SecurableItem $securableItem)
+        {
+            if ($securableItem instanceof Account)
+            {
+                $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
+                $account      = $securableItem->castDown(array($modelDerivationPathToItem));
+                self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->id);
+            }
+        }
+
+        /**
+         * Update all account read permissions items when permissions for item is added to user
+         */
+        public static function securableItemGivenPermissionsForUser(SecurableItem $securableItem)
+        {
+            if ($securableItem instanceof Account)
+            {
+                $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
+                $account      = $securableItem->castDown(array($modelDerivationPathToItem));
+                self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->id);
+            }
+        }
+
+        /**
+         * Update all account read permissions items when permissions for item is removed from user
+         */
+        public static function securableItemLostPermissionsForUser(SecurableItem $securableItem)
+        {
+            if ($securableItem instanceof Account)
+            {
+                $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Account');
+                $account      = $securableItem->castDown(array($modelDerivationPathToItem));
+                self::updateAccountReadSubscriptionTableBasedOnBuildTable($account->id);
+            }
+        }
+
+        /**
+         * Update all read permissions, when new user is created
+         */
+        public static function userCreated()
+        {
+            // ToDo: update jobs just for one user if needed for performance reasons
+            self::runJobForAccountsWhenRoleOrGroupChanged();
+        }
+
+        /**
+         * Update all account read permissions items when user is added to group
+         */
+        public static function userAddedToGroup()
+        {
+            // ToDo: update jobs just for one user if needed for performance reasons
+            self::runJobForAccountsWhenRoleOrGroupChanged();
+        }
+
+        /**
+         * Update all account read permissions items when user is removed from group
+         */
+        public static function userRemovedFromGroup()
+        {
+            // ToDo: update jobs just for one user if needed for performance reasons
+            self::runJobForAccountsWhenRoleOrGroupChanged();
+        }
+
+        /**
+         * Update all account read permissions items when user is added to role
+         */
+        public static function userAddedToRole()
+        {
+            // ToDo: update jobs just for one user if needed for performance reasons
+            self::runJobForAccountsWhenRoleOrGroupChanged();
+        }
+
+        /**
+         * Update all account read permissions items when user is removed from role
+         */
+        public static function userBeingRemovedFromRole()
+        {
+            // ToDo: update jobs just for one user if needed for performance reasons
+            self::runJobForAccountsWhenRoleOrGroupChanged();
+        }
+
+        /**
+         * Update all account read permissions tables, because role parent is set
+         */
+        public static function roleParentSet()
+        {
+            self::runJobForAccountsWhenRoleOrGroupChanged();
+        }
+
+        /**
+         * Update all account read permissions tables, because role parent is removed
+         */
+        public static function roleParentBeingRemoved()
+        {
+            // ToDo: This event is not called - check why
+            self::runJobForAccountsWhenRoleOrGroupChanged();
+        }
+
+        /**
+         * Update all account read permissions tables, because role is deleted
+         */
+        public static function roleHasBeenDeleted()
+        {
+            self::runJobForAccountsWhenRoleOrGroupChanged();
+        }
+
+        protected static function runJobForAccountsWhenRoleOrGroupChanged()
+        {
+            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+        }
+
+        protected static function runJobForAccountsWhenAccountPermissionsChanged()
+        {
+            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+        }
+
+        /**
          * Update models in read subscription table based on modelId and userId(userId is used implicitly in getSubsetIds)
          * @param string $modelClassName
          * @param User $user
          * @param bool $onlyOwnedModels
          * @param int $updateStartTimestamp
          * @param MessageLogger $messageLogger
+         * @param array $arrayOfModelIdsToUpdate
+         * permission subscription table just for account ids that exist in account temp build table
          */
         public static function updateReadSubscriptionTableByModelClassNameAndUser($modelClassName, User $user, $updateStartTimestamp,
-                                                                                  $onlyOwnedModels = false, MessageLogger $messageLogger)
+                                                                                  $onlyOwnedModels = false, MessageLogger $messageLogger,
+                                                                                  $arrayOfModelIdsToUpdate = array())
         {
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
             assert('is_int($updateStartTimestamp)');
@@ -196,27 +486,38 @@
             $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($lastReadPermissionUpdateTimestamp);
             $updateDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($updateStartTimestamp);
 
-            $metadata['clauses'][1] = array(
-                'attributeName'        => 'createdDateTime',
-                'operatorType'         => 'lessThanOrEqualTo',
-                'value'                => $updateDateTime
-            );
-            $metadata['structure'] = "1";
-
-            if ($onlyOwnedModels)
+            if ($modelClassName == 'Account' && !empty($arrayOfModelIdsToUpdate))
             {
-                $metadata['clauses'][2] = array(
-                    'attributeName'        => 'owner',
-                    'operatorType'         => 'equals',
-                    'value'                => $user->id
+                $metadata['clauses'][1] = array(
+                    'attributeName' => 'id',
+                    'operatorType'  => 'oneOf',
+                    'value'         => $arrayOfModelIdsToUpdate,
                 );
-                $metadata['structure'] .= " AND 2";
+                $metadata['structure'] = "1";
+            }
+            else
+            {
+                $metadata['clauses'][1] = array(
+                    'attributeName'        => 'createdDateTime',
+                    'operatorType'         => 'lessThanOrEqualTo',
+                    'value'                => $updateDateTime
+                );
+                $metadata['structure'] = "1";
+
+                if ($onlyOwnedModels)
+                {
+                    $metadata['clauses'][2] = array(
+                        'attributeName'        => 'owner',
+                        'operatorType'         => 'equals',
+                        'value'                => $user->id
+                    );
+                    $metadata['structure'] .= " AND 2";
+                }
             }
 
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             $where  = RedBeanModelDataProvider::makeWhere($modelClassName, $metadata, $joinTablesAdapter);
             $userModelIds = $modelClassName::getSubsetIds($joinTablesAdapter, null, null, $where);
-
             $endTime = microtime(true);
             $executionTimeMs = $endTime - $startTime;
             $messageLogger->addDebugMessage(Zurmo::t('ZurmoModule',
@@ -226,6 +527,16 @@
             $tableName = static::getSubscriptionTableName($modelClassName);
             $sql = "SELECT modelid FROM $tableName WHERE userid = " . $user->id .
                 " AND subscriptiontype = " . static::TYPE_ADD;
+
+            if ($modelClassName == 'Account' && !empty($arrayOfModelIdsToUpdate))
+            {
+                $accountIds = static::getAccountIdsArrayFromBuildTable();
+                if (!empty($accountIds))
+                {
+                    $list = "'". implode(", ", $accountIds) ."'";
+                    $sql .= " AND modelid in ($list)";
+                }
+            }
             $permissionTableRows = ZurmoRedBean::getAll($sql);
             $permissionTableIds = array();
             if (is_array($permissionTableRows) && !empty($permissionTableRows))
@@ -244,12 +555,21 @@
                     $sql = "DELETE FROM $tableName WHERE
                                                     userid = '" . $user->id . "'
                                                     AND modelid = '{$modelId}'
-                                                    AND subscriptiontype='" . self::TYPE_DELETE . "';";
+                                                    AND subscriptiontype='" . self::TYPE_DELETE . "'";
                     ZurmoRedBean::exec($sql);
 
-                    $sql = "INSERT INTO $tableName VALUES
-                                                    (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_ADD . "');";
-                    ZurmoRedBean::exec($sql);
+                    $sql = "SELECT * FROM $tableName WHERE
+                            userid = '" . $user->id . "'
+                            AND modelid = '{$modelId}'
+                            AND subscriptiontype='" . self::TYPE_ADD . "'";
+                    $results = ZurmoRedBean::getAll($sql);
+
+                    if (!is_array($results) || empty($results))
+                    {
+                        $sql = "INSERT INTO $tableName VALUES
+                                (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_ADD . "')";
+                        ZurmoRedBean::exec($sql);
+                    }
                 }
             }
 
@@ -260,14 +580,132 @@
                     $sql = "DELETE FROM $tableName WHERE
                                                     userid = '" . $user->id . "'
                                                     AND modelid = '{$modelId}'
-                                                    AND subscriptiontype='" . self::TYPE_ADD . "';";
+                                                    AND subscriptiontype='" . self::TYPE_ADD . "'";
                     ZurmoRedBean::exec($sql);
 
-                    $sql = "INSERT INTO $tableName VALUES
-                                                    (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_DELETE . "');";
-                    ZurmoRedBean::exec($sql);
+                    $sql = "SELECT * FROM $tableName WHERE
+                    userid = '" . $user->id . "'
+                    AND modelid = '{$modelId}'
+                    AND subscriptiontype='" . self::TYPE_DELETE . "'";
+                    $results = ZurmoRedBean::getAll($sql);
+
+                    if (!is_array($results) || empty($results))
+                    {
+                        $sql = "INSERT INTO $tableName VALUES
+                                                        (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_DELETE . "')";
+                        ZurmoRedBean::exec($sql);
+                    }
                 }
             }
+        }
+
+        /**
+         * Add new model to read permission subscription table
+         * @param int $modelId
+         * @param string $modelClassName
+         * @param User $user
+         */
+        public static function addModelToReadSubscriptionTableByModelIdAndModelClassNameAndUser($modelId,
+                                                                                                $modelClassName,
+                                                                                                User $user)
+        {
+            assert('is_int($modelId)');
+            assert('is_string($modelClassName)');
+
+            $updateStartTimestamp = time();
+            $updateDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($updateStartTimestamp);
+            $tableName = static::getSubscriptionTableName($modelClassName);
+            $sql = "DELETE FROM $tableName WHERE
+                    userid = '" . $user->id . "'
+                    AND modelid = '{$modelId}'
+                    AND subscriptiontype='" . self::TYPE_DELETE . "'";
+            ZurmoRedBean::exec($sql);
+
+            $sql = "SELECT * FROM $tableName WHERE
+                    userid = '" . $user->id . "'
+                    AND modelid = '{$modelId}'
+                    AND subscriptiontype='" . self::TYPE_ADD . "'";
+            $results = ZurmoRedBean::getAll($sql);
+
+            if (!is_array($results) || empty($results))
+            {
+                $sql = "INSERT INTO $tableName VALUES
+                    (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_ADD . "')";
+                ZurmoRedBean::exec($sql);
+            }
+        }
+
+        /**
+         * Delete model read permission subscription table by model id, class name and user
+         * @param int $modelId
+         * @param string $modelClassName
+         * @param User $user
+         */
+        public static function deleteModelFromReadSubscriptionTableByModelIdAndModelClassNameAndUser($modelId,
+                                                                                                     $modelClassName,
+                                                                                                     User $user)
+        {
+            assert('is_int($modelId)');
+            assert('is_string($modelClassName)');
+
+            $updateStartTimestamp = time();
+            $updateDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($updateStartTimestamp);
+            $tableName = static::getSubscriptionTableName($modelClassName);
+            $sql = "DELETE FROM $tableName WHERE
+                    userid = '" . $user->id . "'
+                    AND modelid = '{$modelId}'
+                    AND subscriptiontype='" . self::TYPE_ADD . "'";
+            ZurmoRedBean::exec($sql);
+
+            $sql = "SELECT * FROM $tableName WHERE
+                    userid = '" . $user->id . "'
+                    AND modelid = '{$modelId}'
+                    AND subscriptiontype='" . self::TYPE_DELETE . "'";
+            $results = ZurmoRedBean::getAll($sql);
+
+            if (!is_array($results) || empty($results))
+            {
+                $sql = "INSERT INTO $tableName VALUES
+                        (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_DELETE . "')";
+                ZurmoRedBean::exec($sql);
+            }
+        }
+
+        /**
+         * @param int $modelId
+         * @param string $modelClassName
+         */
+        protected static function deleteOnlyModelToReadSubscriptionTableByModelIdAndModelClassName($modelId,
+                                                                                                   $modelClassName)
+        {
+            assert('is_int($modelId)');
+            assert('is_string($modelClassName)');
+
+            $updateStartTimestamp = time();
+            $updateDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($updateStartTimestamp);
+            $tableName = static::getSubscriptionTableName($modelClassName);
+            $sql = "UPDATE $tableName set
+                    subscriptiontype='" . self::TYPE_DELETE . "', modifieddatetime='" . $updateDateTime . "'
+                    WHERE
+                    modelid = '{$modelId}'
+                    AND subscriptiontype='" . self::TYPE_ADD . "'";
+            ZurmoRedBean::exec($sql);
+        }
+
+        /**
+         * Call this function when changing model owner
+         * This function first mark model as deleted for all users where type was added, and change timestamp,
+         * then it add new record for new owner.
+         * @param int $modelId
+         * @param string $modelClassName
+         * @param User $user
+         */
+        public static function changeOwnerOfModelInReadSubscriptionTableByModelIdAndModelClassNameAndUser($modelId,
+                                                                                                          $modelClassName,
+                                                                                                          User $user)
+        {
+            static::deleteOnlyModelToReadSubscriptionTableByModelIdAndModelClassName($modelId, $modelClassName);
+            static::addModelToReadSubscriptionTableByModelIdAndModelClassNameAndUser($modelId, $modelClassName, $user);
         }
 
         /**

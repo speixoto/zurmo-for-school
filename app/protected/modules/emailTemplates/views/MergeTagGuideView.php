@@ -38,6 +38,7 @@
     {
         protected function renderContent()
         {
+            // TODO: @shoaibi: Critical: Use MergeTagsUtil::resolve resolveAttributeStringToMergeTagString
             $syntaxContent     = $this->renderSyntaxContent();
             $examplesContent    = $this->renderExamplesContent();
             $specialTagsContent = $this->renderSpecialTagsContent();
@@ -168,9 +169,9 @@
                                         MergeTagsUtil::CAPITAL_DELIMITER . 'HTML' .
                                         MergeTagsUtil::TAG_SUFFIX) .
                                         " : prints the Global Marketing Footer(Rich Text).";
-            $specialTagsItems[]     = $this->renderBoldMergeTag('{{UNSUBSCRIBE_URL}}') .
+            $specialTagsItems[]     = $this->renderBoldMergeTag(GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag()) .
                                         " : prints unsubscribe url.";
-            $specialTagsItems[]     = $this->renderBoldMergeTag('{{MANAGE_SUBSCRIPTIONS_URL}}') .
+            $specialTagsItems[]     = $this->renderBoldMergeTag(GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag()) .
                                         " : prints manage subscriptions url.";
             foreach ($specialTagsItems as $specialTagsItem)
             {

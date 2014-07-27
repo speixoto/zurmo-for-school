@@ -54,8 +54,11 @@
         {
             parent::setUpBeforeClass();
             ZurmoDatabaseCompatibilityUtil::createActualPermissionsCacheTable();
+            ZurmoDatabaseCompatibilityUtil::createNamedSecurableActualPermissionsCacheTable();
+            ZurmoDatabaseCompatibilityUtil::createActualRightsCacheTable();
             ZurmoDatabaseCompatibilityUtil::dropStoredFunctionsAndProcedures();
             PermissionsCache::forgetAll();
+            AllPermissionsOptimizationCache::forgetAll();
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
             Currency::resetCaches();  //php only cache

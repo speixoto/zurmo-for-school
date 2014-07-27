@@ -40,7 +40,9 @@
     class ControllerSecurityUtil
     {
         /**
-         * @return boolean - true if the current user has permission on model.
+         * @param $securableItem
+         * @param $permissionToCheck
+         * @return bool - true if the current user has permission on model.
          */
         public static function doesCurrentUserHavePermissionOnSecurableItem($securableItem, $permissionToCheck)
         {
@@ -50,19 +52,28 @@
             {
                 return true;
             }
-            $permission        = $securableItem->getEffectivePermissions(Yii::app()->user->userModel);
-            if ($permissionToCheck == ($permission & $permissionToCheck))
+            try
             {
+                $securableItem->checkPermissionsHasAnyOf($permissionToCheck);
                 return true;
             }
-            return false;
+            catch (AccessDeniedSecurityException $e)
+            {
+                return false;
+            }
         }
+
+        /**
+
+         * @param $model - RedBeanModel
+         * @return null
+         */
 
         /**
          * If a current user cannot read the model, then render a AccessFailurePageView
          * and end the application.
-         * @param $model - RedBeanModel
-         * @return null;
+         * @param RedBeanModel $model
+         * @param bool $fromAjax
          */
         public static function resolveAccessCanCurrentUserReadModel(RedBeanModel $model, $fromAjax = false)
         {

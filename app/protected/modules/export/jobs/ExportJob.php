@@ -91,8 +91,15 @@
          */
         public function run()
         {
-            $exportItems = ExportItem::getUncompletedItems();
-            $startTime   = Yii::app()->performance->startClock();
+            $cancelledItems = ExportItem::getCancelledItems();
+            foreach ($cancelledItems as $item)
+            {
+                $item->delete();
+                $message = Zurmo::t('ExportModule', 'Deleted export item with ID: {id}', array('{id}' => $item->id));
+                $this->getMessageLogger()->addInfoMessage($message);
+            }
+            $exportItems    = ExportItem::getUncompletedItems();
+            $startTime      = Yii::app()->performance->startClock();
             Yii::app()->performance->startMemoryUsageMarker();
             if (count($exportItems) > 0)
             {
@@ -104,14 +111,25 @@
                     $this->getMessageLogger()->addInfoMessage($message);
                     try
                     {
+                        //Update the job run status for the export item.
+                        $exportItem->isJobRunning = true;
+                        $exportItem->save();
+                        $message = Zurmo::t('ExportModule', 'Update the job running status for export item with ID: {id} to true', array('{id}' => $exportItem->id));
+                        $this->getMessageLogger()->addInfoMessage($message);
                         $this->processExportItem($exportItem);
                     }
                     catch (SecurityException $e)
                     {
                         $message = Zurmo::t('ExportModule', 'Export Item could not be processed due a SecurityException ' . $e->getMessage());
                         $this->getMessageLogger()->addInfoMessage($message);
+                        $exportItem->isJobRunning = false;
+                        $exportItem->save();
                         $this->processCompletedWithSecurityExceptionExportItem($exportItem);
                     }
+                    $exportItem->isJobRunning = false;
+                    $exportItem->save();
+                    $message = Zurmo::t('ExportModule', 'Update the job running status for export item with ID: {id} to false', array('{id}' => $exportItem->id));
+                    $this->getMessageLogger()->addInfoMessage($message);
                     if ($this->hasReachedMaximumProcessingCount())
                     {
                         $this->addMaximumProcessingCountMessageForAllExportItems();

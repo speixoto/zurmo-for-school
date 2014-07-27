@@ -51,6 +51,11 @@
         private $_permitablesToAttachAfterSave  = array();
 
         /**
+         * @var bool
+         */
+        private $permissionsChanged  = false;
+
+        /**
          * Permitables we should remove from model in afterSave()
          * @var array
          */
@@ -95,7 +100,7 @@
                     throw new NoCurrentUserSecurityException();
                 }
             }
-            if (!SECURITY_OPTIMIZED)
+            if (!SECURITY_OPTIMIZED || $this->processGetActualPermissionsAsNonOptimized())
             {
                 // The slow way will remain here as documentation
                 // for what the optimized way is doing.
@@ -181,6 +186,15 @@
             return array($allowPermissions, $denyPermissions);
         }
 
+        /**
+         * Override if you need to force the permissions to process non-optimized. @see NamedSecurableItem
+         * @return bool
+         */
+        public function processGetActualPermissionsAsNonOptimized()
+        {
+            return false;
+        }
+
         public function getPropagatedActualAllowPermissions(Permitable $permitable)
         {
             if ($permitable instanceof User)
@@ -201,7 +215,7 @@
 
         protected function recursiveGetPropagatedAllowPermissions($role)
         {
-            if (!SECURITY_OPTIMIZED)
+            if (!SECURITY_OPTIMIZED || $this->processGetActualPermissionsAsNonOptimized())
             {
                 // The slow way will remain here as documentation
                 // for what the optimized way is doing.
@@ -342,10 +356,12 @@
             if ($this instanceof NamedSecurableItem)
             {
                 PermissionsCache::forgetAll();
+                AllPermissionsOptimizationCache::forgetAll();
             }
             else
             {
                 PermissionsCache::forgetSecurableItem($this);
+                AllPermissionsOptimizationCache::forgetSecurableItemForRead($this);
             }
             $found = false;
             foreach ($this->permissions as $permission)
@@ -365,6 +381,7 @@
                 $permission->type        = $type;
                 $permission->permissions = $permissions;
                 $this->permissions->add($permission);
+                $this->permissionsChanged = true;
                 return true;
             }
             else
@@ -388,10 +405,12 @@
             if ($this instanceof NamedSecurableItem)
             {
                 PermissionsCache::forgetAll();
+                AllPermissionsOptimizationCache::forgetAll();
             }
             else
             {
                 PermissionsCache::forgetSecurableItem($this);
+                AllPermissionsOptimizationCache::forgetSecurableItemForRead($this);
             }
             foreach ($this->permissions as $permission)
             {
@@ -409,17 +428,21 @@
             if ($this instanceof NamedSecurableItem)
             {
                 PermissionsCache::forgetAll();
+                AllPermissionsOptimizationCache::forgetAll();
             }
             else
             {
                 PermissionsCache::forgetSecurableItem($this);
+                AllPermissionsOptimizationCache::forgetSecurableItemForRead($this);
             }
+            $this->permissionsChanged = true;
         }
 
         public function removeAllPermissions()
         {
             $this->checkPermissionsHasAnyOf(Permission::CHANGE_PERMISSIONS);
             PermissionsCache::forgetAll();
+            AllPermissionsOptimizationCache::forgetAll();
             $this->permissions->removeAll();
         }
 
@@ -463,14 +486,17 @@
          * @param int $requiredPermissions
          * @throws AccessDeniedSecurityException
          */
-        protected function checkPermissionsHasAnyOf($requiredPermissions)
+        public function checkPermissionsHasAnyOf($requiredPermissions, User $user = null)
         {
             assert('is_int($requiredPermissions)');
-            $currentUser = Yii::app()->user->userModel;
-            $effectivePermissions = $this->getEffectivePermissions($currentUser);
+            if ($user == null)
+            {
+                $user = Yii::app()->user->userModel;
+            }
+            $effectivePermissions = $this->getEffectivePermissions($user);
             if (($effectivePermissions & $requiredPermissions) == 0)
             {
-                throw new AccessDeniedSecurityException($currentUser, $requiredPermissions, $effectivePermissions);
+                throw new AccessDeniedSecurityException($user, $requiredPermissions, $effectivePermissions);
             }
         }
 
@@ -505,6 +531,7 @@
         {
             parent::afterSave();
             $this->resolvePermitablesToUpdate();
+            $this->permissionsChanged = false;
         }
 
         /**
@@ -657,6 +684,11 @@
                 return true;
             }
             return false;
+        }
+
+        public function arePermissionsChanged()
+        {
+            return $this->permissionsChanged;
         }
     }
 ?>

@@ -79,9 +79,7 @@
                 'keyTwo'    => 'valueTwo',
                 'keyThree'  => 'ValueThree',
             );
-            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod('EmailMessageActivityUtil',
-                                                                                    'resolveHashForQueryStringArray');
-            $hash       = $resolveHashForQueryStringArrayFunction->invokeArgs(null, array($queryStringArray));
+            $hash       = StringUtil::resolveHashForQueryStringArray($queryStringArray);
             $result     = EmailMessageActivityUtil::resolveQueryStringArrayForHash($hash);
         }
 
@@ -95,9 +93,7 @@
                 'modelType' => 'ModelClassName',
                 'personId'  => 2,
             );
-            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod('EmailMessageActivityUtil',
-                                                                                    'resolveHashForQueryStringArray');
-            $hash       = $resolveHashForQueryStringArrayFunction->invokeArgs(null, array($queryStringArray));
+            $hash       = StringUtil::resolveHashForQueryStringArray($queryStringArray);
             $result     = EmailMessageActivityUtil::resolveQueryStringArrayForHash($hash);
             $this->assertTrue(is_array($result));
             $this->assertCount(5, $result);
@@ -419,7 +415,7 @@ HTML;
             $personId                   = 10;
 
             $className                  = 'EmailMessageActivityUtil';
-            $resolveBaseQueryStringArrayFunction = static::getProtectedMethod($className, 'resolveBaseQueryStringArray');
+            $resolveBaseQueryStringArrayFunction = static::getProtectedMethod('ContentTrackingUtil', 'resolveBaseQueryStringArray');
             $withoutUrlQueryStringArray = $resolveBaseQueryStringArrayFunction->invokeArgs(null,
                                                                                             array($modelId,
                                                                                                 $modelType,
@@ -429,9 +425,7 @@ HTML;
             $this->assertArrayHasKey('modelId', $withoutUrlQueryStringArray);
             $this->assertArrayHasKey('modelType', $withoutUrlQueryStringArray);
             $this->assertArrayHasKey('personId', $withoutUrlQueryStringArray);
-            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod($className, 'resolveHashForQueryStringArray');
-            $withoutUrlQueryStringArrayHash = $resolveHashForQueryStringArrayFunction->invokeArgs(null,
-                                                                                    array($withoutUrlQueryStringArray));
+            $withoutUrlQueryStringArrayHash = StringUtil::resolveHashForQueryStringArray($withoutUrlQueryStringArray);
             $withoutUrlQueryStringArrayDecoded = $className::resolveQueryStringArrayForHash($withoutUrlQueryStringArrayHash);
             $this->assertTrue(is_array($withoutUrlQueryStringArrayDecoded));
             $this->assertCount(5, $withoutUrlQueryStringArrayDecoded);
@@ -450,8 +444,7 @@ HTML;
             $withUrlQueryStringArray = CMap::mergeArray($withoutUrlQueryStringArray,
                                                                     array('url'     => 'http://www.zurmo.com',
                                                                             'type'  => null));
-            $withUrlQueryStringArrayHash = $resolveHashForQueryStringArrayFunction->invokeArgs(null,
-                                                                                    array($withUrlQueryStringArray));
+            $withUrlQueryStringArrayHash = StringUtil::resolveHashForQueryStringArray($withUrlQueryStringArray);
             $withUrlQueryStringArrayDecoded = $className::resolveQueryStringArrayForHash($withUrlQueryStringArrayHash);
             $this->assertEquals($withUrlQueryStringArray, $withUrlQueryStringArrayDecoded);
         }
@@ -483,10 +476,28 @@ HTML;
 
         protected static function resolveContent(& $content, $tracking = true, $isHtmlContent = true)
         {
-            return (EmailMessageActivityUtil::resolveContentGlobalFooter($content, 1, 1, 1, 'AutoresponderItem',
-                                                                        $isHtmlContent) &&
-                    EmailMessageActivityUtil::resolveContentForTracking($tracking, $content, 1, 'AutoresponderItem',
-                                                                        1, $isHtmlContent));
+            return (GlobalMarketingFooterUtil::resolveContentGlobalFooter($content, $isHtmlContent) &&
+                    static::resolveContentForMergeTags($content) &&
+                    ContentTrackingUtil::resolveContentForTracking($tracking, $content, 1, 'AutoresponderItem',
+                                                                                1, $isHtmlContent));
+        }
+
+        protected static function resolveContentForMergeTags(& $content)
+        {
+            $language               = null;
+            $errorOnFirstMissing    = true;
+            $templateType           = EmailTemplate::TYPE_CONTACT;
+            $invalidTags            = array();
+            $textMergeTagsUtil      = MergeTagsUtilFactory::make($templateType, $language, $content);
+            $params                 = GlobalMarketingFooterUtil::resolveFooterMergeTagsArray(1, 2, 3,
+                                                                                            'AutoresponderITem', true,
+                                                                                            false);
+            $content                = $textMergeTagsUtil->resolveMergeTags(Yii::app()->user->userModel,
+                                                                            $invalidTags,
+                                                                            $language,
+                                                                            $errorOnFirstMissing,
+                                                                            $params);
+            return ($content !== false);
         }
     }
 ?>

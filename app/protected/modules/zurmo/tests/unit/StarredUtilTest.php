@@ -115,6 +115,7 @@
             $account->officePhone = '1234567890';
             $account->addPermissions($steven, Permission::READ);
             $this->assertTrue($account->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($account, $steven);
             StarredUtil::markModelAsStarred($account);
 
             Yii::app()->user->userModel = $steven;

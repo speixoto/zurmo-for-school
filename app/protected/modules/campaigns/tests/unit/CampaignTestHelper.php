@@ -48,7 +48,7 @@
             $saved          = $campaign->save($runValidation);
             if (!$saved)
             {
-                throw new FailedToSaveModelException();
+                throw new FailedToSaveModelException(print_r($campaign->getErrors(), true));
             }
             return $campaign;
         }
