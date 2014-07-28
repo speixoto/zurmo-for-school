@@ -179,7 +179,6 @@
                             $('li.selectedDupe').removeClass('selected');
                             $(this).addClass('selected');
                             $('#dupeDetailsView-' + idArray[1]).show();
-                            event.preventDefault();
                         });
                         $('body').on('change', '.dupeContactsPrimaryModel',
                             {$this->onChangeScript()}
