@@ -190,6 +190,31 @@
         }
 
         /*
+         * Delete all users items from read permission subscription table
+         */
+        public static function deleteUserItemsFromAllReadSubscriptionTables($userId)
+        {
+            assert('is_int($userId)');
+            // Check if user exist or not. If user exist we will not delete records
+            try
+            {
+                $user = User::getById($userId);
+                throw new NotSupportedException();
+            }
+            catch (NotFoundException $e)
+            {
+                // Do nothing
+            }
+            $readSubscriptionModelClassNames = PathUtil::getAllReadSubscriptionModelClassNames();
+            foreach ($readSubscriptionModelClassNames as $modelClassName)
+            {
+                $readPermissionsSubscriptionTableName  = static::getSubscriptionTableName($modelClassName);
+                $sql = "delete from $readPermissionsSubscriptionTableName where userid='$userId'";
+                ZurmoRedBean::exec($sql);
+            }
+        }
+
+        /*
          * Based on account id, we add account id to account temp build table, refrsh account read permission
          * subscription table for account ids in temp build table, and delete all records from account temp build table
          */
@@ -454,12 +479,28 @@
             self::runJobForAccountsWhenRoleOrGroupChanged();
         }
 
+        /**
+         * Update all account read permissions tables when group access to module changed
+         */
+        public static function modulePermissionsHasBeenChanged($permitable)
+        {
+            if ($permitable instanceof Group || $permitable instanceof User)
+            {
+                self::runJobForAccountsWhenPermitableChanged();
+            }
+        }
+
         protected static function runJobForAccountsWhenRoleOrGroupChanged()
         {
             Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
         }
 
         protected static function runJobForAccountsWhenAccountPermissionsChanged()
+        {
+            Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
+        }
+
+        protected static function runJobForAccountsWhenPermitableChanged()
         {
             Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdateForAccount', 5);
         }
