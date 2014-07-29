@@ -54,6 +54,8 @@
          * @var boolean
          */
         protected $_modalNotificationsEnabled;
+        protected $_modalCollectionsEnabled;
+        protected $_modalCoinsEnabled;
 
         private static $pointTypesAndValuesByUserIdToAdd = array();
 
@@ -70,6 +72,16 @@
             $this->_modalNotificationsEnabled = $value;
         }
 
+        public function setModalCollectionsEnabled($value)
+        {
+            $this->_modalCollectionsEnabled = $value;
+        }
+
+        public function setModalCoinsEnabled($value)
+        {
+            $this->_modalCoinsEnabled = $value;
+        }
+
         public function getModalNotificationsEnabled()
         {
             if (ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'gamificationModalNotificationsEnabled') !== null)
@@ -81,6 +93,44 @@
                 if (isset($this->_modalNotificationsEnabled))
                 {
                     return $this->_modalNotificationsEnabled;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+
+        public function getModalCollectionsEnabled()
+        {
+            if (ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'gamificationModalCollectionsEnabled') !== null)
+            {
+                return ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'gamificationModalCollectionsEnabled');
+            }
+            else
+            {
+                if (isset($this->_modalCollectionsEnabled))
+                {
+                    return $this->_modalCollectionsEnabled;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+
+        public function getModalCoinsEnabled()
+        {
+            if (ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'gamificationModalCoinsEnabled') !== null)
+            {
+                return ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'gamificationModalCoinsEnabled');
+            }
+            else
+            {
+                if (isset($this->_modalCoinsEnabled))
+                {
+                    return $this->_modalCoinsEnabled;
                 }
                 else
                 {

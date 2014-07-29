@@ -56,7 +56,7 @@
 
         protected function renderContent()
         {
-            if (GameCoin::showCoin($this->controller))
+            if (GameCoin::showCoin($this->controller) && Yii::app()->gameHelper->getModalCoinsEnabled())
             {
                 $this->registerScripts();
                 return $this->renderCoinContainerContent();

@@ -100,7 +100,10 @@
             $content = static::renderHeaderMenuContent($settingsMenuItemsWithTopLevel, self::SETTINGS_MENU_ID);
             if (Yii::app()->userInterface->isMobile() === false)
             {
-                $content .= static::renderHeaderGameDashboardContent();
+                if (Yii::app()->gameHelper->getModalCollectionsEnabled())
+                {
+                    $content .= static::renderHeaderGameDashboardContent();
+                }
                 $content .= static::renderHeaderCalendarContent();
             }
             $content     .= static::renderHeaderMenuContent($userMenuItemsWithTopLevel, self::USER_MENU_ID);
