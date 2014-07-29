@@ -60,9 +60,9 @@
             {
                 return static::$modelIdentifiersToModels[$modelIdentifier];
             }
-            if (static::supportsAndAllowsMemcache())
+            if (static::supportsAndAllowsMemcacheByModelIdentifier($modelIdentifier))
             {
-                $prefix = static::getCachePrefix($modelIdentifier, static::$cacheType);
+                $prefix = static::getCachePrefix($modelIdentifier);
                 $cachedData = Yii::app()->cache->get($prefix . $modelIdentifier);
                 if ($cachedData === false)
                 {
@@ -112,9 +112,9 @@
                                                                     static::MAX_MODELS_CACHED_IN_MEMORY);
                 }
             }
-            if (static::supportsAndAllowsMemcache())
+            if (static::supportsAndAllowsMemcacheByModel($model))
             {
-                $prefix = static::getCachePrefix($modelIdentifier, static::$cacheType);
+                $prefix = static::getCachePrefix($modelIdentifier);
 
                 $serializedModel = serialize($model);
                 $checksum  = YII_DEBUG ? crc32($serializedModel) : 0;
@@ -138,9 +138,9 @@
             {
                 unset(static::$modelIdentifiersToModels[$modelIdentifier]);
             }
-            if (static::supportsAndAllowsMemcache())
+            if (static::supportsAndAllowsMemcacheByModelIdentifier($modelIdentifier))
             {
-                $prefix = static::getCachePrefix($modelIdentifier, static::$cacheType);
+                $prefix = static::getCachePrefix($modelIdentifier);
                 Yii::app()->cache->delete($prefix . $modelIdentifier);
             }
         }
@@ -179,6 +179,23 @@
         public static function forgetAllModelIdentifiersToModels()
         {
             static::$modelIdentifiersToModels = array();
+        }
+
+        protected static function supportsAndAllowsMemcacheByModel(RedBeanModel $model)
+        {
+            $className  = get_class($model);
+            return static::supportsAndAllowsMemcacheByModelClassName($className);
+        }
+
+        protected static function supportsAndAllowsMemcacheByModelClassName($modelClassName)
+        {
+            return ($modelClassName::allowMemcacheCache() && static::supportsAndAllowsMemcache());
+        }
+
+        protected static function supportsAndAllowsMemcacheByModelIdentifier($modelIndetifier)
+        {
+            $className  = RedBeanModel::getModelClassNameByIdentifier($modelIndetifier);
+            return static::supportsAndAllowsMemcacheByModelClassName($className);
         }
     }
 ?>

@@ -975,6 +975,8 @@ a.simple-link .icon-x {
 }
 #install-form th {
   width: 26%;
+  vertical-align: top;
+  padding-top: 8px;
 }
 #install-form td {
   width: 37%;
@@ -1025,7 +1027,6 @@ a.simple-link .icon-x {
 .install-or {
   display: inline-block;
   position: relative;
-  top: -10px;
   margin: 0 10px;
 }
 .back-to-app-menu-item span {
@@ -2589,6 +2590,35 @@ table.configuration-list tr:last-child td {
 }
 .security-adhoc-sharing .icon:before {
   content: '\00EB';
+}
+.exported-filename {
+  line-height: 22px;
+}
+.exported-filename ~ .secondary-button {
+  float: right;
+  margin-right: 5px;
+}
+.exported-filename ~ .cancelled-export {
+  font-size: 11px;
+  float: right;
+  position: relative;
+  top: 3px;
+  margin-right: 5px;
+  padding: 2px 4px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  color: #fff !important;
+  background-color: #a82d31;
+  background-repeat: repeat-x;
+  background-image: -ms-linear-gradient(top,#c43d53,#a82d31);
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#c43d53),color-stop(100%,#a82d31));
+  background-image: -webkit-linear-gradient(top,#c43d53,#a82d31);
+  background-image: -o-linear-gradient(top,#c43d53,#a82d31);
+  background-image: -moz-linear-gradient(top,#c43d53,#a82d31);
+  background-image: linear-gradient(top,#c43d53,#a82d31);
 }
 .available-portlets {
   padding: 15px 15px 0 15px;
@@ -5864,8 +5894,6 @@ a.close-ModalGameNotification.simple-link {
   margin-right: 10px;
   margin-left: -35px;
   font-size: 11px;
-  line-height: 27px;
-  display: inline-block;
 }
 .UserSocialItemsForPortletView {
   margin-right: 20px !important;
@@ -8458,6 +8486,7 @@ a + .autoresponder-stats {
 }
 .gmail-user-stage-status,
 .import-item-stage-status,
+.export-item-stage-status,
 .email-recipient-stage-status {
   text-align: center;
   float: left;
@@ -8475,8 +8504,13 @@ a + .autoresponder-stats {
   border-left: 1px solid #bababa;
 }
 .gmail-user-stage-status.stage-true i,
+.gmail-user-stage-status.stage-running i,
 .import-item-stage-status.stage-true i,
-.email-recipient-stage-status.stage-true i {
+.import-item-stage-status.stage-running i,
+.export-item-stage-status.stage-true i,
+.export-item-stage-status.stage-running i,
+.email-recipient-stage-status.stage-true i,
+.email-recipient-stage-status.stage-running i {
   color: #97c43d;
   -webkit-text-shadow: 0 0 5px #97c43d;
   -moz-text-shadow: 0 0 5px #97c43d;
@@ -8484,8 +8518,19 @@ a + .autoresponder-stats {
   -o-text-shadow: 0 0 5px #97c43d;
   text-shadow: 0 0 5px #97c43d;
 }
+.gmail-user-stage-status.stage-running i,
+.import-item-stage-status.stage-running i,
+.export-item-stage-status.stage-running i,
+.email-recipient-stage-status.stage-running i {
+  -o-animation: led-throb 0.25s;
+  -ms-animation: led-throb 0.25s;
+  -moz-animation: led-throb 0.25s;
+  -webkit-animation: led-throb 0.25s;
+  animation: led-throb 0.25s;
+}
 .gmail-user-stage-status.stage-false i,
 .import-item-stage-status.stage-false i,
+.export-item-stage-status.stage-false i,
 .email-recipient-stage-status.stage-false i {
   color: #c43d53;
   -webkit-text-shadow: 0 0 5px #c43d53;
@@ -8494,8 +8539,13 @@ a + .autoresponder-stats {
   -o-text-shadow: 0 0 5px #c43d53;
   text-shadow: 0 0 5px #c43d53;
 }
+.gmail-user-stage-status.stage-pending i,
 .gmail-user-stage-status i,
+.import-item-stage-status.stage-pending i,
 .import-item-stage-status i,
+.export-item-stage-status.stage-pending i,
+.export-item-stage-status i,
+.email-recipient-stage-status.stage-pending i,
 .email-recipient-stage-status i {
   font-weight: bold;
   line-height: 1;
@@ -8509,11 +8559,13 @@ a + .autoresponder-stats {
 }
 .gmail-user-stage-status:first-child,
 .import-item-stage-status:first-child,
+.export-item-stage-status:first-child,
 .email-recipient-stage-status:first-child {
   border-left: none;
 }
 .gmail-user-stage-status span,
 .import-item-stage-status span,
+.export-item-stage-status span,
 .email-recipient-stage-status span {
   font-size: 10px;
   font-weight: bold;
@@ -10936,7 +10988,7 @@ div.special-pager .hidden.next:after {
   line-height: 1.5;
 }
 #game-notification a {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #ccc;
   font-size: 12px;
   line-height: 1;
   display: inline;

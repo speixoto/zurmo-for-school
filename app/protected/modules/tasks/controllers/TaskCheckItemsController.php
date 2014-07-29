@@ -131,6 +131,24 @@
         }
 
         /**
+         * Update sort of task check item using ajax
+         * @param int $id
+         * @param int $sort
+         */
+        public function actionUpdateSortViaAjax()
+        {
+            if (isset($_GET['SortedTaskCheckListItems']) && is_array($_GET['SortedTaskCheckListItems']))
+            {
+                foreach ($_GET['SortedTaskCheckListItems'] as $sortIndex => $checkListItemId)
+                {
+                    $taskCheckListItem = TaskCheckListItem::getById(intval($checkListItemId));
+                    $taskCheckListItem->sortOrder = $sortIndex;
+                    $taskCheckListItem->unrestrictedSave();
+                }
+            }
+        }
+
+        /**
          * Update checklist item name
          */
         public function actionUpdateNameViaAjax($id, $name)

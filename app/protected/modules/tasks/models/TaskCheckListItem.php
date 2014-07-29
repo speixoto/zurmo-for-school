@@ -57,6 +57,7 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'name',
+                    'sortOrder',
                     'completed',
                 ),
                 'relations' => array(
@@ -65,6 +66,7 @@
                 'rules' => array(
                     array('name',       'required'),
                     array('name',       'type', 'type' => 'string'),
+                    array('sortOrder',  'type', 'type' => 'integer'),
                     array('completed',  'type', 'type' => 'boolean'),
                 ),
                 'defaultSortAttribute' => 'name',
@@ -98,10 +100,12 @@
         {
             assert('is_int($taskId)');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('TaskCheckListItem');
-            $orderByColumnName = RedBeanModelDataProvider::
-                                 resolveSortAttributeColumnName('TaskCheckListItem', $joinTablesAdapter, 'id');
-            $where             = "task_id = '" . $taskId . "'";
-            $orderBy           = $orderByColumnName . ' desc';
+            $orderBySortColumnName = RedBeanModelDataProvider::
+                                resolveSortAttributeColumnName('TaskCheckListItem', $joinTablesAdapter, 'sortOrder');
+            $orderByColumnNameFallback = RedBeanModelDataProvider::
+                                resolveSortAttributeColumnName('TaskCheckListItem', $joinTablesAdapter, 'id');
+            $where              = "task_id = '" . $taskId . "'";
+            $orderBy            = $orderBySortColumnName . 'asc, ' . $orderByColumnNameFallback . ' desc';
             return self::getSubset($joinTablesAdapter, null, null, $where, $orderBy);
         }
     }

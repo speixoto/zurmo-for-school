@@ -69,7 +69,7 @@
          * @param null|int $count
          * @return array
          */
-        public static function getUserLeaderboardData($type, $startingRank = 1, $offset = null, $count = null)
+        public static function getUserLeaderboardData($type, $startingRank = 1, $offset = null, $count = null, User $user = null)
         {
             assert('is_string($type)');
             assert('$offset  === null || is_integer($offset)  && $offset  >= 0');
@@ -80,11 +80,14 @@
             $leaderboardData = array();
             foreach ($rows as $row)
             {
-                $leaderboardData[$row['userid']] = array(
-                    'rank'         => StringUtil::resolveOrdinalIntegerAsStringContent(intval($rank)),
-                    'userLabel'    => strval(User::getById(intval($row['userid']))),
-                    'points'       => intval($row['points'])
-                );
+                if ($user == null || $user->id == $row['userid'])
+                {
+                    $leaderboardData[$row['userid']] = array(
+                        'rank'         => StringUtil::resolveOrdinalIntegerAsStringContent(intval($rank)),
+                        'userLabel'    => strval(User::getById(intval($row['userid']))),
+                        'points'       => intval($row['points'])
+                    );
+                }
                 $rank++;
             }
             return $leaderboardData;
@@ -199,9 +202,9 @@
          */
         public static function getUserRankingData(User $user)
         {
-            $weeklyData  = self::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_WEEKLY);
-            $monthlyData = self::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_MONTHLY);
-            $overallData = self::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_OVERALL);
+            $weeklyData  = self::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_WEEKLY,  1, null, null, $user);
+            $monthlyData = self::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_MONTHLY, 1, null, null, $user);
+            $overallData = self::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_OVERALL, 1, null, null, $user);
             $rankingData = array();
             if (isset($weeklyData[$user->id]))
             {

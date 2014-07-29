@@ -201,14 +201,6 @@
         /**
          * @return bool
          */
-        public static function modelsAreNeverGloballySearched()
-        {
-            return true;
-        }
-
-        /**
-         * @return bool
-         */
         public static function canHaveWorkflow()
         {
             return true;

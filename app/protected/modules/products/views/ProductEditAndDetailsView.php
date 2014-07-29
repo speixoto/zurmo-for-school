@@ -42,8 +42,8 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CancelLink',        'renderType' => 'Edit'),
                             array('type'  => 'SaveButton',        'renderType' => 'Edit'),
+                            array('type'  => 'CancelLink',        'renderType' => 'Edit'),
                             array('type'  => 'EditLink',          'renderType' => 'Details'),
                             array('type'  => 'ProductDeleteLink', 'renderType' => 'Details'),
                             array('type'  => 'CopyLink',          'renderType' => 'Details'),

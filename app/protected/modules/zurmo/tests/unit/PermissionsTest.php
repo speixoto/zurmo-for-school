@@ -36,6 +36,12 @@
 
     class PermissionsTest extends ZurmoBaseTest
     {
+        /**
+         * Some of these tests require that READ is processed as READ and never used for processing WRITE MUNGE
+         * @var
+         */
+        protected $processReadMungeAsWriteMungeValue;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -51,13 +57,21 @@
             $everyone = Group::getByName('Everyone');
             $saved = $everyone->save();
             assert('$saved'); // Not Coding Standard
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()
         {
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
+            $this->processReadMungeAsWriteMungeValue = Yii::app()->params['processReadMungeAsWriteMunge'];
+            Yii::app()->params['processReadMungeAsWriteMunge'] = false;
+        }
+
+        public function teardown()
+        {
+            parent::teardown();
+            Yii::app()->params['processReadMungeAsWriteMunge'] = $this->processReadMungeAsWriteMungeValue;
         }
 
         public function testStringify()
@@ -744,7 +758,7 @@
             $account1->addPermissions($user,     Permission::READ);
             $account1->addPermissions($group,    Permission::WRITE);
             $this->assertTrue($account1->save());
-            ReadPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($account1, $user);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($account1, $user);
 
             $account2->addPermissions($user,     Permission::WRITE);
             $account2->addPermissions($group,    Permission::CHANGE_OWNER);
@@ -836,6 +850,7 @@
                 Yii::app()->user->userModel = $originalOwner;
                 $this->assertEquals(Permission::ALL, $account->getEffectivePermissions());
                 $account->addPermissions($buddy, Permission::READ);
+                AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($account, $buddy);
                 $this->assertTrue($account->save());
 
                 Yii::app()->user->userModel = $buddy;

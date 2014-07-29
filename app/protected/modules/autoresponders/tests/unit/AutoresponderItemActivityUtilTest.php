@@ -33,7 +33,7 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-    class AutoresponderItemActivityUtilTest extends ZurmoBaseTest
+    class AutoresponderItemActivityUtilTest extends AutoresponderOrCampaignBaseTest
     {
         protected $user;
 
@@ -99,7 +99,7 @@
             $this->assertCount(0, $existingActivities);
 
             // get base query string
-            $resolveBaseQueryStringArrayFunction        = static::getProtectedMethod($className,
+            $resolveBaseQueryStringArrayFunction        = static::getProtectedMethod('ContentTrackingUtil',
                                                                                         'resolveBaseQueryStringArray');
             $queryStringArray                           = $resolveBaseQueryStringArrayFunction->invokeArgs(null, array(
                                                                                                             $modelId,
@@ -112,10 +112,7 @@
             $this->assertArrayHasKey('personId', $queryStringArray);
 
             // get hash for query string and ensure its what we expect it to be.
-            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod($className,
-                                                                                    'resolveHashForQueryStringArray');
-            $queryStringArrayHash                   = $resolveHashForQueryStringArrayFunction->invokeArgs(null,
-                                                                                            array($queryStringArray));
+            $queryStringArrayHash                   = StringUtil::resolveHashForQueryStringArray($queryStringArray);
             $queryStringArrayDecoded                = $className::resolveQueryStringArrayForHash($queryStringArrayHash);
             $this->assertNotEmpty($queryStringArrayDecoded);
             $this->assertCount(5,                               $queryStringArrayDecoded);
@@ -215,7 +212,7 @@
             $this->assertCount(1, $existingActivities);
 
             // get base query string
-            $resolveBaseQueryStringArrayFunction    = static::getProtectedMethod($className,
+            $resolveBaseQueryStringArrayFunction    = static::getProtectedMethod('ContentTrackingUtil',
                                                                                         'resolveBaseQueryStringArray');
             $queryStringArray                       = $resolveBaseQueryStringArrayFunction->invokeArgs(null, array(
                                                                                                             $modelId,
@@ -228,10 +225,7 @@
             $this->assertArrayHasKey('personId',    $queryStringArray);
 
             // get hash for query string and ensure its what we expect it to be.
-            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod($className,
-                                                                                    'resolveHashForQueryStringArray');
-            $queryStringArrayHash                   = $resolveHashForQueryStringArrayFunction->invokeArgs(null,
-                                                                                            array($queryStringArray));
+            $queryStringArrayHash                   = StringUtil::resolveHashForQueryStringArray($queryStringArray);
             $queryStringArrayDecoded                = $className::resolveQueryStringArrayForHash($queryStringArrayHash);
             $this->assertNotEmpty($queryStringArrayDecoded);
             $this->assertCount(5,                               $queryStringArrayDecoded);
@@ -293,7 +287,7 @@
             $this->assertCount(1, $existingActivities);
 
             // get base query string
-            $resolveBaseQueryStringArrayFunction    = static::getProtectedMethod($className,
+            $resolveBaseQueryStringArrayFunction    = static::getProtectedMethod('ContentTrackingUtil',
                                                                                         'resolveBaseQueryStringArray');
             $queryStringArray                       = $resolveBaseQueryStringArrayFunction->invokeArgs(null, array(
                                                                                                             $modelId,
@@ -306,10 +300,7 @@
             $this->assertArrayHasKey('personId',    $queryStringArray);
 
             // get hash for query string and ensure its what we expect it to be.
-            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod($className,
-                                                                                    'resolveHashForQueryStringArray');
-            $queryStringArrayHash                   = $resolveHashForQueryStringArrayFunction->invokeArgs(null,
-                                                                                            array($queryStringArray));
+            $queryStringArrayHash                   = StringUtil::resolveHashForQueryStringArray($queryStringArray);
             $queryStringArrayDecoded                = $className::resolveQueryStringArrayForHash($queryStringArrayHash);
             $this->assertNotEmpty($queryStringArrayDecoded);
             $this->assertCount(5,                               $queryStringArrayDecoded);
@@ -361,7 +352,7 @@
             $this->assertCount(2, $existingActivities);
 
             // get base query string
-            $resolveBaseQueryStringArrayFunction    = static::getProtectedMethod($className,
+            $resolveBaseQueryStringArrayFunction    = static::getProtectedMethod('ContentTrackingUtil',
                                                                                         'resolveBaseQueryStringArray');
             $queryStringArray                       = $resolveBaseQueryStringArrayFunction->invokeArgs(null, array(
                                                                                                             $modelId,
@@ -374,10 +365,7 @@
             $this->assertArrayHasKey('personId',    $queryStringArray);
 
             // get hash for query string and ensure its what we expect it to be.
-            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod($className,
-                                                                                    'resolveHashForQueryStringArray');
-            $queryStringArrayHash                   = $resolveHashForQueryStringArrayFunction->invokeArgs(null,
-                                                                                            array($queryStringArray));
+            $queryStringArrayHash                   = StringUtil::resolveHashForQueryStringArray($queryStringArray);
             $queryStringArrayDecoded                = $className::resolveQueryStringArrayForHash($queryStringArrayHash);
             $this->assertNotEmpty($queryStringArrayDecoded);
             $this->assertCount(5,                               $queryStringArrayDecoded);
@@ -438,7 +426,7 @@
             $this->assertCount(0, $existingActivities);
 
             // get base query string
-            $resolveBaseQueryStringArrayFunction    = static::getProtectedMethod($className, 'resolveBaseQueryStringArray');
+            $resolveBaseQueryStringArrayFunction    = static::getProtectedMethod('ContentTrackingUtil', 'resolveBaseQueryStringArray');
             $queryStringArray                       = $resolveBaseQueryStringArrayFunction->invokeArgs(null, array(
                                                                                                             $modelId,
                                                                                                             $modelType,
@@ -451,10 +439,7 @@
             $queryStringArray['url']    = 'http://www.zurmo.com';
 
             // get hash for query string and ensure its what we expect it to be.
-            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod($className,
-                                                                                    'resolveHashForQueryStringArray');
-            $queryStringArrayHash                   = $resolveHashForQueryStringArrayFunction->invokeArgs(null,
-                                                                                            array($queryStringArray));
+            $queryStringArrayHash                   = StringUtil::resolveHashForQueryStringArray($queryStringArray);
             $queryStringArrayDecoded                = $className::resolveQueryStringArrayForHash($queryStringArrayHash);
             $this->assertNotEmpty($queryStringArrayDecoded);
             $this->assertCount(5,                               $queryStringArrayDecoded);
@@ -555,7 +540,7 @@
             $this->assertCount(1, $existingActivities);
 
             // get base query string
-            $resolveBaseQueryStringArrayFunction    = static::getProtectedMethod($className,
+            $resolveBaseQueryStringArrayFunction    = static::getProtectedMethod('ContentTrackingUtil',
                                                                                         'resolveBaseQueryStringArray');
             $queryStringArray                       = $resolveBaseQueryStringArrayFunction->invokeArgs(null, array(
                                                                                                             $modelId,
@@ -569,10 +554,7 @@
             $queryStringArray['url']    = 'http://www.zurmo.com';
 
             // get hash for query string and ensure its what we expect it to be.
-            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod($className,
-                                                                                        'resolveHashForQueryStringArray');
-            $queryStringArrayHash                   = $resolveHashForQueryStringArrayFunction->invokeArgs(null,
-                                                                                            array($queryStringArray));
+            $queryStringArrayHash                   = StringUtil::resolveHashForQueryStringArray($queryStringArray);
             $queryStringArrayDecoded                = $className::resolveQueryStringArrayForHash($queryStringArrayHash);
             $this->assertNotEmpty($queryStringArrayDecoded);
             $this->assertCount(5,                               $queryStringArrayDecoded);
@@ -634,7 +616,7 @@
             $this->assertCount(1,   $existingActivities);
 
             // get base query string
-            $resolveBaseQueryStringArrayFunction    = static::getProtectedMethod($className,
+            $resolveBaseQueryStringArrayFunction    = static::getProtectedMethod('ContentTrackingUtil',
                                                                                         'resolveBaseQueryStringArray');
             $queryStringArray                       = $resolveBaseQueryStringArrayFunction->invokeArgs(null, array(
                                                                                                             $modelId,
@@ -648,10 +630,7 @@
             $queryStringArray['url']    = 'http://www.zurmo.com';
 
             // get hash for query string and ensure its what we expect it to be.
-            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod($className,
-                                                                                    'resolveHashForQueryStringArray');
-            $queryStringArrayHash                   = $resolveHashForQueryStringArrayFunction->invokeArgs(null,
-                                                                                            array($queryStringArray));
+            $queryStringArrayHash                   = StringUtil::resolveHashForQueryStringArray($queryStringArray);
             $queryStringArrayDecoded                = $className::resolveQueryStringArrayForHash($queryStringArrayHash);
             $this->assertNotEmpty($queryStringArrayDecoded);
             $this->assertCount(5,                               $queryStringArrayDecoded);
@@ -703,7 +682,7 @@
             $this->assertCount(2, $existingActivities);
 
             // get base query string
-            $resolveBaseQueryStringArrayFunction    = static::getProtectedMethod($className,
+            $resolveBaseQueryStringArrayFunction    = static::getProtectedMethod('ContentTrackingUtil',
                                                                                         'resolveBaseQueryStringArray');
             $queryStringArray                       = $resolveBaseQueryStringArrayFunction->invokeArgs(null, array(
                                                                                                             $modelId,
@@ -717,10 +696,7 @@
             $queryStringArray['url']    = 'http://www.zurmo.com';
 
             // get hash for query string and ensure its what we expect it to be.
-            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod($className,
-                                                                                    'resolveHashForQueryStringArray');
-            $queryStringArrayHash                   = $resolveHashForQueryStringArrayFunction->invokeArgs(null,
-                                                                                                array($queryStringArray));
+            $queryStringArrayHash                   = StringUtil::resolveHashForQueryStringArray($queryStringArray);
             $queryStringArrayDecoded                = $className::resolveQueryStringArrayForHash($queryStringArrayHash);
             $this->assertNotEmpty($queryStringArrayDecoded);
             $this->assertCount(5,                               $queryStringArrayDecoded);

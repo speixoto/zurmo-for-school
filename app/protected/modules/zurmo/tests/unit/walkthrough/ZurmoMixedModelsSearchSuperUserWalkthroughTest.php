@@ -44,7 +44,7 @@
             parent::setUpBeforeClass();
             $super = SecurityTestHelper::createSuperAdmin();
             Yii::app()->user->userModel = $super;
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             ContactsModule::loadStartingData();
 
             //Setup test data owned by the super user.

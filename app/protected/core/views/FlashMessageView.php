@@ -45,18 +45,23 @@
 
         protected function renderContent()
         {
-            $content = '<div id = "FlashMessageBar"></div>';
-            if (Yii::app()->user->hasFlash('notification'))
+            $content   = '<div id = "FlashMessageBar"></div>';
+            $flashData = Yii::app()->user->getFlashes();
+            $script    = null;
+            foreach ($flashData as $flashMessage)
             {
-                $script = "
+                $script .= "
                 $('#FlashMessageBar').jnotifyAddMessage(
                 {
-                    text: '". ZurmoHtml::encode(Yii::app()->user->getFlash('notification')) ."',
+                    text: '". ZurmoHtml::encode($flashMessage) ."',
                     permanent: true,
                     showIcon: true,
                 }
                 );
                 ";
+            }
+            if ($script != null)
+            {
                 Yii::app()->clientScript->registerScript('FlashMessage', $script);
             }
             $this->controller->beginClip("FlashMessage");

@@ -42,6 +42,7 @@
             ZurmoDatabaseCompatibilityUtil::dropStoredFunctionsAndProcedures();
             Yii::app()->user->userModel = SecurityTestHelper::createSuperAdmin();
             SecurityTestHelper::createUsers();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()
@@ -105,6 +106,7 @@
             //Testing where Betty can access the accounts, module, and now can read the super account.
             $accountForSuper->addPermissions($betty, Permission::READ);
             $this->assertTrue($accountForSuper->save());
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($accountForSuper, $betty);
             $elementInformation = array(
                 'attributeName' => 'account',
                 'type'          => 'Account'
@@ -176,6 +178,7 @@
             $account = Account::getById($accountId);
             $account->addPermissions($betty, Permission::READ);
             $this->assertTrue($account->save());
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($account, $betty);
             $referenceElementInformation = $elementInformation;
             FormLayoutSecurityUtil::resolveElementForNonEditableRender($contactForBetty, $referenceElementInformation, $betty);
             $this->assertEquals($elementInformation, $referenceElementInformation);

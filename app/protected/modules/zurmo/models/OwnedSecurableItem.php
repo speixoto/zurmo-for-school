@@ -97,6 +97,18 @@
                     throw new NoCurrentUserSecurityException();
                 }
             }
+            if (Permission::ALL == $this->resolveEffectivePermissionsForOwnerAndCreatedByUser($permitable))
+            {
+                return Permission::ALL;
+            }
+            else
+            {
+                return parent::getEffectivePermissions($permitable);
+            }
+        }
+
+        protected function resolveEffectivePermissionsForOwnerAndCreatedByUser($permitable)
+        {
             $owner         = $this->unrestrictedGet('owner');
             $createdByUser = $this->unrestrictedGet('createdByUser');
             # If an owned securable item doesn't yet have an owner
@@ -112,16 +124,13 @@
             //Or if the record has not been created yet and doesn't have a createdByUser than any user can
             //have full access
             elseif ((($this->id < 0) &&
-                   (($createdByUser->id > 0 &&
-                    $createdByUser->isSame($permitable)) || $createdByUser->id < 0)) ||
-                    $this->treatCurrentUserAsOwnerForPermissions)
+                    (($createdByUser->id > 0 &&
+                            $createdByUser->isSame($permitable)) || $createdByUser->id < 0)) ||
+                $this->treatCurrentUserAsOwnerForPermissions)
             {
                 return Permission::ALL;
             }
-            else
-            {
-                return parent::getEffectivePermissions($permitable);
-            }
+            return null;
         }
 
         public function getActualPermissions($permitable = null)
@@ -217,12 +226,12 @@
             {
                 if ($this->isNewModel)
                 {
-                    ReadPermissionsOptimizationUtil::ownedSecurableItemCreated($this);
+                    AllPermissionsOptimizationUtil::ownedSecurableItemCreated($this);
                 }
                 elseif (isset($this->originalAttributeValues['owner']) &&
                               $this->originalAttributeValues['owner'][1] > 0)
                 {
-                    ReadPermissionsOptimizationUtil::ownedSecurableItemOwnerChanged($this,
+                    AllPermissionsOptimizationUtil::ownedSecurableItemOwnerChanged($this,
                                                             User::getById($this->originalAttributeValues['owner'][1]));
                 }
             }
@@ -242,7 +251,7 @@
             }
             if ($this->hasReadPermissionsOptimization())
             {
-                ReadPermissionsOptimizationUtil::securableItemBeingDeleted($this);
+                AllPermissionsOptimizationUtil::securableItemBeingDeleted($this);
             }
             return true;
         }
@@ -260,6 +269,11 @@
                 ),
                 'elements' => array(
                     'owner' => 'User',
+                ),
+                'indexes' => array(
+                    'owner__user_id' => array(
+                        'members' => array('owner__user_id'),
+                        'unique' => false),
                 ),
             );
             return $metadata;
@@ -328,9 +342,10 @@
             if (static::hasReadPermissionsOptimization() && $moduleClassName != null &&
                 is_subclass_of($moduleClassName, 'SecurableModule'))
             {
-                $permission = PermissionsUtil::getActualPermissionDataForReadByModuleNameForCurrentUser($moduleClassName);
+                $permission = PermissionsUtil::getActualPermissionDataForReadByModuleNameForUser($moduleClassName);
 
-                if (($permission == Permission::NONE || $permission == Permission::DENY) && !static::bypassReadPermissionsOptimizationToSqlQueryBasedOnWhere($where))
+                if (($permission == Permission::NONE || $permission == Permission::DENY) &&
+                        !static::bypassReadPermissionsOptimizationToSqlQueryBasedOnWhere($where))
                 {
                     $quote                               = DatabaseCompatibilityUtil::getQuote();
                     $modelAttributeToDataProviderAdapter = new OwnedSecurableItemIdToDataProviderAdapter(
@@ -338,7 +353,7 @@
                     $builder           = new ModelJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
                     $ownedTableAliasName = $builder->resolveJoins();
                     $ownerColumnName = static::getForeignKeyName('OwnedSecurableItem', 'owner');
-                    $mungeIds = ReadPermissionsOptimizationUtil::getMungeIdsByUser($user);
+                    $mungeIds = AllPermissionsOptimizationUtil::getMungeIdsByUser($user);
                     if ($where != null)
                     {
                         $where = '(' . $where . ') and ';
@@ -406,6 +421,45 @@
         public static function supportsQueueing()
         {
             return false;
+        }
+
+        public function checkPermissionsHasAnyOf($requiredPermissions, User $user = null)
+        {
+            assert('is_int($requiredPermissions)');
+            assert('in_array($requiredPermissions,
+                             array(Permission::READ, Permission::WRITE, Permission::DELETE,
+                                   Permission::CHANGE_PERMISSIONS, Permission::CHANGE_OWNER))');
+            if ($user == null)
+            {
+                $user = Yii::app()->user->userModel;
+            }
+            if (Permission::ALL == $this->resolveEffectivePermissionsForOwnerAndCreatedByUser($user))
+            {
+                return;
+            }
+            elseif ($this->isDeleting)
+            {
+                //Avoid potential problems with accessing information already removed from munge.
+                //Potentially there could be some gap with doing this, but it improves performance on complex
+                //role/group setups.
+                return;
+            }
+            else
+            {
+                if (SECURITY_OPTIMIZED)
+                {
+                    $modelClassName  = get_called_class();
+                    $moduleClassName = $modelClassName::getModuleClassName();
+                    if (static::hasReadPermissionsOptimization() &&
+                       $moduleClassName != null &&
+                       is_subclass_of($moduleClassName, 'SecurableModule') &&
+                       AllPermissionsOptimizationUtil::checkPermissionsHasAnyOf($requiredPermissions, $this, $user))
+                    {
+                        return;
+                    }
+                }
+                parent::checkPermissionsHasAnyOf($requiredPermissions, $user);
+            }
         }
     }
 ?>

@@ -78,6 +78,7 @@
         public function addReadOnlyPermitable(Permitable $permitable)
         {
             assert('$permitable instanceof Permitable');
+            $this->resolveIsReadOnlySupported();
             $key = $this->resolvePermitableKey($permitable);
             if (!isset($this->readOnlyPermitables[$key]))
             {
@@ -116,6 +117,7 @@
         public function addReadOnlyPermitableToRemove(Permitable $permitable)
         {
             assert('$permitable instanceof Permitable');
+            $this->resolveIsReadOnlySupported();
             $key = $this->resolvePermitableKey($permitable);
             if (!isset($this->readOnlyPermitablesToRemove[$key]))
             {
@@ -248,6 +250,21 @@
         public function resolvePermitableKey(Permitable $permitable)
         {
             return $permitable->getClassId('Permitable');
+        }
+
+        /**
+         * If the read munge is also used for the write munge, then use of read only is not supported.
+         * Change the processReadMungeAsWriteMunge param to false in order to properly use readOnly.
+         * In the future the performance improvement from processReadMungeAsWriteMunge
+         * will be refactored to fully support readOnly.
+         * @return NotSupportedException
+         */
+        protected function resolveIsReadOnlySupported()
+        {
+            if ((bool)Yii::app()->params['processReadMungeAsWriteMunge'])
+            {
+                return new NotSupportedException();
+            }
         }
     }
 ?>

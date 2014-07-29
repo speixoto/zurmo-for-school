@@ -144,6 +144,7 @@
             $this->assertTrue($sally->save());
             $task->addPermissions($sally, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($task->save());
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($task, $sally);
 
             //Test nobody with elevated rights.
             Yii::app()->user->userModel = User::getByUsername('sally');
@@ -227,6 +228,7 @@
             $this->assertTrue($myuser->save());
             $task->addPermissions($myuser, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($task->save());
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($task, $myuser);
 
             //Test nobody with elevated rights.
             Yii::app()->user->userModel = User::getByUsername('myuser');

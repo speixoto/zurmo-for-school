@@ -39,6 +39,8 @@
      */
     abstract class ImapBaseJob extends BaseJob
     {
+        const CONFIG_DEFAULT_BATCH_VALUE   = 100;
+
         protected $imapManager;
 
         abstract protected function resolveImapObject();
@@ -56,11 +58,13 @@
             $this->resolveImapObject();
             if ($this->imapManager->imapHost == null)
             {
+                $this->getMessageLogger()->addDebugMessage("There is not imap host. Messages will not be processed.");
                 return true;
             }
             if ($this->imapManager->connect())
             {
-                $lastImapCheckTime     = $this->getLastImapDropboxCheckTime();
+                $this->getMessageLogger()->addDebugMessage("Connected to imap server.");
+                $lastImapCheckTime = $this->getLastImapDropboxCheckTime();
                 if (isset($lastImapCheckTime) && $lastImapCheckTime != '')
                 {
                    $criteria = "SINCE \"{$lastImapCheckTime}\" UNDELETED";
@@ -74,8 +78,11 @@
                 $messages = $this->imapManager->getMessages($criteria, $lastImapCheckTimeStamp);
 
                 $lastCheckTime = null;
-                if (count($messages))
+                $countOfMessages = count($messages);
+                $this->getMessageLogger()->addDebugMessage("{$countOfMessages} message(s) to process.");
+                if ($countOfMessages)
                 {
+                   $numberOfProcessedMessages = 1;
                    foreach ($messages as $message)
                    {
                        $lastMessageCreatedTime = strtotime($message->createdDate);
@@ -83,6 +90,7 @@
                        {
                            $lastCheckTime = $message->createdDate;
                        }
+                       $this->getMessageLogger()->addDebugMessage('Processing Message id: ' . $message->uid);
                        if (!$this->processMessage($message))
                        {
                            if (!empty($this->errorMessage))
@@ -92,6 +100,13 @@
                            $messageContent     = Zurmo::t('EmailMessagesModule', 'Failed to process Message id: {uid}',
                                                                                     array('{uid}' => $message->uid));
                            $this->errorMessage .= $messageContent;
+                           $this->getMessageLogger()->addDebugMessage($messageContent);
+                       }
+                       if ($numberOfProcessedMessages++ >= static::CONFIG_DEFAULT_BATCH_VALUE)
+                       {
+                           $this->addDebugMessageBeforeFinishing($numberOfProcessedMessages - 1, $countOfMessages);
+                           $this->reconnectToDatabase();
+                           return (empty($this->errorMessage));
                        }
                    }
                    $this->imapManager->expungeMessages();
@@ -99,6 +114,8 @@
                    {
                        $this->setLastImapDropboxCheckTime($lastCheckTime);
                    }
+                   $this->addDebugMessageBeforeFinishing($numberOfProcessedMessages - 1, $countOfMessages);
+                   $this->reconnectToDatabase();
                 }
                 return (empty($this->errorMessage));
             }
@@ -106,8 +123,28 @@
             {
                 $messageContent     = Zurmo::t('EmailMessagesModule', 'Failed to connect to mailbox');
                 $this->errorMessage = $messageContent;
+                $this->getMessageLogger()->addDebugMessage($messageContent);
                 return false;
             }
+        }
+
+        protected function addDebugMessageBeforeFinishing($numberOfProcessedMessages, $totalNumberOfMessages)
+        {
+            $debugMessage = "Processed {$numberOfProcessedMessages} message(s).";
+            if ($numberOfProcessedMessages < $totalNumberOfMessages)
+            {
+                $numberOfUnprocessedMessages = $totalNumberOfMessages - $numberOfProcessedMessages;
+                $debugMessage .= "Still exist {$numberOfUnprocessedMessages} message(s) for processing.";
+            }
+            $this->getMessageLogger()->addDebugMessage($debugMessage);
+        }
+
+        protected static function reconnectToDatabase()
+        {
+            RedBeanDatabase::close();
+            RedBeanDatabase::setup(Yii::app()->db->connectionString,
+                                   Yii::app()->db->username,
+                                   Yii::app()->db->password);
         }
     }
 ?>

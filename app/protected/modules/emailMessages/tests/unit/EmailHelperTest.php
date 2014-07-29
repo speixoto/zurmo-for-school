@@ -77,6 +77,8 @@
                 Yii::app()->emailHelper->setOutboundSettings();
                 Yii::app()->emailHelper->init();
             }
+            // Delete item from jobQueue, that is created when new user is created
+            Yii::app()->jobQueue->deleteAll();
         }
 
         public function testSend()
@@ -114,6 +116,31 @@
             Yii::app()->emailHelper->sendQueued();
             $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(2, Yii::app()->emailHelper->getSentCount());
+
+            //add a message in the outbox folder.
+            $emailMessage         = EmailMessageTestHelper::createDraftSystemEmail('a test email 3', $super);
+            $box                  = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+            $emailMessage->folder = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX);
+            $emailMessage->save();
+            //add a message in the outbox_error folder.
+            $emailMessage         = EmailMessageTestHelper::createDraftSystemEmail('a test email 4', $super);
+            $box                  = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+            $emailMessage->folder = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX_ERROR);
+            $emailMessage->save();
+            //add a message in the outbox_error folder.
+            $emailMessage         = EmailMessageTestHelper::createDraftSystemEmail('a test email 5', $super);
+            $box                  = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+            $emailMessage->folder = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX_ERROR);
+            $emailMessage->save();
+
+            $this->assertEquals(3, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(2, Yii::app()->emailHelper->getSentCount());
+            Yii::app()->emailHelper->sendQueued(1);
+            $this->assertEquals(2, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(3, Yii::app()->emailHelper->getSentCount());
+            Yii::app()->emailHelper->sendQueued(2);
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(5, Yii::app()->emailHelper->getSentCount());
         }
 
         /**
@@ -125,10 +152,10 @@
             Yii::app()->user->userModel = $super;
             $emailMessage = EmailMessageTestHelper::createDraftSystemEmail('a test email 2', $super);
             $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
-            $this->assertEquals(2, Yii::app()->emailHelper->getSentCount());
+            $this->assertEquals(5, Yii::app()->emailHelper->getSentCount());
             Yii::app()->emailHelper->sendImmediately($emailMessage);
             $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
-            $this->assertEquals(3, Yii::app()->emailHelper->getSentCount());
+            $this->assertEquals(6, Yii::app()->emailHelper->getSentCount());
         }
 
         /**
@@ -236,12 +263,12 @@
                 $this->assertEquals(0, $imapStats->Nmsgs);
 
                 $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
-                $this->assertEquals(3, Yii::app()->emailHelper->getSentCount());
-                Yii::app()->emailHelper->sendQueued($emailMessage);
+                $this->assertEquals(6, Yii::app()->emailHelper->getSentCount());
+                Yii::app()->emailHelper->sendQueued();
                 $job = new ProcessOutboundEmailJob();
                 $this->assertTrue($job->run());
                 $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
-                $this->assertEquals(4, Yii::app()->emailHelper->getSentCount());
+                $this->assertEquals(7, Yii::app()->emailHelper->getSentCount());
 
                 sleep(30);
                 Yii::app()->imap->connect();
@@ -285,10 +312,10 @@
                 $emailMessage->save();
 
                 $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
-                $this->assertEquals(4, Yii::app()->emailHelper->getSentCount());
+                $this->assertEquals(7, Yii::app()->emailHelper->getSentCount());
                 Yii::app()->emailHelper->sendQueued();
                 $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
-                $this->assertEquals(4, Yii::app()->emailHelper->getSentCount());
+                $this->assertEquals(7, Yii::app()->emailHelper->getSentCount());
                 $this->assertTrue($emailMessage->folder->isSame(EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX_FAILURE)));
             }
             else
@@ -327,7 +354,7 @@
 
             $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
-            Yii::app()->emailHelper->sendQueued($emailMessage);
+            Yii::app()->emailHelper->sendQueued();
 
             $job = new ProcessOutboundEmailJob();
             $this->assertTrue($job->run());

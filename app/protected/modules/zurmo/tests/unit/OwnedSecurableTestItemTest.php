@@ -42,7 +42,7 @@
             ZurmoDatabaseCompatibilityUtil::dropStoredFunctionsAndProcedures();
             SecurityTestHelper::createSuperAdmin();
             //do the rebuild to ensure the tables get created properly.
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             //Manually build the test model munge tables.
             ReadPermissionsOptimizationUtil::recreateTable(ReadPermissionsOptimizationUtil::getMungeTableName('OwnedSecurableTestItem'));
         }

@@ -43,6 +43,8 @@
         {
             parent::setUpBeforeClass();
             $super = SecurityTestHelper::createSuperAdmin();
+            // Delete item from jobQueue, that is created when new user is created
+            Yii::app()->jobQueue->deleteAll();
         }
 
         public function testCreateAndEditExportItem()

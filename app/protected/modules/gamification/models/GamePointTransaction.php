@@ -76,6 +76,11 @@
                     'value',
                     'createdDateTime',
                 ),
+                'indexes' => array(
+                    'gamepoint_id' => array(
+                        'members' => array('gamepoint_id'),
+                        'unique' => false),
+                ),
             );
             return $metadata;
         }

@@ -100,7 +100,10 @@
                             'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                     ),
-                    'indexes' => array(),
+                    'indexes' => array(
+                        'owner__user_id' => array('columns' => array('owner__user_id'),
+                        'unique'         => false),
+                    ),
                 ),
             );
             $schema             = RedBeanModelToTableSchemaAdapter::resolve($modelClassName, static::$messageLogger);
@@ -118,7 +121,7 @@
                     array(
                         array(
                             'name' => 'hash',
-                            'type' => 'VARCHAR(32)',
+                            'type' => 'VARCHAR(60)',
                             'unsigned' => null,
                             'notNull' => 'NULL', // Not Coding Standard
                             'collation' => 'COLLATE utf8_unicode_ci',
@@ -258,7 +261,9 @@
                             'columns' => array('username'),
                             'unique' => true,
                             ),
-                        ),
+                        'permitable_id' => array('columns' => array('permitable_id'),
+                            'unique'         => false),
+                    ),
                     ),
                 );
             $modelClassName     = 'User';

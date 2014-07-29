@@ -86,8 +86,8 @@
         public function attachEventsByModelClassName($modelClassName)
         {
             assert('is_string($modelClassName)');
-            $modelClassName::model()->attachEventHandler('onAfterOwnerChange',
-                                        array($this, 'readPermissionSubscriptionOnAfterOwnerChange'));
+            $modelClassName::model()->attachEventHandler('onAfterOwnerChangeAfterSave',
+                                        array($this, 'readPermissionSubscriptionOnAfterOwnerChangeAfterSave'));
             $modelClassName::model()->attachEventHandler('onAfterSave',
                                         array($this, 'readPermissionSubscriptionOnAfterSave'));
             $modelClassName::model()->attachEventHandler('onAfterDelete',
@@ -99,9 +99,26 @@
          * @param CEvent $event
          * @return bool
          */
-        public function readPermissionSubscriptionOnAfterOwnerChange(CEvent $event)
+        public function readPermissionSubscriptionOnAfterOwnerChangeAfterSave(CEvent $event)
         {
-            //Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdate', 5);
+            if ($this->enabled)
+            {
+                if ($event->sender->id > 0)
+                {
+                    if (get_class($event->sender) == 'Account')
+                    {
+                        ReadPermissionsSubscriptionUtil::updateAccountReadSubscriptionTableBasedOnBuildTable($event->sender->id);
+                    }
+                    else
+                    {
+                        ReadPermissionsSubscriptionUtil::changeOwnerOfModelInReadSubscriptionTableByModelIdAndModelClassNameAndUser(
+                            $event->sender->id,
+                            get_class($event->sender),
+                            $event->sender->owner
+                        );
+                    }
+                }
+            }
             return true;
         }
 
@@ -111,9 +128,29 @@
          */
         public function readPermissionSubscriptionOnAfterSave(CEvent $event)
         {
-            if ($event->sender->getIsNewModel())
+            if ($this->enabled)
             {
-                //Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdate', 5);
+                if ($event->sender->getIsNewModel())
+                {
+                    if (get_class($event->sender) == 'Account')
+                    {
+                        ReadPermissionsSubscriptionUtil::updateAccountReadSubscriptionTableBasedOnBuildTable($event->sender->id);
+                    }
+                    else
+                    {
+                        ReadPermissionsSubscriptionUtil::addModelToReadSubscriptionTableByModelIdAndModelClassNameAndUser(
+                            $event->sender->id,
+                            get_class($event->sender),
+                            $event->sender->owner
+                        );
+                    }
+                }
+                elseif (!$event->sender->getIsNewModel() && get_class($event->sender) == 'Account' &&
+                        $event->sender->arePermissionsChanged())
+                {
+                    // When read permissions for account are changed, for example when group can access account
+                    ReadPermissionsSubscriptionUtil::updateAccountReadSubscriptionTableBasedOnBuildTable($event->sender->id);
+                }
             }
             return true;
         }
@@ -124,7 +161,21 @@
          */
         public function readPermissionSubscriptionOnAfterDelete(CEvent $event)
         {
-            //Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdate', 5);
+            if ($this->enabled)
+            {
+                if (get_class($event->sender) == 'Account')
+                {
+                    ReadPermissionsSubscriptionUtil::updateAccountReadSubscriptionTableBasedOnBuildTable($event->sender->id);
+                }
+                else
+                {
+                    ReadPermissionsSubscriptionUtil::deleteModelFromReadSubscriptionTableByModelIdAndModelClassNameAndUser(
+                        $event->sender->id,
+                        get_class($event->sender),
+                        $event->sender->owner
+                    );
+                }
+            }
             return true;
         }
     }

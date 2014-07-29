@@ -50,7 +50,7 @@
 
             self::$asynchronousThreshold = ExportModule::$asynchronousThreshold;
             ExportModule::$asynchronousThreshold = 5;
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public static function tearDownAfterClass()

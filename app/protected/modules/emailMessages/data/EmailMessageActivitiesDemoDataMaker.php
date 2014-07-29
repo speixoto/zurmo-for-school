@@ -96,7 +96,7 @@
                 throw new FailedToSaveModelException();
             }
             $emailMessage = EmailMessage::getById($emailMessage->id);
-            ReadPermissionsOptimizationUtil::
+            AllPermissionsOptimizationUtil::
                 securableItemGivenPermissionsForGroup($emailMessage, Group::getByName(Group::EVERYONE_GROUP_NAME));
             $emailMessage->save();
             return $emailMessage;

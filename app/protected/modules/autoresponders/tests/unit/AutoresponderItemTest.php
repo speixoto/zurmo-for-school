@@ -33,13 +33,15 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-    class AutoresponderItemTest extends ZurmoBaseTest
+    class AutoresponderItemTest extends AutoresponderOrCampaignBaseTest
     {
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
             SecurityTestHelper::createUsers();
+            // Delete item from jobQueue, that is created when new user is created
+            Yii::app()->jobQueue->deleteAll();
         }
 
         public function setUp()
