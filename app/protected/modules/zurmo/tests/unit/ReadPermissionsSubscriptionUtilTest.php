@@ -469,5 +469,48 @@
             $rows = ZurmoRedBean::getAll($sql);
             $this->assertTrue(empty($rows));
         }
+
+        /**
+         * @depends testChangeOwnerOfModelInReadSubscriptionTableByModelIdAndModelClassNameAndUser
+         */
+        public function testDeleteUserItemsFromAllReadSubscriptionTables()
+        {
+            $super = User::getByUsername('super');
+            $david = UserTestHelper::createBasicUser('david');
+            Yii::app()->user->userModel = $super;
+
+            // Clean contact table
+            $contacts = Contact::getAll();
+            foreach ($contacts as $contact)
+            {
+                $contact->delete();
+            }
+            $sql = "DELETE FROM contact_read_subscription";
+            ZurmoRedBean::exec($sql);
+            $sql = "SELECT * FROM contact_read_subscription";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertTrue(empty($rows));
+
+            $contact1 = ContactTestHelper::createContactByNameForOwner('Ray', $david);
+            $sql = "SELECT * FROM contact_read_subscription";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(0, count($rows));
+
+            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassNameAndUser('Contact',
+                $super, time(), true, new MessageLogger());
+            ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassNameAndUser('Contact',
+                $david, time(), true, new MessageLogger());
+            $sql = "SELECT * FROM contact_read_subscription";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(1, count($rows));
+            $this->assertEquals($david->id, $rows[0]['userid']);
+            $this->assertEquals($contact1->id, $rows[0]['modelid']);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::TYPE_ADD, $rows[0]['subscriptiontype']);
+
+            $david->delete();
+            $sql = "SELECT * FROM contact_read_subscription";
+            $rows = ZurmoRedBean::getAll($sql);
+            $this->assertEquals(0, count($rows));
+        }
     }
 ?>

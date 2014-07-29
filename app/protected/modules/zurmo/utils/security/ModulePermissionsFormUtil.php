@@ -97,7 +97,7 @@
             {
                 $moduleClassName = self::getModuleClassNameFromPostConcatenatedIndexString($concatenatedIndex);
                 $permission      = self::getPermissionFromPostConcatenatedIndexString($concatenatedIndex);
-                $saved           = self::AddorRemoveSpecificPermission($moduleClassName, $permitable, $permission, $value);
+                $saved           = self::addOrRemoveSpecificPermission($moduleClassName, $permitable, $permission, $value);
                 if (!$saved)
                 {
                     return false;
@@ -129,7 +129,7 @@
             return $permission;
         }
 
-        protected static function AddorRemoveSpecificPermission($moduleClassName, $permitable, $permission, $value)
+        protected static function addOrRemoveSpecificPermission($moduleClassName, $permitable, $permission, $value)
         {
             assert('is_string($moduleClassName)');
             assert('$permitable instanceof Permitable');
@@ -153,6 +153,10 @@
                 $item->removePermissions($permitable, $permission);
             }
             $saved = $item->save();
+            if ($saved)
+            {
+                ReadPermissionsSubscriptionUtil::modulePermissionsHasBeenChanged($permitable);
+            }
             $item->forget();
             return $saved;
         }
