@@ -323,7 +323,7 @@
 
         public function resolveNewCollectionItems()
         {
-            if (GameCollection::shouldReceiveCollectionItem())
+            if (Yii::app()->gameHelper->getModalCollectionsEnabled() && GameCollection::shouldReceiveCollectionItem())
             {
                 return GameCollection::getARandomCollectionItemForUser(Yii::app()->user->userModel);
             }
