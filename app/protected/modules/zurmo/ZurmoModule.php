@@ -53,6 +53,7 @@
         const AUDIT_EVENT_ITEM_MODIFIED           = 'Item Modified';
         const AUDIT_EVENT_ITEM_DELETED            = 'Item Deleted';
         const AUDIT_EVENT_ITEM_VIEWED             = 'Item Viewed';
+        const AUDIT_EVENT_ITEM_NAME_CHANGED       = 'Item Name Changed';
 
         public static function getTranslatedRightsLabels()
         {
