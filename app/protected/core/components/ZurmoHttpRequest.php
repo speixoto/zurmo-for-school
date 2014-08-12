@@ -236,5 +236,14 @@
                 throw new CException(Yii::t('yii', 'CHttpRequest is unable to determine the entry script URL.'));
             }
         }
+
+        /**
+         * Get host info without schema prefix
+         * @return mixed
+         */
+        public function getHostInfoWithoutSchemaPrefix()
+        {
+            return parse_url(Yii::app()->getRequest()->getHostInfo(), PHP_URL_HOST);
+        }
     }
 ?>
