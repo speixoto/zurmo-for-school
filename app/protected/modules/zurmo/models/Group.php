@@ -516,7 +516,7 @@
          * Return number of users in group except system users
          * @return int
          */
-        public function getUsersCountExceptSystemUsers()
+        public function getUserCountExceptSystemUsers()
         {
             $searchAttributeData['clauses'] = array(
                 1 => array(
