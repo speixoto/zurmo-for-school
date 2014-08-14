@@ -72,11 +72,8 @@
 
         protected function resolveUserCountForItem(Item $item)
         {
-            if ($item->name == Group::EVERYONE_GROUP_NAME)
-            {
-                return User::getCount();
-            }
-            return $item->{$this->getModelRelationNameForUserCount()}->count();
+            assert($item instanceof Group);
+            return $item->getUserCountExceptSystemUsers();
         }
 
         protected static function resolveShouldShowLinkableUserCount()

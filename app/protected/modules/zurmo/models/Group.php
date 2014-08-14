@@ -511,5 +511,43 @@
             ReadPermissionsSubscriptionUtil::groupHasBeenDeleted();
             AllPermissionsOptimizationCache::forgetAll();
         }
+
+        /**
+         * Return number of users in group except system users
+         * @return int
+         */
+        public function getUserCountExceptSystemUsers()
+        {
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'isSystemUser',
+                    'operatorType'         => 'equals',
+                    'value'                => 0,
+                ),
+                2 => array(
+                    'attributeName'        => 'isSystemUser',
+                    'operatorType'         => 'isNull',
+                    'value'                => null,
+                )
+            );
+            if ($this->name == Group::EVERYONE_GROUP_NAME)
+            {
+                $searchAttributeData['structure'] = '1 or 2';
+            }
+            else
+            {
+                $searchAttributeData['clauses'][3] = array(
+                    'attributeName'        => 'groups',
+                    'relatedAttributeName' => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => $this->id,
+                );
+                $searchAttributeData['structure'] = '(1 or 2) and 3';
+            }
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
+            $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
+
+            return User::getCount($joinTablesAdapter, $where);
+        }
     }
 ?>
