@@ -72,11 +72,7 @@
 
         protected function resolveUserCountForItem(Item $item)
         {
-            if ($item->name == Group::EVERYONE_GROUP_NAME)
-            {
-                return User::getCount();
-            }
-            return $item->{$this->getModelRelationNameForUserCount()}->count();
+            return $item->countUsers();
         }
 
         protected static function resolveShouldShowLinkableUserCount()
