@@ -72,7 +72,8 @@
 
         protected function resolveUserCountForItem(Item $item)
         {
-            return $item->countUsers();
+            assert($item instanceof Group);
+            return $item->getUsersCountExceptSystemUsers();
         }
 
         protected static function resolveShouldShowLinkableUserCount()

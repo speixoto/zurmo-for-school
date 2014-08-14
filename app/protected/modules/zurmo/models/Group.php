@@ -513,10 +513,10 @@
         }
 
         /**
-         * Return number of users in group
+         * Return number of users in group except system users
          * @return int
          */
-        public function countUsers()
+        public function getUsersCountExceptSystemUsers()
         {
             $searchAttributeData['clauses'] = array(
                 1 => array(
