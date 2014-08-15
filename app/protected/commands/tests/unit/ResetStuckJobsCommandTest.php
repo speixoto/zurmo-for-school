@@ -75,6 +75,37 @@
             unset($output);
             exec($command, $output);
             $this->assertEquals($output[1], 'The job JobLogCleanupJob has been reset.');
+            $this->assertEmpty(JobInProcess::getAll());
+
+            // Test with no items in JobInProcess
+            $command = "php zurmocTest.php resetStuckJobs super All";
+            if (!IS_WINNT)
+            {
+                $command .= ' 2>&1';
+            }
+            unset($output);
+            exec($command, $output);
+            $this->assertEquals($output[1], 'Reset all jobs.');
+            $this->assertEquals($output[2], 'There are no jobs in process to be reset.');
+
+            // Now test with some items in JobInProcess table and 'All' parameter
+            $jobInProcess = new JobInProcess();
+            $jobInProcess->type = 'JobLogCleanup';
+            $this->assertTrue($jobInProcess->save());
+            $jobInProcess2 = new JobInProcess();
+            $jobInProcess2->type = 'Monitor';
+            $this->assertTrue($jobInProcess2->save());
+            $command = "php zurmocTest.php resetStuckJobs super All";
+            if (!IS_WINNT)
+            {
+                $command .= ' 2>&1';
+            }
+            unset($output);
+            exec($command, $output);
+            $this->assertEquals($output[1], 'Reset all jobs.');
+            $this->assertEquals($output[2], 'The job JobLogCleanup has been reset.');
+            $this->assertEquals($output[3], 'The job Monitor has been reset.');
+            $this->assertEmpty(JobInProcess::getAll());
         }
     }
 ?>
