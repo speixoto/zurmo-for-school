@@ -184,11 +184,11 @@
         public function testSubjectLengthValidator()
         {
             $emailTemplate              = new EmailTemplate();
-            $emailTemplate->subject     = str_repeat('a', 100);
+            $emailTemplate->subject     = str_repeat('a', 260);
             $validated                  = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
             $error                      = $emailTemplate->getError('subject');
-            $this->assertEquals("Subject is too long (maximum is 64 characters).", $error);
+            $this->assertEquals("Subject is too long (maximum is 255 characters).", $error);
         }
 
         /**
