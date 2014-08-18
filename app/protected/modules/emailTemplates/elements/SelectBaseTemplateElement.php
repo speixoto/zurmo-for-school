@@ -127,8 +127,10 @@
             $modelClassName = $this->resolveModelClassName();
             $content =  '
                             <div class="pills">
-                                    <a href="#" class="filter-link active" data-filter="' . static::FILTER_BY_PREDEFINED_TEMPLATES . '">Layouts</a>
-                                    <a href="#" id="saved-templates-link" class="filter-link" data-filter="' . static::FILTER_BY_PREVIOUSLY_CREATED_TEMPLATES . '">Saved Templates</a>
+                                    <a href="#" class="filter-link active" data-filter="' . static::FILTER_BY_PREDEFINED_TEMPLATES . '">' . 
+                                        Zurmo::t('DesignerModule', 'Layouts') . '</a>
+                                    <a href="#" id="saved-templates-link" class="filter-link" data-filter="' . static::FILTER_BY_PREVIOUSLY_CREATED_TEMPLATES . '">' . 
+                                        Zurmo::t('EmailTemplatesModule', 'Saved Templates') . '</a>
                             </div>
                         ';
             $content .= $this->renderCloseSelectTemplatesButton();
@@ -147,7 +149,7 @@
         {
             $pagerParams = array(
                 'class'            => 'BottomLinkPager',
-                'nextPageLabel'    => '<span>next</span>',
+                'nextPageLabel'    => '<span>' . Zurmo::t('Core', 'next') . '</span>',
                 'header'           => '<div class="list-preloader"><span class="z-spinner"></span></div>',
                 'htmlOptions'      => array('class' => 'endless-list-pager')
             );
