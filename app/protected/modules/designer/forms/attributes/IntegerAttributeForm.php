@@ -42,6 +42,12 @@
             parent::__construct($model, $attributeName);
         }
 
+        public function rules()
+        {
+            return array_merge(parent::rules(), array(
+                array('defaultValue',  'numerical', 'integerOnly' => true),
+            ));
+        }
         public static function getAttributeTypeDisplayName()
         {
             return Zurmo::t('DesignerModule', 'Integer');
