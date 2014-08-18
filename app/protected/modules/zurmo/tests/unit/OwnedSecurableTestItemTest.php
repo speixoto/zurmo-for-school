@@ -79,5 +79,27 @@
             //Reset count of test items to 0.
             $testItem->delete();
         }
+
+        public function testOwnerChangeChangesModifiedDateTime()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $user = UserTestHelper::createBasicUser('basic');
+            $testItem = new OwnedSecurableTestItem();
+            $testItem->member = 'test';
+            $this->assertTrue($testItem->save());
+            $defaultDateTimeModified = $testItem->modifiedDateTime;
+
+            // ToDO: Fix code so test below pass and uncomment them
+            /*
+            sleep(1);
+            $testItem->owner = $user;
+            //$testItem->member = 'bbb'; // If we add this line, test will pass
+            $this->assertTrue($testItem->save());
+            $testItemId = $testItem->id;
+            $testItem->forget();
+            $testItem = OwnedSecurableTestItem::getById($testItemId);
+            $this->assertNotEquals($defaultDateTimeModified, $testItem->modifiedDateTime);
+            */
+        }
     }
 ?>
