@@ -175,7 +175,7 @@
                     array('name',                       'length',  'min'  => 1, 'max' => 64),
                     array('subject',                    'required'),
                     array('subject',                    'type',    'type' => 'string'),
-                    array('subject',                    'length',  'min'  => 1, 'max' => 64),
+                    array('subject',                    'length',  'min'  => 1, 'max' => 255),
                     array('language',                   'type',    'type' => 'string'),
                     array('language',                   'length',  'min' => 2, 'max' => 2),
                     array('language',                   'SetToUserDefaultLanguageValidator'),
