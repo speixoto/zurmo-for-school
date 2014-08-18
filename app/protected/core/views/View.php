@@ -84,12 +84,8 @@
         {
             $theme        = Yii::app()->theme->name;
             $name         = get_class($this);
-            $templateName = "themes/$theme/templates/$name.xhtml";
+            $templateName = $this->resolveCustomViewTemplateFileName($theme, $name);
             $content      = $this->renderContent();
-            if (!file_exists($templateName))
-            {
-                $templateName = "themes/default/templates/$name.xhtml";
-            }
             if (file_exists($templateName))
             {
                 $span           = "<span class=\"$name\" />";
@@ -192,6 +188,25 @@
         public function getTitle()
         {
             return $this->title;
+        }
+
+        /**
+         * Load CustomXXXView.xhtml if exists in current theme, else use current theme's XXXView.xhtml
+         * else use default theme's XXXView.xhtml
+         * @return string
+         */
+        protected function resolveCustomViewTemplateFileName($theme, $view)
+        {
+            $templateName = "themes/$theme/templates/Custom" . $view . ".xhtml";
+            if (!file_exists($templateName))
+            {
+                $templateName = "themes/$theme/templates/$view.xhtml";
+                if (!file_exists($templateName))
+                {
+                    $templateName = "themes/default/templates/$view.xhtml";
+                }
+            }
+            return $templateName;
         }
     }
 ?>
