@@ -63,7 +63,6 @@ EOD;
         {
             set_time_limit('900');
             Yii::app()->lessCompiler->compile();
-            Yii::app()->lessCompiler->compileCustom();
         }
     }
 ?>

@@ -40,9 +40,7 @@
     {
         public $formatterName = 'compressed';
 
-        public $primaryLessFileToCompile;
-
-        public $secondaryLessFileToCompile;
+        public $themeColorDependentLessFilesToCompile;
 
         public $lessFilesToCompile;
 
@@ -219,42 +217,39 @@
          */
         public function compile()
         {
-            $imagesPath = "'../images/'";
-            if (isset($this->primaryLessFileToCompile))
+
+            foreach ($this->getThemeColors() as $colorName => $notUsed)
             {
-                foreach ($this->getThemeColors() as $colorName => $themeColors)
-                {
-                    if (is_string($colorName) && count($themeColors) == 5 && $colorName != ThemeManager::CUSTOM_NAME)
-                    {
-                        $this->resolveCompiledFile($this->primaryLessFileToCompile, $this->getCompiledCssPath(),
-                                                   $themeColors, $colorName, $imagesPath);
-                    }
-                }
-            }
-            if (isset($this->secondaryLessFileToCompile))
-            {
-                foreach ($this->getThemeColors() as $colorName => $themeColors)
-                {
-                    if (is_string($colorName) && count($themeColors) == 5 && $colorName != ThemeManager::CUSTOM_NAME)
-                    {
-                        $this->resolveCompiledFile($this->secondaryLessFileToCompile, $this->getCompiledCssPath(),
-                            $themeColors, $colorName, $imagesPath);
-                    }
-                }
+                $this->compileColorDependentLessFile($colorName);
             }
             if (is_array($this->lessFilesToCompile) && !empty($this->lessFilesToCompile))
             {
                 foreach ($this->lessFilesToCompile as $lessFile)
                 {
-                     // We need to construct new less compiler for each file, otherwise compiler doesn't work as expected
-                    $lessCompiler = $this->initializeLessCompiler($this->formatterName,
-                        '#545454', '#282A76', '#7CB830', '#97c43d', '#464646', $imagesPath);
-                    $lessFilePath = $this->getLessFilesPath() . DIRECTORY_SEPARATOR . $lessFile;
-                    $cssFileName = str_replace('less', 'css', $lessFile);
-                    $cssFilePath = $this->getCompiledCssPath() . DIRECTORY_SEPARATOR . $cssFileName;
-                    $lessCompiler->compileFile($lessFilePath, $cssFilePath);
+                    $this->resolveCompiledFile($lessFile, $this->getCompiledCssPath());
                 }
             }
+        }
+
+        public function compileColorDependentLessFile($colorName)
+        {
+            $themeColors = $this->getThemeColors();
+            if (isset($themeColors[$colorName]))
+            {
+                $colors = $themeColors[$colorName];
+                if (is_array($this->themeColorDependentLessFilesToCompile) && !empty($this->themeColorDependentLessFilesToCompile))
+                {
+                    foreach ($this->themeColorDependentLessFilesToCompile as $fileToCompile)
+                    {
+                        $this->resolveCompileFileWithThemeColorsAndColorName($fileToCompile, $colors, $colorName);
+                    }
+                }
+            }
+            else
+            {
+                throw new NotFoundException();
+            }
+
         }
 
         /**
@@ -262,37 +257,39 @@
          */
         public function compileCustom()
         {
-            $customThemeColorNameAndColors = Yii::app()->themeManager->getCustomThemeColorNameAndColors();
-            if (isset($this->primaryLessFileToCompile) && !empty($customThemeColorNameAndColors))
+            $this->compileColorDependentLessFile(ThemeManager::CUSTOM_NAME);
+        }
+
+        protected function resolveCompileFileWithThemeColorsAndColorName($fileToCompile, $themeColors, $colorName)
+        {
+            $compiledCssPath = $this->getCompiledCssPath();
+            $imagesUrl = "'../images/'";
+            if ($colorName == ThemeManager::CUSTOM_NAME)
             {
-                foreach ($customThemeColorNameAndColors as $colorName => $themeColors)
-                {
-                    if (is_string($colorName) && count($themeColors) == 5)
-                    {
-                        $this->resolveCompiledFile($this->primaryLessFileToCompile, $this->getCompiledCustomCssPath(),
-                                                   $themeColors, $colorName, $this->getCustomCompiledImagesUrl());
-                    }
-                }
+                $compiledCssPath = $this->getCompiledCustomCssPath();
+                $imagesUrl = $this->getCustomCompiledImagesUrl();
             }
-            if (isset($this->secondaryLessFileToCompile) && !empty($customThemeColorNameAndColors))
+            if (is_string($colorName) && count($themeColors) == 5)
             {
-                foreach ($customThemeColorNameAndColors as $colorName => $themeColors)
-                {
-                    if (is_string($colorName) && count($themeColors) == 5)
-                    {
-                        $this->resolveCompiledFile($this->secondaryLessFileToCompile, $this->getCompiledCustomCssPath(),
-                                                   $themeColors, $colorName, $this->getCustomCompiledImagesUrl());
-                    }
-                }
+                $this->resolveCompiledFile($fileToCompile, $compiledCssPath, true, $themeColors, $colorName, $imagesUrl);
             }
         }
 
-        protected function resolveCompiledFile($fileToCompile, $compiledCssPath, $themeColors, $colorName, $imagesPath)
+        protected function resolveCompiledFile($fileToCompile, $compiledCssPath, $colorDependent = false, $themeColors = array(), $colorName = null, $imagesUrl = "'../images/'")
         {
+            if (empty($themeColors))
+            {
+                $themeColors = array('#545454', '#282A76', '#7CB830', '#97c43d', '#464646');
+            }
+            // We need to construct new less compiler for each file, otherwise compiler doesn't work as expected
             $lessCompiler = $this->initializeLessCompiler($this->formatterName,
-                            $themeColors[0], $themeColors[1], $themeColors[2], $themeColors[3], $themeColors[4], $imagesPath);
+                            $themeColors[0], $themeColors[1], $themeColors[2], $themeColors[3], $themeColors[4], $imagesUrl);
             $lessFilePath = $this->getLessFilesPath() . DIRECTORY_SEPARATOR . $fileToCompile;
-            $cssFileName  = str_replace('.less', '', $fileToCompile) . '-' . $colorName . '.css';
+            $cssFileName = str_replace('less', 'css', $fileToCompile);
+            if ($colorDependent)
+            {
+                $cssFileName  = str_replace('.less', '', $fileToCompile) . '-' . $colorName . '.css';
+            }
             $cssFilePath  = $compiledCssPath . DIRECTORY_SEPARATOR . $cssFileName;
             $lessCompiler->compileFile($lessFilePath, $cssFilePath);
         }
