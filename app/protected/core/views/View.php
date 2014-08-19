@@ -191,8 +191,8 @@
         }
 
         /**
-         * Load CustomXXXView.xhtml if exists in current theme, else use current theme's XXXView.xhtml
-         * else use default theme's XXXView.xhtml
+         * Load CustomXView.xhtml if exists in current theme, else use current theme's XView.xhtml
+         * else use default theme's XView.xhtml
          * @return string
          */
         protected function resolveCustomViewTemplateFileName($theme, $view)
