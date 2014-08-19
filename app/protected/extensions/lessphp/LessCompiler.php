@@ -185,7 +185,7 @@
          * @param $z_themeColor2
          * @param $z_themeColorBtn
          * @param $z_themeColorHeader
-         * @internal param $z_path
+         * @param $z_path
          * @return lessc
          */
         protected function initializeLessCompiler($formatterName,
@@ -222,17 +222,35 @@
             {
                 $this->compileColorDependentLessFile($colorName);
             }
+            $this->compileBaseFiles();
+        }
+
+        /**
+         * Compile only the base files that dont depend on the theme color
+         */
+        public function compileBaseFiles()
+        {
             if (is_array($this->lessFilesToCompile) && !empty($this->lessFilesToCompile))
             {
                 foreach ($this->lessFilesToCompile as $lessFile)
                 {
                     $this->resolveCompiledFile($lessFile, $this->getCompiledCssPath());
                 }
+                if (file_exists($this->getLessFilesPath() . DIRECTORY_SEPARATOR . 'custom.less'))
+                {
+                    $this->resolveCompiledFile($this->getLessFilesPath() . DIRECTORY_SEPARATOR . 'custom.less', $this->getCompiledCssPath());
+                }
             }
         }
 
+        /**
+         * Compile less files that depends on the theme color
+         * @param string $colorName The name of the theme color
+         * @throws NotFoundException
+         */
         public function compileColorDependentLessFile($colorName)
         {
+            assert('is_string($colorName)');
             $themeColors = $this->getThemeColors();
             if (isset($themeColors[$colorName]))
             {
@@ -242,6 +260,10 @@
                     foreach ($this->themeColorDependentLessFilesToCompile as $fileToCompile)
                     {
                         $this->resolveCompileFileWithThemeColorsAndColorName($fileToCompile, $colors, $colorName);
+                        if ($colorName == ThemeManager::CUSTOM_NAME)
+                        {
+                            Yii::app()->getAssetManager()->publish($this->getCompiledCustomCssPath(),false, -1, true);
+                        }
                     }
                 }
             }
@@ -249,15 +271,6 @@
             {
                 throw new NotFoundException();
             }
-
-        }
-
-        /**
-         * Compile the custom css file
-         */
-        public function compileCustom()
-        {
-            $this->compileColorDependentLessFile(ThemeManager::CUSTOM_NAME);
         }
 
         protected function resolveCompileFileWithThemeColorsAndColorName($fileToCompile, $themeColors, $colorName)
