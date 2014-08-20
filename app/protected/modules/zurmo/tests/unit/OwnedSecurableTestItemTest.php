@@ -89,17 +89,13 @@
             $this->assertTrue($testItem->save());
             $defaultDateTimeModified = $testItem->modifiedDateTime;
 
-            // ToDO: Fix code so test below pass and uncomment them
-            /*
             sleep(1);
             $testItem->owner = $user;
-            //$testItem->member = 'bbb'; // If we add this line, test will pass
             $this->assertTrue($testItem->save());
             $testItemId = $testItem->id;
             $testItem->forget();
             $testItem = OwnedSecurableTestItem::getById($testItemId);
             $this->assertNotEquals($defaultDateTimeModified, $testItem->modifiedDateTime);
-            */
         }
     }
 ?>
