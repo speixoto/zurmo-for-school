@@ -1030,9 +1030,8 @@
             $moduleClassNames           = CalendarUtil::getAvailableModulesForCalendar();
             foreach ($items as $index => $item)
             {
-                foreach ($moduleClassNames as $moduleClassName)
+                foreach ($moduleClassNames as $moduleClassName => $label)
                 {
-                    $moduleClassName = $moduleClassName . 'Module';
                     if ($moduleClassName::getPrimaryModelName() == $item['modelClass'])
                     {
                         $moduleId           = $moduleClassName::getDirectoryName();
