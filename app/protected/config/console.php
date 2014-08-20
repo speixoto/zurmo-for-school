@@ -52,14 +52,16 @@
     $common_config['components']['lessCompiler'] = array(
         'class'                         => 'application.extensions.lessphp.LessCompiler',
         'formatterName'                 => 'lessjs',
-        'primaryLessFileToCompile'      => 'zurmo.less',
-        'secondaryLessFileToCompile'    => 'imports.less',
+        'themeColorDependentLessFilesToCompile' => array(
+            'zurmo.less',
+            'imports.less'
+        ),
         'lessFilesToCompile'            => array(
-                                                    'ie.less',
-                                                    'mobile.less',
-                                                    'webforms-external.less',
-                                                    'builder-iframe-tools.less'
-                                           ),
+            'ie.less',
+            'mobile.less',
+            'webforms-external.less',
+            'builder-iframe-tools.less'
+        ),
     );
 
     //Turn off gamification

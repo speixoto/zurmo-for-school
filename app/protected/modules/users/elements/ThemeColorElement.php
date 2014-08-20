@@ -106,15 +106,17 @@
                 $removeScript .= '$(document.body).removeClass("' . $value . '");' . "\n";
             }
             $themeName         = Yii::app()->theme->name;
-            $themeBaseUrl      =  Yii::app()->themeManager->baseUrl . '/default/css';
-            $primaryFilePath   = Yii::app()->lessCompiler->compiledCustomCssPath . '/zurmo-custom.css';
-            $secondaryFilePath = Yii::app()->lessCompiler->compiledCustomCssPath . '/imports-custom.css';
-            if (!is_file($primaryFilePath) || !is_file($secondaryFilePath))
+            $themeBaseUrl      = Yii::app()->themeManager->baseUrl . '/default/css';
+
+            $primaryFileName   = 'zurmo-custom.css';
+            $secondaryFileName = 'imports-custom.css';
+            if (Yii::app()->themeManager->activeThemeColor != ThemeManager::CUSTOM_NAME)
             {
-                Yii::app()->lessCompiler->compileCustom();
+                Yii::app()->themeManager->registerThemeColorCss();
             }
-            $primaryCustomCssUrl   = Yii::app()->assetManager->publish($primaryFilePath);
-            $secondaryCustomCssUrl = Yii::app()->assetManager->publish($secondaryFilePath);
+            $primaryCustomCssUrl   = Yii::app()->assetManager->getPublishedUrl(Yii::app()->lessCompiler->compiledCustomCssPath) . DIRECTORY_SEPARATOR . $primaryFileName;
+            $secondaryCustomCssUrl = Yii::app()->assetManager->getPublishedUrl(Yii::app()->lessCompiler->compiledCustomCssPath) . DIRECTORY_SEPARATOR . $secondaryFileName;
+
             // Begin Not Coding Standard
             $script = "$('input[name=\"" . $this->getEditableInputName($this->getAttributeForRadioButtonList()) . "\"]').live('change', function(){
                           $removeScript

@@ -42,15 +42,20 @@
     {
         public function getHelp()
         {
+            // get theme colors to populate into help
+            $colorNames = implode(', ', array_keys(Yii::app()->themeManager->getThemeColorNamesAndColors()));
             return <<<EOD
     USAGE
-      zurmoc lessCompiler
+      zurmoc lessCompiler [whatToCompile] [whatToCompile] ...
 
     DESCRIPTION
       This command create css files based on less files. This job should probably be done as cronjob, maybe once per day.
 
     PARAMETERS
-     * no params
+     * no required params
+
+    Optional Parameters:
+     * whatToCompile: which css files to build. Options are (all, base, or a specific theme: $colorNames). Default is all. Supports multiple themes or options.
 EOD;
     }
 
@@ -62,8 +67,36 @@ EOD;
         public function run($args)
         {
             set_time_limit('900');
-            Yii::app()->lessCompiler->compile();
-            Yii::app()->lessCompiler->compileCustom();
+            if(isset($args[0]))
+            {
+                foreach($args as $arg)
+                {
+                    switch($arg)
+                    {
+                        case 'all':
+                            Yii::app()->lessCompiler->compile();
+                            break;
+                        case 'base':
+                            Yii::app()->lessCompiler->compileBaseFiles();
+                            break;
+                        default:
+                            $themeNamesAndColors = Yii::app()->themeManager->getThemeColorNamesAndColors();
+                            if(array_key_exists($arg, $themeNamesAndColors))
+                            {
+                                Yii::app()->lessCompiler->compileColorDependentLessFile($arg);
+                            }
+                            else
+                            {
+                                $this->usageError('Invalid theme name entered: ' + $arg);
+                            }
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                Yii::app()->lessCompiler->compile();
+            }
         }
     }
 ?>

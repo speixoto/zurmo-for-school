@@ -305,15 +305,23 @@
             }
             else
             {
-                $primaryFilePath = Yii::app()->lessCompiler->compiledCustomCssPath . '/zurmo-custom.css';
-                $secondaryFilePath = Yii::app()->lessCompiler->compiledCustomCssPath . '/imports-custom.css';
-                if (!is_file($primaryFilePath) || !is_file($secondaryFilePath))
-                {
-                    Yii::app()->lessCompiler->compileCustom();
-                }
-                $cs->registerCssFile(Yii::app()->assetManager->publish($primaryFilePath));
-                $cs->registerCssFile(Yii::app()->assetManager->publish($secondaryFilePath));
+                $this->registerCustomThemeColorCss();
             }
+        }
+
+        public function registerCustomThemeColorCss()
+        {
+            $primaryFileName = 'zurmo-custom.css';
+            $secondaryFileName = 'imports-custom.css';
+            if (!is_file(Yii::app()->lessCompiler->compiledCustomCssPath . DIRECTORY_SEPARATOR . $primaryFileName) ||
+                !is_file(Yii::app()->lessCompiler->compiledCustomCssPath . DIRECTORY_SEPARATOR . $secondaryFileName))
+            {
+                Yii::app()->lessCompiler->compileColorDependentLessFile(static::CUSTOM_NAME);
+            }
+            $cs      = Yii::app()->getClientScript();
+            $baseUrl = Yii::app()->assetManager->getPublishedUrl(Yii::app()->lessCompiler->compiledCustomCssPath);
+            $cs->registerCssFile($baseUrl . DIRECTORY_SEPARATOR . $primaryFileName);
+            $cs->registerCssFile($baseUrl . DIRECTORY_SEPARATOR . $secondaryFileName);
         }
     }
 ?>
