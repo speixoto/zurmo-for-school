@@ -211,7 +211,7 @@
 
         public function beforeSave()
         {
-            if (!parent::beforeSave())
+            if (($this->id < 0 && $this->alreadyExist()) || !parent::beforeSave())
             {
                 return false;
             }
@@ -229,6 +229,13 @@
             }
             $this->modifiedDateTime     = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             return true;
+        }
+
+        protected function alreadyExist()
+        {
+            $query  = 'SELECT COUNT(*) FROM ' . static::getTableName();
+            $query  .= ' WHERE contact_id=' . $this->contact->id . ' AND marketinglist_id=' . $this->marketingList->id;
+            return ZurmoRedBean::getCell($query);
         }
     }
 ?>
