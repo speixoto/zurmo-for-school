@@ -48,6 +48,7 @@
             $member = MarketingListMember::GetById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($member->marketingList);
             $member->unsubscribed = (bool)(!$member->unsubscribed);
+            $member->setScenario(MarketingListMember::SCENARIO_MANUAL_CHANGE);
             if (!$member->unrestrictedSave())
             {
                 throw new FailedToSaveModelException();
@@ -104,7 +105,7 @@
             }
             else
             {
-                $subscriberInformation = $this->addNewSubscribers($marketingListId, $contactIds);
+                $subscriberInformation = $this->addNewSubscribers($marketingListId, $contactIds, MarketingListMember::SCENARIO_MANUAL_CHANGE);
                 $message = $this->renderCompleteMessageBySubscriberInformation($subscriberInformation);
                 echo CJSON::encode(array('message' => $message, 'type' => 'message'));
             }
@@ -122,14 +123,14 @@
             return $message;
         }
 
-        protected function addNewSubscribers($marketingListId, $contactIds)
+        protected function addNewSubscribers($marketingListId, $contactIds, $scenario = null)
         {
             $subscriberInformation = array('subscribedCount' => 0, 'skippedCount' => 0);
             $marketingList         = MarketingList::getById((int) $marketingListId);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
             foreach ($contactIds as $contactId)
             {
-                if ($marketingList->addNewMember($contactId, false))
+                if ($marketingList->addNewMember($contactId, false, null, $scenario))
                 {
                     $subscriberInformation['subscribedCount']++;
                 }

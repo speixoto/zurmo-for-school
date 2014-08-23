@@ -36,6 +36,8 @@
 
     class MarketingListMember extends OwnedModel
     {
+        const SCENARIO_MANUAL_CHANGE        = 'manualChange';
+
         public static function getModuleClassName()
         {
             return 'MarketingListsModule';
@@ -211,7 +213,12 @@
 
         public function beforeSave()
         {
-            if (($this->id < 0 && $this->alreadyExist()) || !parent::beforeSave())
+            // if its an illegal state change then return false
+            // if id is less than 0 and we have same contact_id and marketinglist_id in db already then return false.
+            // if parent beforeSave() does not work then return false
+            if ($this->illegalStateChange() ||
+                ($this->id < 0 && $this->alreadyExist()) ||
+                !parent::beforeSave())
             {
                 return false;
             }
@@ -236,6 +243,17 @@
             $query  = 'SELECT COUNT(*) FROM ' . static::getTableName();
             $query  .= ' WHERE contact_id=' . $this->contact->id . ' AND marketinglist_id=' . $this->marketingList->id;
             return ZurmoRedBean::getCell($query);
+        }
+
+        protected function illegalStateChange()
+        {
+            if (isset($this->originalAttributeValues['unsubscribed']) &&
+                $this->originalAttributeValues['unsubscribed'] != $this->unsubscribed)
+            {
+                // if current state is unsubscribed, new state is subscribed and scenario is not set to manual then return true
+                return ($this->originalAttributeValues['unsubscribed'] && $this->getScenario() != static::SCENARIO_MANUAL_CHANGE);
+            }
+            return false;
         }
     }
 ?>
