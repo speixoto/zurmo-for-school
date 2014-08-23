@@ -764,9 +764,9 @@
         {
             $content                = 'customCstm: [[CUSTOM^CSTM]]';
             $compareContent         = 'customCstm: text custom';
-            $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
+            $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
-            $this->assertTrue($mergeTagsUtil instanceof WorkflowMergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
             $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
@@ -775,9 +775,9 @@
 
             $content                = 'custom_attr_2Cstm: [[CUSTOM_ATTR_2^CSTM]]';
             $compareContent         = 'custom_attr_2Cstm: text custom 2';
-            $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
+            $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
-            $this->assertTrue($mergeTagsUtil instanceof WorkflowMergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
             $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);

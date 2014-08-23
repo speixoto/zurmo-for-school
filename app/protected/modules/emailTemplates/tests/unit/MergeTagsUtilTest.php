@@ -64,6 +64,10 @@
             $expectedString = '[[ACCOUNT__PRIMARY^ADDRESS__STREET1]]';
             $string = MergeTagsUtil::resolveAttributeStringToMergeTagString('Account___primaryAddress___street1');
             $this->assertEquals($expectedString, $string);
+
+            $expectedString = '[[ACCOUNT__PRIMARY^ADDRESS__STREET1_ADDRESS]]';
+            $string = MergeTagsUtil::resolveAttributeStringToMergeTagString('Account___primaryAddress___street1_address');
+            $this->assertEquals($expectedString, $string);
         }
     }
 ?>
