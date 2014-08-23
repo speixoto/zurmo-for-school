@@ -78,6 +78,20 @@
             return $group;
         }
 
+        public static function getByPartialName($partialName)
+        {
+            assert('is_string($partialName)');
+            assert('$partialName != ""');
+            $groups = array();
+            $beans  = ZurmoRedBean::find(self::getTableName(), "lower(name) LIKE :name ",
+                      array(':name' => strtolower($partialName) . '%'));
+            if (count($beans) > 0)
+            {
+                $groups = self::makeModels($beans);
+            }
+            return $groups;
+        }
+
         public static function getById($id, $modelClassName = null)
         {
             $group = parent::getById($id, $modelClassName);

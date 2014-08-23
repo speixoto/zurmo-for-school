@@ -36,6 +36,12 @@
 
     class HomeDefaultController extends ZurmoBaseController
     {
+        const GROUP_PREFIX = 'Group_';
+
+        const USER_PREFIX  = 'User_';
+
+        const PUSHED_DASHBOARDS_KEY = 'pushedDashboards';
+
         public function filters()
         {
             return array_merge(parent::filters(),
@@ -248,6 +254,72 @@
             {
                 return (bool)$hideWelcomeViewGlobally;
             }
+        }
+
+        public function actionPushDashboard($id)
+        {
+            $dashboard = Dashboard::getById(intval($id));
+            $modelClassName = get_class($dashboard);
+            if (isset($_POST[$modelClassName]))
+            {
+                $groupIds = array();
+                $userIds  = array();
+                $groupsAndUsers = explode(',', $_POST[$modelClassName]['GroupsAndUsers']['ids']);
+                foreach ($groupsAndUsers as $identifier)
+                {
+                    if (strpos($identifier, self::GROUP_PREFIX) !== false)
+                    {
+                        $groupIds[] = intval(substr($identifier,
+                        strpos($identifier, self::GROUP_PREFIX) + strlen(self::GROUP_PREFIX), strlen($identifier)));
+                    }
+                    elseif (strpos($identifier, self::USER_PREFIX) !== false)
+                    {
+                        $userIds[] = intval(substr($identifier,
+                        strpos($identifier, self::USER_PREFIX) + strlen(self::USER_PREFIX), strlen($identifier)));
+                    }
+                }
+                $pushedDashboards = ZurmoConfigurationUtil::getByModuleName('HomeModule', self::PUSHED_DASHBOARDS_KEY);
+                if ($pushedDashboards == null)
+                {
+                    $pushedDashboards = array();
+                }
+                else
+                {
+                    $pushedDashboards = unserialize($pushedDashboards);
+                }
+                $dashboardId = $dashboard->id;
+                $pushedDashboards[$dashboardId]['groups'] = implode(',', $groupIds);
+                $pushedDashboards[$dashboardId]['users']  = implode(',', $userIds);
+                ZurmoConfigurationUtil::setByModuleName('HomeModule', self::PUSHED_DASHBOARDS_KEY, serialize($pushedDashboards));
+            }
+            $editView = new PushDashboardEditView($this->getId(), $this->getModule()->getId(), $dashboard,
+                        Zurmo::t('HomeModule', 'Push Dashboard'));
+            $view     = new HomePageView(ZurmoDefaultViewUtil::makeStandardViewForCurrentUser($this, $editView));
+            echo $view->render();
+        }
+
+        public function actionAutoCompleteGroupsAndUsers($term)
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                        'autoCompleteListPageSize', get_class($this->getModule()));
+            $groups   = Group::getByPartialName($term);
+            $users    = UserSearch::getUsersByPartialFullNameOrAnyEmailAddress($term, $pageSize, null);
+            $autoCompleteResults = array();
+            foreach ($groups as $group)
+            {
+                $autoCompleteResults[] = array(
+                    'id'   => self::GROUP_PREFIX . $group->id,
+                    'name' => strval($group)
+                );
+            }
+            foreach ($users as $user)
+            {
+                $autoCompleteResults[] = array(
+                    'id'   => self::USER_PREFIX . $user->id,
+                    'name' => MultipleContactsForMeetingElement::renderHtmlContentLabelFromUserAndKeyword($user, $term)
+                );
+            }
+            echo CJSON::encode($autoCompleteResults);
         }
     }
 ?>
