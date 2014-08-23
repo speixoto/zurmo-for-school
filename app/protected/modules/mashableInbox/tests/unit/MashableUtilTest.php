@@ -138,12 +138,13 @@
             $conversation = $this->makeANewUnreadConversationOwnedByCurrentUser();
             $conversationRules    = new ConversationMashableInboxRules();
             $content = MashableUtil::renderSummaryContent($conversation);
-            $this->assertContains('<div class="model-tag conversation">', $content);
-            $this->assertContains(str_replace('{modelCreationTimeContent}', $conversationRules->getModelCreationTimeContent($conversation),
+            $contentWithRemovedId = preg_replace("/(DetailsLinkActionElement.*yt)(\d*)/", "$1", $content);
+            $this->assertContains('<div class="model-tag conversation">', $contentWithRemovedId);
+            $expectedContent = str_replace('{modelCreationTimeContent}', $conversationRules->getModelCreationTimeContent($conversation),
                                     str_replace('{modelStringContent}', $conversationRules->getModelStringContent($conversation),
-                                        $conversationRules->getSummaryContentTemplate())),
-                                  str_replace('yt0', 'yt1', $content)
-            );
+                                        $conversationRules->getSummaryContentTemplate()));
+            $expectedContentWithRemovedId = preg_replace("/(DetailsLinkActionElement.*yt)(\d*)/", "$1", $expectedContent);
+            $this->assertContains($expectedContentWithRemovedId, $contentWithRemovedId);
         }
 
         public function testResolveContentTemplate()

@@ -123,7 +123,7 @@
                     return $extensions[$ext];
                 }
             }
-            return null;
+            return 'application/octet-stream';
         }
     }
 ?>
