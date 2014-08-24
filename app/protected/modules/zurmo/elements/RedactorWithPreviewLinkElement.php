@@ -36,20 +36,29 @@
 
     class RedactorWithPreviewLinkElement extends RedactorElement
     {
-        protected function renderControlEditable()
+        protected function resolveRedactorOptions()
         {
-            $content                 = parent::renderControlEditable();
-            $selector                = '$("#' . $this->getEditableInputId() . '").redactor("get")';
-            $previewElementParams    = array('isHtmlContent' => 1,
-                                                'inputId' => $this->getEditableInputId(),
-                                                'selector' => $selector);
-            $previewElementParams    = CMap::mergeArray($this->params, $previewElementParams);
-            $controllerId            = Yii::app()->controller->id;
-            $moduleId                = Yii::app()->controller->module->id;
-            $previewElement          = new GlobalMarketingFooterConfigurationPreviewElement($controllerId, $moduleId,
-                                                                            $this->model->Id, $previewElementParams);
-            $content                .= $previewElement->render();
-            return $content;
+            $parentOptions      = parent::resolveRedactorOptions();
+            $options            = array(
+                'paragraphy'            => 'false',
+                'buttons'               => $this->resolveRedactorButtons(),
+                'plugins'               => CJSON::encode($this->resolvePlugins()),
+            );
+            $options            = CMap::mergeArray($parentOptions, $options);
+            return $options;
+        }
+
+        protected function resolvePlugins()
+        {
+            return array('fontfamily', 'fontsize', 'fontcolor');
+        }
+
+        protected function resolveRedactorButtons()
+        {
+            $buttons         = array('html', '|', 'formatting', 'under', 'bold', 'italic', 'deleted', '|',
+                                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'alignleft', 'aligncenter',
+                                    'alignright', '|', 'table', 'link', '|', 'horizontalrule');
+            return CJSON::encode($buttons);
         }
     }
 ?>

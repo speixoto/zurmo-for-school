@@ -37,31 +37,31 @@
     /**
      * Element to edit and display an email signature content for a user.
      */
-    class EmailSignatureElement extends Element
+    class EmailSignatureElement extends RedactorElement
     {
-        protected function renderControlNonEditable()
+        protected function resolveRedactorOptions()
         {
-            throw new NotSupportedException();
+            $parentOptions      = parent::resolveRedactorOptions();
+            $options            = array(
+                'paragraphy'            => 'false',
+                'buttons'               => $this->resolveRedactorButtons(),
+                'plugins'               => CJSON::encode($this->resolvePlugins()),
+            );
+            $options            = CMap::mergeArray($parentOptions, $options);
+            return $options;
         }
 
-        protected function renderControlEditable()
+        protected function resolvePlugins()
         {
-            assert('$this->model instanceof EmailSignature || $this->model instanceof ModelForm');
-            $id                      = $this->getEditableInputId  ();
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $id;
-            $htmlOptions['name']     = $this->getEditableInputName();
-            $cClipWidget   = new CClipWidget();
-            $cClipWidget->beginClip("Redactor");
-            $cClipWidget->widget('application.core.widgets.Redactor', array(
-                                        'htmlOptions'   => $htmlOptions,
-                                        'content'       => $this->model->{$this->attribute},
-                                        'plugins'       => CJSON::encode(array('imagegallery')),
-                                        'observeImages' => 'true',
-            ));
-            $cClipWidget->endClip();
-            $content  = $cClipWidget->getController()->clips['Redactor'];
-            return $content;
+            return array('fontfamily', 'fontsize', 'fontcolor');
+        }
+
+        protected function resolveRedactorButtons()
+        {
+            $buttons         = array('html', '|', 'formatting', 'under', 'bold', 'italic', 'deleted', '|',
+                                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'alignleft', 'aligncenter',
+                                    'alignright', '|', 'table', 'link', '|', 'horizontalrule');
+            return CJSON::encode($buttons);
         }
     }
 ?>
