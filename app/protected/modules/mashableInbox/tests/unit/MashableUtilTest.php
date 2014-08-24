@@ -36,12 +36,21 @@
 
     class MashableUtilTest extends ZurmoBaseTest
     {
+        protected $user;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
             Yii::app()->user->userModel = User::getByUsername('super');
             $billy = UserTestHelper::createBasicUser('billy');
+        }
+
+        public function setUp()
+        {
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $this->user = Yii::app()->user->userModel;
         }
 
         public function testCreateMashableInboxRulesByModel()
@@ -62,159 +71,80 @@
 
         public function testGetUnreadCountForCurrentUserByModelClassName()
         {
-            $rules = $this->getMock('ConversationMashableInboxRules', array('getUnreadCountForCurrentUser'));
-            $rules->expects($this->once())
-                  ->method('getUnreadCountForCurrentUser')
-                  ->will($this->returnValue(100));
-            $mashableUtil = $this->getMockClass('MashableUtil', array('createMashableInboxRulesByModel'));
-            $mashableUtil::staticExpects($this->once())
-                ->method('createMashableInboxRulesByModel')
-                ->will($this->returnValue($rules));
-            $count = $mashableUtil::getUnreadCountForCurrentUserByModelClassName('Conversation');
-            $this->assertEquals($count, 100);
+            Mission::deleteAll();
+            $count = MashableUtil::getUnreadCountForCurrentUserByModelClassName('Mission');
+            $this->assertEquals($count, 0);
+            $this->makeANewUnreadMissionOwnedByCurrentUser();
+            $count = MashableUtil::getUnreadCountForCurrentUserByModelClassName('Mission');
+            $this->assertEquals($count, 1);
         }
 
         public function testGetUnreadCountMashableInboxForCurrentUser()
         {
-            $mashableInboxModels = array(
-                'Conversation'  => 'conversationLabel',
-                'Mission'       => 'missionLabel',
-            );
-            $mashableUtil = $this->getMockClass('MashableUtil', array('getModelDataForCurrentUserByInterfaceName',
-                                                                      'getUnreadCountForCurrentUserByModelClassName'));
-            $mashableUtil::staticExpects($this->once())
-                ->method('getModelDataForCurrentUserByInterfaceName')
-                ->will($this->returnValue($mashableInboxModels));
-            $mashableUtil::staticExpects($this->exactly(2))
-                ->method('getUnreadCountForCurrentUserByModelClassName')
-                ->will($this->onConsecutiveCalls(27, 11));
-            $count = $mashableUtil::GetUnreadCountMashableInboxForCurrentUser();
-            $this->assertEquals($count, 38);
+            Mission::deleteAll();
+            Conversation::deleteAll();
+            $count = MashableUtil::GetUnreadCountMashableInboxForCurrentUser();
+            $this->assertEquals($count, 0);
+            $this->makeANewUnreadMissionOwnedByCurrentUser();
+            $count = MashableUtil::GetUnreadCountMashableInboxForCurrentUser();
+            $this->assertEquals($count, 1);
+            $this->makeANewUnreadConversationOwnedByCurrentUser();
+            $count = MashableUtil::GetUnreadCountMashableInboxForCurrentUser();
+            $this->assertEquals($count, 2);
         }
 
         public function testGetSearchAttributeMetadataForMashableInboxByModelClassName()
         {
-            $metadataMashableInboxForModel1
-                = array(
-                    'clauses'       => array(1 => 'testMetadataForMashableInboxModel1'),
-                    'structure'     => '1',
-                );
-            $searchAttributeDataForModel1
-                = array(
-                    'clauses'       => array(1 => 'testSearchClauseForModel1'),
-                    'structure'     => '1',
-                );
-            $metadataFilteredByFilteredByForModel1
-                = array(
-                    'clauses'       => array(1 => 'testClauseForFilteredByForModel1'),
-                    'structure'     => '1',
-                );
-            $searchAttributeDataForModel2
-                = array(
-                    'clauses'       => array(1 => 'testSearchClauseForModel2'),
-                    'structure'     => '1',
-                );
-            $metadataFilteredByFilteredByForModel2
-                = array(
-                    'clauses'       => array(1 => 'testClauseForFilteredByForModel2'),
-                    'structure'     => '1',
-                );
-            $rules
-                = $this->getMock('ConversationMashableInboxRules', array('getMetadataForMashableInbox',
-                                                                         'getSearchAttributeData',
-                                                                         'getMetadataFilteredByFilteredBy'));
-            $rules
-                ->expects($this->exactly(2))
-                ->method('getMetadataForMashableInbox')
-                ->will($this->onConsecutiveCalls($metadataMashableInboxForModel1, null));
-            $rules
-                ->expects($this->exactly(2))
-                ->method('getSearchAttributeData')
-                ->will($this->onConsecutiveCalls($searchAttributeDataForModel1, $searchAttributeDataForModel2));
-            $rules
-                ->expects($this->exactly(2))
-                ->method('getMetadataFilteredByFilteredBy')
-                ->will($this->onConsecutiveCalls($metadataFilteredByFilteredByForModel1, $metadataFilteredByFilteredByForModel2));
-            $mashableUtil
-                = $this->getMockClass('MashableUtil', array('createMashableInboxRulesByModel'));
-            $mashableUtil
-                ::staticExpects($this->exactly(2))
-                ->method('createMashableInboxRulesByModel')
-                ->will($this->returnValue($rules));
-            $searchAttributesData
-                = $mashableUtil::getSearchAttributeMetadataForMashableInboxByModelClassName(
-                                      array('model1', 'model2'),
-                                      MashableInboxForm::FILTERED_BY_ALL);
-            $this->assertEquals(
-                    array('model1' => array(
-                                        'clauses'   => array(1 => 'testMetadataForMashableInboxModel1',
-                                                             2 => 'testSearchClauseForModel1',
-                                                             3 => 'testClauseForFilteredByForModel1'),
-                                        'structure' => '((1) and (2)) and (3)')),
-                   $searchAttributesData[0]);
-            $this->assertEquals(
-                    array('model2' => array(
-                                        'clauses'   => array(1 => 'testSearchClauseForModel2',
-                                                             2 => 'testClauseForFilteredByForModel2'),
-                                        'structure' => '(1) and (2)')),
-                   $searchAttributesData[1]);
+            $conversationRules    = new ConversationMashableInboxRules();
+            $expected = MashableUtil::mergeMetadata(
+                MashableUtil::mergeMetadata($conversationRules->getMetadataForMashableInbox(), $conversationRules->getSearchAttributeData('test')),
+                $conversationRules->getMetadataFilteredByFilteredBy(MashableInboxForm::FILTERED_BY_ALL)
+            );
+            $searchAttributesData = MashableUtil::getSearchAttributeMetadataForMashableInboxByModelClassName(
+                array('Conversation'),
+                MashableInboxForm::FILTERED_BY_ALL,
+                'test'
+            );
+            $this->assertEquals($expected, $searchAttributesData[0]['Conversation']);
+
+            $missionRules         = new MissionMashableInboxRules();
+            $expected2 = MashableUtil::mergeMetadata(
+                MashableUtil::mergeMetadata($missionRules->getMetadataForMashableInbox(), $missionRules->getSearchAttributeData('test')),
+                $missionRules->getMetadataFilteredByFilteredBy(MashableInboxForm::FILTERED_BY_ALL)
+            );
+            $searchAttributesData = MashableUtil::getSearchAttributeMetadataForMashableInboxByModelClassName(
+                array('Conversation', 'Mission'),
+                MashableInboxForm::FILTERED_BY_ALL,
+                'test'
+            );
+            $this->assertEquals($expected,  $searchAttributesData[0]['Conversation']);
+            $this->assertEquals($expected2, $searchAttributesData[1]['Mission']);
         }
 
         public function testGetSortAttributesByMashableInboxModelClassNames()
         {
-            $rules
-                = $this->getMock('ConversationMashableInboxRules',
-                                 array('getMachableInboxOrderByAttributeName'));
-            $rules
-                ->expects($this->exactly(2))
-                ->method('getMachableInboxOrderByAttributeName')
-                ->will($this->onConsecutiveCalls('attributeForModel1', 'attributeForModel2'));
-            $mashableUtil
-                = $this->getMockClass('MashableUtil', array('createMashableInboxRulesByModel'));
-            $mashableUtil
-                ::staticExpects($this->exactly(2))
-                ->method('createMashableInboxRulesByModel')
-                ->will($this->returnValue($rules));
-            $sortAttributes
-                = $mashableUtil::getSortAttributesByMashableInboxModelClassNames(
-                                      array('model1', 'model2'));
-            $this->assertEquals('attributeForModel1', $sortAttributes['model1']);
-            $this->assertEquals('attributeForModel2', $sortAttributes['model2']);
+            $conversationRules    = new ConversationMashableInboxRules();
+            $missionRules         = new MissionMashableInboxRules();
+            $sortAttributes       = MashableUtil::getSortAttributesByMashableInboxModelClassNames(
+                                                array('Conversation', 'Mission'));
+            $this->assertEquals($conversationRules->getMachableInboxOrderByAttributeName(),
+                                $sortAttributes['Conversation']);
+            $this->assertEquals($missionRules->getMachableInboxOrderByAttributeName(),
+                                $sortAttributes['Mission']);
         }
 
         public function testRenderSummaryContent()
         {
-            $model
-                = $this->getMockForAbstractClass('RedBeanModel');
-            $rules
-                = $this->getMock('ConversationMashableInboxRules',
-                                 array('getSummaryContentTemplate',
-                                       'getModelStringContent',
-                                       'getModelCreationTimeContent'));
-            $rules
-                ->expects($this->once())
-                ->method('getSummaryContentTemplate')
-                ->will($this->returnValue('{modelStringContent} - {modelCreationTimeContent}'));
-            $rules
-                ->expects($this->once())
-                ->method('getModelStringContent')
-                ->with($model)
-                ->will($this->returnValue('string'));
-            $rules
-                ->expects($this->once())
-                ->method('getModelCreationTimeContent')
-                ->with($model)
-                ->will($this->returnValue('time'));
-            $mashableUtil
-                = $this->getMockClass('MashableUtil', array('createMashableInboxRulesByModel'));
-            $mashableUtil
-                ::staticExpects($this->once())
-                ->method('createMashableInboxRulesByModel')
-                ->will($this->returnValue($rules));
-            $content
-                = $mashableUtil::renderSummaryContent($model);
-            $this->assertContains('string - time',          $content);
-            $this->assertContains('model-tag conversation', $content);
+            $conversation = $this->makeANewUnreadConversationOwnedByCurrentUser();
+            $conversationRules    = new ConversationMashableInboxRules();
+            $content = MashableUtil::renderSummaryContent($conversation);
+            $contentWithRemovedId = preg_replace("/(DetailsLinkActionElement.*yt)(\d*)/", "$1", $content);
+            $this->assertContains('<div class="model-tag conversation">', $contentWithRemovedId);
+            $expectedContent = str_replace('{modelCreationTimeContent}', $conversationRules->getModelCreationTimeContent($conversation),
+                                    str_replace('{modelStringContent}', $conversationRules->getModelStringContent($conversation),
+                                        $conversationRules->getSummaryContentTemplate()));
+            $expectedContentWithRemovedId = preg_replace("/(DetailsLinkActionElement.*yt)(\d*)/", "$1", $expectedContent);
+            $this->assertContains($expectedContentWithRemovedId, $contentWithRemovedId);
         }
 
         public function testResolveContentTemplate()
@@ -381,6 +311,33 @@
         {
             $key = MashableUtil::resolveKeyByModuleAndModel('testModule', 'testClassName');
             $this->assertEquals('testModule_testClassName', $key);
+        }
+
+        protected function makeANewUnreadConversationOwnedByCurrentUser()
+        {
+            $conversation              = new Conversation();
+            $conversation->owner       = $this->user;
+            $conversation->subject     = 'My test subject';
+            $conversation->description = 'My test description';
+            $this->assertTrue($conversation->save());
+            $conversation->ownerHasReadLatest = false;
+            $this->assertTrue($conversation->save());
+            return $conversation;
+        }
+
+        protected function makeANewUnreadMissionOwnedByCurrentUser()
+        {
+            $mission              = new Mission();
+            $mission->owner       = $this->user;
+            $mission->dueDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $mission->description = 'My test description';
+            $mission->reward      = 'My test reward';
+            $mission->status      = Mission::STATUS_AVAILABLE;
+            $this->assertTrue($mission->save());
+            $rules = MashableUtil::createMashableInboxRulesByModel('Mission');
+            $rules->markUserAsHavingUnreadLatestModel($mission, $this->user);
+            return $mission;
+
         }
     }
 ?>

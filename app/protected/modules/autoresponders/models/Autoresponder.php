@@ -94,7 +94,7 @@
                 'rules' => array(
                     array('subject',                'required'),
                     array('subject',                'type',    'type' => 'string'),
-                    array('subject',                'length',  'min'  => 1, 'max' => 64),
+                    array('subject',                'length',  'min'  => 1, 'max' => 255),
                     array('htmlContent',            'type',    'type' => 'string'),
                     array('textContent',            'type',    'type' => 'string'),
                     array('htmlContent',            'StripDummyHtmlContentFromOtherwiseEmptyFieldValidator'),

@@ -163,6 +163,26 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'gamificationModalCollectionsEnabled',
+                                                                                                'type' => 'CheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'gamificationModalCoinsEnabled',
+                                                                                                'type' => 'CheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'realtimeUpdatesEnabled', 'type' => 'CheckBox'),
                                             ),
                                         ),

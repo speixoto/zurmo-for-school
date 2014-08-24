@@ -34,38 +34,20 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class IntegerAttributeForm extends MinMaxValueAttributeForm
+    class DateTimeSanitizerUtilTest extends ZurmoBaseTest
     {
-        public function __construct(RedBeanModel $model = null, $attributeName = null)
+        public function testGetAcceptableFormats()
         {
-            $this->maxLength = 11;
-            parent::__construct($model, $attributeName);
-        }
-
-        public function rules()
-        {
-            return array_merge(parent::rules(), array(
-                array('defaultValue',  'numerical', 'integerOnly' => true),
-            ));
-        }
-        public static function getAttributeTypeDisplayName()
-        {
-            return Zurmo::t('DesignerModule', 'Integer');
-        }
-
-        public static function getAttributeTypeDisplayDescription()
-        {
-            return Zurmo::t('DesignerModule', 'An integer field');
-        }
-
-        public function getAttributeTypeName()
-        {
-            return 'Integer';
-        }
-
-        public function getModelAttributePartialRule()
-        {
-            return array('type', 'type' => 'integer');
+            $expected = array(
+                    'yyyy-MM-dd hh:mm',
+                    'MM-dd-yyyy hh:mm',
+                    'dd-MM-yyyy hh:mm',
+                    'MM/dd/yyyy hh:mm',
+                    'M/d/yyyy hh:mm',
+                    'd/M/yyyy hh:mm',
+                    'yyyy-M-d hh:mm'
+            );
+            $this->assertEquals($expected, DateTimeSanitizerUtil::getAcceptableFormats());
         }
     }
 ?>

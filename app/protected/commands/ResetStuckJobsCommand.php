@@ -50,7 +50,7 @@
 
     PARAMETERS
      * username: username which run command.
-     * jobType: jobType to reset
+     * jobType: jobType to reset, or 'All' to reset all jobs in JobInProcess table
 EOD;
         }
 
@@ -93,22 +93,42 @@ EOD;
             $messageStreamer->setExtraRenderBytes(0);
             $messageStreamer->add('');
 
-            $jobClassName = $jobType . 'Job';
-            if (!@class_exists($jobClassName))
+            if ($jobType == 'All')
             {
-                $messageStreamer->add("Error! The {$jobClassName} does not exist.");
+                $messageStreamer->add("Reset all jobs.");
+                $jobsInProcess = JobInProcess::getAll();
+                if (is_array($jobsInProcess) && count($jobsInProcess) > 0)
+                {
+                    foreach ($jobsInProcess as $jobInProcess)
+                    {
+                        $jobInProcess->delete();
+                        $messageStreamer->add("The job {$jobInProcess->type} has been reset.");
+                    }
+                }
+                else
+                {
+                    $messageStreamer->add("There are no jobs in process to be reset.");
+                }
             }
             else
             {
-                try
+                $jobClassName = $jobType . 'Job';
+                if (!@class_exists($jobClassName))
                 {
-                    $jobInProcess      = JobInProcess::getByType($jobType);
-                    $jobInProcess->delete();
-                    $messageStreamer->add("The job {$jobClassName} has been reset.");
+                    $messageStreamer->add("Error! The {$jobClassName} does not exist.");
                 }
-                catch (NotFoundException $e)
+                else
                 {
-                    $messageStreamer->add("The job {$jobClassName} was not found to be stuck and therefore was not reset.");
+                    try
+                    {
+                        $jobInProcess      = JobInProcess::getByType($jobType);
+                        $jobInProcess->delete();
+                        $messageStreamer->add("The job {$jobClassName} has been reset.");
+                    }
+                    catch (NotFoundException $e)
+                    {
+                        $messageStreamer->add("The job {$jobClassName} was not found to be stuck and therefore was not reset.");
+                    }
                 }
             }
         }

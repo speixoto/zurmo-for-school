@@ -243,5 +243,42 @@
             }
             return $searchAttributeData;
         }
+
+        /**
+         * @param array $row the row to be added
+         * @param array $combinedRows the combined array with the new row added
+         */
+        protected function addNewRowToCombinedRows($row, & $combinedRows)
+        {
+            $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
+            foreach (array_keys($row) as $key)
+            {
+                if (isset($combinedRows[$chartIndexToCompare][$key]) && in_array($key, $this->getKeysToAddWhenCombiningRows()))
+                {
+                    $combinedRows[$chartIndexToCompare][$key] += $row[$key];
+                }
+                else
+                {
+                    $combinedRows[$chartIndexToCompare][$key] = $row[$key];
+                }
+            }
+        }
+
+        /**
+         * An array of keys to add when combining rows
+         * @return array
+         */
+        protected function getKeysToAddWhenCombiningRows()
+        {
+            return array(
+                self::COUNT,
+                self::QUEUED,
+                self::SENT,
+                self::UNIQUE_OPENS,
+                self::UNIQUE_CLICKS,
+                self::BOUNCED,
+                self::UNSUBSCRIBED,
+            );
+        }
     }
 ?>

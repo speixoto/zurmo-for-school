@@ -102,9 +102,9 @@
             {
                 $content .= static::renderHeaderGameDashboardContent();
                 $content .= static::renderHeaderCalendarContent();
+                $content .= static::resolveUserSwitcher();
             }
             $content     .= static::renderHeaderMenuContent($userMenuItemsWithTopLevel, self::USER_MENU_ID);
-	        $content     .= static::resolveUserSwitcher();
             return $content;
         }
 

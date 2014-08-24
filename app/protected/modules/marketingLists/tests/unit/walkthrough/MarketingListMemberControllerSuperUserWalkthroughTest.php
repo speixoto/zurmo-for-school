@@ -80,6 +80,7 @@
 
         public function testMassSubscribeActionsForSelectedIds()
         {
+            $this->markTestSkipped("We do not support toggling unsubscribed back to subscribed using mass operations");
             // MassSubscribe view for selected ids
             $listId             = self::getModelIdByModelNameAndName('MarketingList', 'MarketingList1');
             $this->assertNotEmpty($listId);
@@ -189,6 +190,7 @@
          */
         public function testMassSubscribePagesProperlyAndSubscribesAllSelected()
         {
+            $this->markTestSkipped("We do not support toggling unsubscribed back to subscribed using mass operations");
             // MassSubscribe for selected Record Count
             $listId         = self::getModelIdByModelNameAndName('MarketingList', 'MarketingList2');
             $this->assertNotEmpty($listId);
@@ -283,7 +285,7 @@
         }
 
         /**
-         * @depends testMassSubscribeActionsForSelectedIds
+         * @//depends testMassSubscribeActionsForSelectedIds
          */
         public function testMassUnsubscribeActionsForSelectedIds()
         {
@@ -403,6 +405,13 @@
             $this->assertNotEmpty($list);
             $members        = $list->marketingListMembers;
             $this->assertEquals(17, count($members));
+            // ensure all members are subscribed first.
+            foreach ($members as $member)
+            {
+                $member->unsubscribed = 0;
+                $member->setScenario(MarketingListMember::SCENARIO_MANUAL_CHANGE);
+                $this->assertTrue($member->unrestrictedSave());
+            }
             $unsubscribedCount    = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($listId, 1);
 
             $this->setGetArray(

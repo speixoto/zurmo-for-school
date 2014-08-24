@@ -270,7 +270,8 @@
             }
             //Owned relations such as Address or Email
             elseif ($modelAttributeToDataProviderAdapter->isOwnedRelation() &&
-                   !$modelAttributeToDataProviderAdapter->isRelationTypeAHasManyVariant())
+                   !$modelAttributeToDataProviderAdapter->isRelationTypeAHasManyVariant() &&
+                    $modelAttributeToDataProviderAdapter->getAttribute() != 'sender')
             {
                 return true;
             }

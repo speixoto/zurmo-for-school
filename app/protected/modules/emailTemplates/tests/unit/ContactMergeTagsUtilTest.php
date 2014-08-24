@@ -144,6 +144,16 @@
             $adapter = new $modelAttributesAdapterClassName(new EmailTemplateModelTestItem());
             $adapter->setAttributeMetadataFromForm($attributeForm);
 
+            //Custom attribute with underscore and number
+            $attributeForm                                  = new TextAttributeForm();
+            $attributeForm->attributeName                   = 'custom_attr_2';
+            $attributeForm->attributeLabels                 = array('en' => 'custom test label en');
+
+            $modelAttributesAdapterClassName                = $attributeForm::
+                getModelAttributeAdapterNameForSavingAttributeFormData();
+            $adapter = new $modelAttributesAdapterClassName(new EmailTemplateModelTestItem());
+            $adapter->setAttributeMetadataFromForm($attributeForm);
+
             $model                                          = new EmailTemplateModelTestItem();
             $model->string                                  = 'We will add a $100 discount to this deal';
             $model->firstName                               = 'James';
@@ -172,6 +182,7 @@
             $model->tagCloud->values->add($tagCustomFieldValue1);
             $model->tagCloud->values->add($tagCustomFieldValue2);
             $model->customCstm                              = 'text custom';
+            $model->custom_attr_2Cstm                       = 'text custom 2';
             $saved                                          = $model->save();
             assert('$saved'); // Not Coding Standard
             self::$emailTemplate                            = $model;
@@ -753,9 +764,20 @@
         {
             $content                = 'customCstm: [[CUSTOM^CSTM]]';
             $compareContent         = 'customCstm: text custom';
-            $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
+            $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
-            $this->assertTrue($mergeTagsUtil instanceof WorkflowMergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
+            $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $this->assertEquals($compareContent, $resolvedContent);
+            $this->assertEmpty($this->invalidTags);
+
+            $content                = 'custom_attr_2Cstm: [[CUSTOM_ATTR_2^CSTM]]';
+            $compareContent         = 'custom_attr_2Cstm: text custom 2';
+            $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
             $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);

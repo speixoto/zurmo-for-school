@@ -327,7 +327,7 @@
         {
             $content = Zurmo::t('MarketingModule',
                                 'Email message was sent on {sentDateTime}',
-                                array('{sentDateTime}' => $emailMessage->sentDateTime));
+                                array('{sentDateTime}' => DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($emailMessage->sentDateTime)));
             return ZurmoHtml::tag('h4', array(), $content);
         }
 
@@ -371,7 +371,7 @@
             {
                 $content .= '<tr>';
                 $content .= '<td>' . $typesArray[CampaignItemActivity::TYPE_OPEN] . '</td>';
-                $content .= '<td>' . $campaignItemActivity->latestDateTime . '</td>';
+                $content .= '<td>' . DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($campaignItemActivity->latestDateTime) . '</td>';
                 $content .= '<td>' . $campaignItemActivity->quantity . '</td>';
                 $content .= '<td>' . $campaignItemActivity->latestSourceIP . '</td>';
                 $content .= '<td></td>';
@@ -401,7 +401,7 @@
             {
                 $content .= '<tr>';
                 $content .= '<td>' . $typesArray[CampaignItemActivity::TYPE_CLICK] . '</td>';
-                $content .= '<td>' . $campaignItemActivity->latestDateTime . '</td>';
+                $content .= '<td>' . DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($campaignItemActivity->latestDateTime) . '</td>';
                 $content .= '<td>' . $campaignItemActivity->quantity . '</td>';
                 $content .= '<td>' . $campaignItemActivity->latestSourceIP . '</td>';
                 $content .= '<td>' . $campaignItemActivity->emailMessageUrl . '</td>';

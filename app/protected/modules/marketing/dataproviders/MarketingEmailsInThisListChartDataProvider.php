@@ -82,8 +82,7 @@
                 $rows                = ZurmoRedBean::getAll($sql);
                 foreach ($rows as $row)
                 {
-                    $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
-                    $combinedRows[$chartIndexToCompare] = $row;
+                    $this->addNewRowToCombinedRows($row, $combinedRows);
                 }
             }
             if ($this->campaign == null)
@@ -94,20 +93,7 @@
                 $rows                = ZurmoRedBean::getAll($sql);
                 foreach ($rows as $row)
                 {
-                    $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
-                    if (!isset($combinedRows[$chartIndexToCompare]))
-                    {
-                        $combinedRows[$chartIndexToCompare] = $row;
-                    }
-                    else
-                    {
-                        $combinedRows[$chartIndexToCompare][self::QUEUED]        += $row[self::QUEUED];
-                        $combinedRows[$chartIndexToCompare][self::SENT]          += $row[self::SENT];
-                        $combinedRows[$chartIndexToCompare][self::UNIQUE_OPENS]  += $row[self::UNIQUE_OPENS];
-                        $combinedRows[$chartIndexToCompare][self::UNIQUE_CLICKS] += $row[self::UNIQUE_CLICKS];
-                        $combinedRows[$chartIndexToCompare][self::BOUNCED]       += $row[self::BOUNCED];
-                        $combinedRows[$chartIndexToCompare][self::UNSUBSCRIBED]  += $row[self::UNSUBSCRIBED];
-                    }
+                    $this->addNewRowToCombinedRows($row, $combinedRows);
                 }
             }
             return $combinedRows;
