@@ -37,6 +37,8 @@
     {
         protected $user;
 
+        protected $singleItemExpectedTime   = 0.4;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -59,7 +61,7 @@
 
         public function testSingleEmailMessage()
         {
-            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(1, 0.5);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(1);
         }
 
         /**
@@ -67,7 +69,7 @@
          */
         public function testFiveEmailMessages()
         {
-            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(5, 5);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(5);
         }
 
         /**
@@ -75,7 +77,7 @@
          */
         public function testTenEmailMessages()
         {
-            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(10, 9);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(10);
         }
 
         /**
@@ -83,7 +85,7 @@
          */
         public function testFiftyEmailMessages()
         {
-            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(50, 46);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(50);
         }
 
         /**
@@ -91,7 +93,7 @@
          */
         public function testHundredEmailMessages()
         {
-            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(100, 95);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(100);
         }
 
         /**
@@ -99,7 +101,7 @@
          */
         public function testTwoFiftyEmailMessages()
         {
-            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(250, 240);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(250);
         }
 
         /**
@@ -107,7 +109,7 @@
          */
         public function testFiveHundredEmailMessages()
         {
-            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(500, 490);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(500);
         }
 
         /**
@@ -115,12 +117,13 @@
          */
         public function testThousandEmailMessages()
         {
-            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(1000, 950);
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(1000);
         }
 
-        protected function ensureTimeSpentIsLessOrEqualThanExpectedForCount($count, $expectedTime)
+        protected function ensureTimeSpentIsLessOrEqualThanExpectedForCount($count)
         {
-            $timeSpent  = $this->generateAndProcessEmailMessages($count);
+            $expectedTime   = $this->singleItemExpectedTime * $count;
+            $timeSpent      = $this->generateAndProcessEmailMessages($count);
             echo PHP_EOL. $count . ' emailMessage(s) took ' . $timeSpent . ' seconds';
             $this->assertLessThanOrEqual($expectedTime, $timeSpent);
         }
