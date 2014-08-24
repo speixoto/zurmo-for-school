@@ -1688,6 +1688,28 @@
                               update `campaign` set `status` = processing_status where id = campaign_id;
                         end loop loop0;
                   close cursor0;
+            end;
+
+            create procedure update_email_message_for_sending(message_id int, send_attempts int, sent_datetime datetime,
+                                                                folder_id int, error_serialized_data text)
+            begin
+                set @emailMessageSendErrorId	= null;
+                delete from `emailmessagesenderror`
+                        where id = (select error_emailmessagesenderror_id
+                                    from `emailmessage`
+                                    where id = message_id);
+                if (error_serialized_data is not null) then
+                    insert into `emailmessagesenderror` ( id, `createddatetime`,`serializeddata` ) values
+                            (null,  now() , error_serialized_data);
+                    set @emailMessageSendErrorId = last_insert_id();
+                end if;
+
+                update `emailmessage` set
+                        `sendattempts` = send_attempts,
+                        `sentdatetime` = sent_datetime,
+                        `folder_emailfolder_id` = folder_id,
+                        `error_emailmessagesenderror_id` = @emailMessageSendErrorId
+                        where id = message_id;
             end;',
         );
         // End Not Coding Standard
