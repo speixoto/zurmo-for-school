@@ -345,11 +345,26 @@
             $mailer           = $this->getOutboundMailer();
             $this->populateMailer($mailer, $emailMessage);
             $this->sendEmail($mailer, $emailMessage);
-            $saved = $emailMessage->save();
-            if (!$saved)
-            {
-                throw new FailedToSaveModelException();
-            }
+            $this->updateEmailMessageForSending($emailMessage);
+        }
+
+        /**
+         * Updates the email message using stored procedure
+         * @param EmailMessage $emailMessage
+         */
+        protected function updateEmailMessageForSending(EmailMessage $emailMessage)
+        {
+            $sendAttempts       = ($emailMessage->sendAttempts)? $emailMessage->sendAttempts : 1;
+            $sentDateTime       = ($emailMessage->sentDateTime)? $emailMessage->sentDateTime: 'null';
+            $serializedData     = ($emailMessage->error->serializedData)?
+                                                            "'" . $emailMessage->error->serializedData . "'" : 'null';
+            $sql                    = '`update_email_message_for_sending`(
+                                                                        ' . $emailMessage->id . ',
+                                                                        ' . $sendAttempts . ',
+                                                                        ' . $sentDateTime . ',
+                                                                        ' . $emailMessage->folder->id . ',
+                                                                        ' . $serializedData .')';
+            return ZurmoDatabaseCompatibilityUtil::callProcedureWithoutOuts($sql);
         }
 
         /**
