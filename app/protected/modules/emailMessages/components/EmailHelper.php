@@ -355,7 +355,7 @@
         protected function updateEmailMessageForSending(EmailMessage $emailMessage)
         {
             $sendAttempts       = ($emailMessage->sendAttempts)? $emailMessage->sendAttempts : 1;
-            $sentDateTime       = ($emailMessage->sentDateTime)? $emailMessage->sentDateTime: 'null';
+            $sentDateTime       = ($emailMessage->sentDateTime)? "'" . $emailMessage->sentDateTime . "'" : 'null';
             $serializedData     = ($emailMessage->error->serializedData)?
                                                             "'" . $emailMessage->error->serializedData . "'" : 'null';
             $sql                    = '`update_email_message_for_sending`(

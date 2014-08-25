@@ -230,6 +230,7 @@
         {
             $super                      = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
             if (EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
             {
                 $user = User::getByUsername('steve');
