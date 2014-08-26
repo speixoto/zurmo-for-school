@@ -111,11 +111,11 @@
             if ($pushedDashboards != null)
             {
                 $pushedDashboards = unserialize($pushedDashboards);
-                $dashboardId      = Yii::app()->getRequest()->getQuery('id');
+                $dashboardId      = $this->model->{$this->attribute};
                 if (isset($pushedDashboards[$dashboardId]))
                 {
-                    $groupIds = explode(',', $pushedDashboards[$dashboardId]['groups']);
-                    $userIds  = explode(',', $pushedDashboards[$dashboardId]['users']);
+                    $groupIds = array_filter(explode(',', $pushedDashboards[$dashboardId]['groups']));
+                    $userIds  = array_filter(explode(',', $pushedDashboards[$dashboardId]['users']));
                     foreach ($groupIds as $groupId)
                     {
                         $existingRecords[] = array('id'   => HomeDefaultController::GROUP_PREFIX . $groupId,
@@ -124,7 +124,7 @@
                     foreach ($userIds as $userId)
                     {
                         $user = User::getById(intval($userId));
-                        $existingRecords[] = array('id'   => HomeDefaultController::USER_PREFIX . $groupId,
+                        $existingRecords[] = array('id'   => HomeDefaultController::USER_PREFIX . $userId,
                                                    'name' => MultipleContactsForMeetingElement::
                                                              renderHtmlContentLabelFromUserAndKeyword($user, null));
                     }

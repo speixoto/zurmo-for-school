@@ -54,7 +54,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'MultipleGroupsAndUsers'),
+                                                array('attributeName' => 'id', 'type' => 'MultipleGroupsAndUsers'),
                                             ),
                                         ),
                                     )
