@@ -39,7 +39,7 @@
      */
     abstract class ImapBaseJob extends BaseJob
     {
-        const CONFIG_DEFAULT_BATCH_VALUE   = 2;
+        const CONFIG_DEFAULT_BATCH_VALUE   = 100;
 
         protected $imapManager;
 
