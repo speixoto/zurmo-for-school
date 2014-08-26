@@ -273,7 +273,14 @@
 
             if ($decoratedContent == null)
             {
-                $decoratedContent = ZurmoHtml::tag('span', array('class' => 'possible merge-color-' . $this->position), Zurmo::t('Core', '(None)'));
+                if($this->element instanceof DropDownElement)
+                {
+                    $decoratedContent = null;
+                }
+                else
+                {
+                    $decoratedContent = ZurmoHtml::tag('span', array('class' => 'possible merge-color-' . $this->position), Zurmo::t('Core', '(None)'));
+                }
             }
             if ($this->element instanceof AddressElement)
             {
