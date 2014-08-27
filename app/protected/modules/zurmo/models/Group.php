@@ -594,7 +594,7 @@
             }
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
             $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
-            return self::getSubset($joinTablesAdapter, null, null, $where);
+            return User::getSubset($joinTablesAdapter, null, null, $where);
         }
     }
 ?>

@@ -74,9 +74,9 @@
             {
                 $id = Yii::app()->request->getQuery('id', -1);
                 $user = Yii::app()->user->userModel;
-                if ($user->defaultDashboard != null && $id < 0)
+                if ($user->dashboard != null && $id < 0)
                 {
-                    $id = $user->defaultDashboard->id;
+                    $id = $user->dashboard->id;
                 }
                 $this->actionDashboardDetails($id);
             }
@@ -295,6 +295,7 @@
                 $dashboardId = $dashboard->id;
                 $pushedDashboards[$dashboardId]['groups'] = implode(',', array_filter($groupIds));
                 $pushedDashboards[$dashboardId]['users']  = implode(',', array_filter($userIds));
+                $this->pushDashboardToUsers($dashboard, $pushedDashboards[$dashboardId]);
                 ZurmoConfigurationUtil::setByModuleName('HomeModule', self::PUSHED_DASHBOARDS_KEY, serialize($pushedDashboards));
             }
             $editView = new PushDashboardEditView($this->getId(), $this->getModule()->getId(), $dashboard,
@@ -315,10 +316,10 @@
             {
                 $currentGroupsAndUsers = unserialize($currentGroupsAndUsers);
             }
-            $currentDashboardGroups = implode(',', array_filter($currentGroupsAndUsers[$dashboardId]['groups']));
-            $newDashboardGroups     = implode(',', array_filter($newGroupsAndUsers['groups']));
-            $currentDashboardUsers  = implode(',', array_filter($currentDashboardGroups[$dashboardId]['users']));
-            $newDashboardUsers      = implode(',', array_filter($newGroupsAndUsers['users']));
+            $currentDashboardGroups = array_filter(explode(',', $currentGroupsAndUsers[$dashboardId]['groups']));
+            $newDashboardGroups     = array_filter(explode(',', $newGroupsAndUsers['groups']));
+            $currentDashboardUsers  = array_filter(explode(',', $currentGroupsAndUsers[$dashboardId]['users']));
+            $newDashboardUsers      = array_filter(explode(',', $newGroupsAndUsers['users']));
             foreach ($currentDashboardGroups as $currentDashboardGroup)
             {
                 if (!in_array($currentDashboardGroup, $newDashboardGroups))
@@ -327,7 +328,7 @@
                     $usersInGroup = $group->getUsersExceptSystemUsers();
                     foreach ($usersInGroup as $user)
                     {
-                        $user->defaultDashboard = null;
+                        $user->dashboard = null;
                         $saved = $user->save();
                         if (!$saved)
                         {
@@ -344,7 +345,7 @@
                     $usersInGroup = $group->getUsersExceptSystemUsers();
                     foreach ($usersInGroup as $user)
                     {
-                        $user->defaultDashboard = $dashboard;
+                        $user->dashboard = $dashboard;
                         $saved = $user->save();
                         if (!$saved)
                         {
@@ -358,7 +359,7 @@
                 if (!in_array($currentDashboardUser, $newDashboardUsers))
                 {
                     $user = User::getById(intval($currentDashboardUser));
-                    $user->defaultDashboard = null;
+                    $user->dashboard = null;
                     $saved = $user->save();
                     if (!$saved)
                     {
@@ -371,7 +372,7 @@
                 if (!in_array($newDashboardUser, $currentDashboardUsers))
                 {
                     $user = User::getById(intval($newDashboardUser));
-                    $user->defaultDashboard = $dashboard;
+                    $user->dashboard = $dashboard;
                     $saved = $user->save();
                     if (!$saved)
                     {
