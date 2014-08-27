@@ -53,7 +53,7 @@
 
         protected function resolvePlugins()
         {
-            return array('fontfamily', 'fontsize', 'fontcolor');
+            return array('fontfamily', 'fontsize', 'fontcolor', 'imagegallery');
         }
 
         protected function resolveRedactorButtons()
