@@ -354,6 +354,10 @@
          */
         protected function updateEmailMessageForSending(EmailMessage $emailMessage)
         {
+            if ($emailMessage->id < 0)
+            {
+                throw new FailedToSaveModelException("Email message should already be saved by this point");
+            }
             $sendAttempts       = ($emailMessage->sendAttempts)? $emailMessage->sendAttempts : 1;
             $sentDateTime       = ($emailMessage->sentDateTime)? "'" . $emailMessage->sentDateTime . "'" : 'null';
             $serializedData     = ($emailMessage->error->serializedData)?
