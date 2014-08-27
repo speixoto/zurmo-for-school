@@ -7771,6 +7771,9 @@ a.user-link {
   font-size: 11px !important;
   font-weight: bold !important;
 }
+.clickable-dividedmenu:not(.nav-open) .button-action-trigger:hover + .button-actions {
+  display: none;
+}
 .overlay-view {
   width: 500px;
   text-align: left;
