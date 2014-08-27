@@ -114,6 +114,7 @@
 
             //Now the threshold of 4 should be reached and we should send a notification
             $monitorJob->run();
+            ForgetAllCacheUtil::forgetAllCaches();
             $stuckJobs = StuckJob::getAll();
             $this->assertEquals(1, count($stuckJobs));
             $this->assertEquals('Test', $stuckJobs[0]->type);
@@ -121,6 +122,7 @@
             $this->assertEquals(1, count(Notification::getAll()));
             //Confirm an email was sent
             $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(1, EmailMessage::getCount());
             $this->assertEquals(1, Yii::app()->emailHelper->getSentCount());
         }
     }

@@ -51,8 +51,9 @@
         {
             if (!$this->sendEmailThroughTransport)
             {
-                $emailMessage->error    = null;
-                $emailMessage->folder   = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox, EmailFolder::TYPE_SENT);
+                $emailMessage->error        = null;
+                $emailMessage->folder       = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox, EmailFolder::TYPE_SENT);
+                $emailMessage->sendAttempts = $emailMessage->sendAttempts + 1;
             }
             else
             {

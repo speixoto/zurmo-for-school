@@ -90,8 +90,8 @@
             $emailMessage->recipients->add($recipient);
             $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
             $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
-            $validated                 = $emailMessage->validate();
-            if (!$validated)
+            $validatedAndSaved          = $emailMessage->save();
+            if (!$validatedAndSaved)
             {
                 throw new NotSupportedException();
             }
