@@ -741,8 +741,8 @@
 
         public static function lowercaseCompare($a, $b)
         {
-            assert('is_string($a)');
-            assert('is_string($b)');
+            //assert('is_string($a)');
+            //assert('is_string($b)');
             $al = strtolower($a);
             $bl = strtolower($b);
             if ($al == $bl)

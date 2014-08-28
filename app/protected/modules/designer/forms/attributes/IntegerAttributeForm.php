@@ -48,6 +48,7 @@
                 array('defaultValue',  'numerical', 'integerOnly' => true),
             ));
         }
+
         public static function getAttributeTypeDisplayName()
         {
             return Zurmo::t('DesignerModule', 'Integer');

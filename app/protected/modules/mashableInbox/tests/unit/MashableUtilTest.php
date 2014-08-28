@@ -337,7 +337,6 @@
             $rules = MashableUtil::createMashableInboxRulesByModel('Mission');
             $rules->markUserAsHavingUnreadLatestModel($mission, $this->user);
             return $mission;
-
         }
     }
 ?>
