@@ -43,26 +43,26 @@
          * @var array
          */
         public $selectedModels;
-        
+
         /**
          * Attributes associated to the element. This would include multiple attributes in case
          * of derived ones.
          * @var array
          */
         public $attributes;
-        
+
         /**
          * Primary model associated to the merged item.
          * @var RedBeanModel
          */
         public $primaryModel;
-        
+
         /**
          * Element associated to the merged item.
          * @var string
          */
         public $element;
-        
+
         /**
          * @var ModelAttributeAndElementDataToMergeItem
          */

@@ -1,4 +1,3 @@
-
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by

@@ -616,5 +616,45 @@
             $this->assertEquals($compareClauses, $metadata['clauses']);
             $this->assertEquals($compareStructure, $metadata['structure']);
         }
+
+        public function testIsEmpty()
+        {
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                   Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'string';
+            $filter->operator                    = OperatorRules::TYPE_IS_EMPTY;
+            $metadataAdapter                     = new FilterForReportFormToDataProviderMetadataAdapter($filter);
+            $metadata                            = $metadataAdapter->getAdaptedMetadata();
+            $compareClauses = array(
+                1 => array(
+                    'attributeName'        => 'string',
+                    'operatorType'         => 'isEmpty',
+                    'value'                =>  null,
+                ),
+            );
+            $compareStructure = '1';
+            $this->assertEquals($compareClauses, $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
+        }
+
+        public function testIsNotEmpty()
+        {
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                   Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'string';
+            $filter->operator                    = OperatorRules::TYPE_IS_NOT_EMPTY;
+            $metadataAdapter                     = new FilterForReportFormToDataProviderMetadataAdapter($filter);
+            $metadata                            = $metadataAdapter->getAdaptedMetadata();
+            $compareClauses = array(
+                1 => array(
+                    'attributeName'        => 'string',
+                    'operatorType'         => 'isNotEmpty',
+                    'value'                =>  null,
+                ),
+            );
+            $compareStructure = '1';
+            $this->assertEquals($compareClauses, $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
+        }
     }
 ?>

@@ -258,6 +258,8 @@
             $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
             $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
             $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertContains('<option value="isEmpty">Is Empty</option>', $content);
+            $this->assertContains('<option value="isNotEmpty">Is Not Empty</option>', $content);
 
             //Test a textArea attribute
             $model->attributeIndexOrDerivedType = 'textArea';
@@ -268,6 +270,8 @@
             $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
             $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
             $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
+            $this->assertContains('<option value="isEmpty">Is Empty</option>', $content);
+            $this->assertContains('<option value="isNotEmpty">Is Not Empty</option>', $content);
 
             //Test a url attribute
             $model->attributeIndexOrDerivedType = 'url';
@@ -314,7 +318,6 @@
         }
 
         /**
-         * @depends testGetFilterContentForRowsAndColumns
          * @expectedException NotSupportedException
          */
         public function testGetGroupByContentForRowsAndColumns()
@@ -334,9 +337,6 @@
             $content                            = $adapter->getContent();
         }
 
-        /**
-         * @depends testGetGroupByContentForRowsAndColumns
-         */
         public function testGetOrderByContentForRowsAndColumns()
         {
             $inputPrefixData      = array('some', 'prefix');
@@ -356,9 +356,6 @@
             $this->assertFalse(strpos($content,  '"some[prefix][order]"')  === false);
         }
 
-        /**
-         * @depends testGetOrderByContentForRowsAndColumns
-         */
         public function testGetDisplayAttributeContentForRowsAndColumns()
         {
             $inputPrefixData      = array('some', 'prefix');
@@ -379,7 +376,6 @@
         }
 
         /**
-         * @depends testGetDisplayAttributeContentForRowsAndColumns
          * @expectedException NotSupportedException
          */
         public function testGetDrillDownDisplayAttributeContentForRowsAndColumns()
@@ -399,9 +395,6 @@
             $content                            = $adapter->getContent();
         }
 
-       /**
-         * @depends testGetDrillDownDisplayAttributeContentForRowsAndColumns
-         */
         public function testGetGroupByContentForSummation()
         {
             $inputPrefixData      = array('some', 'prefix');
@@ -421,9 +414,6 @@
             $this->assertTrue(strpos($content,  '"some[prefix][axis]"') === false);
         }
 
-        /**
-         * @depends testGetGroupByContentForSummation
-         */
         public function testGetOrderByContentForSummation()
         {
             $inputPrefixData      = array('some', 'prefix');
@@ -443,9 +433,6 @@
             $this->assertFalse(strpos($content,  '"some[prefix][order]"')  === false);
         }
 
-        /**
-         * @depends testGetOrderByContentForSummation
-         */
         public function testGetDisplayAttributeContentForSummation()
         {
             $inputPrefixData      = array('some', 'prefix');
@@ -465,9 +452,6 @@
             $this->assertFalse(strpos($content,  '"some[prefix][label]"')  === false);
         }
 
-       /**
-         * @depends testGetDisplayAttributeContentForSummation
-         */
         public function testGetDrillDownDisplayAttributeContentForSummation()
         {
             $inputPrefixData      = array('some', 'prefix');
@@ -487,9 +471,6 @@
             $this->assertFalse(strpos($content,  '"some[prefix][label]"')  === false);
         }
 
-       /**
-         * @depends testGetDrillDownDisplayAttributeContentForSummation
-         */
         public function testGetGroupByContentForMatrix()
         {
             $inputPrefixData      = array('some', 'prefix');
@@ -510,7 +491,6 @@
         }
 
         /**
-         * @depends testGetGroupByContentForMatrix
          * @expectedException NotSupportedException
          */
         public function testGetOrderByContentForMatrix()
@@ -530,9 +510,6 @@
             $content                            = $adapter->getContent();
         }
 
-        /**
-         * @depends testGetOrderByContentForMatrix
-         */
         public function testGetDisplayAttributeContentForMatrix()
         {
             $inputPrefixData      = array('some', 'prefix');
@@ -553,7 +530,6 @@
         }
 
        /**
-         * @depends testGetDisplayAttributeContentForMatrix
          * @expectedException NotSupportedException
          */
         public function testGetDrillDownDisplayAttributeContentForMatrix()

@@ -1456,7 +1456,7 @@
             $this->assertEquals(28, $activeUserCount);
             $this->assertCount(28, User::getActiveUsers());
         }
-        
+
         public function testMakeActiveUsersQuerySearchAttributeData()
         {
             $searchAttributeData = User::makeActiveUsersQuerySearchAttributeData();
@@ -1546,22 +1546,21 @@
             );
             $this->assertEquals($compareData, $searchAttributeData);
         }
-        
+
         public function testActiveUsers()
         {
-            
             $activeUserCount = User::getActiveUserCount();
             $this->assertEquals(28, $activeUserCount);
             $this->assertCount(28, User::getActiveUsers());
-            
-            $activeUserCount = User::getActiveUserCount();
-            $this->assertEquals(28, $activeUserCount);
-            $this->assertCount(28, User::getActiveUsers(true));
-            
-            $activeUserCount = User::getActiveUserCount();
+
+            $activeUserCount = User::getActiveUserCount(false);
             $this->assertEquals(28, $activeUserCount);
             $this->assertCount(28, User::getActiveUsers(false));
-            
+
+            $activeUserCount = User::getActiveUserCount(true);
+            $this->assertEquals(28, $activeUserCount);
+            $this->assertCount(28, User::getActiveUsers(true));
+
             $user = User::getByUsername('rootuser');
             $this->assertTrue(UserAccessUtil::resolveCanCurrentUserAccessRootUser($user));
             $user->setIsRootUser();
@@ -1571,14 +1570,14 @@
             $activeUserCount = User::getActiveUserCount();
             $this->assertEquals(27, $activeUserCount);
             $this->assertCount(27, User::getActiveUsers());
-            
-            $activeUserCount = User::getActiveUserCount();
-            $this->assertEquals(27, $activeUserCount);
-            $this->assertCount(28, User::getActiveUsers(true));
-            
-            $activeUserCount = User::getActiveUserCount();
+
+            $activeUserCount = User::getActiveUserCount(false);
             $this->assertEquals(27, $activeUserCount);
             $this->assertCount(27, User::getActiveUsers(false));
+
+            $activeUserCount = User::getActiveUserCount(true);
+            $this->assertEquals(28, $activeUserCount);
+            $this->assertCount(28, User::getActiveUsers(true));
         }
     }
 ?>

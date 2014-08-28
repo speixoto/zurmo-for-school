@@ -113,5 +113,26 @@
             $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING,
                                 ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'urlCstm'));
         }
+
+        public function testResolveOperatorsToIncludeByType()
+        {
+            $data = array();
+            ModelAttributeToOperatorTypeUtil::resolveOperatorsToIncludeByType($data, ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING);
+            $expectedData = array(
+                'equals' => 'Equals',
+                'doesNotEqual' => 'Does Not Equal',
+                'isNull' => 'Is Null',
+                'isNotNull' => 'Is Not Null',
+                'startsWith' => 'Starts With',
+                'doesNotStartsWith' => 'Does Not Start With',
+                'endsWith' => 'Ends With',
+                'doesNotEndsWith' => 'Does Not End With',
+                'contains' => 'Contains',
+                'doesNotContains' => 'Does Not Contain',
+                'isEmpty' => 'Is Empty',
+                'isNotEmpty' => 'Is Not Empty'
+            );
+            $this->assertEquals($expectedData, $data);
+        }
     }
 ?>
