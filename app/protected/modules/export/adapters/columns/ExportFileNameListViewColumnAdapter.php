@@ -78,7 +78,7 @@
             $dataProvider   = unserialize($data->serializedData);
             if ($isCompleted == 1)
             {
-                $status .= '<div class="export-item-stage-status stage-true"><i>●</i><span>' . Zurmo::t('ExportModule', 'Completed') . '</span></div>';
+                $status .= '<div class="export-item-stage-status stage-true"><i>●</i><span>' . Zurmo::t('Core', 'Completed') . '</span></div>';
             }
             elseif ($isCompleted == 0 && $jobStatus == 1)
             {
