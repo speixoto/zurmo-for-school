@@ -119,7 +119,7 @@
                 else
                 {
                     $startingDivStyleFirstValue     = null;
-                    if (in_array($this->model->getOperator(), array(OperatorRules::TYPE_IS_NULL, OperatorRules::TYPE_IS_NOT_NULL)))
+                    if (in_array($this->model->getOperator(), array(OperatorRules::TYPE_IS_NULL, OperatorRules::TYPE_IS_NOT_NULL, OperatorRules::TYPE_IS_EMPTY, OperatorRules::TYPE_IS_NOT_EMPTY)))
                     {
                         $startingDivStyleFirstValue         = "display:none;";
                         $valueElement->params['disabled']   = 'disabled';
