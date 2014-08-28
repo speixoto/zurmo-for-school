@@ -46,6 +46,7 @@
                 'paragraphy'            => 'false',
                 'buttons'               => $this->resolveRedactorButtons(),
                 'plugins'               => CJSON::encode($this->resolvePlugins()),
+                'observeImages'         => 'true'
             );
             $options            = CMap::mergeArray($parentOptions, $options);
             return $options;
