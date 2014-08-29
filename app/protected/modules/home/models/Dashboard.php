@@ -206,5 +206,25 @@
         {
             return Zurmo::t('ZurmoModule', 'Dashboards', array(), null, $language);
         }
+
+        public function getDefaultDashboardsByUser($user)
+        {
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'owner',
+                    'operatorType'         => 'equals',
+                    'value'                => $user,
+                ),
+                2 => array(
+                    'attributeName'        => 'isDefault',
+                    'operatorType'         => 'equals',
+                    'value'                => 1,
+                )
+            );
+            $searchAttributeData['structure'] = '1 and 2';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            return self::getSubset($joinTablesAdapter, null, null, $where);
+        }
     }
 ?>

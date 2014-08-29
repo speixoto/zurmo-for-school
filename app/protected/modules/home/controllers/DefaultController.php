@@ -36,11 +36,11 @@
 
     class HomeDefaultController extends ZurmoBaseController
     {
-        const GROUP_PREFIX = 'Group_';
+        const GROUP_PREFIX   = 'Group_';
 
-        const USER_PREFIX  = 'User_';
+        const USER_PREFIX    = 'User_';
 
-        const PUSHED_DASHBOARDS_KEY = 'pushedDashboards';
+        const HOME_DASHBOARD = 'HomeDashboard';
 
         public function filters()
         {
@@ -269,8 +269,8 @@
             {
                 $groupIds = array();
                 $userIds  = array();
-                $groupsAndUsers = array_filter(explode(',', $_POST[$modelClassName]['GroupsAndUsers']['ids']));
-                foreach ($groupsAndUsers as $identifier)
+                $groupAndUserIds = array_filter(explode(',', $_POST[$modelClassName]['GroupsAndUsers']['ids']));
+                foreach ($groupAndUserIds as $identifier)
                 {
                     if (strpos($identifier, self::GROUP_PREFIX) !== false)
                     {
@@ -283,20 +283,10 @@
                         strpos($identifier, self::USER_PREFIX) + strlen(self::USER_PREFIX), strlen($identifier)));
                     }
                 }
-                $pushedDashboards = ZurmoConfigurationUtil::getByModuleName('HomeModule', self::PUSHED_DASHBOARDS_KEY);
-                if ($pushedDashboards == null)
-                {
-                    $pushedDashboards = array();
-                }
-                else
-                {
-                    $pushedDashboards = unserialize($pushedDashboards);
-                }
-                $dashboardId = $dashboard->id;
-                $pushedDashboards[$dashboardId]['groups'] = implode(',', array_filter($groupIds));
-                $pushedDashboards[$dashboardId]['users']  = implode(',', array_filter($userIds));
-                $this->pushDashboardToUsers($dashboard, $pushedDashboards[$dashboardId]);
-                ZurmoConfigurationUtil::setByModuleName('HomeModule', self::PUSHED_DASHBOARDS_KEY, serialize($pushedDashboards));
+                $groupsAndUsers = array();
+                $groupsAndUsers['groups'] = array_filter($groupIds);
+                $groupsAndUsers['users']  = array_filter($userIds);
+                $this->pushDashboardToUsers($dashboard, $groupsAndUsers);
             }
             $editView = new PushDashboardEditView($this->getId(), $this->getModule()->getId(), $dashboard,
                         Zurmo::t('HomeModule', 'Push Dashboard'));
@@ -304,82 +294,79 @@
             echo $view->render();
         }
 
-        protected function pushDashboardToUsers($dashboard, $newGroupsAndUsers)
+        protected function pushDashboardToUsers($dashboard, $groupsAndUsers)
         {
-            $dashboardId = $dashboard->id;
-            $currentGroupsAndUsers = ZurmoConfigurationUtil::getByModuleName('HomeModule', self::PUSHED_DASHBOARDS_KEY);
-            if ($currentGroupsAndUsers == null)
+            foreach ($groupsAndUsers['groups'] as $groupId)
             {
-                $currentGroupsAndUsers = array();
+                $group = Group::getById(intval($groupId));
+                $usersInGroup = $group->getUsersExceptSystemUsers();
+                foreach ($usersInGroup as $user)
+                {
+                    $userDashboard = $this->resolveDefaultDashboardByUser($dashboard, $user);
+                    $this->pushUserHomeDashboardPortlets($user, $userDashboard, $dashboard);
+                }
+            }
+            foreach ($groupsAndUsers['users'] as $userId)
+            {
+                $user = User::getById(intval($userId));
+                $userDashboard = $this->resolveDefaultDashboardByUser($dashboard, $user);
+                $this->pushUserHomeDashboardPortlets($user, $userDashboard, $dashboard);
+            }
+        }
+
+        protected function pushUserHomeDashboardPortlets(User $user, Dashboard $userDashboard, Dashboard $pushedDashboard)
+        {
+            $userDashboardPortletsLayoutId   = self::HOME_DASHBOARD . $userDashboard->layoutId;
+            $userDashboardPortlets           = Portlet::getByLayoutIdAndUserSortedById($userDashboardPortletsLayoutId,
+                                               $user->id);
+            $pushedDashboardPortletsLayoutId = self::HOME_DASHBOARD . $pushedDashboard->layoutId;
+            $pushedDashboardPortlets         = Portlet::getByLayoutIdAndUserSortedById($pushedDashboardPortletsLayoutId,
+                                               Yii::app()->user->userModel->id);
+            foreach ($userDashboardPortlets as $portlet)
+            {
+                $userDashboardPortlets->delete();
+                unset($portlet);
+            }
+            foreach ($pushedDashboardPortlets as $pushedDashboardPortlet)
+            {
+                $portlet                      = new Portlet();
+                $portlet->column              = $pushedDashboardPortlet->column;
+                $portlet->position            = $pushedDashboardPortlet->position;
+                $portlet->layoutId            = $userDashboardPortletsLayoutId;
+                $portlet->collapsed           = $pushedDashboardPortlet->collapsed;
+                $portlet->viewType            = $pushedDashboardPortlet->viewType;
+                $portlet->serializedViewData  = $pushedDashboardPortlet->serializedViewData;
+                $portlet->user                = $user;
+                $portlet->save();
+            }
+        }
+
+        /**
+         * Returns default dashboard for user.
+         * Creates and return default dashboard, if no dashboard exists for user
+         * @param Dashboard $dashboard
+         * @param User $user
+         * @return Dashboard
+         * @throws FailedToSaveModelException
+         */
+        protected function resolveDefaultDashboardByUser(Dashboard $dashboard, User $user)
+        {
+            $userDefaultDashboards = $dashboard->getDefaultDashboardsByUser($user);
+            if (count($userDefaultDashboards) == 0)
+            {
+                $userDashboard = $dashboard->setDefaultDashboardForUser($user);
             }
             else
             {
-                $currentGroupsAndUsers = unserialize($currentGroupsAndUsers);
+                $userDashboard = $userDefaultDashboards[0];
             }
-            $currentDashboardGroups = array_filter(explode(',', $currentGroupsAndUsers[$dashboardId]['groups']));
-            $newDashboardGroups     = array_filter(explode(',', $newGroupsAndUsers['groups']));
-            $currentDashboardUsers  = array_filter(explode(',', $currentGroupsAndUsers[$dashboardId]['users']));
-            $newDashboardUsers      = array_filter(explode(',', $newGroupsAndUsers['users']));
-            foreach ($currentDashboardGroups as $currentDashboardGroup)
+            $userDashboard->layoutType = $dashboard->layoutType;
+            $saved = $userDashboard->save();
+            if (!$saved)
             {
-                if (!in_array($currentDashboardGroup, $newDashboardGroups))
-                {
-                    $group = Group::getById(intval($currentDashboardGroup));
-                    $usersInGroup = $group->getUsersExceptSystemUsers();
-                    foreach ($usersInGroup as $user)
-                    {
-                        $user->dashboard = null;
-                        $saved = $user->save();
-                        if (!$saved)
-                        {
-                            throw new FailedToSaveModelException();
-                        }
-                    }
-                }
+                throw new FailedToSaveModelException();
             }
-            foreach ($newDashboardGroups as $newDashboardGroup)
-            {
-                if (!in_array($newDashboardGroup, $currentDashboardGroups))
-                {
-                    $group = Group::getById(intval($newDashboardGroup));
-                    $usersInGroup = $group->getUsersExceptSystemUsers();
-                    foreach ($usersInGroup as $user)
-                    {
-                        $user->dashboard = $dashboard;
-                        $saved = $user->save();
-                        if (!$saved)
-                        {
-                            throw new FailedToSaveModelException();
-                        }
-                    }
-                }
-            }
-            foreach ($currentDashboardUsers as $currentDashboardUser)
-            {
-                if (!in_array($currentDashboardUser, $newDashboardUsers))
-                {
-                    $user = User::getById(intval($currentDashboardUser));
-                    $user->dashboard = null;
-                    $saved = $user->save();
-                    if (!$saved)
-                    {
-                        throw new FailedToSaveModelException();
-                    }
-                }
-            }
-            foreach ($newDashboardUsers as $newDashboardUser)
-            {
-                if (!in_array($newDashboardUser, $currentDashboardUsers))
-                {
-                    $user = User::getById(intval($newDashboardUser));
-                    $user->dashboard = $dashboard;
-                    $saved = $user->save();
-                    if (!$saved)
-                    {
-                        throw new FailedToSaveModelException();
-                    }
-                }
-            }
+            return $userDashboard;
         }
 
         public function actionAutoCompleteGroupsAndUsers($term)

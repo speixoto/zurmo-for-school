@@ -783,7 +783,6 @@
                     'emailAccounts'     => array(static::HAS_MANY,            'EmailAccount'),
                     'emailSignatures'   => array(static::HAS_MANY,            'EmailSignature',
                                                     static::OWNED),
-                    'dashboard'         => array(static::HAS_ONE,             'Dashboard'),
                 ),
                 'foreignRelations' => array(
                     'Dashboard',

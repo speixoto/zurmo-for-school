@@ -102,35 +102,5 @@
             $inputPrefix = $this->resolveInputNamePrefix();
             return $inputPrefix . $this->getUnqualifiedNameForIdField();
         }
-
-        protected function getExistingIdsAndLabels()
-        {
-            $existingRecords  = array();
-            $pushedDashboards = ZurmoConfigurationUtil::getByModuleName('HomeModule',
-                                HomeDefaultController::PUSHED_DASHBOARDS_KEY);
-            if ($pushedDashboards != null)
-            {
-                $pushedDashboards = unserialize($pushedDashboards);
-                $dashboardId      = $this->model->{$this->attribute};
-                if (isset($pushedDashboards[$dashboardId]))
-                {
-                    $groupIds = array_filter(explode(',', $pushedDashboards[$dashboardId]['groups']));
-                    $userIds  = array_filter(explode(',', $pushedDashboards[$dashboardId]['users']));
-                    foreach ($groupIds as $groupId)
-                    {
-                        $existingRecords[] = array('id'   => HomeDefaultController::GROUP_PREFIX . $groupId,
-                                                   'name' => strval(Group::getById(intval($groupId))));
-                    }
-                    foreach ($userIds as $userId)
-                    {
-                        $user = User::getById(intval($userId));
-                        $existingRecords[] = array('id'   => HomeDefaultController::USER_PREFIX . $userId,
-                                                   'name' => MultipleContactsForMeetingElement::
-                                                             renderHtmlContentLabelFromUserAndKeyword($user, null));
-                    }
-                }
-            }
-            return $existingRecords;
-        }
     }
 ?>
