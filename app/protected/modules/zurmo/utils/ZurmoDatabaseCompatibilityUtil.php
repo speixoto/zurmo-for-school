@@ -1693,7 +1693,7 @@
             create procedure update_email_message_for_sending(message_id int, send_attempts int, sent_datetime datetime,
                                                                 folder_id int, error_serialized_data text)
             begin
-                set @emailMessageSendErrorId	= null;
+                set @emailMessageSendErrorId    = null;
                 delete from `emailmessagesenderror`
                         where id = (select error_emailmessagesenderror_id
                                     from `emailmessage`
