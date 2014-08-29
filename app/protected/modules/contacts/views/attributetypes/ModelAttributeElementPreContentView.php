@@ -117,6 +117,8 @@
             $script .= "$('.attributePreElementContentModelElement').click(function(){
                                                                 $('#' + $(this).data('id')).val($(this).data('value'));
                                                                 $('#' + $(this).data('hiddenid')).val($(this).data('hiddenvalue'));
+                                                                $(this).siblings('a').removeClass('selected');
+                                                                $(this).addClass('selected');
                                                                 return false;
                                                             });";
             // End Not Coding Standard
