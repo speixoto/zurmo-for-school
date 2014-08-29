@@ -151,7 +151,7 @@
          * for dashboard layoutId=1 for each user
          * @return Dashboard model.
          */
-        private static function setDefaultDashboardForUser($user)
+        public static function setDefaultDashboardForUser($user)
         {
             assert('$user instanceof User && $user->id > 0');
             $dashboard             = new Dashboard();
@@ -207,13 +207,13 @@
             return Zurmo::t('ZurmoModule', 'Dashboards', array(), null, $language);
         }
 
-        public function getDefaultDashboardsByUser($user)
+        public static function getDefaultDashboardsByUser($user)
         {
             $searchAttributeData['clauses'] = array(
                 1 => array(
                     'attributeName'        => 'owner',
                     'operatorType'         => 'equals',
-                    'value'                => $user,
+                    'value'                => $user->id,
                 ),
                 2 => array(
                     'attributeName'        => 'isDefault',

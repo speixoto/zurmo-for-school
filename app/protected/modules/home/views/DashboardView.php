@@ -106,13 +106,25 @@
                 array('htmlOptions' => array('confirm' => Zurmo::t('HomeModule', 'Are you sure want to delete this dashboard?')),
                       'iconClass'   => 'icon-delete')
             );
-            if (!ActionSecurityUtil::canCurrentUserPerformAction($deleteDashboardLinkActionElement->getActionType(), $this->model))
+            $pushDashboardLinkActionElement  = new PushDashboardMenuActionElement(
+                $this->controllerId,
+                $this->moduleId,
+                $this->modelId,
+                array('htmlOptions' => array('id' => 'PushDashboardLink'),
+                      'iconClass'   => 'icon-change-dashboard')
+            );
+            if (PushDashboardUtil::canCurrentUserPushHomeDashboards())
             {
-                return $content;
+                $content .= $pushDashboardLinkActionElement->render();
             }
-            if (!$this->isDefaultDashboard)
+            if (ActionSecurityUtil::canCurrentUserPerformAction($deleteDashboardLinkActionElement->getActionType(),
+                $this->model) && !$this->isDefaultDashboard)
             {
                 $content .= $deleteDashboardLinkActionElement->render();
+            }
+            if (PushDashboardUtil::canCurrentUserPushHomeDashboards())
+            {
+                $content .= $pushDashboardLinkActionElement->render();
             }
             $content .= $this->renderChangeDashboardMenuActionContent();
             return $content;

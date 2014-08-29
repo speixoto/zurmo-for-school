@@ -40,8 +40,6 @@
 
         const USER_PREFIX    = 'User_';
 
-        const HOME_DASHBOARD = 'HomeDashboard';
-
         public function filters()
         {
             return array_merge(parent::filters(),
@@ -61,6 +59,11 @@
                         'moduleClassName' => 'HomeModule',
                         'rightName' => HomeModule::RIGHT_DELETE_DASHBOARDS,
                    ),
+                    array(
+                        ZurmoBaseController::RIGHTS_FILTER_PATH . ' + pushDashboard',
+                        'moduleClassName' => 'HomeModule',
+                        'rightName' => HomeModule::RIGHT_PUSH_DASHBOARDS,
+                    ),
                )
             );
         }
@@ -73,11 +76,6 @@
                 Yii::app()->user->userModel))
             {
                 $id = Yii::app()->request->getQuery('id', -1);
-                $user = Yii::app()->user->userModel;
-                if ($user->dashboard != null && $id < 0)
-                {
-                    $id = $user->dashboard->id;
-                }
                 $this->actionDashboardDetails($id);
             }
             else
@@ -263,6 +261,11 @@
 
         public function actionPushDashboard($id)
         {
+            if (!PushDashboardUtil::canCurrentUserPushHomeDashboards())
+            {
+                $messageView = new AccessFailureView(Zurmo::t('HomeModule', "You don't have permissions to access this action"));
+                $view        = new AccessFailurePageView($messageView);
+            }
             $dashboard = Dashboard::getById(intval($id));
             $modelClassName = get_class($dashboard);
             if (isset($_POST[$modelClassName]))
@@ -286,87 +289,16 @@
                 $groupsAndUsers = array();
                 $groupsAndUsers['groups'] = array_filter($groupIds);
                 $groupsAndUsers['users']  = array_filter($userIds);
-                $this->pushDashboardToUsers($dashboard, $groupsAndUsers);
+                PushDashboardUtil::pushDashboardToUsers($dashboard, $groupsAndUsers);
+                Yii::app()->user->setFlash('notification',
+                    Zurmo::t('HomeModule', 'Dashboard pushed successfully')
+                );
+                $this->redirect(array('default/dashboardDetails', 'id' => $dashboard->id));
             }
             $editView = new PushDashboardEditView($this->getId(), $this->getModule()->getId(), $dashboard,
                         Zurmo::t('HomeModule', 'Push Dashboard'));
             $view     = new HomePageView(ZurmoDefaultViewUtil::makeStandardViewForCurrentUser($this, $editView));
             echo $view->render();
-        }
-
-        protected function pushDashboardToUsers($dashboard, $groupsAndUsers)
-        {
-            foreach ($groupsAndUsers['groups'] as $groupId)
-            {
-                $group = Group::getById(intval($groupId));
-                $usersInGroup = $group->getUsersExceptSystemUsers();
-                foreach ($usersInGroup as $user)
-                {
-                    $userDashboard = $this->resolveDefaultDashboardByUser($dashboard, $user);
-                    $this->pushUserHomeDashboardPortlets($user, $userDashboard, $dashboard);
-                }
-            }
-            foreach ($groupsAndUsers['users'] as $userId)
-            {
-                $user = User::getById(intval($userId));
-                $userDashboard = $this->resolveDefaultDashboardByUser($dashboard, $user);
-                $this->pushUserHomeDashboardPortlets($user, $userDashboard, $dashboard);
-            }
-        }
-
-        protected function pushUserHomeDashboardPortlets(User $user, Dashboard $userDashboard, Dashboard $pushedDashboard)
-        {
-            $userDashboardPortletsLayoutId   = self::HOME_DASHBOARD . $userDashboard->layoutId;
-            $userDashboardPortlets           = Portlet::getByLayoutIdAndUserSortedById($userDashboardPortletsLayoutId,
-                                               $user->id);
-            $pushedDashboardPortletsLayoutId = self::HOME_DASHBOARD . $pushedDashboard->layoutId;
-            $pushedDashboardPortlets         = Portlet::getByLayoutIdAndUserSortedById($pushedDashboardPortletsLayoutId,
-                                               Yii::app()->user->userModel->id);
-            foreach ($userDashboardPortlets as $portlet)
-            {
-                $userDashboardPortlets->delete();
-                unset($portlet);
-            }
-            foreach ($pushedDashboardPortlets as $pushedDashboardPortlet)
-            {
-                $portlet                      = new Portlet();
-                $portlet->column              = $pushedDashboardPortlet->column;
-                $portlet->position            = $pushedDashboardPortlet->position;
-                $portlet->layoutId            = $userDashboardPortletsLayoutId;
-                $portlet->collapsed           = $pushedDashboardPortlet->collapsed;
-                $portlet->viewType            = $pushedDashboardPortlet->viewType;
-                $portlet->serializedViewData  = $pushedDashboardPortlet->serializedViewData;
-                $portlet->user                = $user;
-                $portlet->save();
-            }
-        }
-
-        /**
-         * Returns default dashboard for user.
-         * Creates and return default dashboard, if no dashboard exists for user
-         * @param Dashboard $dashboard
-         * @param User $user
-         * @return Dashboard
-         * @throws FailedToSaveModelException
-         */
-        protected function resolveDefaultDashboardByUser(Dashboard $dashboard, User $user)
-        {
-            $userDefaultDashboards = $dashboard->getDefaultDashboardsByUser($user);
-            if (count($userDefaultDashboards) == 0)
-            {
-                $userDashboard = $dashboard->setDefaultDashboardForUser($user);
-            }
-            else
-            {
-                $userDashboard = $userDefaultDashboards[0];
-            }
-            $userDashboard->layoutType = $dashboard->layoutType;
-            $saved = $userDashboard->save();
-            if (!$saved)
-            {
-                throw new FailedToSaveModelException();
-            }
-            return $userDashboard;
         }
 
         public function actionAutoCompleteGroupsAndUsers($term)
