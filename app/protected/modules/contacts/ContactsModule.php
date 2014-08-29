@@ -36,9 +36,10 @@
 
     class ContactsModule extends SecurableModule
     {
-        const RIGHT_CREATE_CONTACTS = 'Create Contacts';
-        const RIGHT_DELETE_CONTACTS = 'Delete Contacts';
-        const RIGHT_ACCESS_CONTACTS = 'Access Contacts Tab';
+        const RIGHT_CREATE_CONTACTS         = 'Create Contacts';
+        const RIGHT_DELETE_CONTACTS         = 'Delete Contacts';
+        const RIGHT_ACCESS_CONTACTS         = 'Access Contacts Tab';
+        const RIGHT_MASS_SUBSCRIBE_CONTACTS = 'Mass Subscribe Contacts';
 
         public function getDependencies()
         {
@@ -55,11 +56,12 @@
 
         public static function getTranslatedRightsLabels()
         {
-            $params                              = LabelUtil::getTranslationParamsForAllModules();
-            $labels                              = array();
-            $labels[self::RIGHT_CREATE_CONTACTS] = Zurmo::t('ContactsModule', 'Create ContactsModulePluralLabel',     $params);
-            $labels[self::RIGHT_DELETE_CONTACTS] = Zurmo::t('ContactsModule', 'Delete ContactsModulePluralLabel',     $params);
-            $labels[self::RIGHT_ACCESS_CONTACTS] = Zurmo::t('ContactsModule', 'Access ContactsModulePluralLabel Tab', $params);
+            $params                                         = LabelUtil::getTranslationParamsForAllModules();
+            $labels                                         = array();
+            $labels[self::RIGHT_CREATE_CONTACTS]            = Zurmo::t('ContactsModule', 'Create ContactsModulePluralLabel',     $params);
+            $labels[self::RIGHT_DELETE_CONTACTS]            = Zurmo::t('ContactsModule', 'Delete ContactsModulePluralLabel',     $params);
+            $labels[self::RIGHT_ACCESS_CONTACTS]            = Zurmo::t('ContactsModule', 'Access ContactsModulePluralLabel Tab', $params);
+            $labels[self::RIGHT_MASS_SUBSCRIBE_CONTACTS]    = Zurmo::t('ContactsModule', 'Mass Subscribe ContactsModulePluralLabel', $params);
             return $labels;
         }
 
@@ -167,6 +169,11 @@
         public static function getDeleteRight()
         {
             return self::RIGHT_DELETE_CONTACTS;
+        }
+
+        public static function getMassSubscribeRight()
+        {
+            return self::RIGHT_MASS_SUBSCRIBE_CONTACTS;
         }
 
         /**

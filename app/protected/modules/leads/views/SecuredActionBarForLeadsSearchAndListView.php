@@ -49,7 +49,7 @@
                     'toolbar' => array(
                         'elements' => array(
                             array(
-                                'type'            => 'MassSubscribeMenu',
+                                'type'            => 'MassSubscribeLeadMenu',
                                 'iconClass'       => 'icon-subscribe',
                                 'listViewGridId'  => 'eval:$this->listViewGridId',
                                 'pageVarName'     => 'eval:$this->pageVarName'
