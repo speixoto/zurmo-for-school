@@ -121,8 +121,8 @@
             $expectedData = array(
                 'equals' => 'Equals',
                 'doesNotEqual' => 'Does Not Equal',
-                'isNull' => 'Is Null',
-                'isNotNull' => 'Is Not Null',
+                'isNull' => 'Is Null', // Not Coding Standard
+                'isNotNull' => 'Is Not Null', // Not Coding Standard
                 'startsWith' => 'Starts With',
                 'doesNotStartsWith' => 'Does Not Start With',
                 'endsWith' => 'Ends With',
