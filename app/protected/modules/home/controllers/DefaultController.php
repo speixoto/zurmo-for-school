@@ -301,7 +301,7 @@
 
         public function actionDetails($id)
         {
-            return $this->actionDetails($id);
+            $this->actionDashboardDetails($id);
         }
     }
 ?>
