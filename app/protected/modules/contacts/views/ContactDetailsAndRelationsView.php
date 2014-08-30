@@ -102,13 +102,14 @@
         protected function renderActionElementBar($renderedInForm)
         {
             $content = parent::renderActionElementBar($renderedInForm);
-            $pushLayoutLinkActionElement  = new PushLayoutLinkActionElement(
-                                            $this->controllerId, $this->moduleId, $this->modelId,
-                                            array('htmlOptions' => array('id' => 'PushLayoutLink'),
-                                                  'iconClass'   => 'icon-change-dashboard'));
             if (PushDashboardUtil::canCurrentUserPushDashboardOrLayout())
             {
-                $content .= $pushLayoutLinkActionElement->render();
+                $pushLayoutLinkActionElement  = new PushLayoutLinkActionElement(
+                                                $this->controllerId, $this->moduleId, $this->modelId,
+                                                array('htmlOptions' => array('id' => 'PushLayoutLink'),
+                                                      'iconClass'   => 'icon-change-dashboard'));
+                $pushLayoutButton = $pushLayoutLinkActionElement->render();
+                $content .= ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'), $pushLayoutButton);
             }
             return $content;
         }
