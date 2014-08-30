@@ -43,7 +43,7 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type' => 'SaveButton'),
-                            array('type' => 'CancelDashboardLink'),
+                            array('type' => 'CancelLink'),
                         ),
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,

@@ -491,7 +491,7 @@
                 $groupsAndUsers = PushDashboardUtil::resolveGroupsAndUsersFromPost($_POST[$modelClassName]);
                 PushDashboardUtil::pushLayoutToUsers($contact, $groupsAndUsers);
                 Yii::app()->user->setFlash('notification', Zurmo::t('ContactsModule', 'Layout pushed successfully'));
-                $this->redirect(array('contact/default/details', 'id' => $id));
+                $this->redirect(array($this->getId() . '/details', 'id' => $id));
             }
             $editView = new PushDashboardEditView($this->getId(), $this->getModule()->getId(), $contact,
                         Zurmo::t('HomeModule', 'Push Layout'));
