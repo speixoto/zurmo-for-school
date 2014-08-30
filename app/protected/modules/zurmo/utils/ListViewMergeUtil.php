@@ -277,7 +277,7 @@
                             }
                             elseif ($elementData['type'] == 'TitleFullName')
                             {
-                                $modifiedElementsData[] = array('attributeName' => 'title', 'type' => 'DropDown');
+                                $modifiedElementsData[] = array('attributeName' => 'title', 'type' => 'DropDown', 'addBlank' => true);
                                 $modifiedElementsData[] = array('attributeName' => 'firstName', 'type' => 'Text');
                                 $modifiedElementsData[] = array('attributeName' => 'lastName', 'type' => 'Text');
                             }

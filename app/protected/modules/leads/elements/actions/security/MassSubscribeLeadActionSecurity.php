@@ -35,37 +35,14 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the contacts search and list user interface. Adds button to subscribe contacts to marketingList
-     * queues.
+     * 'MassSubscribeLeadActionSecurity' takes the user to a form
+     * where they can choose marketingList to subscribe many models at once. This is also known as bulk write or mass subscribe.
      */
-    class SecuredActionBarForContactsSearchAndListView extends SecuredActionBarForSearchAndListView
+    class MassSubscribeLeadActionSecurity extends ActionSecurity
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        protected function getRightToCheck()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array(
-                                'type'            => 'MassSubscribeContactMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            ),
-                            array(
-                                'type'            => 'ListViewMergeMenu',
-                                'iconClass'       => 'icon-merge',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            )
-                        ),
-                    ),
-                ),
-            );
-            return CMap::mergeArray(parent::getDefaultMetadata(), $metadata);
+            return array('LeadsModule', LeadsModule::getMassSubscribeRight());
         }
     }
 ?>

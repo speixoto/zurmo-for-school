@@ -67,9 +67,9 @@ EOD;
         public function run($args)
         {
             set_time_limit('900');
-            if(isset($args[0]))
+            if (isset($args[0]))
             {
-                foreach($args as $arg)
+                foreach ($args as $arg)
                 {
                     switch($arg)
                     {
@@ -81,7 +81,7 @@ EOD;
                             break;
                         default:
                             $themeNamesAndColors = Yii::app()->themeManager->getThemeColorNamesAndColors();
-                            if(array_key_exists($arg, $themeNamesAndColors))
+                            if (array_key_exists($arg, $themeNamesAndColors))
                             {
                                 Yii::app()->lessCompiler->compileColorDependentLessFile($arg);
                             }
