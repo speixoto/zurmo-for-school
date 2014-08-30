@@ -36,10 +36,6 @@
 
     class HomeDefaultController extends ZurmoBaseController
     {
-        const GROUP_PREFIX   = 'Group_';
-
-        const USER_PREFIX    = 'User_';
-
         public function filters()
         {
             return array_merge(parent::filters(),
@@ -59,11 +55,6 @@
                         'moduleClassName' => 'HomeModule',
                         'rightName' => HomeModule::RIGHT_DELETE_DASHBOARDS,
                    ),
-                    array(
-                        ZurmoBaseController::RIGHTS_FILTER_PATH . ' + pushDashboard',
-                        'moduleClassName' => 'HomeModule',
-                        'rightName' => HomeModule::RIGHT_PUSH_DASHBOARDS,
-                    ),
                )
             );
         }
@@ -261,38 +252,21 @@
 
         public function actionPushDashboard($id)
         {
-            if (!PushDashboardUtil::canCurrentUserPushHomeDashboards())
+            if (!PushDashboardUtil::canCurrentUserPushDashboardOrLayout())
             {
-                $messageView = new AccessFailureView(Zurmo::t('HomeModule', "You don't have permissions to access this action"));
+                $error       = "You don't have permissions to access this action";
+                $messageView = new AccessFailureView(Zurmo::t('HomeModule', $error));
                 $view        = new AccessFailurePageView($messageView);
+                echo $view->render();
+                Yii::app()->end(false);
             }
             $dashboard = Dashboard::getById(intval($id));
             $modelClassName = get_class($dashboard);
             if (isset($_POST[$modelClassName]))
             {
-                $groupIds = array();
-                $userIds  = array();
-                $groupAndUserIds = array_filter(explode(',', $_POST[$modelClassName]['GroupsAndUsers']['ids']));
-                foreach ($groupAndUserIds as $identifier)
-                {
-                    if (strpos($identifier, self::GROUP_PREFIX) !== false)
-                    {
-                        $groupIds[] = intval(substr($identifier,
-                        strpos($identifier, self::GROUP_PREFIX) + strlen(self::GROUP_PREFIX), strlen($identifier)));
-                    }
-                    elseif (strpos($identifier, self::USER_PREFIX) !== false)
-                    {
-                        $userIds[] = intval(substr($identifier,
-                        strpos($identifier, self::USER_PREFIX) + strlen(self::USER_PREFIX), strlen($identifier)));
-                    }
-                }
-                $groupsAndUsers = array();
-                $groupsAndUsers['groups'] = array_filter($groupIds);
-                $groupsAndUsers['users']  = array_filter($userIds);
+                $groupsAndUsers = PushDashboardUtil::resolveGroupsAndUsersFromPost($_POST[$modelClassName]);
                 PushDashboardUtil::pushDashboardToUsers($dashboard, $groupsAndUsers);
-                Yii::app()->user->setFlash('notification',
-                    Zurmo::t('HomeModule', 'Dashboard pushed successfully')
-                );
+                Yii::app()->user->setFlash('notification', Zurmo::t('HomeModule', 'Dashboard pushed successfully'));
                 $this->redirect(array('default/dashboardDetails', 'id' => $dashboard->id));
             }
             $editView = new PushDashboardEditView($this->getId(), $this->getModule()->getId(), $dashboard,
@@ -311,14 +285,14 @@
             foreach ($groups as $group)
             {
                 $autoCompleteResults[] = array(
-                    'id'   => self::GROUP_PREFIX . $group->id,
+                    'id'   => PushDashboardUtil::GROUP_PREFIX . $group->id,
                     'name' => strval($group)
                 );
             }
             foreach ($users as $user)
             {
                 $autoCompleteResults[] = array(
-                    'id'   => self::USER_PREFIX . $user->id,
+                    'id'   => PushDashboardUtil::USER_PREFIX . $user->id,
                     'name' => MultipleContactsForMeetingElement::renderHtmlContentLabelFromUserAndKeyword($user, $term)
                 );
             }

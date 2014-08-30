@@ -98,5 +98,43 @@
             TasksUtil::resolveShouldOpenToTaskForDetailsAndRelationsView();
             return $content;
         }
+
+        protected function renderActionElementBar($renderedInForm)
+        {
+            $getData = GetUtil::getData();
+            if (isset($getData['kanbanBoard']) && $getData['kanbanBoard'] == 1)
+            {
+                $isKanbanActive = true;
+            }
+            else
+            {
+                $isKanbanActive = false;
+            }
+            $toolbarContent = null;
+            if (Yii::app()->userInterface->isMobile() === false)
+            {
+                $kanbanToggleLink    = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard(
+                                       $this->controllerId, $this->moduleId, $this->modelId, $isKanbanActive);
+                if ($isKanbanActive)
+                {
+                    $content = DetailsAndRelationsView::renderActionElementBar($renderedInForm) . $kanbanToggleLink;
+                }
+                else
+                {
+                    $content = $kanbanToggleLink. $this->resolveAndRenderLockingLink($renderedInForm);
+                }
+                $pushLayoutLinkActionElement  = new PushLayoutLinkActionElement(
+                                                $this->controllerId, $this->moduleId, $this->modelId,
+                                                array('htmlOptions' => array('id' => 'PushLayoutLink'),
+                                                      'iconClass'   => 'icon-change-dashboard'));
+                if (PushDashboardUtil::canCurrentUserPushDashboardOrLayout())
+                {
+                    $content .= $pushLayoutLinkActionElement->render();
+                }
+                $toolbarContent = ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'), $content);
+            }
+            $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container widgets-lock clearfix '), $toolbarContent);
+            return $toolbarContent;
+        }
     }
 ?>

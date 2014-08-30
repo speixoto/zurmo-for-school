@@ -39,7 +39,6 @@
         const RIGHT_CREATE_DASHBOARDS = 'Create Dashboards';
         const RIGHT_DELETE_DASHBOARDS = 'Delete Dashboards';
         const RIGHT_ACCESS_DASHBOARDS = 'Access Dashboards';
-        const RIGHT_PUSH_DASHBOARDS   = 'Push Dashboards';
 
         public static function getTranslatedRightsLabels()
         {
@@ -47,7 +46,6 @@
             $labels[self::RIGHT_CREATE_DASHBOARDS] = Zurmo::t('HomeModule', 'Create Dashboards');
             $labels[self::RIGHT_DELETE_DASHBOARDS] = Zurmo::t('HomeModule', 'Delete Dashboards');
             $labels[self::RIGHT_ACCESS_DASHBOARDS] = Zurmo::t('HomeModule', 'Access Dashboards');
-            $labels[self::RIGHT_PUSH_DASHBOARDS]   = Zurmo::t('HomeModule', 'Push Dashboards');
             return $labels;
         }
 

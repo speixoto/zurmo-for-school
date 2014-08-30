@@ -34,37 +34,26 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class PushDashboardEditView extends EditView
+    class PushLayoutLinkActionElement extends MenuActionElement
     {
-        public static function getDefaultMetadata()
+        public function getActionType()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type' => 'SaveButton'),
-                            array('type' => 'CancelDashboardLink'),
-                        ),
-                    ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'MultipleGroupsAndUsers'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                         ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return 'Edit';
+        }
+
+        protected function getDefaultLabel()
+        {
+            return Zurmo::t('HomeModule', 'Push Layout');
+        }
+
+        protected function getDefaultRoute()
+        {
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/pushLayout/', array('id' => $this->modelId));
+        }
+
+        public function getElementValue()
+        {
+            return $this->route;
         }
     }
 ?>

@@ -118,7 +118,7 @@
             {
                 $content .= $deleteDashboardLinkActionElement->render();
             }
-            if (PushDashboardUtil::canCurrentUserPushHomeDashboards())
+            if (PushDashboardUtil::canCurrentUserPushDashboardOrLayout())
             {
                 $content .= $pushDashboardLinkActionElement->render();
             }

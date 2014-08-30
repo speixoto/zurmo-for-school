@@ -39,15 +39,21 @@
      */
     class PushDashboardUtil
     {
+        const GROUP_PREFIX   = 'Group_';
+
+        const USER_PREFIX    = 'User_';
+
         const HOME_DASHBOARD = 'HomeDashboard';
+
+        const DETAILS_AND_RELATIONS_VIEW = 'DetailsAndRelationsView';
 
         /**
          * Validates if current user has rights to push dashboard to users
          * @return bool
          */
-        public static function canCurrentUserPushHomeDashboards()
+        public static function canCurrentUserPushDashboardOrLayout()
         {
-            if (RightsUtil::doesUserHaveAllowByRightName('HomeModule', HomeModule::RIGHT_PUSH_DASHBOARDS,
+            if (RightsUtil::doesUserHaveAllowByRightName('ZurmoModule', ZurmoModule::RIGHT_PUSH_DASHBOARD_OR_LAYOUT,
                 Yii::app()->user->userModel))
             {
                 return true;
@@ -140,6 +146,83 @@
                 throw new FailedToSaveModelException();
             }
             return $userDashboard;
+        }
+
+        /**
+         * Resolves type-ahead post data to groups and users array
+         * @param $postData
+         * @return array
+         */
+        public static function resolveGroupsAndUsersFromPost($postData)
+        {
+            $groupIds = array();
+            $userIds  = array();
+            $groupAndUserIds = array_filter(explode(',', $postData['GroupsAndUsers']['ids']));
+            foreach ($groupAndUserIds as $identifier)
+            {
+                if (strpos($identifier, self::GROUP_PREFIX) !== false)
+                {
+                    $groupIds[] = intval(substr($identifier,
+                    strpos($identifier, self::GROUP_PREFIX) + strlen(self::GROUP_PREFIX), strlen($identifier)));
+                }
+                elseif (strpos($identifier, self::USER_PREFIX) !== false)
+                {
+                    $userIds[] = intval(substr($identifier,
+                    strpos($identifier, self::USER_PREFIX) + strlen(self::USER_PREFIX), strlen($identifier)));
+                }
+            }
+            $groupsAndUsers = array();
+            $groupsAndUsers['groups'] = array_filter($groupIds);
+            $groupsAndUsers['users']  = array_filter($userIds);
+            return $groupsAndUsers;
+        }
+
+        /**
+         * For a given model, contact or account or opportunity, pushes DetailsAndRelationsView layout for provided user
+         * @param $model
+         * @param $groupsAndUsers
+         */
+        public static function pushLayoutToUsers($model, $groupsAndUsers)
+        {
+            foreach ($groupsAndUsers['groups'] as $groupId)
+            {
+                $group = Group::getById(intval($groupId));
+                $usersInGroup = $group->getUsersExceptSystemUsers();
+                foreach ($usersInGroup as $user)
+                {
+                    self::pushDetailsAndRelationsViewPortlets($user, $model);
+                }
+            }
+            foreach ($groupsAndUsers['users'] as $userId)
+            {
+                $user = User::getById(intval($userId));
+                self::pushDetailsAndRelationsViewPortlets($user, $model);
+            }
+        }
+
+        public static function pushDetailsAndRelationsViewPortlets(User $user, $model)
+        {
+            $layoutIdPrefix       = get_class($model);
+            $layoutId             = $layoutIdPrefix . self::DETAILS_AND_RELATIONS_VIEW;
+            $userLayoutPortlets   = Portlet::getByLayoutIdAndUserSortedById($layoutId, $user->id);
+            $pushedLayoutPortlets = Portlet::getByLayoutIdAndUserSortedById($layoutId, Yii::app()->user->userModel->id);
+            foreach ($userLayoutPortlets as $portlet)
+            {
+                $portlet->delete();
+                unset($portlet);
+            }
+            foreach ($pushedLayoutPortlets as $pushedLayoutPortlet)
+            {
+                $portlet                      = new Portlet();
+                $portlet->column              = $pushedLayoutPortlet->column;
+                $portlet->position            = $pushedLayoutPortlet->position;
+                $portlet->layoutId            = $layoutId;
+                $portlet->collapsed           = $pushedLayoutPortlet->collapsed;
+                $portlet->viewType            = $pushedLayoutPortlet->viewType;
+                $portlet->serializedViewData  = $pushedLayoutPortlet->serializedViewData;
+                $portlet->user                = $user;
+                $portlet->save();
+            }
         }
     }
 ?>

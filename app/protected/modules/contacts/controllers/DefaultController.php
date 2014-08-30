@@ -473,5 +473,30 @@
                 echo CJSON::encode(array('content' => $content, 'message' => $message));
             }
         }
+
+        public function actionPushLayout($id)
+        {
+            if (!PushDashboardUtil::canCurrentUserPushDashboardOrLayout())
+            {
+                $error       = "You don't have permissions to access this action";
+                $messageView = new AccessFailureView(Zurmo::t('ContactsModule', $error));
+                $view        = new AccessFailurePageView($messageView);
+                echo $view->render();
+                Yii::app()->end(false);
+            }
+            $contact = Contact::getById(intval($id));
+            $modelClassName = get_class($contact);
+            if (isset($_POST[$modelClassName]))
+            {
+                $groupsAndUsers = PushDashboardUtil::resolveGroupsAndUsersFromPost($_POST[$modelClassName]);
+                PushDashboardUtil::pushLayoutToUsers($contact, $groupsAndUsers);
+                Yii::app()->user->setFlash('notification', Zurmo::t('ContactsModule', 'Layout pushed successfully'));
+                $this->redirect(array('contact/default/details', 'id' => $id));
+            }
+            $editView = new PushDashboardEditView($this->getId(), $this->getModule()->getId(), $contact,
+                        Zurmo::t('HomeModule', 'Push Layout'));
+            $view     = new ContactsPageView(ZurmoDefaultViewUtil::makeStandardViewForCurrentUser($this, $editView));
+            echo $view->render();
+        }
     }
 ?>
