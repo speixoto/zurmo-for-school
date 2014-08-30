@@ -298,5 +298,10 @@
             }
             echo CJSON::encode($autoCompleteResults);
         }
+
+        public function actionDetails($id)
+        {
+            return $this->actionDetails($id);
+        }
     }
 ?>
