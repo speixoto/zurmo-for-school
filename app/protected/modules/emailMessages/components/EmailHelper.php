@@ -346,7 +346,7 @@
             $this->populateMailer($mailer, $emailMessage);
             $this->sendEmail($mailer, $emailMessage);
             $this->updateEmailMessageForSending($emailMessage);
-            $emailMessage->forgetAll();
+            $emailMessage->forget();
         }
 
         /**
