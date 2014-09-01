@@ -40,11 +40,10 @@
         const CONVERT_ACCOUNT_NOT_REQUIRED = 2;
         const CONVERT_ACCOUNT_REQUIRED     = 3;
 
-        const RIGHT_CREATE_LEADS            = 'Create Leads';
-        const RIGHT_DELETE_LEADS            = 'Delete Leads';
-        const RIGHT_ACCESS_LEADS            = 'Access Leads Tab';
-        const RIGHT_CONVERT_LEADS           = 'Convert Leads';
-        const RIGHT_MASS_SUBSCRIBE_LEADS    = 'Mass Subscribe Leads';
+        const RIGHT_CREATE_LEADS  = 'Create Leads';
+        const RIGHT_DELETE_LEADS  = 'Delete Leads';
+        const RIGHT_ACCESS_LEADS  = 'Access Leads Tab';
+        const RIGHT_CONVERT_LEADS = 'Convert Leads';
 
         public function getDependencies()
         {
@@ -63,13 +62,12 @@
 
         public static function getTranslatedRightsLabels()
         {
-            $params                                     = LabelUtil::getTranslationParamsForAllModules();
-            $labels                                     = array();
-            $labels[self::RIGHT_CREATE_LEADS]           = Zurmo::t('LeadsModule', 'Create LeadsModulePluralLabel',     $params);
-            $labels[self::RIGHT_DELETE_LEADS]           = Zurmo::t('LeadsModule', 'Delete LeadsModulePluralLabel',     $params);
-            $labels[self::RIGHT_ACCESS_LEADS]           = Zurmo::t('LeadsModule', 'Access LeadsModulePluralLabel Tab', $params);
-            $labels[self::RIGHT_CONVERT_LEADS]          = Zurmo::t('LeadsModule', 'Convert LeadsModulePluralLabel',    $params);
-            $labels[self::RIGHT_MASS_SUBSCRIBE_LEADS]   = Zurmo::t('LeadsModule', 'Mass Subscribe LeadsModulePluralLabel',    $params);
+            $params                            = LabelUtil::getTranslationParamsForAllModules();
+            $labels                            = array();
+            $labels[self::RIGHT_CREATE_LEADS]  = Zurmo::t('LeadsModule', 'Create LeadsModulePluralLabel',     $params);
+            $labels[self::RIGHT_DELETE_LEADS]  = Zurmo::t('LeadsModule', 'Delete LeadsModulePluralLabel',     $params);
+            $labels[self::RIGHT_ACCESS_LEADS]  = Zurmo::t('LeadsModule', 'Access LeadsModulePluralLabel Tab', $params);
+            $labels[self::RIGHT_CONVERT_LEADS] = Zurmo::t('LeadsModule', 'Convert LeadsModulePluralLabel',    $params);
             return $labels;
         }
 
@@ -144,11 +142,6 @@
         public static function getDeleteRight()
         {
             return self::RIGHT_DELETE_LEADS;
-        }
-
-        public static function getMassSubscribeRight()
-        {
-            return self::RIGHT_MASS_SUBSCRIBE_LEADS;
         }
 
         public static function getDemoDataMakerClassNames()
