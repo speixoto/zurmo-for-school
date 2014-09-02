@@ -655,6 +655,8 @@
                                                     recipient_type int, contact_item_id int,
                                                     related_model_type varchar(255), related_model_id int)
             returns int
+            NOT DETERMINISTIC
+            MODIFIES SQL DATA
             begin
                 insert into `emailmessagecontent` ( `textcontent`, `htmlcontent` )
                             values ( text_content, html_content );
