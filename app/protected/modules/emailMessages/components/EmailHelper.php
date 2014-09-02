@@ -359,6 +359,7 @@
                 Yii::log("EmailMessage should have been saved by this point. Anyways, saving now", CLogger::LEVEL_INFO);
                 // we save it and return. No need to call SP as the message is saved already;
                 $emailMessage->save(false);
+                return;
             }
             $sendAttempts       = ($emailMessage->sendAttempts)? $emailMessage->sendAttempts : 1;
             $sentDateTime       = ($emailMessage->sentDateTime)? "'" . $emailMessage->sentDateTime . "'" : 'null';
