@@ -72,7 +72,7 @@
 
         protected function resolveUserCountForItem(Item $item)
         {
-            assert($item instanceof Group);
+            assert($item instanceof Group); // Not Coding Standard
             return $item->getUserCountExceptSystemUsers();
         }
 

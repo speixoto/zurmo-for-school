@@ -59,7 +59,7 @@
 
         protected function makeEmailMessage(Contact $contact, $subject = null)
         {
-            $interval = mt_rand(1, 30) * 86400;
+            $interval = mt_rand(4, 35) * 86400;
             if (!isset($subject))
             {
                 $subject = 'A test archived sent email';
@@ -87,8 +87,8 @@
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
             $emailMessage->recipients->add($recipient);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($this->emailBox, EmailFolder::TYPE_SENT);
-            $emailMessage->sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - $interval);
-            $emailMessage->createdDateTime = $emailMessage->sentDateTime;
+            $emailMessage->createdDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - $interval);
+            $emailMessage->sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - $interval + mt_rand(0, 3) * 86400);
             $emailMessage->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);
             $saved                          = $emailMessage->save();
             if (!$saved)

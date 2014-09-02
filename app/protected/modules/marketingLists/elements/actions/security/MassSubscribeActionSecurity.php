@@ -42,7 +42,7 @@
     {
         protected function getRightToCheck()
         {
-            return array('ZurmoModule', MarketingListsModule::RIGHT_ACCESS_MARKETING_LISTS);
+            return array('MarketingListsModule', MarketingListsModule::RIGHT_ACCESS_MARKETING_LISTS);
         }
     }
 ?>

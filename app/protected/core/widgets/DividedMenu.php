@@ -42,6 +42,8 @@
     {
         public $submenuHtmlOptions = array('class' => 'button-actions');
 
+        protected $renderIconTrigger = true;
+
         public function init()
         {
             if (!isset($this->htmlOptions['id']))
@@ -63,6 +65,10 @@
                 if (count($items) > 1)
                 {
                     throw new NotSupportedException;
+                }
+                if (isset($this->htmlOptions['class']) && $this->htmlOptions['class'] == 'clickable-dividedmenu')
+                {
+                    $this->renderIconTrigger = false;
                 }
                 if ($this->isButtonDivided($items[0]))
                 {
@@ -138,7 +144,11 @@
 
             if (isset($item['items']) && count($item['items']) || isset($item['dynamicContent']))
             {
-                $label = ZurmoHtml::tag('i', array('class' => 'icon-trigger'), null);
+                $label = null;
+                if ($this->renderIconTrigger)
+                {
+                    $label = ZurmoHtml::tag('i', array('class' => 'icon-trigger'), null);
+                }
                 if (isset($spanForTrigger))
                 {
                     echo ZurmoHtml::link($spanForTrigger . $label, null, array('class' => 'button-action-trigger'));

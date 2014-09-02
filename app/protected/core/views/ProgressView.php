@@ -164,7 +164,7 @@
                     'dataType' => 'json',
                     'data' => Yii::app()->getUrlManager()->createPathInfo($_POST, '=', '&'),
                     'url'  => Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/' . $this->refreshActionId,
-                        array_merge($_GET, array( get_class($this->model) . '_page' => ($this->page + 1)))
+                        array_merge($_GET, array( get_class($this->model) . '_page' => ($this->page + 1), 'totalCount' => $this->totalRecordCount))
                     ),
                     'success' => 'function(data)
                     {
