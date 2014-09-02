@@ -342,6 +342,8 @@
 
         public static function splitMediaQueries($css)
         {
+            // Remove CSS-Comments
+            $css = preg_replace('/\/\*.*?\*\//ms', '', $css);
             return parent::splitMediaQueries(' ' . $css . ' ');
         }
     }
