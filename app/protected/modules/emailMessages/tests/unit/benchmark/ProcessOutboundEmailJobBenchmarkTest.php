@@ -37,7 +37,7 @@
     {
         protected $user;
 
-        protected $singleItemExpectedTime   = 0.4;
+        protected $singleItemExpectedTime   = 0.5;
 
         public static function setUpBeforeClass()
         {
@@ -159,6 +159,7 @@
 
             OutboundEmailBatchSizeConfigUtil::setBatchSize($count + 1);
             Yii::app()->jobQueue->deleteAll();
+            ForgetAllCacheUtil::forgetAllCaches();
             $job                        = new ProcessOutboundEmailJob();
             $startedAt                  = microtime(true);
             $this->assertTrue($job->run());
