@@ -345,7 +345,7 @@
             $mailer             = $this->getOutboundMailer();
             $this->populateMailer($mailer, $emailMessage);
             $this->sendEmail($mailer, $emailMessage);
-            $this->updateEmailMessageForSending($emailMessage, boolval($emailMessage->id > 0));
+            $this->updateEmailMessageForSending($emailMessage, (bool) ($emailMessage->id > 0));
         }
 
         /**
