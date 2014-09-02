@@ -48,6 +48,12 @@
         public $headers                  = array();
 
         /**
+         * Stores additional parts for email message
+         * @var array
+         */
+        public $parts = array();
+
+        /**
          * Stores send response log from server as email is sending.
          * @var array
          */
@@ -156,6 +162,13 @@
             if ($this->altBody)
             {
                 $message->setBody($this->altBody);
+            }
+            if (!empty($this->parts))
+            {
+                foreach ($this->parts as $part)
+                {
+                    $message->addPart($part[0], $part[1], $part[2]);
+                }
             }
             try
             {

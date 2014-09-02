@@ -411,19 +411,25 @@
             Yii::app()->emailHelper->sendRawEmail("=?ISO-8859-2?B?cPjtbGm5IL5sdbtvdehr/SBr+fIg+nDsbCDv4WJlbHNr6SDzZA==?=", // Not Coding Standard
                                                    Yii::app()->emailHelper->outboundUsername,
                                                    $imap->imapUsername,
-                                                   'test',
-                                                   '',
                                                    null,
                                                    null,
                                                    null,
                                                    null,
-                                                   array('CC' => '=?ISO-8859-1?Q?Andr=E9?= <andre@zurmo.org>') // Not Coding Standard
+                                                   null,
+                                                   null,
+                                                   array('CC' => '=?ISO-8859-1?Q?Andr=E9?= <andre@zurmo.org>'), // Not Coding Standard
+                                                   array(
+                                                       array(iconv('UTF8', 'ISO-8859-1', 'áéäöü'), 'text/html', 'ISO-8859-1'),
+                                                       array(iconv('UTF8', 'ISO-8859-1', 'áéäöü'), 'text/plain', 'ISO-8859-1')
+                                                   )
             );
             sleep(20);
             $messages = $imap->getMessages();
             $this->assertEquals(1, count($messages));
             $this->assertEquals(imap_utf8("=?ISO-8859-2?B?cPjtbGm5IL5sdbtvdehr/SBr+fIg+nDsbCDv4WJlbHNr6SDzZA==?="), // Not Coding Standard
                                 $messages[0]->subject);
+            $this->assertEquals('áéäöü', trim($messages[0]->textBody));
+            $this->assertEquals('áéäöü', trim($messages[0]->htmlBody));
             $this->assertEquals(imap_utf8("=?ISO-8859-1?Q?Andr=E9?="), // Not Coding Standard
                                 $messages[0]->cc[0]['name']);
         }
