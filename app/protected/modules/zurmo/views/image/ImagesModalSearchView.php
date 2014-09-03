@@ -75,7 +75,6 @@
             return 'ImagesSearchForm';
         }
 
-        //TODO: @sergio: Why this is not working in the modal
         protected function renderFiltersContent($form)
         {
             $element = new ImagesFilterByRadioElement($this->model, 'filteredBy', $form);
