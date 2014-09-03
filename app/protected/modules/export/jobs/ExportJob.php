@@ -157,6 +157,11 @@
         protected function processExportItem(ExportItem $exportItem)
         {
             $dataProviderOrIdsToExport = unserialize($exportItem->serializedData);
+            if (!is_array($dataProviderOrIdsToExport))
+            {
+                $exportItem->delete();
+                return;
+            }
             if ($dataProviderOrIdsToExport instanceOf RedBeanModelDataProvider)
             {
                 $this->processRedBeanModelDataProviderExport($exportItem, $dataProviderOrIdsToExport);
@@ -303,7 +308,7 @@
          * @param $content
          * @param ExportItem $exportItem
          * @return A
-         * @throws FailedToSaveFileModelException
+         * @throws FailedToSaveModelException
          */
         protected function updateExportFileModelByExportItem($content, ExportItem $exportItem)
         {
@@ -311,7 +316,7 @@
             $saved = $exportItem->exportFileModel->save();
             if (!$saved)
             {
-                throw new FailedToSaveFileModelException();
+                throw new FailedToSaveModelException();
             }
             return $exportItem->exportFileModel;
         }
@@ -320,7 +325,7 @@
          * @param string $content
          * @param string $exportFileName
          * @return ExportFileModel
-         * @throws FailedToSaveFileModelException
+         * @throws FailedToSaveModelException
          */
         protected function makeExportFileModelByContent($content, $exportFileName)
         {
@@ -335,7 +340,7 @@
             $saved = $exportFileModel->save();
             if (!$saved)
             {
-                throw new FailedToSaveFileModelException();
+                throw new FailedToSaveModelException();
             }
             return $exportFileModel;
         }
@@ -344,7 +349,7 @@
          * @param ExportItem $exportItem
          * @param ExportFileModel $exportFileModel
          * @param int $offset
-         * @throws FailedToSaveFileModelException
+         * @throws FailedToSaveModelException
          */
         protected function processInProgressExportItem(ExportItem $exportItem, ExportFileModel $exportFileModel, $offset)
         {
@@ -354,14 +359,14 @@
             $saved = $exportItem->save();
             if (!$saved)
             {
-                throw new FailedToSaveFileModelException();
+                throw new FailedToSaveModelException();
             }
         }
 
         /**
          * @param ExportItem $exportItem
          * @param ExportFileModel $exportFileModel
-         * @throws FailedToSaveFileModelException
+         * @throws FailedToSaveModelException
          */
         protected function processCompletedExportItem(ExportItem $exportItem, ExportFileModel $exportFileModel)
         {
@@ -370,7 +375,7 @@
             $saved = $exportItem->save();
             if (!$saved)
             {
-               throw new FailedToSaveFileModelException();
+               throw new FailedToSaveModelException();
             }
             $message                    = new NotificationMessage();
             $message->htmlContent       = Zurmo::t('ExportModule', 'Export of {fileName} requested on {dateTime} is completed. <a href="{url}">Click here</a> to download file!',
@@ -386,7 +391,7 @@
 
         /**
          * @param ExportItem $exportItem
-         * @throws FailedToSaveFileModelException
+         * @throws FailedToSaveModelException
          */
         protected function processCompletedWithSecurityExceptionExportItem(ExportItem $exportItem)
         {
@@ -394,7 +399,7 @@
             $saved = $exportItem->save();
             if (!$saved)
             {
-                throw new FailedToSaveFileModelException();
+                throw new FailedToSaveModelException();
             }
             $message                    = new NotificationMessage();
             $message->htmlContent       = Zurmo::t('ExportModule', 'Export requested on {dateTime} was unable to be completed due to a permissions error.',
