@@ -49,8 +49,7 @@
             }
             catch (NotFoundException $exception)
             {
-                //TODO: @sergio: We should render a not found page
-                //Do nothing
+                throw new CHttpException(404, Zurmo::t('ZurmoModule', 'The specified hash cannot be found.'));
             }
         }
     }
