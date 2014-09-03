@@ -282,8 +282,8 @@
             foreach ($groups as $group)
             {
                 $autoCompleteResults[] = array(
-                    'id'   => PushDashboardUtil::GROUP_PREFIX . $group->id,
-                    'name' => $group->value
+                    'id'   => PushDashboardUtil::GROUP_PREFIX . $group['id'],
+                    'name' => $group['value']
                 );
             }
             foreach ($users as $user)
