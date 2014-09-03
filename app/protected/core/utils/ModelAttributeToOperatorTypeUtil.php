@@ -70,6 +70,10 @@
                     OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_CONTAINS);
                 $data[OperatorRules::TYPE_DOES_NOT_CONTAINS] =
                     OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_DOES_NOT_CONTAINS);
+                $data[OperatorRules::TYPE_IS_EMPTY] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_EMPTY);
+                $data[OperatorRules::TYPE_IS_NOT_EMPTY] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NOT_EMPTY);
             }
             elseif ($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER)
             {

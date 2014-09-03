@@ -219,6 +219,10 @@
                 $emailMessage->recipients->add($recipient);
                 $box                        = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
                 $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
+                if (!$emailMessage->save())
+                {
+                    throw new FailedToSaveModelException();
+                }
                 try
                 {
                     Yii::app()->emailHelper->sendImmediately($emailMessage);

@@ -86,7 +86,7 @@
                                              var contentHeight = $(".redactor_box iframe").contents().find("body").outerHeight();
                                              $(".redactor_box iframe").height(contentHeight + 50);
                                         }',
-                'plugins'       => CJSON::encode(array('imagegallery')),
+                'plugins'       => CJSON::encode(array('fontfamily', 'fontsize', 'fontcolor', 'imagegallery')),
             ));
             // End Not Coding Standard
             $cClipWidget->endClip();

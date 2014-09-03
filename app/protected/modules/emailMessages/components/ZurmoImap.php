@@ -526,8 +526,17 @@
 
             if ($mimeType == $this->getMimeType($structure))
             {
-                $partNumber = ($partNumber > 0) ? $partNumber : 1;
-                return imap_fetchbody($this->imapStream, $msgNumber, $partNumber);
+                if ($partNumber == 0 && $structure->type == 0)
+                {
+                    $body = imap_fetchbody($this->imapStream, $msgNumber, 1);
+                    return $this->resolveContentFromStructure($body, $structure);
+                }
+                else
+                {
+                    $partNumber = ($partNumber > 0) ? $partNumber : 1;
+                    $body = imap_fetchbody($this->imapStream, $msgNumber, $partNumber);
+                    return $body;
+                }
             }
 
             /* multipart */
@@ -543,27 +552,34 @@
                     $data = $this->getPart($msgNumber, $mimeType, $subStructure, $prefix . ($index + 1));
                     if ($data)
                     {
-                        $dataToReturn = $data;
-                        if ($subStructure->encoding == 3)
-                        {
-                            // 3 = BASE64
-                            $dataToReturn = base64_decode($data);
-                        }
-                        elseif ($subStructure->encoding == 4)
-                        {
-                            // 4 = QUOTED-PRINTABLE
-                            $dataToReturn = quoted_printable_decode($data);
-                        }
-                        if (isset($subStructure->parameters[0]->attribute) && $subStructure->parameters[0]->attribute == 'CHARSET')
-                        {
-                            return iconv($subStructure->parameters[0]->value, 'UTF-8', $dataToReturn);
-                        }
-                        else
-                        {
-                            return $dataToReturn;
-                        }
+                        return $this->resolveContentFromStructure($data, $subStructure);
                     }
                 }
+            }
+        }
+
+        protected function resolveContentFromStructure($content, $structure)
+        {
+            $dataToReturn = $content;
+            if ($structure->encoding == 3)
+            {
+                // 3 = BASE64
+                $dataToReturn = base64_decode($content);
+            }
+            elseif ($structure->encoding == 4)
+            {
+                // 4 = QUOTED-PRINTABLE
+                $dataToReturn = quoted_printable_decode($content);
+            }
+            if ($structure->ifparameters && strtoupper($structure->parameters[0]->attribute) == 'CHARSET' &&
+                strtoupper($structure->parameters[0]->value) != 'UTF-8')
+            {
+                return iconv($structure->parameters[0]->value, 'UTF-8', $dataToReturn);
+
+            }
+            else
+            {
+                return $dataToReturn;
             }
         }
 

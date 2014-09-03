@@ -81,6 +81,7 @@
                 $this->getMessageLogger()->addDebugMessage("{$countOfMessages} message(s) to process.");
                 if ($countOfMessages)
                 {
+                   $this->reconnectToDatabase();
                    $numberOfProcessedMessages = 1;
                    foreach ($messages as $message)
                    {

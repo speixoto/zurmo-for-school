@@ -83,34 +83,7 @@
 
         private static function getServicesToCheckAfterInstallation()
         {
-            return array(   'WebServer',
-                            'Php',
-                            'PhpTimeZone',
-                            'PhpMemoryBytes',
-                            'PhpFileUploads',
-                            'PhpUploadSize',
-                            'PhpPostSize',
-                            'ServerVariable',
-                            'PCRE',
-                            'SPL',
-                            'Ctype',
-                            'FilePermissionsAfterInstall',
-                            'InstanceFolders',
-                            'APC',
-                            'Soap',
-                            'Curl',
-                            'Yii',
-                            'RedBean',
-                            'MbString',
-                            'Memcache',
-                            'SetIncludePath',
-                            'IMAP',
-                            'Pdo',
-                            'PdoMysql',
-                            'Ldap',
-                            'Mcrypt',
-                            'HostInfo'
-            );
+            return CMap::mergeArray(static::getServicesToCheck(), static::getAdditionalServicesToCheck());
         }
 
         private static function getAdditionalServicesToCheck()
@@ -146,8 +119,13 @@
 
         public static function checkServicesAfterInstallationAndGetResultsDataForDisplay()
         {
-            $servicesToCheck = self::getServicesToCheckAfterInstallation();
-            return static::processServicesAndGetResultsData($servicesToCheck);
+            $servicesToCheck            = self::getServicesToCheckAfterInstallation();
+            $form                       = new InstallSettingsForm();
+            list(, $form->databaseHostname, $form->databasePort, $form->databaseName) =
+                array_values(RedBeanDatabase::getDatabaseInfoFromDsnString(Yii::app()->db->connectionString));
+            $form->databaseUsername     = Yii::app()->db->username;
+            $form->databasePassword     = Yii::app()->db->password;
+            return static::processServicesAndGetResultsData($servicesToCheck, $form);
         }
 
         protected static function processServicesAndGetResultsData(array $servicesToCheck, $form = null)

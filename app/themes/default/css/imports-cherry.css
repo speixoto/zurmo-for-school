@@ -7771,6 +7771,7 @@ a.user-link {
   font-size: 11px !important;
   font-weight: bold !important;
 }
+.clickable-dividedmenu:not(.nav-open) .button-actions:hover,
 .clickable-dividedmenu:not(.nav-open) .button-action-trigger:hover + .button-actions {
   display: none;
 }

@@ -412,10 +412,9 @@
 }
 
 .clickable-dividedmenu:not(.nav-open){
-	.button-action-trigger:hover{
-		+ .button-actions{
-			display: none;
-		}
+    .button-actions:hover,
+	.button-action-trigger:hover + .button-actions{
+		display: none;
 	}
 }
 
