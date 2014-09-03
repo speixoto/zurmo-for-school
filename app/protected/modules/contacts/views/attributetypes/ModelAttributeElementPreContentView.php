@@ -109,6 +109,7 @@
             // Begin Not Coding Standard
             $script = "$('.attributePreElementContent').click(function(){
                                                                 $('#' + $(this).data('id')).val($(this).data('value'));
+                                                                $('#' + $(this).data('id')).focus();
                                                                 $(this).siblings('a').removeClass('selected');
                                                                 $(this).addClass('selected');
                                                                 return false;
