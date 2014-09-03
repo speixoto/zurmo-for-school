@@ -68,21 +68,30 @@
          */
         public static function pushDashboardToUsers(Dashboard $dashboard, $groupsAndUsers)
         {
+            $processedUsers = array();
             foreach ($groupsAndUsers['groups'] as $groupId)
             {
                 $group = Group::getById(intval($groupId));
                 $usersInGroup = $group->getUsersExceptSystemUsers();
                 foreach ($usersInGroup as $user)
                 {
-                    $userDashboard = self::resolveDefaultDashboardByUser($dashboard, $user);
-                    self::pushUserHomeDashboardPortlets($user, $userDashboard, $dashboard);
+                    if (!in_array($user->id, $processedUsers))
+                    {
+                        $processedUsers[] = $user->id;
+                        $userDashboard = self::resolveDefaultDashboardByUser($dashboard, $user);
+                        self::pushUserHomeDashboardPortlets($user, $userDashboard, $dashboard);
+                    }
                 }
             }
             foreach ($groupsAndUsers['users'] as $userId)
             {
                 $user = User::getById(intval($userId));
-                $userDashboard = self::resolveDefaultDashboardByUser($dashboard, $user);
-                self::pushUserHomeDashboardPortlets($user, $userDashboard, $dashboard);
+                if (!in_array($user->id, $processedUsers))
+                {
+                    $processedUsers[] = $user->id;
+                    $userDashboard = self::resolveDefaultDashboardByUser($dashboard, $user);
+                    self::pushUserHomeDashboardPortlets($user, $userDashboard, $dashboard);
+                }
             }
         }
 
@@ -184,19 +193,28 @@
          */
         public static function pushLayoutToUsers($model, $groupsAndUsers)
         {
+            $processedUsers = array();
             foreach ($groupsAndUsers['groups'] as $groupId)
             {
                 $group = Group::getById(intval($groupId));
                 $usersInGroup = $group->getUsersExceptSystemUsers();
                 foreach ($usersInGroup as $user)
                 {
-                    self::pushDetailsAndRelationsViewPortlets($user, $model);
+                    if (!in_array($user->id, $processedUsers))
+                    {
+                        $processedUsers[] = $user->id;
+                        self::pushDetailsAndRelationsViewPortlets($user, $model);
+                    }
                 }
             }
             foreach ($groupsAndUsers['users'] as $userId)
             {
                 $user = User::getById(intval($userId));
-                self::pushDetailsAndRelationsViewPortlets($user, $model);
+                if (!in_array($user->id, $processedUsers))
+                {
+                    $processedUsers[] = $user->id;
+                    self::pushDetailsAndRelationsViewPortlets($user, $model);
+                }
             }
         }
 

@@ -55,6 +55,11 @@
                         'moduleClassName' => 'HomeModule',
                         'rightName' => HomeModule::RIGHT_DELETE_DASHBOARDS,
                    ),
+                    array(
+                        ZurmoBaseController::RIGHTS_FILTER_PATH . ' + pushDashboard',
+                        'moduleClassName' => 'ZurmoModule',
+                        'rightName' => ZurmoModule::RIGHT_PUSH_DASHBOARD_OR_LAYOUT,
+                    ),
                )
             );
         }
@@ -252,14 +257,6 @@
 
         public function actionPushDashboard($id)
         {
-            if (!PushDashboardUtil::canCurrentUserPushDashboardOrLayout())
-            {
-                $error       = "You don't have permissions to access this action";
-                $messageView = new AccessFailureView(Zurmo::t('HomeModule', $error));
-                $view        = new AccessFailurePageView($messageView);
-                echo $view->render();
-                Yii::app()->end(false);
-            }
             $dashboard = Dashboard::getById(intval($id));
             $modelClassName = get_class($dashboard);
             if (isset($_POST[$modelClassName]))
@@ -279,14 +276,14 @@
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                         'autoCompleteListPageSize', get_class($this->getModule()));
-            $groups   = Group::getByPartialName($term);
+            $groups   = ModelAutoCompleteUtil::getByPartialName('Group', $term, $pageSize);
             $users    = UserSearch::getUsersByPartialFullNameOrAnyEmailAddress($term, $pageSize, null);
             $autoCompleteResults = array();
             foreach ($groups as $group)
             {
                 $autoCompleteResults[] = array(
                     'id'   => PushDashboardUtil::GROUP_PREFIX . $group->id,
-                    'name' => strval($group)
+                    'name' => $group->value
                 );
             }
             foreach ($users as $user)

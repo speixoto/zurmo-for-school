@@ -98,20 +98,5 @@
             TasksUtil::resolveShouldOpenToTaskForDetailsAndRelationsView();
             return $content;
         }
-
-        protected function renderActionElementBar($renderedInForm)
-        {
-            $content = parent::renderActionElementBar($renderedInForm);
-            if (PushDashboardUtil::canCurrentUserPushDashboardOrLayout())
-            {
-                $pushLayoutLinkActionElement  = new PushLayoutLinkActionElement(
-                                                $this->controllerId, $this->moduleId, $this->modelId,
-                                                array('htmlOptions' => array('id' => 'PushLayoutLink'),
-                                                      'iconClass'   => 'icon-change-dashboard'));
-                $pushLayoutButton = $pushLayoutLinkActionElement->render();
-                $content .= ZurmoHtml::tag('nav', array('class' => 'pillbox clearfix'), $pushLayoutButton);
-            }
-            return $content;
-        }
     }
 ?>

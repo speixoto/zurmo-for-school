@@ -43,6 +43,19 @@
     {
         const ZERO_MODELS_CHECK_FILTER_PATH = 'application.modules.zurmo.controllers.filters.ZeroModelsCheckControllerFilter';
 
+        public function filters()
+        {
+            return array_merge(parent::filters(),
+                array(
+                    array(
+                        ZurmoBaseController::RIGHTS_FILTER_PATH . ' + pushDashboard',
+                        'moduleClassName' => 'ZurmoModule',
+                        'rightName' => ZurmoModule::RIGHT_PUSH_DASHBOARD_OR_LAYOUT,
+                    ),
+                )
+            );
+        }
+
         public function actionIndex()
         {
             $this->actionList();
@@ -527,6 +540,23 @@
                 ListViewMergeUtil::processCopyRelationsAndDeleteNonPrimaryModelsInMerge($model, $getData);
                 Yii::app()->gameHelper->unmuteScoringModelsOnSave();
             }
+        }
+
+        public function actionPushLayout($id)
+        {
+            $modelClassName = $this->getModelName();
+            $model          = $modelClassName::getById(intval($id));
+            if (isset($_POST[$modelClassName]))
+            {
+                $groupsAndUsers = PushDashboardUtil::resolveGroupsAndUsersFromPost($_POST[$modelClassName]);
+                PushDashboardUtil::pushLayoutToUsers($model, $groupsAndUsers);
+                Yii::app()->user->setFlash('notification', Zurmo::t('ZurmoModule', 'Layout pushed successfully'));
+                $this->redirect(array($this->getId() . '/details', 'id' => $id));
+            }
+            $editView = new PushDashboardEditView($this->getId(), $this->getModule()->getId(), $model,
+                        Zurmo::t('ZurmoModule', 'Push Layout'));
+            $view     = new ZurmoPageView(ZurmoDefaultViewUtil::makeStandardViewForCurrentUser($this, $editView));
+            echo $view->render();
         }
     }
 ?>
