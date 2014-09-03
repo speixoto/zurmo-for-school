@@ -85,6 +85,8 @@
                     array('processOffset',    'default',    'value' => 0),
                     array('serializedData',   'required'),
                     array('serializedData',   'type', 'type' => 'string'),
+                    //4,294,967,295 is the max storage capacity for longtext
+                    array('serializedData',   'length', 'max' => 4294967290),
                     array('isJobRunning',     'boolean'),
                     array('cancelExport',     'boolean'),
                 ),

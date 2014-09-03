@@ -47,6 +47,12 @@
             Yii::app()->jobQueue->deleteAll();
         }
 
+        public function setUp()
+        {
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
+
         public function testCreateAndEditExportItem()
         {
             $idsToExport = array(1, 2, 3);
@@ -82,6 +88,28 @@
             $queuedJobs = Yii::app()->jobQueue->getAll();
             $this->assertEquals(1, count($queuedJobs));
             $this->assertEquals('Export', $queuedJobs[0][0]['jobType']);
+        }
+
+
+        public function testCreateExportItemWithLargeData()
+        {
+            $allowedMemory = StringUtil::convertToBytes(ini_get('memory_limit'));
+            // anything larger than 99999 will have memcache complain about objects being too big to cache
+            // why? because ExportItem isCacheable() is true(implicitly, inherited from RedBeanModel.php).
+            // so during every save its re-cached: RedBeanModel.php:2017
+            $idsToExport = range(0, min(99999, $allowedMemory));
+            $exportItem = new ExportItem();
+            $exportItem->isCompleted = 0;
+            $exportItem->exportFileType = 'csv';
+            $exportItem->exportFileName = 'test';
+            $exportItem->modelClassName = 'Account';
+            $exportItem->serializedData = serialize($idsToExport);
+            $this->assertTrue($exportItem->save());
+
+            $exportItemId = $exportItem->id;
+            $exportItem->forget();
+            $exportItem   = ExportItem::getById($exportItemId);
+            $this->assertEquals($idsToExport, unserialize($exportItem->serializedData));
         }
     }
 ?>
