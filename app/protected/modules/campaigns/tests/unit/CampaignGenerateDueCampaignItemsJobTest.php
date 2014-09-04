@@ -48,6 +48,10 @@
             parent::setUp();
             $this->user                 = User::getByUsername('super');
             Yii::app()->user->userModel = $this->user;
+            Campaign::deleteAll();
+            CampaignItem::deleteAll();
+            MarketingList::deleteAll();
+            Contact::deleteAll();
         }
 
         public function testGetDisplayName()
@@ -202,6 +206,49 @@
             $job                = new CampaignGenerateDueCampaignItemsJob();
             $this->assertTrue($job->run());
             $campaign           = Campaign::getByName('Active, Due With Members');
+            $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign[0]->status);
+            $allCampaignItems   = CampaignItem::getAll();
+            $this->assertNotEmpty($allCampaignItems);
+            $this->assertCount(5, $allCampaignItems);
+            $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaign[0]->id);
+            $this->assertNotEmpty($campaignItems);
+            $this->assertCount(5, $campaignItems);
+        }
+
+        /**
+         * @depends testRunWithDueActiveCampaignsWithMembers
+         */
+        public function testRunWithJustDueActiveCampaignsWithMembers()
+        {
+            $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 05');
+            $marketingListId    = $marketingList->id;
+            $processed          = 0;
+            for ($i = 6; $i <= 10; $i++)
+            {
+                $contact = ContactTestHelper::createContactByNameForOwner('campaignContact 0' . $i, $this->user);
+                MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact);
+            }
+            $marketingList->forgetAll();
+
+            $marketingList      = MarketingList::getById($marketingListId);
+            $nowDateTime        = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $campaign           = CampaignTestHelper::createCampaign('Active, Just Due With Members',
+                                                                                'subject',
+                                                                                'text Content',
+                                                                                'Html Content',
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                Campaign::STATUS_ACTIVE,
+                                                                                $nowDateTime,
+                                                                                null,
+                                                                                $marketingList);
+            // we have to do this to ensure when we retrieve the data status is updated from db.
+            $campaign->forgetAll();
+            $this->assertEmpty(CampaignItem::getAll());
+            $job                = new CampaignGenerateDueCampaignItemsJob();
+            $this->assertTrue($job->run());
+            $campaign           = Campaign::getByName('Active, just Due With Members');
             $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign[0]->status);
             $allCampaignItems   = CampaignItem::getAll();
             $this->assertNotEmpty($allCampaignItems);

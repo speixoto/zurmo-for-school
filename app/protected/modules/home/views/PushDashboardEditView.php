@@ -34,31 +34,37 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Form to all editing and viewing of global configuration for google api key values in the user interface.
-     */
-    class MapsConfigurationForm extends ConfigurationForm
+    class PushDashboardEditView extends EditView
     {
-        public $apiKey;
-
-        /**
-         * Rules for api key element in configuration.
-         */
-        public function rules()
+        public static function getDefaultMetadata()
         {
-            return array(
-                array('apiKey', 'type', 'type' => 'string'),
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type' => 'SaveButton'),
+                            array('type' => 'CancelLink'),
+                        ),
+                    ),
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'MultipleGroupsAndUsers'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                         ),
+                    ),
+                ),
             );
-        }
-
-        /**
-         * Attribute label name in configuration view.
-         */
-        public function attributeLabels()
-        {
-            return array(
-                'apiKey' => Zurmo::t('MapsModule', 'Google Map API Key'),
-            );
+            return $metadata;
         }
     }
 ?>

@@ -126,7 +126,7 @@
                 $icon    = ZurmoHtml::tag('i', array('class' => 'icon-unlock'), '<!--' . Zurmo::t('Core', 'Lock') . '-->');
                 $link    = ZurmoHtml::link($icon, $url, array('title' => $title));
                 $content = ZurmoHtml::tag('nav', array('class' => 'default-button'), $link);
-                $content = parent::renderActionElementBar($renderedInForm) . $content;
+                $content = parent::renderActionElementBar($renderedInForm) . $this->renderPushLayoutButton() . $content;
             }
             else
             {
@@ -137,6 +137,18 @@
                 $content = ZurmoHtml::tag('nav', array('class' => 'default-button'), $content);
             }
             return $content;
+        }
+
+        protected function renderPushLayoutButton()
+        {
+            if (PushDashboardUtil::canCurrentUserPushDashboardOrLayout())
+            {
+                $pushLayoutLinkActionElement  = new PushLayoutLinkActionElement(
+                                                    $this->controllerId, $this->moduleId, $this->modelId,
+                                                    array('htmlOptions' => array('id' => 'PushLayoutLink'),
+                                                          'iconClass'   => 'icon-change-dashboard'));
+                return $pushLayoutLinkActionElement->render();
+            }
         }
 
         /**

@@ -75,8 +75,7 @@
                     $criteria = "ALL UNDELETED";
                     $lastImapCheckTimeStamp = 0;
                 }
-                $messages = $this->imapManager->getMessages($criteria, $lastImapCheckTimeStamp);
-
+                $messages = $this->imapManager->getMessages($criteria, $lastImapCheckTimeStamp, static::CONFIG_DEFAULT_BATCH_VALUE);
                 $lastCheckTime = null;
                 $countOfMessages = count($messages);
                 $this->getMessageLogger()->addDebugMessage("{$countOfMessages} message(s) to process.");
@@ -111,9 +110,15 @@
                        }
                    }
                    $this->imapManager->expungeMessages();
-                   if ($lastCheckTime != '')
+                   if ($lastCheckTime != '' &&
+                       ($numberOfProcessedMessages < static::CONFIG_DEFAULT_BATCH_VALUE))
                    {
                        $this->setLastImapDropboxCheckTime($lastCheckTime);
+                   }
+                   elseif ($numberOfProcessedMessages >= static::CONFIG_DEFAULT_BATCH_VALUE)
+                   {
+                       // There are more messages to be processed, so add job to queue
+                       Yii::app()->jobQueue->add($this->getType(), 5);
                    }
                    $this->addDebugMessageBeforeFinishing($numberOfProcessedMessages - 1, $countOfMessages);
                    $this->reconnectToDatabase();

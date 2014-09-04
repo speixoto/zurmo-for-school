@@ -34,31 +34,26 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Form to all editing and viewing of global configuration for google api key values in the user interface.
-     */
-    class MapsConfigurationForm extends ConfigurationForm
+    class PushLayoutLinkActionElement extends MenuActionElement
     {
-        public $apiKey;
-
-        /**
-         * Rules for api key element in configuration.
-         */
-        public function rules()
+        public function getActionType()
         {
-            return array(
-                array('apiKey', 'type', 'type' => 'string'),
-            );
+            return 'Edit';
         }
 
-        /**
-         * Attribute label name in configuration view.
-         */
-        public function attributeLabels()
+        protected function getDefaultLabel()
         {
-            return array(
-                'apiKey' => Zurmo::t('MapsModule', 'Google Map API Key'),
-            );
+            return Zurmo::t('HomeModule', 'Push Layout');
+        }
+
+        protected function getDefaultRoute()
+        {
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/pushLayout/', array('id' => $this->modelId));
+        }
+
+        public function getElementValue()
+        {
+            return $this->route;
         }
     }
 ?>
