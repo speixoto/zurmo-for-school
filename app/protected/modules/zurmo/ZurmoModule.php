@@ -54,6 +54,7 @@
         const AUDIT_EVENT_ITEM_DELETED            = 'Item Deleted';
         const AUDIT_EVENT_ITEM_VIEWED             = 'Item Viewed';
         const AUDIT_EVENT_ITEM_NAME_CHANGED       = 'Item Name Changed';
+        const RIGHT_PUSH_DASHBOARD_OR_LAYOUT      = 'Push Dashboard or Layout';
 
         public static function getTranslatedRightsLabels()
         {
@@ -64,6 +65,7 @@
             $labels[self::RIGHT_ACCESS_CURRENCY_CONFIGURATION]  = Zurmo::t('ZurmoModule', 'Access Currency Configuration');
             $labels[self::RIGHT_BULK_DELETE]                    = Zurmo::t('Core', 'Mass Delete');
             $labels[self::RIGHT_BULK_MERGE]                     = Zurmo::t('Core', 'Mass Merge');
+            $labels[self::RIGHT_PUSH_DASHBOARD_OR_LAYOUT]       = Zurmo::t('ZurmoModule', 'Push Dashboard or Layout');
             return $labels;
         }
 
