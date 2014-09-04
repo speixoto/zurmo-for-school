@@ -151,7 +151,7 @@
          * for dashboard layoutId=1 for each user
          * @return Dashboard model.
          */
-        private static function setDefaultDashboardForUser($user)
+        public static function setDefaultDashboardForUser($user)
         {
             assert('$user instanceof User && $user->id > 0');
             $dashboard             = new Dashboard();
@@ -205,6 +205,26 @@
         protected static function getPluralLabel($language = null)
         {
             return Zurmo::t('ZurmoModule', 'Dashboards', array(), null, $language);
+        }
+
+        public static function getDefaultDashboardsByUser($user)
+        {
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'owner',
+                    'operatorType'         => 'equals',
+                    'value'                => $user->id,
+                ),
+                2 => array(
+                    'attributeName'        => 'isDefault',
+                    'operatorType'         => 'equals',
+                    'value'                => 1,
+                )
+            );
+            $searchAttributeData['structure'] = '1 and 2';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            return self::getSubset($joinTablesAdapter, null, null, $where);
         }
     }
 ?>
