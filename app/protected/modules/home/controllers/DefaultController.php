@@ -36,6 +36,7 @@
 
     class HomeDefaultController extends ZurmoBaseController
     {
+        
         public function filters()
         {
             return array_merge(parent::filters(),
