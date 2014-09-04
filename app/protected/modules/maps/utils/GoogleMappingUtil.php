@@ -92,7 +92,7 @@
             assert('is_numeric($latitude) || $latitude == null');
             assert('is_numeric($longitude) || $longitude == null');
 
-            $marker_text = ZurmoHtml::encode("Location : $address");
+            $marker_text = ZurmoHtml::encode("$address");
             $mapScript = "
             function plotMap()
             {
