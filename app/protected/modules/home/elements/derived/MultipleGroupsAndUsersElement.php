@@ -35,30 +35,72 @@
      ********************************************************************************/
 
     /**
-     * Form to all editing and viewing of global configuration for google api key values in the user interface.
+     * User interface element for selecting multiple groups and users using type ahead element
+     *
      */
-    class MapsConfigurationForm extends ConfigurationForm
+    class MultipleGroupsAndUsersElement extends MultiSelectRelatedModelsAutoCompleteElement
     {
-        public $apiKey;
-
-        /**
-         * Rules for api key element in configuration.
-         */
-        public function rules()
+        protected function getFormName()
         {
-            return array(
-                array('apiKey', 'type', 'type' => 'string'),
-            );
+            return null;
         }
 
-        /**
-         * Attribute label name in configuration view.
-         */
-        public function attributeLabels()
+        protected function getUnqualifiedNameForIdField()
         {
-            return array(
-                'apiKey' => Zurmo::t('MapsModule', 'Google Map API Key'),
-            );
+            return '[GroupsAndUsers][ids]';
+        }
+
+        protected function getUnqualifiedIdForIdField()
+        {
+            return '_GroupsAndUsers_ids';
+        }
+
+        protected function assertModelType()
+        {
+            assert('$this->model instanceof RedBeanModel');
+        }
+
+        protected function getFormattedAttributeLabel()
+        {
+            return Yii::app()->format->text(Zurmo::t('ZurmoModule', 'Groups And Users'));
+        }
+
+        public static function getDisplayName()
+        {
+            return Zurmo::t('ZurmoModule', 'Groups And Users');
+        }
+
+        protected function getWidgetSourceUrl()
+        {
+            return  Yii::app()->createUrl('home/default/autoCompleteGroupsAndUsers');
+        }
+
+        protected function getWidgetHintText()
+        {
+            return Zurmo::t('ZurmoModule', 'Type a group name or user email address',
+                                            LabelUtil::getTranslationParamsForAllModules());
+        }
+
+        protected function getRelatedRecords()
+        {
+            return array();
+        }
+
+        protected function getRelationName()
+        {
+            return null;
+        }
+
+        protected function getEditableInputId($attributeName = null, $relationAttributeName = null)
+        {
+            $inputPrefix = $this->resolveInputIdPrefix();
+            return $inputPrefix . $this->getUnqualifiedIdForIdField();
+        }
+
+        protected function getEditableInputName($attributeName = null, $relationAttributeName = null)
+        {
+            $inputPrefix = $this->resolveInputNamePrefix();
+            return $inputPrefix . $this->getUnqualifiedNameForIdField();
         }
     }
 ?>

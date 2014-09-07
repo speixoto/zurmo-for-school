@@ -274,11 +274,11 @@
             {
                 $imapMessage->fromName = imap_utf8($mailHeaderInfo->from[0]->personal);
             }
-            else
+            elseif (isset($mailHeaderInfo->from[0]->mailbox))
             {
                 $imapMessage->fromName = $mailHeaderInfo->from[0]->mailbox;
+                $imapMessage->fromEmail = $mailHeaderInfo->from[0]->mailbox . '@' . $mailHeaderInfo->from[0]->host;
             }
-            $imapMessage->fromEmail = $mailHeaderInfo->from[0]->mailbox . '@' . $mailHeaderInfo->from[0]->host;
 
             if (isset($mailHeaderInfo->sender))
             {
@@ -321,25 +321,31 @@
          * Get all messages, that satisfy some criteria, for example: 'ALL', 'UNSEEN', 'SUBJECT "Hello"'
          * @param string $searchCriteria
          * @param int $messagesSinceTimestamp
+         * @param int $limit
          * @return array the messages that was found
          */
-        public function getMessages($searchCriteria = 'ALL', $messagesSinceTimestamp = 0)
+        public function getMessages($searchCriteria = 'ALL', $messagesSinceTimestamp = 0, $limit = null)
         {
             $messages = array();
             if ($this->imapStream == null)
             {
                 return $messages;
             }
-            $this->resolveMessageBoxStats();
             $messageNumbers = imap_search($this->imapStream, $searchCriteria);
             if (is_array($messageNumbers) && count($messageNumbers) > 0)
             {
+                $numberOfProcessedMessages = 0;
                 foreach ($messageNumbers as $messageNumber)
                 {
                     $mailHeaderInfo = imap_headerinfo($this->imapStream, $messageNumber);
                     if (strtotime($mailHeaderInfo->date) > $messagesSinceTimestamp)
                     {
                         $messages[] = $this->getMessage($messageNumber, $mailHeaderInfo);
+                    }
+                    $numberOfProcessedMessages++;
+                    if (isset($limit) && is_int($limit) && $limit > 0 && $numberOfProcessedMessages == $limit)
+                    {
+                        break;
                     }
                 }
             }
