@@ -157,11 +157,6 @@
         protected function processExportItem(ExportItem $exportItem)
         {
             $dataProviderOrIdsToExport = unserialize($exportItem->serializedData);
-            if (!is_array($dataProviderOrIdsToExport))
-            {
-                $exportItem->delete();
-                return;
-            }
             if ($dataProviderOrIdsToExport instanceOf RedBeanModelDataProvider)
             {
                 $this->processRedBeanModelDataProviderExport($exportItem, $dataProviderOrIdsToExport);
@@ -177,7 +172,7 @@
                     $this->processReportDataProviderExport($exportItem, $dataProviderOrIdsToExport);
                 }
             }
-            else
+            else if (is_array($dataProviderOrIdsToExport))
             {
                 $this->processIdsToExport($exportItem, $dataProviderOrIdsToExport);
             }
