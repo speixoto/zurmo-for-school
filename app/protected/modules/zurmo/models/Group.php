@@ -460,6 +460,13 @@
             return 'GroupsModule';
         }
 
+        protected function forgetPermissionsRightsAndPoliciesCache()
+        {
+            PermissionsCache::forgetAll();
+            RightsCache::forgetAll();
+            PoliciesCache::forgetAll();
+        }
+
         protected function afterSave()
         {
             if (((isset($this->originalAttributeValues['group'])) || $this->isNewModel) &&
@@ -467,6 +474,10 @@
             {
                 AllPermissionsOptimizationUtil::groupAddedToGroup($this);
                 ReadPermissionsSubscriptionUtil::groupParentHasChanged();
+            }
+            if (isset($this->originalAttributeValues['group']) && $this->originalAttributeValues['group'][1] > 0)
+            {
+                $this->forgetPermissionsRightsAndPoliciesCache();
             }
             parent::afterSave();
         }
@@ -505,9 +516,7 @@
 
         protected function afterDelete()
         {
-            PermissionsCache::forgetAll();
-            RightsCache::forgetAll();
-            PoliciesCache::forgetAll();
+            $this->forgetPermissionsRightsAndPoliciesCache();
             ReadPermissionsSubscriptionUtil::groupHasBeenDeleted();
             AllPermissionsOptimizationCache::forgetAll();
         }

@@ -49,7 +49,6 @@
             $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
         }
 
-
         public function testArePermissionsFlushedOnDeletingParentGroup()
         {
             // we could have used helpers to do a lot of the following stuff (such as creating users, groups,
@@ -81,6 +80,7 @@
             $this->assertEquals('Child', strval($childGroup));
             $parentGroup->forgetAll();
             $parentGroup    = Group::getById($parentGroupId);
+
             // give child rights for contacts module
             $childGroup->setRight('ContactsModule', ContactsModule::getAccessRight());
             $childGroup->setRight('ContactsModule', ContactsModule::getCreateRight());
@@ -165,12 +165,18 @@
             $this->resetGetArray();
             // get the page, ensure the name of contact does show up there.
             $content    = $this->runControllerWithNoExceptionsAndGetContent('/contacts/default');
-            $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $this->assertTrue((strpos($content, strval($johnDoeContact)) !== false));
-            $this->assertTrue((strpos($content, strval($jimDoeContact)) !== false));
+            $this->assertContains('John Doe</a></td><td>', $content);
+            $this->assertContains('Jim Doe</a></td><td>', $content);
+
+            // jim should have access to jimDoeContact's detail view
+            $this->setGetArray(array('id' => $jimDoeContactId));
+            $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/details');
+
+            // jim should have access to jimDoeContact's edit view
+            $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/edit');
 
             // jim should have access to johnDoeContact's detail view
-            $this->setGetArray(array('id' => $johnDoeContact->id));
+            $this->setGetArray(array('id' => $johnDoeContactId));
             $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/details');
 
             // jim should have access to johnDoeContact's edit view
@@ -192,16 +198,23 @@
             }
 
             // ensure jim can not see that contact anywhere
-            // jim should have access to see contact on list view
+            // jim should not have access to see contact on list view
             $this->logoutCurrentUserLoginNewUserAndGetByUsername('jim');
             $this->resetGetArray();
-            // get the page, ensure the name of contact does show up there.
+            // get the page, ensure the name of contact does not show up there.
             $content    = $this->runControllerWithNoExceptionsAndGetContent('/contacts/default');
-            $this->assertFalse((strpos($content, strval($johnDoeContact)) !== false));
-            $this->assertTrue((strpos($content, strval($jimDoeContact)) !== false));
+            $this->assertNotContains('John Doe</a></td><td>', $content);
+            $this->assertContains('Jim Doe</a></td><td>', $content);
 
-            // jim should have access to johnDoeContact's detail view
-            $this->setGetArray(array('id' => $johnDoeContact->id));
+            // jim should have access to jimDoeContact's detail view
+            $this->setGetArray(array('id' => $jimDoeContactId));
+            $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/details');
+
+            // jim should have access to jimDoeContact's edit view
+            $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/edit');
+
+            // jim should not have access to johnDoeContact's detail view
+            $this->setGetArray(array('id' => $johnDoeContactId));
             try
             {
                 $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/details');
@@ -213,7 +226,218 @@
                 $this->endAndGetOutputBuffer();
             }
 
+            // jim should not have access to johnDoeContact's edit view
+            try
+            {
+                $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/edit');
+                $this->fail('Accessing edit action should have thrown ExitException');
+            }
+            catch (ExitException $e)
+            {
+                // just cleanup buffer
+                $this->endAndGetOutputBuffer();
+            }
+        }
+
+
+        public function testArePermissionsFlushedOnRemovingParentFromChildGroup()
+        {
+            // cleanup
+            Contact::deleteAll();
+            try
+            {
+                $group  = Group::getByName('Child');
+                $group->delete();
+            }
+            catch (NotFoundException $e)
+            {
+            }
+            try
+            {
+                $user   = User::getByUsername('jim');
+                $user->delete();
+            }
+            catch (NotFoundException $e)
+            {
+            }
+
+
+            // we could have used helpers to do a lot of the following stuff (such as creating users, groups,
+            // etc) but we wanted to mimic user's interaction as closely as possible. Hence using walkthroughs
+            // for everything
+
+            // create Parent and Child Groups, Create Jim to be member of Child group
+
+            // create parent group
+            $this->resetGetArray();
+            $this->setPostArray(array('Group' => array(
+                'name'  => 'Parent',
+            )));
+            $this->runControllerWithRedirectExceptionAndGetUrl('/zurmo/group/create');
+            $parentGroup    = Group::getByName('Parent');
+            $this->assertNotNull($parentGroup);
+            $this->assertEquals('Parent', strval($parentGroup));
+            $parentGroupId  = $parentGroup->id;
+
+            // create child group
+            $this->resetGetArray();
+            $this->setPostArray(array('Group' => array(
+                'name'  => 'Child',
+                'group' => array('id' => $parentGroupId),
+            )));
+            $this->runControllerWithRedirectExceptionAndGetUrl('/zurmo/group/create');
+            $childGroup = Group::getByName('Child');
+            $this->assertNotNull($childGroup);
+            $this->assertEquals('Child', strval($childGroup));
+            $parentGroup->forgetAll();
+            $parentGroup    = Group::getById($parentGroupId);
+
+            // give child rights for contacts module
+            $childGroup->setRight('ContactsModule', ContactsModule::getAccessRight());
+            $childGroup->setRight('ContactsModule', ContactsModule::getCreateRight());
+            $this->assertTrue($childGroup->save());
+            $childGroupId           = $childGroup->id;
+            $childGroup->forgetAll();
+            $childGroup = Group::getById($childGroupId);
+            $this->assertContains($childGroup, $parentGroup->groups);
+
+            // create jim's user
+            $this->resetGetArray();
+            $this->setPostArray(array('UserPasswordForm' =>
+                array('firstName'           => 'Some',
+                    'lastName'              => 'Body',
+                    'username'              => 'jim',
+                    'newPassword'           => 'myPassword123',
+                    'newPassword_repeat'    => 'myPassword123',
+                    'officePhone'           => '456765421',
+                    'userStatus'            => 'Active')));
+            $this->runControllerWithRedirectExceptionAndGetContent('/users/default/create');
+            $jim    = User::getByUsername('jim');
+            $this->assertNotNull($jim);
+
+            // set jim's group to child group
+            $this->setGetArray(array('id' => $childGroup->id));
+            $this->setPostArray(array(
+                'GroupUserMembershipForm' => array('userMembershipData' => array($jim->id)
+                )));
+            $this->runControllerWithRedirectExceptionAndGetUrl('/zurmo/group/editUserMembership');
+            $jim->forgetAll();
+            $jim        = User::getByUsername('jim');
+            $this->assertNotNull($jim);
+            $childGroup->forgetAll();
+            $childGroup = Group::getById($childGroupId);
+            $this->assertContains($childGroup, $jim->groups);
+
+            // create a contact with permissions to Parent group
+            // create ContactStates
+            ContactsModule::loadStartingData();
+            // ensure contact states have been created
+            $this->assertEquals(6, count(ContactState::GetAll()));
+            // go ahead and create contact with parent group given readwrite.
+            $startingState  = ContactsUtil::getStartingState();
+            $this->resetGetArray();
+            $this->setPostArray(array('Contact' => array(
+                'firstName'        => 'John',
+                'lastName'         => 'Doe',
+                'officePhone'      => '456765421',
+                'state'            => array('id' => $startingState->id),
+                'explicitReadWriteModelPermissions' => array(
+                    'type' => ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP,
+                    'nonEveryoneGroup' => $parentGroupId
+                ))));
+            $url                = $this->runControllerWithRedirectExceptionAndGetUrl('/contacts/default/create');
+            $johnDoeContactId   = intval(substr($url, strpos($url, 'id=') + 3));
+            $johnDoeContact     = Contact::getById($johnDoeContactId);
+            $this->assertNotNull($johnDoeContact);
+            $this->resetPostArray();
+            $this->setGetArray(array('id' => $johnDoeContactId));
+            $content            = $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/details');
+            $this->assertContains('Who can read and write Parent', $content);
+
+            // create a contact using jim which he would see at all times
+            $this->logoutCurrentUserLoginNewUserAndGetByUsername('jim');
+            $this->resetGetArray();
+            $this->setPostArray(array('Contact' => array(
+                'firstName'        => 'Jim',
+                'lastName'         => 'Doe',
+                'officePhone'      => '456765421',
+                'state'            => array('id' => $startingState->id),
+            )));
+            $url                = $this->runControllerWithRedirectExceptionAndGetUrl('/contacts/default/create');
+            $jimDoeContactId    = intval(substr($url, strpos($url, 'id=') + 3));
+            $jimDoeContact      = Contact::getById($jimDoeContactId);
+            $this->assertNotNull($jimDoeContact);
+            $this->resetPostArray();
+            $this->setGetArray(array('id' => $jimDoeContactId));
+            $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/details');
+
+            // ensure jim can see that contact everywhere
+            // jim should have access to see contact on list view
+            $this->resetGetArray();
+            // get the page, ensure the name of contact does show up there.
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('/contacts/default');
+            $this->assertContains('John Doe</a></td><td>', $content);
+            $this->assertContains('Jim Doe</a></td><td>', $content);
+
+            // jim should have access to jimDoeContact's detail view
+            $this->setGetArray(array('id' => $jimDoeContactId));
+            $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/details');
+
+            // jim should have access to jimDoeContact's edit view
+            $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/edit');
+
+            // jim should have access to johnDoeContact's detail view
+            $this->setGetArray(array('id' => $johnDoeContactId));
+            $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/details');
+
             // jim should have access to johnDoeContact's edit view
+            $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/edit');
+
+            // unlink Parent group from child
+            $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->setGetArray(array('id' => $childGroupId));
+            $this->setPostArray(array('Group' => array(
+                'name'  => 'Child',
+                'group' => array('id' => ''),
+            )));
+            $this->runControllerWithRedirectExceptionAndGetUrl('/zurmo/group/edit');
+            $childGroup = Group::getByName('Child');
+            $this->assertNotNull($childGroup);
+            $this->assertEquals('Child', strval($childGroup));
+            $parentGroup->forgetAll();
+            $parentGroup    = Group::getById($parentGroupId);
+            $this->assertNotContains($childGroup, $parentGroup->groups);
+
+            // ensure jim can not see that contact anywhere
+            // jim should not have access to see contact on list view
+            $this->logoutCurrentUserLoginNewUserAndGetByUsername('jim');
+            $this->resetGetArray();
+            // get the page, ensure the name of contact does not show up there.
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('/contacts/default');
+            $this->assertNotContains('John Doe</a></td><td>', $content);
+            $this->assertContains('Jim Doe</a></td><td>', $content);
+
+            // jim should have access to jimDoeContact's detail view
+            $this->setGetArray(array('id' => $jimDoeContactId));
+            $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/details');
+
+            // jim should have access to jimDoeContact's edit view
+            $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/edit');
+
+            // jim should not have access to johnDoeContact's detail view
+            $this->setGetArray(array('id' => $johnDoeContactId));
+            try
+            {
+                $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/details');
+                $this->fail('Accessing details action should have thrown ExitException');
+            }
+            catch (ExitException $e)
+            {
+                // just cleanup buffer
+                $this->endAndGetOutputBuffer();
+            }
+
+            // jim should not have access to johnDoeContact's edit view
             try
             {
                 $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/edit');
