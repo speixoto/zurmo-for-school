@@ -163,6 +163,11 @@
 </tr>
 <!--create 2nd contact link with account-->
 <tr>
+	<td>waitForElementPresent</td>
+	<td>//div[@class='juiportlet-columns']/ul[2]/li[3]/div[1]/div/div/div/a/span</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>//div[@class='juiportlet-columns']/ul[2]/li[3]/div[1]/div/div/div/a/span</td>
 	<td></td>
@@ -229,9 +234,9 @@
 </tr>
 <!--to check if we cancel unlink, then it wont unlink contact-->
 <tr>
-	<td>setSpeed</td>
-	<td>3000</td>
-	<td></td>
+	<td>assertText</td>
+	<td>link=Unlink</td>
+	<td>Unlink</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -258,12 +263,12 @@
 	<td>Test Zurmo ${randomSuffix}</td>
 	<td></td>
 </tr>
-<tr>
-	<td>setSpeed</td>
-	<td>0</td>
-	<td></td>
-</tr>
 <!--unlick contact from account-->
+<tr>
+	<td>assertText</td>
+	<td>link=Unlink</td>
+	<td>Unlink</td>
+</tr>
 <tr>
 	<td>click</td>
 	<td>link=Unlink</td>
@@ -295,6 +300,11 @@
 	<td></td>
 </tr>
 <!-- Creating contact for testing delete-->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//div[@class='juiportlet-columns']/ul[2]/li[3]/div[1]/div/div/div/a/span</td>
+	<td></td>
+</tr>
 <tr>
 	<td>clickAndWait</td>
 	<td>//div[@class='juiportlet-columns']/ul[2]/li[3]/div[1]/div/div/div/a/span</td>

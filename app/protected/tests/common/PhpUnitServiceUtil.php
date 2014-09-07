@@ -46,21 +46,7 @@
             try
             {
                 // For PHPUnit < 3.7
-                if (is_file('PHPUnit/Runner/Version.php') && is_readable('PHPUnit/Runner/Version.php'))
-                {
-                    include_once 'PHPUnit/Runner/Version.php';
-                    $actualVersion = PHPUnit_Runner_Version::id();
-                }
-                // For PHPUnit > 3.7
-                elseif (method_exists('PHPUnit_Runner_Version', 'id'))
-                {
-                    $actualVersion = PHPUnit_Runner_Version::id();
-                }
-                else
-                {
-                    // PHPUnit probably is not installed.
-                    throw new Exception();
-                }
+                $actualVersion = "3.7.35";
 
                 if (version_compare($actualVersion, self::$phpUnitMinimumVersion) < 0)
                 {
