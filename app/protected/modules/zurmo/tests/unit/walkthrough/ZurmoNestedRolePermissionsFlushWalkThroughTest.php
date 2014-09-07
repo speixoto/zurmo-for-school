@@ -258,8 +258,6 @@
                 $parentRole = null;
             }
 
-            //ReadPermissionsOptimizationUtil::recreateTable(ReadPermissionsOptimizationUtil::getMungeTableName('Contact'));
-
             // ensure jim can still see that contact everywhere
             // jim should have access to see contact on list view
             $this->logoutCurrentUserLoginNewUserAndGetByUsername('jim');
@@ -345,12 +343,10 @@
 
         public function testArePermissionsFlushedOnRemovingParentFromChildRole()
         {
-            return;
-            // cleanup
             Contact::deleteAll();
             try
             {
-                $role  = Role::getByName('Child');
+                $role  = Role::getByName('Parent');
                 $role->delete();
             }
             catch (NotFoundException $e)
@@ -580,7 +576,8 @@
             $this->assertEquals('Child', strval($childRole));
             $parentRole->forgetAll();
             $parentRole    = Role::getById($parentRoleId);
-            $this->assertNull($childRole->id, $parentRole->roles[0]->id);
+            $this->assertNotNull($parentRole);
+            $this->assertCount(0, $parentRole->roles);
 
             // ensure jim can still see that contact everywhere
             // jim should have access to see contact on list view
