@@ -114,16 +114,17 @@
                        {
                            $this->addDebugMessageBeforeFinishing($numberOfProcessedMessages - 1, $countOfMessages, $totalExecutionTime);
                            $this->reconnectToDatabase();
-                           return (empty($this->errorMessage));
+                           break;
                        }
                    }
                    $this->imapManager->expungeMessages();
-                   if ($lastCheckTime != '' &&
+                   if ($lastCheckTime != null &&
                        ($numberOfProcessedMessages < static::CONFIG_DEFAULT_BATCH_VALUE))
                    {
                        $this->setLastImapDropboxCheckTime($lastCheckTime);
                    }
-                   elseif ($numberOfProcessedMessages >= static::CONFIG_DEFAULT_BATCH_VALUE)
+                   if ($numberOfProcessedMessages >= static::CONFIG_DEFAULT_BATCH_VALUE ||
+                       $totalExecutionTime > self::MAX_EXECUTION_TIME)
                    {
                        // There are more messages to be processed, so add job to queue
                        Yii::app()->jobQueue->add($this->getType(), 5);
