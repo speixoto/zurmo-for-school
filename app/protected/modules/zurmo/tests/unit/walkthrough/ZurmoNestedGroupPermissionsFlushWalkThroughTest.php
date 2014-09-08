@@ -408,6 +408,7 @@
             $parentGroup    = Group::getById($parentGroupId);
             $this->assertNotContains($childGroup, $parentGroup->groups);
 
+
             // ensure jim can not see that contact anywhere
             // jim should not have access to see contact on list view
             $this->logoutCurrentUserLoginNewUserAndGetByUsername('jim');
