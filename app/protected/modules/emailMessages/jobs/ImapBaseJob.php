@@ -66,6 +66,8 @@
             }
             if ($this->imapManager->connect())
             {
+                // Expunge deleted messages
+                $this->imapManager->expungeMessages();
                 $this->getMessageLogger()->addDebugMessage("Connected to imap server.");
                 $lastImapCheckTime = $this->getLastImapDropboxCheckTime();
                 if (isset($lastImapCheckTime) && $lastImapCheckTime != '')
