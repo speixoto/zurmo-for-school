@@ -47,7 +47,7 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>waitForText</td>
+	<td>assertText</td>
 	<td>link=Silly Sally ${randomSuffix}</td>
 	<td>Silly Sally ${randomSuffix}</td>
 </tr>
@@ -82,6 +82,11 @@
 	<td>Mrs. Silly Sally ${randomSuffix}</td>
 </tr>
 <tr>
+	<td>assertText</td>
+	<td>link=Convert</td>
+	<td>Convert</td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>link=Convert</td>
 	<td></td>
@@ -97,6 +102,11 @@
 	<td>30000</td>
 </tr>
 <tr>
+	<td>assertText</td>
+	<td>link=Select Account</td>
+	<td>Select Account</td>
+</tr>
+<tr>
 	<td>click</td>
 	<td>link=Select Account</td>
 	<td></td>
@@ -105,6 +115,11 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>link=Skip Account</td>
+	<td>Skip Account</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -150,6 +165,11 @@
 	<td>waitForTextPresent</td>
 	<td>Name cannot be blank.</td>
 	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>link=Select Account</td>
+	<td>Select Account</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -230,6 +250,11 @@
 	<td>assertText</td>
 	<td>//div[@id='zurmoView']/div/table/tbody/tr[2]/td</td>
 	<td>Qualified</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>link=my created account ${randomSuffix}</td>
+	<td>my created account ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
