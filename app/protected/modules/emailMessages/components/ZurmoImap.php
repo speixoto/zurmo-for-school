@@ -277,6 +277,9 @@
             elseif (isset($mailHeaderInfo->from[0]->mailbox))
             {
                 $imapMessage->fromName = $mailHeaderInfo->from[0]->mailbox;
+            }
+            if (isset($mailHeaderInfo->from[0]->mailbox) && isset($mailHeaderInfo->from[0]->host))
+            {
                 $imapMessage->fromEmail = $mailHeaderInfo->from[0]->mailbox . '@' . $mailHeaderInfo->from[0]->host;
             }
 
@@ -331,6 +334,7 @@
             {
                 return $messages;
             }
+            $this->resolveMessageBoxStats();
             $messageNumbers = imap_search($this->imapStream, $searchCriteria);
             if (is_array($messageNumbers) && count($messageNumbers) > 0)
             {
