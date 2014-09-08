@@ -313,7 +313,7 @@
             {
                 return Yii::app()->request->getQuery('totalCount');
             }
-            else if (Yii::app()->request->getQuery('selectAll'))
+            elseif (Yii::app()->request->getQuery('selectAll'))
             {
                 return intval($dataProvider->calculateTotalItemCount());
             }

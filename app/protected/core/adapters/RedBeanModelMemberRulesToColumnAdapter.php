@@ -262,6 +262,7 @@
                     $length   = $maxLength;
                 }
             }
+            // Begin Not Coding Standard
             // TODO: @Shoaibi: Critical: redo this:
             /*
             TINYTEXT - 256 bytes
@@ -269,6 +270,7 @@
             MEDIUMTEXT - 16,777,215 bytes
             LONGTEXT - 4,294,967,295 bytes
              */
+            // End Not Coding Standard
         }
 
         public static function resolveIntegerTypeByMinAndMaxValue(& $type, $min, $max)

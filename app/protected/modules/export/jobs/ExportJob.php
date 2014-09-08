@@ -172,7 +172,7 @@
                     $this->processReportDataProviderExport($exportItem, $dataProviderOrIdsToExport);
                 }
             }
-            else if (is_array($dataProviderOrIdsToExport))
+            elseif (is_array($dataProviderOrIdsToExport))
             {
                 $this->processIdsToExport($exportItem, $dataProviderOrIdsToExport);
             }

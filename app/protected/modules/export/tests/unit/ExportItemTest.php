@@ -90,7 +90,6 @@
             $this->assertEquals('Export', $queuedJobs[0][0]['jobType']);
         }
 
-
         public function testCreateExportItemWithLargeData()
         {
             // anything larger than 99999 will have memcache complain about objects being too big to cache

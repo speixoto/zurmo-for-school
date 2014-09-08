@@ -239,7 +239,6 @@
             }
         }
 
-
         public function testArePermissionsFlushedOnRemovingParentFromChildGroup()
         {
             // cleanup
@@ -260,7 +259,6 @@
             catch (NotFoundException $e)
             {
             }
-
 
             // we could have used helpers to do a lot of the following stuff (such as creating users, groups,
             // etc) but we wanted to mimic user's interaction as closely as possible. Hence using walkthroughs
@@ -407,7 +405,6 @@
             $parentGroup->forgetAll();
             $parentGroup    = Group::getById($parentGroupId);
             $this->assertNotContains($childGroup, $parentGroup->groups);
-
 
             // ensure jim can not see that contact anywhere
             // jim should not have access to see contact on list view

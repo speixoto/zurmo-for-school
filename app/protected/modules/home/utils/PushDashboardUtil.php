@@ -166,7 +166,7 @@
         {
             $groupIds = array();
             $userIds  = array();
-            $groupAndUserIds = array_filter(explode(',', $postData['GroupsAndUsers']['ids']));
+            $groupAndUserIds = array_filter(explode(',', $postData['GroupsAndUsers']['ids'])); // Not Coding Standard
             foreach ($groupAndUserIds as $identifier)
             {
                 if (strpos($identifier, self::GROUP_PREFIX) !== false)
