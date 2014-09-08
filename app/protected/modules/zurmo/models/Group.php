@@ -463,6 +463,7 @@
         protected function forgetPermissionsRightsAndPoliciesCache()
         {
             PermissionsCache::forgetAll();
+            Permission::resetCaches();
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
         }
