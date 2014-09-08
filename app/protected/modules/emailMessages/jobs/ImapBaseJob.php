@@ -41,6 +41,8 @@
     {
         const CONFIG_DEFAULT_BATCH_VALUE   = 100;
 
+        const MAX_EXECUTION_TIME = 1200; // 20 minutes
+
         protected $imapManager;
 
         abstract protected function resolveImapObject();
@@ -55,6 +57,7 @@
          */
         public function run()
         {
+            $startTime = time();
             $this->resolveImapObject();
             if ($this->imapManager->imapHost == null)
             {
@@ -102,9 +105,12 @@
                            $this->errorMessage .= $messageContent;
                            $this->getMessageLogger()->addDebugMessage($messageContent);
                        }
-                       if ($numberOfProcessedMessages++ >= static::CONFIG_DEFAULT_BATCH_VALUE)
+                       $iterationEndTime = time();
+                       $totalExecutionTime = $iterationEndTime - $startTime;
+                       if ($numberOfProcessedMessages++ >= static::CONFIG_DEFAULT_BATCH_VALUE ||
+                           $totalExecutionTime > self::MAX_EXECUTION_TIME)
                        {
-                           $this->addDebugMessageBeforeFinishing($numberOfProcessedMessages - 1, $countOfMessages);
+                           $this->addDebugMessageBeforeFinishing($numberOfProcessedMessages - 1, $countOfMessages, $totalExecutionTime);
                            $this->reconnectToDatabase();
                            return (empty($this->errorMessage));
                        }
@@ -120,7 +126,9 @@
                        // There are more messages to be processed, so add job to queue
                        Yii::app()->jobQueue->add($this->getType(), 5);
                    }
-                   $this->addDebugMessageBeforeFinishing($numberOfProcessedMessages - 1, $countOfMessages);
+                   $endTime = time();
+                   $totalExecutionTime = $endTime - $startTime;
+                   $this->addDebugMessageBeforeFinishing($numberOfProcessedMessages - 1, $countOfMessages, $totalExecutionTime);
                    $this->reconnectToDatabase();
                 }
                 return (empty($this->errorMessage));
@@ -134,8 +142,18 @@
             }
         }
 
-        protected function addDebugMessageBeforeFinishing($numberOfProcessedMessages, $totalNumberOfMessages)
+        protected function addDebugMessageBeforeFinishing($numberOfProcessedMessages, $totalNumberOfMessages, $totalExecutionTime = null)
         {
+            if (isset($totalExecutionTime) && $totalExecutionTime >= self::MAX_EXECUTION_TIME)
+            {
+                $debugMessage = "Total execution time {$totalExecutionTime} seconds reached max execution time of " . self::MAX_EXECUTION_TIME . " seconds.";
+                $this->getMessageLogger()->addDebugMessage($debugMessage);
+            }
+            elseif (isset($totalExecutionTime))
+            {
+                $debugMessage = "Total execution time {$totalExecutionTime} seconds.";
+                $this->getMessageLogger()->addDebugMessage($debugMessage);
+            }
             $debugMessage = "Processed {$numberOfProcessedMessages} message(s).";
             if ($numberOfProcessedMessages < $totalNumberOfMessages)
             {
