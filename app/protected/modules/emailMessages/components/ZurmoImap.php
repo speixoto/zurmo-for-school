@@ -331,6 +331,7 @@
             {
                 return $messages;
             }
+            $this->resolveMessageBoxStats();
             $messageNumbers = imap_search($this->imapStream, $searchCriteria);
             if (is_array($messageNumbers) && count($messageNumbers) > 0)
             {
