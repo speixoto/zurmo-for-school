@@ -579,7 +579,6 @@
                 strtoupper($structure->parameters[0]->value) != 'UTF-8')
             {
                 return iconv($structure->parameters[0]->value, 'UTF-8', $dataToReturn);
-
             }
             else
             {

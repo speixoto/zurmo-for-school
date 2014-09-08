@@ -178,7 +178,6 @@
             $content            = $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/details');
             $this->assertContains('Who can read and write Owner', $content);
 
-
             // ensure jim can see that contact everywhere
             // jim should have access to see contact on list view
             $this->logoutCurrentUserLoginNewUserAndGetByUsername('jim');
@@ -369,7 +368,6 @@
             {
             }
 
-
             // we could have used helpers to do a lot of the following stuff (such as creating users, roles,
             // etc) but we wanted to mimic user's interaction as closely as possible. Hence using walkthroughs
             // for everything
@@ -497,7 +495,6 @@
             $content            = $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/details');
             $this->assertContains('Who can read and write Owner', $content);
 
-
             // ensure jim can see that contact everywhere
             // jim should have access to see contact on list view
             $this->logoutCurrentUserLoginNewUserAndGetByUsername('jim');
@@ -538,7 +535,6 @@
                 // just cleanup buffer
                 $this->endAndGetOutputBuffer();
             }
-
 
             // ensure jane can see that contact everywhere
             // jane should have access to see contact on list view
@@ -619,7 +615,6 @@
                 // just cleanup buffer
                 $this->endAndGetOutputBuffer();
             }
-
 
             // ensure jane can not see that contact anywhere
             // jane should have access to see contact on list view

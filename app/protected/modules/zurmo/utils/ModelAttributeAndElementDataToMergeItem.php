@@ -221,7 +221,7 @@
                 {
                     $inputValue = $this->model->$attribute;
                     $displayValue = $inputValue;
-                    if($displayValue == null)
+                    if ($displayValue == null)
                     {
                         $displayValue = Zurmo::t('Core', '(None)');
                     }
@@ -232,11 +232,11 @@
                     $displayValue     = $this->resolveDisplayedValueForRelatedAttribute($attribute, $relatedAttribute);
                     $hiddenInputValue = $this->model->$attribute->id;
                     $hiddenInputId    = $this->getDerivedInputId($attribute, 'id');
-                    if($displayValue == null)
+                    if ($displayValue == null)
                     {
                         $displayValue = Zurmo::t('Core', '(None)');
                     }
-                    if($hiddenInputValue == '-27')
+                    if ($hiddenInputValue == '-27')
                     {
                         $hiddenInputValue = '';
                     }
@@ -245,15 +245,14 @@
                 {
                     $inputValue   = $this->model->$attribute->$relatedAttribute;
                     $displayValue = $this->resolveDisplayedValueForRelatedAttribute($attribute, $relatedAttribute);
-                    if (($displayValue == null && ($this->element instanceof DropDownElement && !empty($this->element->params) && $this->element->params['addBlank'])) 
-                        || ($content == Zurmo::t('Core', '(None)') && !$this->element instanceof AddressElement))
+                    if (($displayValue == null && ($this->element instanceof DropDownElement && !empty($this->element->params) &&
+                        $this->element->params['addBlank'])) || ($content == Zurmo::t('Core', '(None)') && !$this->element instanceof AddressElement))
                     {
                         $displayValue = Zurmo::t('Core', '(None)');
                     }
                 }
                 if ($displayValue != null)
                 {
-                    
                     if ($this->element instanceof ModelElement)
                     {
                         $decoratedContent .= ZurmoHtml::link($displayValue, '#', array('data-id'           => $inputId,
@@ -273,7 +272,7 @@
 
             if ($decoratedContent == null)
             {
-                if($this->element instanceof DropDownElement)
+                if ($this->element instanceof DropDownElement)
                 {
                     $decoratedContent = null;
                 }
