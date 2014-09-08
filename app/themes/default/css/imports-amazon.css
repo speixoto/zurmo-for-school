@@ -3031,7 +3031,7 @@ div.wide.form .errorMessage {
 .show-file-upload-box {
   position: relative;
   bottom: -18px;
-  z-index: 5;
+  z-index: 99999;
   font-weight: normal;
   font-size: 11px;
   color: #26354A;
