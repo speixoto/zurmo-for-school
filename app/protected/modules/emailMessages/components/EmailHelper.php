@@ -361,6 +361,7 @@
                 $emailMessage->save(false);
                 return;
             }
+            $nowTimestamp       = "'" . DateTimeUtil::convertTimestampToDbFormatDateTime(time()) . "'";
             $sendAttempts       = ($emailMessage->sendAttempts)? $emailMessage->sendAttempts : 1;
             $sentDateTime       = ($emailMessage->sentDateTime)? "'" . $emailMessage->sentDateTime . "'" : 'null';
             $serializedData     = ($emailMessage->error->serializedData)?
@@ -370,7 +371,8 @@
                                                                         ' . $sendAttempts . ',
                                                                         ' . $sentDateTime . ',
                                                                         ' . $emailMessage->folder->id . ',
-                                                                        ' . $serializedData .')';
+                                                                        ' . $serializedData . ',
+                                                                        ' . $nowTimestamp .')';
             ZurmoDatabaseCompatibilityUtil::callProcedureWithoutOuts($sql);
             $emailMessage->forget();
         }
