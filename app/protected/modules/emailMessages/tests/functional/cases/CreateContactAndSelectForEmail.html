@@ -23,21 +23,6 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>index.php/contacts/default</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>open</td>
 	<td>index.php/contacts/default/create</td>
 	<td></td>
 </tr>
@@ -115,6 +100,11 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>link=Select Contact / Lead</td>
+	<td>Select Contact / Lead</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -224,6 +214,11 @@
 <tr>
 	<td>waitForText</td>
 	<td>//div[@id='list-view']/div[2]/table/tbody/tr[1]/td[3]/a</td>
+	<td>Test Contact ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>link=Test Contact ${randomSuffix}</td>
 	<td>Test Contact ${randomSuffix}</td>
 </tr>
 <tr>

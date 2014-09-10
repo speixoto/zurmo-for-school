@@ -1119,7 +1119,7 @@
                                                 'Subject</label><span class="required">*</span></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><div><input id="ClassicEmailTemplateWizardForm_' .
                                                 'subject" name="ClassicEmailTemplateWizardForm[subject]"' .
-                                                ' type="text" maxlength="64"') !== false);
+                                                ' type="text" maxlength="255"') !== false);
             $this->assertTrue(strpos($content, '<tr><th><label>Attachments</label></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneClassicEmailTemplateWizardForm"></div>' .
                                                 '<div id="fileUploadClassicEmailTemplateWizardForm">') !== false);
@@ -1286,7 +1286,7 @@
                                                 'Subject</label><span class="required">*</span></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><div><input id="ClassicEmailTemplateWizardForm_' .
                                                 'subject" name="ClassicEmailTemplateWizardForm[subject]"' .
-                                                ' type="text" maxlength="64"') !== false);
+                                                ' type="text" maxlength="255"') !== false);
             $this->assertTrue(strpos($content, '<tr><th><label>Attachments</label></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneClassicEmailTemplateWizardForm"></div>' .
                                                 '<div id="fileUploadClassicEmailTemplateWizardForm">') !== false);
@@ -1460,7 +1460,7 @@
                                                 'Subject</label><span class="required">*</span></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><div><input id="BuilderEmailTemplateWizardForm_' .
                                                 'subject" name="BuilderEmailTemplateWizardForm[subject]"' .
-                                                ' type="text" maxlength="64"') !== false);
+                                                ' type="text" maxlength="255"') !== false);
             $this->assertTrue(strpos($content, '<tr><th><label>Attachments</label></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneBuilderEmailTemplateWizardForm"></div>' .
                                                 '<div id="fileUploadBuilderEmailTemplateWizardForm">') !== false);
@@ -1783,7 +1783,7 @@
                                                 'Subject</label><span class="required">*</span></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><div><input id="BuilderEmailTemplateWizardForm_' .
                                                 'subject" name="BuilderEmailTemplateWizardForm[subject]"' .
-                                                ' type="text" maxlength="64" value="builder 01"') !== false);
+                                                ' type="text" maxlength="255" value="builder 01"') !== false);
             $this->assertTrue(strpos($content, '<tr><th><label>Attachments</label></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneBuilderEmailTemplateWizardForm"></div>' .
                                                 '<div id="fileUploadBuilderEmailTemplateWizardForm">') !== false);

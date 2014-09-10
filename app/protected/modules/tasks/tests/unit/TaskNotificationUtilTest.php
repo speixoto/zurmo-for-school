@@ -88,6 +88,7 @@
             $this->assertCount(1, $emailMessages);
             $this->assertEquals(1,                   $emailMessages[0]->recipients->count());
             $this->assertEquals('sally@zurmo.com',   $emailMessages[0]->recipients[0]->toAddress);
+            $this->assertContains('configurationEdit?id=' . self::$sally->id . '">Manage your email preferences', $emailMessages[0]->content->htmlContent);
         }
 
         public function testTaskStatusBecomesInProgressNotificationWhenUsersAreNotCurrentUser()

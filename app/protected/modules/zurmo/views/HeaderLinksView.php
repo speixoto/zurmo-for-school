@@ -102,9 +102,9 @@
             {
                 $content .= static::renderHeaderGameDashboardContent();
                 $content .= static::renderHeaderCalendarContent();
+                $content .= static::resolveUserSwitcher();
             }
             $content     .= static::renderHeaderMenuContent($userMenuItemsWithTopLevel, self::USER_MENU_ID);
-	        $content     .= static::resolveUserSwitcher();
             return $content;
         }
 
@@ -144,10 +144,11 @@
 
         protected static function renderUserSwitcherContainer($switchedUserContent)
         {
-            $content    = ZurmoHtml::tag('h5', array(), Zurmo::t('Core', 'Use Zurmo as another user'));
+            $content     = ZurmoHtml::tag('h5', array(), Zurmo::t('Core', 'Use Zurmo as another user',
+                           LabelUtil::getTranslationParamsForAllModules()));
             $content    .= $switchedUserContent;
             $content    .= static::renderUserSwitcherAutoCompleteControl();
-            $content    = ZurmoHtml::tag('div', array('id' => 'user-switcher'), $content);
+            $content     = ZurmoHtml::tag('div', array('id' => 'user-switcher'), $content);
             return $content;
         }
 

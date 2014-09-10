@@ -140,11 +140,7 @@
         public function actionDelete($id)
         {
             $group = Group::GetById(intval($id));
-            $group->users->removeAll();
-            $group->groups->removeAll();
-            $group->save();
             $group->delete();
-            unset($group);
             $this->redirect(array($this->getId() . '/index'));
         }
 

@@ -77,6 +77,7 @@
                 'showMaxSize'          => true,
                 'id'                   => __CLASS__,
                 'onSuccessAction'      => "$('#{$this->listViewGridId}').yiiGridView('update');",
+                'formData'             => "{'" . Yii::app()->request->csrfTokenName . "' : '" . Yii::app()->request->csrfToken . "'}"
             ));
 
             $cClipWidget->endClip();

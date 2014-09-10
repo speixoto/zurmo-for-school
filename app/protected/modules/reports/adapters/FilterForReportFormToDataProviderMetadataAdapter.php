@@ -93,7 +93,9 @@
         protected function resolveValueForOperator()
         {
             if ($this->filter->getOperator() == OperatorRules::TYPE_IS_NULL ||
-               $this->filter->getOperator() == OperatorRules::TYPE_IS_NOT_NULL)
+               $this->filter->getOperator() == OperatorRules::TYPE_IS_NOT_NULL ||
+                $this->filter->getOperator() == OperatorRules::TYPE_IS_EMPTY ||
+                $this->filter->getOperator() == OperatorRules::TYPE_IS_NOT_EMPTY)
             {
                 return null;
             }

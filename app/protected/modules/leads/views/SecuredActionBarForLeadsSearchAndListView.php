@@ -49,6 +49,12 @@
                     'toolbar' => array(
                         'elements' => array(
                             array(
+                                'type'            => 'MassSubscribeMenu',
+                                'iconClass'       => 'icon-subscribe',
+                                'listViewGridId'  => 'eval:$this->listViewGridId',
+                                'pageVarName'     => 'eval:$this->pageVarName'
+                            ),
+                            array(
                                 'type'            => 'ListViewMergeMenu',
                                 'iconClass'       => 'icon-merge',
                                 'listViewGridId'  => 'eval:$this->listViewGridId',

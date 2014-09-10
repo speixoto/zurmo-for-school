@@ -1456,5 +1456,128 @@
             $this->assertEquals(28, $activeUserCount);
             $this->assertCount(28, User::getActiveUsers());
         }
+
+        public function testMakeActiveUsersQuerySearchAttributeData()
+        {
+            $searchAttributeData = User::makeActiveUsersQuerySearchAttributeData();
+            $compareData = array(
+                'clauses'   => array(
+                                1 => array(
+                                        "attributeName" => "isActive",
+                                        "operatorType"  => "equals",
+                                        "value"         => true
+                                      ),
+                                2 => array(
+                                        "attributeName" => "isSystemUser",
+                                        "operatorType"  => "equals",
+                                        "value"         => 0
+                                      ),
+                                3 => array(
+                                        "attributeName" => "isSystemUser",
+                                        "operatorType"  => "isNull",
+                                        "value"         => null
+                                      ),
+                                4 => array(
+                                        "attributeName" => "isRootUser",
+                                        "operatorType"  => "equals",
+                                        "value"         => 0
+                                      ),
+                                5 => array(
+                                        "attributeName" => "isRootUser",
+                                        "operatorType"  => "isNull",
+                                        "value"         => null
+                                      )
+                                ),
+                'structure' => "1 and (2 or 3) and (4 or 5)"
+            );
+            $this->assertEquals($compareData, $searchAttributeData);
+            $searchAttributeData = User::makeActiveUsersQuerySearchAttributeData(false);
+            $compareData = array(
+                'clauses'   => array(
+                                1 => array(
+                                        "attributeName" => "isActive",
+                                        "operatorType"  => "equals",
+                                        "value"         => true
+                                      ),
+                                2 => array(
+                                        "attributeName" => "isSystemUser",
+                                        "operatorType"  => "equals",
+                                        "value"         => 0
+                                      ),
+                                3 => array(
+                                        "attributeName" => "isSystemUser",
+                                        "operatorType"  => "isNull",
+                                        "value"         => null
+                                      ),
+                                4 => array(
+                                        "attributeName" => "isRootUser",
+                                        "operatorType"  => "equals",
+                                        "value"         => 0
+                                      ),
+                                5 => array(
+                                        "attributeName" => "isRootUser",
+                                        "operatorType"  => "isNull",
+                                        "value"         => null
+                                      )
+                                ),
+                'structure' => "1 and (2 or 3) and (4 or 5)"
+            );
+            $this->assertEquals($compareData, $searchAttributeData);
+            $searchAttributeData = User::makeActiveUsersQuerySearchAttributeData(true);
+            $compareData = array(
+                'clauses'   => array(
+                                1 => array(
+                                        "attributeName" => "isActive",
+                                        "operatorType"  => "equals",
+                                        "value"         => true
+                                      ),
+                                2 => array(
+                                        "attributeName" => "isSystemUser",
+                                        "operatorType"  => "equals",
+                                        "value"         => 0
+                                      ),
+                                3 => array(
+                                        "attributeName" => "isSystemUser",
+                                        "operatorType"  => "isNull",
+                                        "value"         => null
+                                      ),
+                                ),
+                'structure' => "1 and (2 or 3)"
+            );
+            $this->assertEquals($compareData, $searchAttributeData);
+        }
+
+        public function testActiveUsers()
+        {
+            $activeUserCount = User::getActiveUserCount();
+            $this->assertEquals(28, $activeUserCount);
+            $this->assertCount(28, User::getActiveUsers());
+
+            $activeUserCount = User::getActiveUserCount(false);
+            $this->assertEquals(28, $activeUserCount);
+            $this->assertCount(28, User::getActiveUsers(false));
+
+            $activeUserCount = User::getActiveUserCount(true);
+            $this->assertEquals(28, $activeUserCount);
+            $this->assertCount(28, User::getActiveUsers(true));
+
+            $user = User::getByUsername('rootuser');
+            $this->assertTrue(UserAccessUtil::resolveCanCurrentUserAccessRootUser($user));
+            $user->setIsRootUser();
+            $this->assertTrue($user->save());
+            unset($user);
+
+            $activeUserCount = User::getActiveUserCount();
+            $this->assertEquals(27, $activeUserCount);
+            $this->assertCount(27, User::getActiveUsers());
+
+            $activeUserCount = User::getActiveUserCount(false);
+            $this->assertEquals(27, $activeUserCount);
+            $this->assertCount(27, User::getActiveUsers(false));
+
+            $activeUserCount = User::getActiveUserCount(true);
+            $this->assertEquals(28, $activeUserCount);
+            $this->assertCount(28, User::getActiveUsers(true));
+        }
     }
 ?>

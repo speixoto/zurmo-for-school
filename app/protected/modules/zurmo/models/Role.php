@@ -106,6 +106,14 @@
             return 'RolesModule';
         }
 
+        protected function forgetPermissionsRightsAndPoliciesCache()
+        {
+            PermissionsCache::forgetAll();
+            Permission::resetCaches();
+            RightsCache::forgetAll();
+            PoliciesCache::forgetAll();
+        }
+
         protected function afterSave()
         {
             if (((isset($this->originalAttributeValues['role'])) || $this->isNewModel) &&
@@ -113,6 +121,10 @@
             {
                 AllPermissionsOptimizationUtil::roleParentSet($this);
                 ReadPermissionsSubscriptionUtil::roleParentSet();
+            }
+            if (isset($this->originalAttributeValues['role']) && $this->originalAttributeValues['role'][1] > 0)
+            {
+                $this->forgetPermissionsRightsAndPoliciesCache();
             }
             parent::afterSave();
         }
@@ -152,9 +164,7 @@
 
         protected function afterDelete()
         {
-            PermissionsCache::forgetAll();
-            RightsCache::forgetAll();
-            PoliciesCache::forgetAll();
+            $this->forgetPermissionsRightsAndPoliciesCache();
             ReadPermissionsSubscriptionUtil::roleHasBeenDeleted();
             AllPermissionsOptimizationCache::forgetAll();
         }

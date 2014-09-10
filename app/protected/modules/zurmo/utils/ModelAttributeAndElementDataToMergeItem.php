@@ -197,66 +197,89 @@
         protected function decorateContent($content)
         {
             $decoratedContent = null;
-            if ($content != null)
+
+            $inputIds = $this->getAttributeInputIdsForOnClick();
+            if ($this->model->id == $this->primaryModel->id)
             {
-                $inputIds = $this->getAttributeInputIdsForOnClick();
-                if ($this->model->id == $this->primaryModel->id)
+                $class = ' selected';
+            }
+            else
+            {
+                $class = '';
+            }
+            foreach ($inputIds as $inputId)
+            {
+                $inputIdArray = explode('_', $inputId);
+                $attribute    = $inputIdArray[1];
+                $relatedAttribute = null;
+                //If related attribute is there
+                if (count($inputIdArray) > 2)
                 {
-                    $class = ' selected';
+                    $relatedAttribute = $inputIdArray[2];
+                }
+                if ($relatedAttribute == null)
+                {
+                    $inputValue = $this->model->$attribute;
+                    $displayValue = $inputValue;
+                    if ($displayValue == null)
+                    {
+                        $displayValue = Zurmo::t('Core', '(None)');
+                    }
+                }
+                elseif ($this->element instanceof ModelElement)
+                {
+                    $inputValue       = $this->model->$attribute->$relatedAttribute;
+                    $displayValue     = $this->resolveDisplayedValueForRelatedAttribute($attribute, $relatedAttribute);
+                    $hiddenInputValue = $this->model->$attribute->id;
+                    $hiddenInputId    = $this->getDerivedInputId($attribute, 'id');
+                    if ($displayValue == null)
+                    {
+                        $displayValue = Zurmo::t('Core', '(None)');
+                    }
+                    if ($hiddenInputValue == '-27')
+                    {
+                        $hiddenInputValue = '';
+                    }
                 }
                 else
                 {
-                    $class = '';
+                    $inputValue   = $this->model->$attribute->$relatedAttribute;
+                    $displayValue = $this->resolveDisplayedValueForRelatedAttribute($attribute, $relatedAttribute);
+                    if (($displayValue == null && ($this->element instanceof DropDownElement && !empty($this->element->params) &&
+                        $this->element->params['addBlank'])) || ($content == Zurmo::t('Core', '(None)') && !$this->element instanceof AddressElement))
+                    {
+                        $displayValue = Zurmo::t('Core', '(None)');
+                    }
                 }
-                foreach ($inputIds as $inputId)
+                if ($displayValue != null)
                 {
-                    $inputIdArray = explode('_', $inputId);
-                    $attribute    = $inputIdArray[1];
-                    $relatedAttribute = null;
-                    //If related attribute is there
-                    if (count($inputIdArray) > 2)
+                    if ($this->element instanceof ModelElement)
                     {
-                        $relatedAttribute = $inputIdArray[2];
-                    }
-                    if ($relatedAttribute == null)
-                    {
-                        $inputValue = $this->model->$attribute;
-                        $displayValue = $inputValue;
-                    }
-                    elseif ($this->element instanceof ModelElement)
-                    {
-                        $inputValue       = $this->model->$attribute->$relatedAttribute;
-                        $displayValue     = $this->resolveDisplayedValueForRelatedAttribute($attribute, $relatedAttribute);
-                        $hiddenInputValue = $this->model->$attribute->id;
-                        $hiddenInputId    = $this->getDerivedInputId($attribute, 'id');
+                        $decoratedContent .= ZurmoHtml::link($displayValue, '#', array('data-id'           => $inputId,
+                                                                                       'data-value'        => $inputValue,
+                                                                                       'data-hiddenid'     => $hiddenInputId,
+                                                                                       'data-hiddenvalue'  => $hiddenInputValue,
+                                                                                       'class'             => 'possible attributePreElementContentModelElement merge-color-' . $this->position  . $class));
                     }
                     else
                     {
-                        $inputValue   = $this->model->$attribute->$relatedAttribute;
-                        $displayValue = $this->resolveDisplayedValueForRelatedAttribute($attribute, $relatedAttribute);
-                    }
-                    if ($inputValue != null)
-                    {
-                        if ($this->element instanceof ModelElement)
-                        {
-                            $decoratedContent .= ZurmoHtml::link($displayValue, '#', array('data-id'           => $inputId,
-                                                                                           'data-value'        => $inputValue,
-                                                                                           'data-hiddenid'     => $hiddenInputId,
-                                                                                           'data-hiddenvalue'  => $hiddenInputValue,
-                                                                                           'class'             => 'possible attributePreElementContentModelElement merge-color-' . $this->position  . $class));
-                        }
-                        else
-                        {
-                            $decoratedContent .= ZurmoHtml::link($displayValue, '#', array('data-id'     => $inputId,
-                                                                                           'data-value'  => $inputValue,
-                                                                                           'class'       => 'possible attributePreElementContent merge-color-' . $this->position . $class));
-                        }
+                        $decoratedContent .= ZurmoHtml::link($displayValue, '#', array('data-id'     => $inputId,
+                                                                                       'data-value'  => $inputValue,
+                                                                                       'class'       => 'possible attributePreElementContent merge-color-' . $this->position . $class));
                     }
                 }
             }
+
             if ($decoratedContent == null)
             {
-                $decoratedContent = ZurmoHtml::tag('span', array('class' => 'possible merge-color-' . $this->position), Zurmo::t('Core', '(None)'));
+                if ($this->element instanceof DropDownElement)
+                {
+                    $decoratedContent = null;
+                }
+                else
+                {
+                    $decoratedContent = ZurmoHtml::tag('span', array('class' => 'possible merge-color-' . $this->position), Zurmo::t('Core', '(None)'));
+                }
             }
             if ($this->element instanceof AddressElement)
             {

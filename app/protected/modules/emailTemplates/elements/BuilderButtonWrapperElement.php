@@ -38,7 +38,6 @@
     {
         public static function isUIAccessible()
         {
-            //TODO: @sergio: Changed since we reverted to 753baf temporary. Check if we will use this or remove
             return false;
         }
 

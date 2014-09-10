@@ -138,7 +138,7 @@
         public function getAllocatedMemoryInBytes()
         {
             $allocatedMemory = ini_get('memory_limit');
-            $allocatedMemoryInBytes = $this->convertToBytes($allocatedMemory);
+            $allocatedMemoryInBytes = StringUtil::convertToBytes($allocatedMemory);
             return $allocatedMemoryInBytes;
         }
 
@@ -178,28 +178,6 @@
             else
             {
                 return true;
-            }
-        }
-
-        /**
-         * Convert kilobytes, megabytes, and gigabytes into bytes
-         * input value is in format $value{size} where size is in {'K','M','G'}
-         * @param $value
-         * @return int
-         */
-        protected function convertToBytes($value)
-        {
-            $strippedValue = substr($value, 0, -1);
-            switch(strtoupper(substr($value, -1)))
-            {
-                case "K":
-                    return $strippedValue * 1024;
-                case "M":
-                    return $strippedValue * pow(1024, 2);
-                case "G":
-                    return $strippedValue * pow(1024, 3);
-                default:
-                    return $value;
             }
         }
     }

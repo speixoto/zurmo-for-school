@@ -69,18 +69,32 @@
             $searchAttributeData = array();
             if ($model instanceof Group)
             {
-                if ($model->name == Group::EVERYONE_GROUP_NAME)
-                {
-                    return array();
-                }
                 $searchAttributeData['clauses'] = array(
                     1 => array(
+                        'attributeName'        => 'isSystemUser',
+                        'operatorType'         => 'equals',
+                        'value'                => 0,
+                    ),
+                    2 => array(
+                        'attributeName'        => 'isSystemUser',
+                        'operatorType'         => 'isNull',
+                        'value'                => null,
+                    )
+                );
+                if ($model->name == Group::EVERYONE_GROUP_NAME)
+                {
+                    $searchAttributeData['structure'] = '1 or 2';
+                }
+                else
+                {
+                    $searchAttributeData['clauses'][3] = array(
                         'attributeName'        => $attributeName,
                         'relatedAttributeName' => 'id',
                         'operatorType'         => 'equals',
                         'value'                => $model->id,
-                    )
-                );
+                    );
+                    $searchAttributeData['structure'] = '(1 or 2) and 3';
+                }
             }
             else
             {
@@ -91,8 +105,8 @@
                         'value'                => $model->id,
                     )
                 );
+                $searchAttributeData['structure'] = '1';
             }
-            $searchAttributeData['structure'] = '1';
             return $searchAttributeData;
         }
 

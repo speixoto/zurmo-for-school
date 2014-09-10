@@ -640,7 +640,6 @@
             foreach (PathUtil::getAllMungableModelClassNames() as $modelClassName)
             {
                 $mungeTableName = self::getMungeTableName($modelClassName);
-
                 $usersInRolesChildren = self::getAllUsersInRolesChildRolesRecursively($role);
 
                 // Handle users in $role. In/decrement for the parent's parent
@@ -663,7 +662,7 @@
                             from   permission
                             where  permitable_id in (' . join(', ', $permitableIds) . ')';
                     $securableItemIds = ZurmoRedBean::getCol($sql);
-                    self::$countMethod($mungeTableName, $securableItemIds, $role->role);
+                    self::$countMethod($mungeTableName, $securableItemIds, $role);
                 }
 
                 // Handle users in the child roles of $role. Increment for the parent's parent

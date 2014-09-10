@@ -147,7 +147,7 @@
             foreach ($contacts as $index => $contact)
             {
                 $unsubcribed = ($index % 2);
-                $member = MarketingListMemberTestHelper::populateMarketingListMember($unsubcribed, $marketingList, $contacts[0]);
+                $member = MarketingListMemberTestHelper::populateMarketingListMember($unsubcribed, $marketingList, $contact);
                 $this->assertTrue($member->unrestrictedSave());
                 if ($unsubcribed)
                 {

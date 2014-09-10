@@ -274,8 +274,11 @@
                 }
             }
 
-            $recipientsInfo = EmailArchivingUtil::resolveEmailRecipientsFromEmailMessage($message);
-            if (!$recipientsInfo)
+            try
+            {
+                $recipientsInfo = EmailArchivingUtil::resolveEmailRecipientsFromEmailMessage($message);
+            }
+            catch (NotSupportedException $exception)
             {
                 $this->resolveMessageSubjectAndContentAndSendSystemMessage('RecipientNotExtracted', $message);
                 return false;

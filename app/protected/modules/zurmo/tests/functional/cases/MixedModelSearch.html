@@ -297,6 +297,11 @@
 </tr>
 <!--Convert lead to contact and search for it in leads-->
 <tr>
+	<td>assertText</td>
+	<td>link=My Contact ${randomSuffix}</td>
+	<td>My Contact ${randomSuffix}</td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>link=My Contact ${randomSuffix}</td>
 	<td></td>
@@ -310,6 +315,11 @@
     <td>waitForCondition</td>
     <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
     <td>30000</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>link=Convert</td>
+	<td>Convert</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
