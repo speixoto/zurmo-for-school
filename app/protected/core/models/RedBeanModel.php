@@ -2500,9 +2500,9 @@
         {
             assert('is_string($attributeName)');
             assert('is_string($language)');
-            if (isset(static::$attributeLabelsByLanguage[$language][$attributeName]))
+            if (isset(static::$attributeLabelsByLanguage[$language][get_called_class()][$attributeName]))
             {
-                return static::$attributeLabelsByLanguage[$language][$attributeName];
+                return static::$attributeLabelsByLanguage[$language][get_called_class()][$attributeName];
             }
             $labels       = static::translatedAttributeLabels($language);
             $customLabel  = static::getTranslatedCustomAttributeLabelByLanguage($attributeName, $language);
@@ -2520,7 +2520,7 @@
                 //attributes in translatedAttributeLabels($language)
                 $label = Zurmo::t('Core', static::generateAnAttributeLabel($attributeName), array(), null, $language);
             }
-            static::$attributeLabelsByLanguage[$language][$attributeName] = $label;
+            static::$attributeLabelsByLanguage[$language][get_called_class()][$attributeName] = $label;
             return $label;
         }
 
