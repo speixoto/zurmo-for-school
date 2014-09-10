@@ -44,7 +44,9 @@
          */
         public static function generateCampaignItemsForDueCampaigns()
         {
-            $sql                    = '`generate_campaign_items`(' . Campaign::STATUS_ACTIVE . ', ' . Campaign::STATUS_PROCESSING . ')';
+            $nowTimestamp           = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $sql                    = "`generate_campaign_items`(" . Campaign::STATUS_ACTIVE . "," .
+                                        Campaign::STATUS_PROCESSING . ",'${nowTimestamp}')";
             ZurmoDatabaseCompatibilityUtil::callProcedureWithoutOuts($sql);
             Yii::app()->jobQueue->add('CampaignQueueMessagesInOutbox', 5);
             return true;
