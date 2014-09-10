@@ -912,36 +912,9 @@
             return true;
         }
 
-        public static function getActiveUserCount()
+        public static function getActiveUserCount($includeRootUser = false)
         {
-            $searchAttributeData['clauses'] = array(
-                1 => array(
-                    'attributeName'        => 'isActive',
-                    'operatorType'         => 'equals',
-                    'value'                => true,
-                ),
-                2 => array(
-                    'attributeName'        => 'isRootUser',
-                    'operatorType'         => 'equals',
-                    'value'                => 0,
-                ),
-                3 => array(
-                    'attributeName'        => 'isRootUser',
-                    'operatorType'         => 'isNull',
-                    'value'                => null,
-                ),
-                4 => array(
-                    'attributeName'        => 'isSystemUser',
-                    'operatorType'         => 'equals',
-                    'value'                => 0,
-                ),
-                5 => array(
-                    'attributeName'        => 'isSystemUser',
-                    'operatorType'         => 'isNull',
-                    'value'                => null,
-                )
-            );
-            $searchAttributeData['structure'] = '1 and (2 or 3) and (4 or 5)';
+            $searchAttributeData    = self::makeActiveUsersQuerySearchAttributeData($includeRootUser);
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
             $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
             return static::getCount($joinTablesAdapter, $where, null);

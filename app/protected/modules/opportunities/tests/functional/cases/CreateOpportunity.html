@@ -12,14 +12,14 @@
 <tr><td rowspan="1" colspan="3">Create Opportunity</td></tr>
 </thead><tbody>
 <tr>
-  <td>setTimeout</td>
-  <td>45000</td>
-  <td></td>
+    <td>setTimeout</td>
+    <td>45000</td>
+    <td></td>
 </tr>
 <tr>
-  <td>storeGlobal</td>
-  <td>javascript{Math.floor(Math.random()*11000)}</td>
-  <td>randomSuffix</td>
+    <td>storeGlobal</td>
+    <td>javascript{Math.floor(Math.random()*11000)}</td>
+    <td>randomSuffix</td>
 </tr>
 <!--store current date-->
 <tr>
@@ -35,49 +35,49 @@
 </tr>
 <!--create account to link with opportunity-->
 <tr>
-  <td>open</td>
-  <td>index.php/accounts/default/create</td>
-  <td></td>
+    <td>open</td>
+    <td>index.php/accounts/default/create</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>Create Account</td>
-  <td></td>
+    <td>waitForTextPresent</td>
+    <td>Create Account</td>
+    <td></td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>Account_name</td>
-  <td>Test Account ${randomSuffix}</td>
+    <td>type</td>
+    <td>Account_name</td>
+    <td>Test Account ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>save</td>
-  <td></td>
+    <td>clickAndWait</td>
+    <td>save</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>//div[@id='AccountDetailsPortletView']/div/div/div/table/tbody/tr[1]/td</td>
-  <td>Test Account ${randomSuffix}</td>
+    <td>waitForText</td>
+    <td>//div[@id='AccountDetailsPortletView']/div/div/div/table/tbody/tr[1]/td</td>
+    <td>Test Account ${randomSuffix}</td>
 </tr>
 <!--Go to create opportunity-->
 <tr>
@@ -179,9 +179,9 @@
 </tr>
 <!--add opportunity details-->
 <tr>
-  <td>type</td>
-  <td>Opportunity_name</td>
-  <td>Test Opportunity ${randomSuffix}</td>
+    <td>type</td>
+    <td>Opportunity_name</td>
+    <td>Test Opportunity ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>select</td>
@@ -189,29 +189,29 @@
 	<td>label=EUR</td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>Opportunity_amount_value</td>
-  <td>500.34</td>
+    <td>type</td>
+    <td>Opportunity_amount_value</td>
+    <td>500.34</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>Opportunity_account_SelectLink</td>
-  <td></td>
+    <td>click</td>
+    <td>Opportunity_account_SelectLink</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForElementPresent</td>
-  <td>AccountsSearchForm_anyMixedAttributes</td>
-  <td></td>
+    <td>waitForElementPresent</td>
+    <td>AccountsSearchForm_anyMixedAttributes</td>
+    <td></td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>AccountsSearchForm_anyMixedAttributes</td>
-  <td>Test Account ${randomSuffix}</td>
+    <td>type</td>
+    <td>AccountsSearchForm_anyMixedAttributes</td>
+    <td>Test Account ${randomSuffix}</td>
 </tr>
 <tr>
     <td>keyUp</td>
@@ -219,79 +219,79 @@
     <td>\10</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr[1]/td/a</td>
-  <td>Test Account ${randomSuffix}</td>
+    <td>waitForText</td>
+    <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr[1]/td/a</td>
+    <td>Test Account ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr[1]/td/a</td>
-  <td></td>
+    <td>click</td>
+    <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr[1]/td/a</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForValue</td>
-  <td>Opportunity_account_name</td>
-  <td>Test Account ${randomSuffix}</td>
+    <td>waitForValue</td>
+    <td>Opportunity_account_name</td>
+    <td>Test Account ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>assertNotValue</td>
-  <td>Opportunity_account_id</td>
-  <td></td>
+    <td>assertNotValue</td>
+    <td>Opportunity_account_id</td>
+    <td></td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>Opportunity_closeDate</td>
-  <td>${month}/${date}/14</td>
+    <td>type</td>
+    <td>Opportunity_closeDate</td>
+    <td>${month}/${date}/14</td>
 </tr>
 <tr>
-  <td>select</td>
-  <td>Opportunity_stage_value</td>
-  <td>label=Negotiating</td>
+    <td>select</td>
+    <td>Opportunity_stage_value</td>
+    <td>label=Negotiating</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>select</td>
-  <td>Opportunity_source_value</td>
-  <td>label=Tradeshow</td>
+    <td>select</td>
+    <td>Opportunity_source_value</td>
+    <td>label=Tradeshow</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>Opportunity_description</td>
-  <td>test description</td>
+    <td>type</td>
+    <td>Opportunity_description</td>
+    <td>test description</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>Opportunity_owner_SelectLink</td>
-  <td></td>
+    <td>click</td>
+    <td>Opportunity_owner_SelectLink</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForElementPresent</td>
-  <td>UsersSearchForm_anyMixedAttributes</td>
-  <td></td>
+    <td>waitForElementPresent</td>
+    <td>UsersSearchForm_anyMixedAttributes</td>
+    <td></td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>UsersSearchForm_anyMixedAttributes</td>
-  <td>Sam Smith</td>
+    <td>type</td>
+    <td>UsersSearchForm_anyMixedAttributes</td>
+    <td>Sam Smith</td>
 </tr>
 <tr>
     <td>keyUp</td>
@@ -299,9 +299,9 @@
     <td>\10</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
     <td>waitForText</td>
@@ -309,34 +309,39 @@
     <td>Sam Smith</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>link=Sam Smith</td>
-  <td></td>
+    <td>assertText</td>
+    <td>link=Sam Smith</td>
+    <td>Sam Smith</td>
 </tr>
 <tr>
-  <td>waitForValue</td>
-  <td>Opportunity_owner_name</td>
-  <td>Sam Smith</td>
+    <td>click</td>
+    <td>link=Sam Smith</td>
+    <td></td>
 </tr>
 <tr>
-  <td>assertNotValue</td>
-  <td>Opportunity_owner_id</td>
-  <td></td>
+    <td>waitForValue</td>
+    <td>Opportunity_owner_name</td>
+    <td>Sam Smith</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>save</td>
-  <td></td>
+    <td>assertNotValue</td>
+    <td>Opportunity_owner_id</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>clickAndWait</td>
+    <td>save</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <!--verify values after creating opportunity-->
 <tr>

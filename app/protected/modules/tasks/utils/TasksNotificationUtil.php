@@ -340,10 +340,10 @@
             $emailContent               = new EmailMessageContent();
             $emailContent->textContent  = EmailNotificationUtil::
                                             resolveNotificationTextTemplate(
-                                            $notification->notificationMessage->textContent);
+                                            $notification->notificationMessage->textContent, $notification->owner);
             $emailContent->htmlContent  = EmailNotificationUtil::
                                             resolveNotificationHtmlTemplate(
-                                            $notification->notificationMessage->htmlContent);
+                                            $notification->notificationMessage->htmlContent, $notification->owner);
             return $emailContent;
         }
 

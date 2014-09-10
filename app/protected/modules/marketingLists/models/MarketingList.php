@@ -134,7 +134,7 @@
             return 'MarketingListGamification';
         }
 
-        public function addNewMember($contactId, $unsubscribed = false, $contact = null)
+        public function addNewMember($contactId, $unsubscribed = false, $contact = null, $scenario = null)
         {
             $member                     = new MarketingListMember();
             if (empty($contact))
@@ -144,22 +144,15 @@
             $member->contact            = $contact;
             $member->unsubscribed       = $unsubscribed;
             $member->marketingList      = $this;
+            if (isset($scenario))
+            {
+                $member->setScenario($scenario);
+            }
             if ($this->memberAlreadyExists($contact->id))
             {
                 return false;
             }
-            else
-            {
-                $saved = $member->unrestrictedSave();
-                if ($saved)
-                {
-                    return true;
-                }
-                else
-                {
-                    throw new FailedToSaveModelException();
-                }
-            }
+            return $member->unrestrictedSave();
         }
 
         public function memberAlreadyExists($contactId)

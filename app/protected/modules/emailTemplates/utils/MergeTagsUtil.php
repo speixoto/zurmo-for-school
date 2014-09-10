@@ -167,7 +167,7 @@
 
             // Current RE: /((WAS\%)?(([A-Z0-9])(\^|__)?)+)/ // Not Coding Standard
             $pattern =  '/' . $tagPrefix . '((WAS' . $timeDelimiter . ')?' .
-                        '(([A-Z0-9])' . '(' . $capitalDelimiter . '|' .
+                        '(([A-Z0-9_])' . '(' . $capitalDelimiter . '|' .
                         $propertyDelimiter . ')?)+)' . // Not Coding Standard
                         $tagSuffix . '/';
             // $this->mergeTags index 0 = with tag prefix and suffix, index 1 = without tag prefix and suffix

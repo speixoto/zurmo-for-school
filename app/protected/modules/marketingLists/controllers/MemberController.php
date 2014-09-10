@@ -102,14 +102,8 @@
         protected static function processModelForMassSubscribeOrUnsubscribe(& $model, $unsubscribed)
         {
             $model->unsubscribed = $unsubscribed;
-            if (!$model->unrestrictedSave())
-            {
-                throw new FailedToSaveModelException();
-            }
-            else
-            {
-                return true;
-            }
+            $model->unrestrictedSave();
+            return true;
         }
 
         protected static function resolveTitleByMassActionId($actionId)

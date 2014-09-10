@@ -639,12 +639,12 @@
                 return has_read;
             end;',
 
-            'create function create_item(user_id int)
+            'create function create_item(user_id int, now_timestamp datetime)
             returns int
             begin
               insert into `item` ( `id`, `createddatetime`, `modifieddatetime`,
                     `createdbyuser__user_id`, `modifiedbyuser__user_id` )
-                    VALUES ( NULL,  NOW() , NOW(), user_id, user_id  );
+                    VALUES ( NULL,  now_timestamp , now_timestamp, user_id, user_id  );
                return last_insert_id();
             end;',
 
@@ -653,8 +653,11 @@
                                                     subject varchar(255), headers text, folder_id int,
                                                     serialized_data text, to_address varchar(255), to_name varchar(128),
                                                     recipient_type int, contact_item_id int,
-                                                    related_model_type varchar(255), related_model_id int)
+                                                    related_model_type varchar(255), related_model_id int,
+                                                     now_timestamp datetime)
             returns int
+            NOT DETERMINISTIC
+            MODIFIES SQL DATA
             begin
                 insert into `emailmessagecontent` ( `textcontent`, `htmlcontent` )
                             values ( text_content, html_content );
@@ -662,7 +665,7 @@
                 insert into `emailmessagesender` ( `fromname`, `fromaddress` )
                             values ( from_name, from_address );
                 set @senderId = last_insert_id();
-                set @emailMessageItemId = create_item(1);
+                set @emailMessageItemId = create_item(1, now_timestamp);
                 insert into `securableitem` ( `item_id` )
                             values ( @emailMessageItemId );
                 insert into `ownedsecurableitem` ( `securableitem_id`, `owner__user_id` )
@@ -674,14 +677,14 @@
                 set @emailMessageId = LAST_INSERT_ID();
                 insert into `auditevent` ( `datetime`, `modulename`, `eventname`, `_user_id`,
                                             `modelclassname`, `modelid`, `serializeddata` )
-                            values ( NOW(), "ZurmoModule", "Item Created", user_id,
+                            values ( now_timestamp, "ZurmoModule", "Item Created", user_id,
                                     "EmailMessage", @emailMessageId, serialized_data );
                 insert into `emailmessagerecipient` ( `toaddress`, `toname`, `type`, `emailmessage_id` )
                             values ( to_address, to_name, recipient_type, @emailMessageId );
                 set @recipientId = last_insert_id();
                 insert into `emailmessagerecipient_item` ( `emailmessagerecipient_id`, `item_id` )
                             values ( @recipientId, contact_item_id );
-                call duplicate_filemodels(related_model_type, related_model_id, "emailmessage", @emailMessageId, user_id);
+                call duplicate_filemodels(related_model_type, related_model_id, "emailmessage", @emailMessageId, user_id, now_timestamp);
                 return @emailMessageId;
             end;',
         );
@@ -1647,11 +1650,12 @@
             // Misc
 
             'create procedure duplicate_filemodels(related_model_type varchar(255), related_model_id int,
-                                                new_model_type varchar(255), new_model_id int, user_id int)
+                                                new_model_type varchar(255), new_model_id int, user_id int,
+                                                 now_timestamp datetime)
             begin
                 insert into `filemodel` (`id`, `name`, `size`, `type`, `item_id`,
                                                     `filecontent_id`, `relatedmodel_id`, `relatedmodel_type`)
-                    select null as `id`, `name`, `size`, `type`, (select create_item(user_id)) as `item_id`, `filecontent_id`,
+                    select null as `id`, `name`, `size`, `type`, (select create_item(user_id, now_timestamp)) as `item_id`, `filecontent_id`,
                         new_model_id as `relatedmodel_id`, new_model_type as `relatedmodel_type`
                     from `filemodel`
                     where `relatedmodel_type` = related_model_type and `relatedmodel_id` = related_model_id;
@@ -1669,14 +1673,14 @@
                                 and `campaignitem`.`id` is null and `contact`.`id` is not null);
             end;',
 
-            'create procedure generate_campaign_items(active_status int, processing_status int)
+            'create procedure generate_campaign_items(active_status int, processing_status int, now_timestamp datetime)
             begin
                   declare loop0_eof boolean default false;
                   declare campaign_id int(11);
                   declare marketinglist_id int(11);
 
                   declare cursor0 cursor for select `campaign`.`id`, `campaign`.`marketinglist_id` from `campaign`
-                        where ((`campaign`.`status` = active_status) and (`campaign`.`sendondatetime` < NOW()));
+                        where ((`campaign`.`status` = active_status) and (`campaign`.`sendondatetime` < now_timestamp));
                   declare continue handler for not found set loop0_eof = TRUE;
                   open cursor0;
                         loop0: loop
@@ -1688,6 +1692,28 @@
                               update `campaign` set `status` = processing_status where id = campaign_id;
                         end loop loop0;
                   close cursor0;
+            end;
+
+            create procedure update_email_message_for_sending(message_id int, send_attempts int, sent_datetime datetime,
+                                                                folder_id int, error_serialized_data text, now_timestamp datetime)
+            begin
+                set @emailMessageSendErrorId    = null;
+                delete from `emailmessagesenderror`
+                        where id = (select error_emailmessagesenderror_id
+                                    from `emailmessage`
+                                    where id = message_id);
+                if (error_serialized_data is not null) then
+                    insert into `emailmessagesenderror` ( id, `createddatetime`,`serializeddata` ) values
+                            (null,  now_timestamp , error_serialized_data);
+                    set @emailMessageSendErrorId = last_insert_id();
+                end if;
+
+                update `emailmessage` set
+                        `sendattempts` = send_attempts,
+                        `sentdatetime` = sent_datetime,
+                        `folder_emailfolder_id` = folder_id,
+                        `error_emailmessagesenderror_id` = @emailMessageSendErrorId
+                        where id = message_id;
             end;',
         );
         // End Not Coding Standard

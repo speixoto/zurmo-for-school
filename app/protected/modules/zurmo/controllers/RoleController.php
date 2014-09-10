@@ -150,9 +150,6 @@
         public function actionDelete($id)
         {
             $role = Role::GetById(intval($id));
-            $role->users->removeAll();
-            $role->roles->removeAll();
-            $role->save();
             $role->delete();
             unset($role);
             $this->redirect(array($this->getId() . '/index'));

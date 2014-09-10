@@ -12,9 +12,9 @@
 <tr><td rowspan="1" colspan="3">Edit Opportunity</td></tr>
 </thead><tbody>
 <tr>
-  <td>setTimeout</td>
-  <td>45000</td>
-  <td></td>
+    <td>setTimeout</td>
+    <td>45000</td>
+    <td></td>
 </tr>
 <!--Go to opportunities list-->
 <tr>
@@ -101,6 +101,11 @@
 </tr>
 <!--edit opportunity-->
 <tr>
+	<td>assertText</td>
+	<td>link=Edit</td>
+	<td>Edit</td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
 	<td>link=Edit</td>
 	<td></td>
@@ -111,24 +116,24 @@
 	<td></td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>Opportunity_description</td>
-  <td>test description edited</td>
+    <td>type</td>
+    <td>Opportunity_description</td>
+    <td>test description edited</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>save</td>
-  <td></td>
+    <td>clickAndWait</td>
+    <td>save</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <!--verify values after editing opportunity-->
 <tr>

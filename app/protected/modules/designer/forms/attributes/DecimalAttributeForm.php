@@ -65,6 +65,7 @@
                 array('precisionLength',  'length',    'min' => 1, 'max' => 2),
                 array('precisionLength',  'numerical', 'min' => 1, 'max' => 6),
                 array('precisionLength',  'numerical', 'integerOnly' => true),
+                array('defaultValue',  'numerical'),
             ));
         }
 

@@ -139,17 +139,58 @@
             $this->assertEquals('Jan',      $chartData[0]['dateBalloonLabel']);
         }
 
+        public function testGetChartDataCombinesRows()
+        {
+            $contacts = Contact::getAll();
+
+            $this->addCampaignItem($contacts[0], '2000-01-01', array(
+                    CampaignItemActivity::TYPE_CLICK => 1,
+                    CampaignItemActivity::TYPE_BOUNCE => 1,
+                    CampaignItemActivity::TYPE_OPEN => 1,
+                    CampaignItemActivity::TYPE_SKIP => 1,
+                    CampaignItemActivity::TYPE_UNSUBSCRIBE => 1),
+                null
+            );
+
+            $this->addCampaignItem($contacts[1], '2000-01-02', array(
+                    CampaignItemActivity::TYPE_CLICK => 1,
+                    CampaignItemActivity::TYPE_BOUNCE => 1,
+                    CampaignItemActivity::TYPE_OPEN => 1,
+                    CampaignItemActivity::TYPE_SKIP => 1,
+                    CampaignItemActivity::TYPE_UNSUBSCRIBE => 1),
+                '2000-01-01'
+            );
+            $chartDataProvider  = new MarketingEmailsInThisListChartDataProvider();
+            $chartDataProvider->setBeginDate('2000-01-01');
+            $chartDataProvider->setEndDate('2000-01-02');
+            $chartDataProvider->setGroupBy(MarketingOverallMetricsForm::GROUPING_TYPE_DAY);
+            $chartData          = $chartDataProvider->getChartData();
+            $this->assertEquals(
+                array(
+                    'queued' => 0,
+                    'sent' => 2,
+                    'uniqueClicks' => 2,
+                    'uniqueOpens' => 2,
+                    'bounced' => 2,
+                    'optedOut' => 2,
+                    'displayLabel' => 'Jan 1',
+                    'dateBalloonLabel' => 'Jan 1'
+                ),
+                $chartData[0]
+            );
+        }
+
         /**
          * @dataProvider dataForTestGetChartData
          */
         public function testGetChartData($activityCreationArray, $emailMessageSentDateTime, $isMultiplierOn)
         {
             $contacts = Contact::getAll();
-            $this->addCampaignItem     ($contacts[0], $emailMessageSentDateTime, $activityCreationArray);
+            $this->addCampaignItem     ($contacts[0], $emailMessageSentDateTime, $activityCreationArray, null);
             $this->addAutoresponderItem($contacts[0], $emailMessageSentDateTime, $activityCreationArray);
             if ($isMultiplierOn)
             {
-                $this->addCampaignItem     ($contacts[1], $emailMessageSentDateTime, $activityCreationArray);
+                $this->addCampaignItem     ($contacts[1], $emailMessageSentDateTime, $activityCreationArray, null);
                 $this->addAutoresponderItem($contacts[1], $emailMessageSentDateTime, $activityCreationArray);
             }
 
@@ -529,9 +570,9 @@
                                 $chartDataColumn['dateBalloonLabel']);
         }
 
-        private function addCampaignItem($contact, $emailMessageSentDateTime, $creationArray)
+        private function addCampaignItem($contact, $emailMessageSentDateTime, $creationArray, $emailMessageCreatedDateTime = null)
         {
-            $emailMessage                            = $this->createEmailMessage($contact, $emailMessageSentDateTime);
+            $emailMessage                            = $this->createEmailMessage($contact, $emailMessageSentDateTime, $emailMessageCreatedDateTime);
             $campaignItem                            = new CampaignItem();
             $campaignItem->contact                   = $contact;
             $campaignItem->processed                 = true;
@@ -541,9 +582,9 @@
             $this->assertTrue($this->campaign->save());
         }
 
-        private function addAutoresponderItem($contact, $emailMessageSentDateTime, $creationArray)
+        private function addAutoresponderItem($contact, $emailMessageSentDateTime, $creationArray, $emailMessageCreatedDateTime = null)
         {
-            $emailMessage                            = $this->createEmailMessage($contact, $emailMessageSentDateTime);
+            $emailMessage                            = $this->createEmailMessage($contact, $emailMessageSentDateTime, $emailMessageCreatedDateTime);
             $autoresponderItem                       = new AutoresponderItem();
             $autoresponderItem->contact              = $contact;
             $autoresponderItem->processed            = true;
@@ -556,8 +597,12 @@
             $this->assertTrue($this->autoresponder->save());
         }
 
-        private function createEmailMessage($contact, $emailMessageSentDateTime)
+        private function createEmailMessage($contact, $emailMessageSentDateTime, $emailMessageCreatedDateTime = null)
         {
+            if ($emailMessageCreatedDateTime == null)
+            {
+                $emailMessageCreatedDateTime = $emailMessageSentDateTime;
+            }
             $emailBox                                = $this->emailBox;
 
             $emailMessage                            = new EmailMessage();
@@ -585,7 +630,8 @@
             {
                 $emailMessage->sentDateTime              = DateTimeUtil
                         ::convertTimestampToDbFormatDateTime(strtotime($emailMessageSentDateTime));
-                $emailMessage->createdDateTime           = $emailMessage->sentDateTime;
+                $emailMessage->createdDateTime           = DateTimeUtil
+                        ::convertTimestampToDbFormatDateTime(strtotime($emailMessageCreatedDateTime));
             }
             $emailMessage->folder                    =
                     EmailFolder::getByBoxAndType($emailBox, EmailFolder::TYPE_ARCHIVED);

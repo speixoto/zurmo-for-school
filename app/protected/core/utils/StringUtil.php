@@ -229,5 +229,27 @@
             }
             return true;
         }
+
+        /**
+         * Convert kilobytes, megabytes, and gigabytes into bytes
+         * input value is in format $value{size} where size is in {'K','M','G'}
+         * @param $value
+         * @return int
+         */
+        public static function convertToBytes($value)
+        {
+            $strippedValue = substr($value, 0, -1);
+            switch(strtoupper(substr($value, -1)))
+            {
+                case "K":
+                    return $strippedValue * 1024;
+                case "M":
+                    return $strippedValue * pow(1024, 2);
+                case "G":
+                    return $strippedValue * pow(1024, 3);
+                default:
+                    return $value;
+            }
+        }
     }
 ?>

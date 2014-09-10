@@ -261,7 +261,6 @@
                 'enableCookieValidation' => false, //keep off until we can fix it on linux/windows servers.
                 'excludeCsrfValidationRoutes' => array(
                     array('route' => 'contacts/external/', 'tokenEnabled' => true),
-                    array('route' => 'zurmo/imageModel/upload/', 'tokenEnabled' => false), //TODO: @sergio: Remove this when implemented outside redactor
                 ),
             ),
             'sanitizer' => array(
@@ -361,8 +360,9 @@
             'lessCompiler' => array(
                 'class'                 => 'application.extensions.lessphp.LessCompiler',
                 'formatterName'         => 'lessjs',
-                'primaryLessFileToCompile' => 'zurmo.less',
-                'secondaryLessFileToCompile' => 'imports.less',
+                'themeColorDependentLessFilesToCompile' => array(
+                    'zurmo.less', 'imports.less'
+                ),
                 'lessFilesToCompile'    => array(
                     'ie.less',
                     'mobile.less',

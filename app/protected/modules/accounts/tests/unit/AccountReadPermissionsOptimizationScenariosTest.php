@@ -2111,5 +2111,157 @@
             $g3->group = null;
             $this->assertTrue($g3->save());
         }
+
+        /*
+         * @depends testUserAddedToGroup_Slide22
+         */
+        public function testUsersAddedToRoleRolesParentAndGrandParent_Slide23()
+        {
+            $u99 = User::getByUsername('u99.');
+            Yii::app()->user->userModel = $u99;
+
+            $u1  = User::getByUsername('u1.');
+            $u2  = User::getByUsername('u2.');
+            $u3  = User::getByUsername('u3.');
+
+            // set role to null
+            $u1->role   = null;
+            $this->assertTrue($u1->save());
+            $u1->forget();
+            $u2->role   = null;
+            $this->assertTrue($u2->save());
+            $u2->forget();
+            $u3->role   = null;
+            $this->assertTrue($u3->save());
+            $u3->forget();
+
+            // get roles
+            $r1 = Role::getByName('R1.');
+            $r2 = Role::getByName('R2.');
+            $r3 = Role::getByName('R3.');
+
+            // set roles-parent-grandparent relationship
+            // r2 is parent of r1
+            $r1->role   = $r2;
+            $this->assertTrue($r1->save());
+            $r1->forget();
+            // r3 is parent of r2
+            $r2->role   = $r3;
+            $this->assertTrue($r2->save());
+            $r2->forget();
+            $r3->forget();
+
+            // set user-role mappings
+            $u1  = User::getByUsername('u1.');
+            $u2  = User::getByUsername('u2.');
+            $u3  = User::getByUsername('u3.');
+
+            $r1 = Role::getByName('R1.');
+            $r2 = Role::getByName('R2.');
+            $r3 = Role::getByName('R3.');
+
+            $u1->role   = $r1;
+            $this->assertTrue($u1->save());
+            //Called in $u1->afterSave();
+            //ReadPermissionsOptimizationUtil::userAddedToRole($u1);
+            $u1->forget();
+            $r1->forget();
+
+            $u2->role   = $r2;
+            $this->assertTrue($u2->save());
+            //Called in $u2->afterSave();
+            //ReadPermissionsOptimizationUtil::userAddedToRole($u2);
+            $u2->forget();
+            $r2->forget();
+
+            $u3->role   = $r3;
+            $this->assertTrue($u3->save());
+            //Called in $u3->afterSave();
+            //ReadPermissionsOptimizationUtil::userAddedToRole($u3);
+            $u3->forget();
+            $r3->forget();
+
+            /*
+             * Hierarchy:
+             *              R3 ---------------------------- U3
+             *               #
+             *               #
+             *              R2 ---------------------------- U2
+             *               #
+             *               #
+             *              R1 ---------------------------- U1
+             */
+
+            $u1  = User::getByUsername('u1.');
+            $u2  = User::getByUsername('u2.');
+            $u3  = User::getByUsername('u3.');
+
+            // create an account using U1
+            Yii::app()->user->userModel = $u1;
+            $a1 = new Account();
+            $a1->name = 'A1.';
+            $this->assertTrue($a1->save());
+            //Called in OwnedSecurableItem::afterSave();
+            //ReadPermissionsOptimizationUtil::ownedSecurableItemCreated($a1);
+
+            // create an account using U2
+            Yii::app()->user->userModel = $u2;
+            $a2 = new Account();
+            $a2->name = 'A2.';
+            $this->assertTrue($a2->save());
+            //Called in OwnedSecurableItem::afterSave();
+            //ReadPermissionsOptimizationUtil::ownedSecurableItemCreated($a2);
+
+            // create an account using U3
+            Yii::app()->user->userModel = $u3;
+            $a3 = new Account();
+            $a3->name = 'A3.';
+            $this->assertTrue($a3->save());
+            //Called in OwnedSecurableItem::afterSave();
+            //ReadPermissionsOptimizationUtil::ownedSecurableItemCreated($a3);
+
+            Yii::app()->user->userModel = $u99;
+            $this->assertEquals(array(
+                    array('A1', 'R2', '1'),
+                    array('A1', 'R3', '1'),
+                    array('A2', 'R3', '1')),
+                self::getAccountMungeRows());
+            $this->assertTrue(self::accountMungeDoesntChangeWhenRebuilt());
+
+            // break the link between R1 and R2
+            $r1->role   = null;
+            $this->assertTrue($r1->save());
+            // Called in $r1->beforeSave();
+            //ReadPermissionsSubscriptionUtil::roleParentBeingRemoved();
+
+            // A1's munge ids for R2 and R3 will be gone
+            $this->assertEquals(array(
+                    array('A2', 'R3', '1')),
+                self::getAccountMungeRows());
+            $this->assertTrue(self::accountMungeDoesntChangeWhenRebuilt());
+
+            // break the link between R2 and R3
+            $r2->role   = null;
+            $this->assertTrue($r2->save());
+            // Called in $r2->beforeSave();
+            //ReadPermissionsSubscriptionUtil::roleParentBeingRemoved();
+
+            // A2's munge id R3 will be gone
+            $this->assertEmpty(self::getAccountMungeRows());
+            $this->assertTrue(self::accountMungeDoesntChangeWhenRebuilt());
+
+            // doing for the sake for tearDown
+            $r1 = Role::getByName('R1.');
+            $r2 = Role::getByName('R2.');
+
+            $r1->role   = $r2;
+            $this->assertTrue($r1->save());
+            $r2->role   = $r3;
+            $this->assertTrue($r2->save());
+
+            $u2  = User::getByUsername('u2.');
+            $u2->role   = Role::getByName('R4.');
+            $this->assertTrue($u2->save());
+        }
     }
 ?>

@@ -232,6 +232,7 @@ MTG;
             }
             AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize($count);
             Yii::app()->jobQueue->deleteAll();
+            ForgetAllCacheUtil::forgetAllCaches();
             $job                        = new CampaignQueueMessagesInOutboxJob();
             $this->assertCount(0, Yii::app()->jobQueue->getAll());
             $startedAt      = microtime(true);

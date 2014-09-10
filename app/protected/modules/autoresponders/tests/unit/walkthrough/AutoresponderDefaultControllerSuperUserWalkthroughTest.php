@@ -162,7 +162,7 @@
             $this->assertTrue(strpos($content, '<option value="1">Subscription to list</option>') !== false);
             $this->assertTrue(strpos($content, '<option value="2">Unsubscribed from list</option>') !== false);
             $this->assertTrue(strpos($content, '<input id="Autoresponder_subject" name="Autoresponder[subject]" ' .
-                                                'type="text" maxlength="64"') !== false);
+                                                'type="text" maxlength="255"') !== false);
             $this->assertTrue(strpos($content, '<tr><th><label for="Autoresponder_contactEmailTemplateNames_name">Select a template</label></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><div class="has-model-select">' .
                                                 '<input name="" id="Autoresponder_contactEmailTemplateNames_id"' .
@@ -206,7 +206,7 @@
             $this->assertTrue(strpos($content, 'Please provide at least one of the contents field.') !== false);
             $this->assertTrue(strpos($content, 'Send After cannot be blank.') !== false);
             $this->assertTrue(strpos($content, 'Triggered By cannot be blank.') !== false);
-            $this->assertTrue(strpos($content, '<input id="Autoresponder_subject" name="Autoresponder[subject]" type="text" maxlength="64" value="" class="error"') !== false);
+            $this->assertTrue(strpos($content, '<input id="Autoresponder_subject" name="Autoresponder[subject]" type="text" maxlength="255" value="" class="error"') !== false);
             $this->assertTrue(strpos($content, '<select name="Autoresponder[operationType]" ' .
                                                 'id="Autoresponder_operationType_value" class="error">') !== false);
 
@@ -365,7 +365,7 @@
             $this->assertTrue(strpos($content, '<option value="1">Subscription to list</option>') !== false);
             $this->assertTrue(strpos($content, '<option value="2" selected="selected">Unsubscribed from list</option>') !== false);
             $this->assertTrue(strpos($content, '<input id="Autoresponder_subject" name="Autoresponder[subject]" ' .
-                                                'type="text" maxlength="64" value="Subject 04"') !== false);
+                                                'type="text" maxlength="255" value="Subject 04"') !== false);
             $this->assertTrue(strpos($content, '<tr><th><label for="Autoresponder_contactEmailTemplateNames_name">Select a template</label></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><div class="has-model-select"><input name=""' .
                                                 ' id="Autoresponder_contactEmailTemplateNames_id"' .

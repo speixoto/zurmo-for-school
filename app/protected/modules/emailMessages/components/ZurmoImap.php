@@ -274,11 +274,14 @@
             {
                 $imapMessage->fromName = imap_utf8($mailHeaderInfo->from[0]->personal);
             }
-            else
+            elseif (isset($mailHeaderInfo->from[0]->mailbox))
             {
                 $imapMessage->fromName = $mailHeaderInfo->from[0]->mailbox;
             }
-            $imapMessage->fromEmail = $mailHeaderInfo->from[0]->mailbox . '@' . $mailHeaderInfo->from[0]->host;
+            if (isset($mailHeaderInfo->from[0]->mailbox) && isset($mailHeaderInfo->from[0]->host))
+            {
+                $imapMessage->fromEmail = $mailHeaderInfo->from[0]->mailbox . '@' . $mailHeaderInfo->from[0]->host;
+            }
 
             if (isset($mailHeaderInfo->sender))
             {
@@ -321,9 +324,10 @@
          * Get all messages, that satisfy some criteria, for example: 'ALL', 'UNSEEN', 'SUBJECT "Hello"'
          * @param string $searchCriteria
          * @param int $messagesSinceTimestamp
+         * @param int $limit
          * @return array the messages that was found
          */
-        public function getMessages($searchCriteria = 'ALL', $messagesSinceTimestamp = 0)
+        public function getMessages($searchCriteria = 'ALL', $messagesSinceTimestamp = 0, $limit = null)
         {
             $messages = array();
             if ($this->imapStream == null)
@@ -334,12 +338,18 @@
             $messageNumbers = imap_search($this->imapStream, $searchCriteria);
             if (is_array($messageNumbers) && count($messageNumbers) > 0)
             {
+                $numberOfProcessedMessages = 0;
                 foreach ($messageNumbers as $messageNumber)
                 {
                     $mailHeaderInfo = imap_headerinfo($this->imapStream, $messageNumber);
                     if (strtotime($mailHeaderInfo->date) > $messagesSinceTimestamp)
                     {
                         $messages[] = $this->getMessage($messageNumber, $mailHeaderInfo);
+                    }
+                    $numberOfProcessedMessages++;
+                    if (isset($limit) && is_int($limit) && $limit > 0 && $numberOfProcessedMessages == $limit)
+                    {
+                        break;
                     }
                 }
             }
@@ -520,8 +530,17 @@
 
             if ($mimeType == $this->getMimeType($structure))
             {
-                $partNumber = ($partNumber > 0) ? $partNumber : 1;
-                return imap_fetchbody($this->imapStream, $msgNumber, $partNumber);
+                if ($partNumber == 0 && $structure->type == 0)
+                {
+                    $body = imap_fetchbody($this->imapStream, $msgNumber, 1);
+                    return $this->resolveContentFromStructure($body, $structure);
+                }
+                else
+                {
+                    $partNumber = ($partNumber > 0) ? $partNumber : 1;
+                    $body = imap_fetchbody($this->imapStream, $msgNumber, $partNumber);
+                    return $body;
+                }
             }
 
             /* multipart */
@@ -537,27 +556,33 @@
                     $data = $this->getPart($msgNumber, $mimeType, $subStructure, $prefix . ($index + 1));
                     if ($data)
                     {
-                        $dataToReturn = $data;
-                        if ($subStructure->encoding == 3)
-                        {
-                            // 3 = BASE64
-                            $dataToReturn = base64_decode($data);
-                        }
-                        elseif ($subStructure->encoding == 4)
-                        {
-                            // 4 = QUOTED-PRINTABLE
-                            $dataToReturn = quoted_printable_decode($data);
-                        }
-                        if (isset($subStructure->parameters[0]->attribute) && $subStructure->parameters[0]->attribute == 'CHARSET')
-                        {
-                            return iconv($subStructure->parameters[0]->value, 'UTF-8', $dataToReturn);
-                        }
-                        else
-                        {
-                            return $dataToReturn;
-                        }
+                        return $this->resolveContentFromStructure($data, $subStructure);
                     }
                 }
+            }
+        }
+
+        protected function resolveContentFromStructure($content, $structure)
+        {
+            $dataToReturn = $content;
+            if ($structure->encoding == 3)
+            {
+                // 3 = BASE64
+                $dataToReturn = base64_decode($content);
+            }
+            elseif ($structure->encoding == 4)
+            {
+                // 4 = QUOTED-PRINTABLE
+                $dataToReturn = quoted_printable_decode($content);
+            }
+            if ($structure->ifparameters && strtoupper($structure->parameters[0]->attribute) == 'CHARSET' &&
+                strtoupper($structure->parameters[0]->value) != 'UTF-8')
+            {
+                return iconv($structure->parameters[0]->value, 'UTF-8', $dataToReturn);
+            }
+            else
+            {
+                return $dataToReturn;
             }
         }
 

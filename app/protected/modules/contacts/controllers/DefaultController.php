@@ -435,7 +435,8 @@
         }
 
         protected static function resolveMassSubscribeAlertMessage($postVariableName)
-        {   $marketingListMember = Yii::app()->request->getPost('MarketingListMember');
+        {
+            $marketingListMember = Yii::app()->request->getPost('MarketingListMember');
             if (isset($marketingListMember) && $marketingListMember['marketingList']['id'] == 0)
             {
                 return Zurmo::t('ContactsModule', 'You must select a MarketingListsModuleSingularLabel',

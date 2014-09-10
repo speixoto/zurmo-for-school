@@ -57,7 +57,7 @@
                     $this->renderTableRow($row);
                     if ($this->expandableRows)
                     {
-                        $this->renderExpandableRow($this->dataProvider->data[$row], $this->dataProvider->data[$row]->id);
+                        echo $this->renderExpandableRow($this->dataProvider->data[$row], $this->dataProvider->data[$row]->id);
                     }
                 }
             }
@@ -76,26 +76,12 @@
          */
         protected function renderExpandableRow($row, $id)
         {
-            echo '<tr style="display:none;"><td class="hasDrillDownContent" colspan="' . (count($this->columns)) . '">';
-            echo '<div class="drillDownContent" id="drillDownContentFor-' . $id . '">';
-            //echo $this->renderExpandableContent($row);
-            echo '</div>';
-            echo "</td></tr>\n";
-        }
-
-        protected function renderExpandableContent($row)
-        {
-            $content = null;
-            $resultMessages = unserialize($row->serializedMessages);
-            foreach ($resultMessages as $message)
-            {
-                $content .= ZurmoHtml::tag('li', array(), $message);
-            }
-            if ($content != null)
-            {
-                return ZurmoHtml::tag('ol', array('class' => 'import-notifications'), $content);
-            }
-            return null;
+            $content  = ZurmoHtml::openTag('tr', array('style' => 'display:none;'));
+            $content .= ZurmoHtml::openTag('td', array('class' => 'hasDrillDownContent', 'colspan' => count($this->columns)));
+            $content .= ZurmoHtml::tag('div', array('class' => 'drillDownContent', 'id' => 'drillDownContentFor-' . $id));
+            $content .= ZurmoHtml::closeTag('td');
+            $content .= ZurmoHtml::closeTag('tr');
+            return $content;
         }
     }
 ?>

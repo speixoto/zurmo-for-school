@@ -199,7 +199,7 @@
                 {
                     AuditUtil::saveOriginalAttributeValue($this, 'owner', $newOwnerValue);
                 }
-                parent::unrestrictedSet('owner', $newOwnerValue);
+                parent::__set('owner', $newOwnerValue);
                 $this->isSetting = false;
             }
             catch (Exception $e)

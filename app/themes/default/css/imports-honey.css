@@ -3031,7 +3031,7 @@ div.wide.form .errorMessage {
 .show-file-upload-box {
   position: relative;
   bottom: -18px;
-  z-index: 5;
+  z-index: 99999;
   font-weight: normal;
   font-size: 11px;
   color: #46201C;
@@ -4296,7 +4296,7 @@ div.wide.form .errorMessage {
   width: 75%;
   position: fixed;
   z-index: 1000;
-  margin-top: 15px;
+  margin-top: 40px;
   -webkit-box-shadow: 0 0 15px 0 #333;
   -moz-box-shadow: 0 0 15px 0 #333;
   -ms-box-shadow: 0 0 15px 0 #333;
@@ -7770,6 +7770,10 @@ a.user-link {
   margin: 0 !important;
   font-size: 11px !important;
   font-weight: bold !important;
+}
+.clickable-dividedmenu:not(.nav-open) .button-actions:hover,
+.clickable-dividedmenu:not(.nav-open) .button-action-trigger:hover + .button-actions {
+  display: none;
 }
 .overlay-view {
   width: 500px;

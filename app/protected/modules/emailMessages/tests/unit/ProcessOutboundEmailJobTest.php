@@ -47,7 +47,6 @@
         {
             $super                      = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            $billy                      = User::getByUsername('billy');
 
             $box = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
             $outboxFolder = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX);

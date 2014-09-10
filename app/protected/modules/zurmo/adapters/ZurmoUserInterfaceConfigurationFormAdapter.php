@@ -140,7 +140,7 @@
             Yii::app()->themeManager->forceAllUsersTheme     = $form->forceAllUsersTheme;
             if ($shouldCompile)
             {
-                Yii::app()->lessCompiler->compileCustom();
+                Yii::app()->lessCompiler->compileColorDependentLessFile(ThemeManager::CUSTOM_NAME);
             }
         }
 

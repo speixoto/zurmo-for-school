@@ -284,8 +284,8 @@
                 AutoresponderAndCampaignItemsUtil::resolveContentsForMergeTags($textContent, $htmlContent, $contact,
                                                                                 null, null, null, null);
                 $emailTemplate->setTreatCurrentUserAsOwnerForPermissions(true);
-                $emailTemplate->textContent = $textContent;
-                $emailTemplate->htmlContent = $htmlContent;
+                $emailTemplate->textContent = stripslashes($textContent);
+                $emailTemplate->htmlContent = stripslashes($htmlContent);
                 $emailTemplate->setTreatCurrentUserAsOwnerForPermissions(false);
             }
             $emailTemplate = $this->resolveEmailTemplateAsJson($emailTemplate, $includeFilesInJson);

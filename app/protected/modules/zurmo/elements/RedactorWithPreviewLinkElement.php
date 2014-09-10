@@ -51,5 +51,30 @@
             $content                .= $previewElement->render();
             return $content;
         }
+
+        protected function resolveRedactorOptions()
+        {
+            $parentOptions      = parent::resolveRedactorOptions();
+            $options            = array(
+                'paragraphy'            => 'false',
+                'buttons'               => $this->resolveRedactorButtons(),
+                'plugins'               => CJSON::encode($this->resolvePlugins()),
+            );
+            $options            = CMap::mergeArray($parentOptions, $options);
+            return $options;
+        }
+
+        protected function resolvePlugins()
+        {
+            return array('fontfamily', 'fontsize', 'fontcolor', 'imagegallery');
+        }
+
+        protected function resolveRedactorButtons()
+        {
+            $buttons         = array('html', '|', 'formatting', 'under', 'bold', 'italic', 'deleted', '|',
+                                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'alignleft', 'aligncenter',
+                                    'alignright', '|', 'table', 'link', '|', 'horizontalrule');
+            return CJSON::encode($buttons);
+        }
     }
 ?>
