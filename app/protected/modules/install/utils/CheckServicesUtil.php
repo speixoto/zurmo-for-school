@@ -83,7 +83,13 @@
 
         private static function getServicesToCheckAfterInstallation()
         {
-            return CMap::mergeArray(static::getServicesToCheck(), static::getAdditionalServicesToCheck());
+	    $services = CMap::mergeArray(static::getServicesToCheck(), static::getAdditionalServicesToCheck());
+            if (($key = array_search('FilePermissions', $services)) !== false)
+            {
+                unset($services[$key]);
+            }
+            $services[] = 'FilePermissionsAfterInstall';
+            return $services;
         }
 
         private static function getAdditionalServicesToCheck()
