@@ -43,7 +43,8 @@
 
         protected function checkService()
         {
-            $serverName = $_SERVER['SERVER_SOFTWARE'];
+            // @ for when accessing this through tests
+            $serverName = @$_SERVER['SERVER_SOFTWARE'];
             if (strrpos($serverName, 'Apache') !== false && strrpos($serverName, 'Apache') >= 0)
             {
                 return $this->checkServiceAndSetMessagesByMethodNameAndDisplayLabel('checkWebServer', Zurmo::t('InstallModule', 'Apache'));
