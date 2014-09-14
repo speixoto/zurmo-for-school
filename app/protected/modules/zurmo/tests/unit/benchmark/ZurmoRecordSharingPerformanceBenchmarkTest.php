@@ -36,95 +36,123 @@
 
     class ZurmoRecordSharingPerformanceBenchmarkTest extends ZurmoWalkthroughBaseTest
     {
+        protected static $baseUsername  = null;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
+            // create ContactStates
+            ContactsModule::loadStartingData();
+
+            static::$baseUsername       = StringUtil::generateRandomString(6, implode(range('a', 'z')));
         }
 
         public function setup()
         {
             $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            Contact::deleteAll();
         }
 
-        public function testRecordSharingPerformanceTime()
+        public function testRecordSharingPerformanceTimeForOneUserGroup()
         {
-            $singleUserGroupMembers   = array();
-            $hundredUsersGroupMembers = array();
-            // we could have used helpers to do a lot of the following stuff (such as creating users, groups,
-            // etc) but we wanted to mimic user's interaction as closely as possible. Hence using walkthroughs
-            // for everything
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(1);
+        }
 
-            // create single user group
+        /**
+         * @depends testRecordSharingPerformanceTimeForOneUserGroup
+         */
+        public function testRecordSharingPerformanceTimeForFiveUsersGroup()
+        {
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(5);
+        }
+
+        /**
+         * @depends testRecordSharingPerformanceTimeForFiveUsersGroup
+         */
+        public function testRecordSharingPerformanceTimeForTenUsersGroup()
+        {
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(10);
+        }
+
+        /**
+         * @depends testRecordSharingPerformanceTimeForTenUsersGroup
+         */
+        public function testRecordSharingPerformanceTimeForFiftyUsersGroup()
+        {
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(50);
+        }
+
+        /**
+         * @depends testRecordSharingPerformanceTimeForFiftyUsersGroup
+         */
+        public function testRecordSharingPerformanceTimeForHundredUsersGroup()
+        {
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(100);
+        }
+
+        /**
+         * @depends testRecordSharingPerformanceTimeForHundredUsersGroup
+         */
+        public function testRecordSharingPerformanceTimeForTwoHundredUsersGroup()
+        {
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(200);
+        }
+
+        /**
+         * @depends testRecordSharingPerformanceTimeForTwoHundredUsersGroup
+         */
+        public function testRecordSharingPerformanceTimeForFiveHundredUsersGroup()
+        {
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(500);
+        }
+
+        /**
+         * @depends testRecordSharingPerformanceTimeForFiveHundredUsersGroup
+         */
+        public function testRecordSharingPerformanceTimeForThousandUsersGroup()
+        {
+            $this->ensureTimeSpentIsLessOrEqualThanExpectedForCount(1000);
+        }
+
+        protected function ensureTimeSpentIsLessOrEqualThanExpectedForCount($count)
+        {
+            $timeSpent      = $this->resolveRecordSharingPerformanceTime($count);
+            echo PHP_EOL. $count . ' user(s) group took ' . $timeSpent . ' seconds';
+            // no need to multiply by $count
+            // this is all sql with no php in the core logic of generation so the time spent
+            // remains constant for the most part.
+            //$this->assertLessThanOrEqual($this->singleItemExpectedTime, $timeSpent);
+        }
+
+        public function resolveRecordSharingPerformanceTime($count)
+        {
+            ForgetAllCacheUtil::forgetAllCaches();
+            $groupMembers       = array();
+            // create group
+            $this->resetGetArray();
             $this->setPostArray(array('Group' => array(
-                'name'  => 'Single User Group',
+                'name'  => "Group $count",
             )));
             $this->runControllerWithRedirectExceptionAndGetUrl('/zurmo/group/create');
-            $singleUserGroup                = Group::getByName('Single User Group');
-            $this->assertNotNull($singleUserGroup);
-            $this->assertEquals('Single User Group', strval($singleUserGroup));
-            $singleUserGroupId              = $singleUserGroup->id;
-            $singleUserGroup->setRight('ContactsModule', ContactsModule::getAccessRight());
-            $singleUserGroup->setRight('ContactsModule', ContactsModule::getCreateRight());
-            $singleUserGroup->setRight('ContactsModule', ContactsModule::getDeleteRight());
-            $this->assertTrue($singleUserGroup->save());
-            $singleUserGroup->forgetAll();
-            $singleUserGroup                = Group::getById($singleUserGroupId);
+            $group              = Group::getByName("Group $count");
+            $this->assertNotNull($group);
+            $this->assertEquals("Group $count", strval($group));
+            $group->setRight('ContactsModule', ContactsModule::getAccessRight());
+            $group->setRight('ContactsModule', ContactsModule::getCreateRight());
+            $group->setRight('ContactsModule', ContactsModule::getDeleteRight());
+            $this->assertTrue($group->save());
+            $groupId            = $group->id;
+            $group->forgetAll();
+            $group              = Group::getById($groupId);
 
-            $baseUserName                   = StringUtil::generateRandomString(6, implode(range('a', 'z')));
-            // Populate singleUserGroup
-            $username                       = $baseUserName . '0';
             $this->resetGetArray();
-            $this->setPostArray(array('UserPasswordForm' =>
-                array('firstName'           => 'Some',
-                    'lastName'              => 'Body',
-                    'username'              => $username,
-                    'newPassword'           => 'myPassword123',
-                    'newPassword_repeat'    => 'myPassword123',
-                    'officePhone'           => '456765421',
-                    'userStatus'            => 'Active')));
-            $this->runControllerWithRedirectExceptionAndGetContent('/users/default/create');
-            $user                           = User::getByUsername($username);
-            $this->assertNotNull($user);
-
-            // set user's group
-            $this->setGetArray(array('id' => $singleUserGroupId));
-            $this->setPostArray(array(
-                'GroupUserMembershipForm' => array('userMembershipData' => array($user->id)
-                )));
-            $this->runControllerWithRedirectExceptionAndGetUrl('/zurmo/group/editUserMembership');
-            $user->forgetAll();
-            $user                           = User::getByUsername($username);
-            $this->assertNotNull($user);
-            $singleUserGroup->forgetAll();
-            $singleUserGroup                = Group::getById($singleUserGroupId);
-            $this->assertContains($singleUserGroup, $user->groups);
-            $singleUserGroupMembers[]       = $user;
-
-            // create hundred users group
-            $this->resetGetArray();
-            $this->setPostArray(array('Group' => array(
-                'name'  => 'Hundred Users Group',
-            )));
-            $this->runControllerWithRedirectExceptionAndGetUrl('/zurmo/group/create');
-            $hundredUsersGroup              = Group::getByName('Hundred Users Group');
-            $this->assertNotNull($hundredUsersGroup);
-            $this->assertEquals('Hundred Users Group', strval($hundredUsersGroup));
-            $hundredUsersGroup->setRight('ContactsModule', ContactsModule::getAccessRight());
-            $hundredUsersGroup->setRight('ContactsModule', ContactsModule::getCreateRight());
-            $hundredUsersGroup->setRight('ContactsModule', ContactsModule::getDeleteRight());
-            $this->assertTrue($hundredUsersGroup->save());
-            $hundredUsersGroupId            = $hundredUsersGroup->id;
-            $hundredUsersGroup->forgetAll();
-            $hundredUsersGroup              = Group::getById($hundredUsersGroupId);
-
-            for ($i = 1; $i < 5; $i++)
+            for ($i = 0; $i < $count; $i++)
             {
-                $username                   = $baseUserName . $i;
-                // Populate hundredUsersGroup
-                $this->resetGetArray();
+                $username       = static::$baseUsername . "_${i}_of_${count}";
+                // Populate group
                 $this->setPostArray(array('UserPasswordForm' =>
                     array('firstName'           => 'Some',
                         'lastName'              => 'Body',
@@ -134,33 +162,33 @@
                         'officePhone'           => '456765421',
                         'userStatus'            => 'Active')));
                 $this->runControllerWithRedirectExceptionAndGetContent('/users/default/create');
-                $user                       = User::getByUsername($username);
+                $user           = User::getByUsername($username);
                 $this->assertNotNull($user);
-
-                // set user's group
-                $this->setGetArray(array('id' => $hundredUsersGroupId));
-                $this->setPostArray(array(
-                    'GroupUserMembershipForm' => array('userMembershipData' => array($user->id)
-                    )));
-                $this->runControllerWithRedirectExceptionAndGetUrl('/zurmo/group/editUserMembership');
-                $user->forgetAll();
-                $user                       = User::getByUsername($username);
-                $this->assertNotNull($user);
-                $hundredUsersGroup->forgetAll();
-                $hundredUsersGroup          = Group::getById($hundredUsersGroupId);
-                $this->assertContains($hundredUsersGroup, $user->groups);
-                $hundredUsersGroupMembers[] = $user;
-                unset($user);
+                $groupMembers['usernames'][] = $user->username;
+                $groupMembers['ids'][] = $user->id;
             }
 
-            // create a contact with permissions to Single User Group group
-            // create ContactStates
-            ContactsModule::loadStartingData();
-            // ensure contact states have been created
-            $this->assertEquals(6, count(ContactState::GetAll()));
-            // go ahead and create contact with Single User Group group given readwrite.
-            $startingState                  = ContactsUtil::getStartingState();
+            // set user's group
+            $this->setGetArray(array('id' => $groupId));
+            $this->setPostArray(array(
+                'GroupUserMembershipForm' => array('userMembershipData' => $groupMembers['ids']
+                )));
+            $this->runControllerWithRedirectExceptionAndGetUrl('/zurmo/group/editUserMembership');
+            $group->forgetAll();
+            $group          = Group::getById($groupId);
+            foreach ($groupMembers['ids'] as $userId)
+            {
+                $user       = User::getById($userId);
+                $this->assertEquals($group->id, $user->groups[0]->id);
+                $this->assertTrue(RightsUtil::doesUserHaveAllowByRightName('ContactsModule', ContactsModule::getAccessRight(), $user));
+                $this->assertTrue(RightsUtil::doesUserHaveAllowByRightName('ContactsModule', ContactsModule::getCreateRight(), $user));
+                $this->assertTrue(RightsUtil::doesUserHaveAllowByRightName('ContactsModule', ContactsModule::getDeleteRight(), $user));
+            }
+
+            // go ahead and create contact with group given readwrite, use group's first member to confirm he has create access
+            $this->logoutCurrentUserLoginNewUserAndGetByUsername($groupMembers['usernames'][0]);
             $this->resetGetArray();
+            $startingState  = ContactsUtil::getStartingState();
             $this->setPostArray(array('Contact' => array(
                 'firstName'        => 'John',
                 'lastName'         => 'Doe',
@@ -168,66 +196,30 @@
                 'state'            => array('id' => $startingState->id),
                 'explicitReadWriteModelPermissions' => array(
                     'type' => ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP,
-                    'nonEveryoneGroup' => $singleUserGroupId
+                    'nonEveryoneGroup' => $groupId
                 ))));
             $startTime                      = microtime(true);
             $url                            = $this->runControllerWithRedirectExceptionAndGetUrl('/contacts/default/create');
-            $timeTakenForSingleUserGroup    = microtime(true) - $startTime;
+            $timeTakenForSave               = microtime(true) - $startTime;
             $johnDoeContactId               = intval(substr($url, strpos($url, 'id=') + 3));
             $johnDoeContact                 = Contact::getById($johnDoeContactId);
             $this->assertNotNull($johnDoeContact);
             $this->resetPostArray();
             $this->setGetArray(array('id' => $johnDoeContactId));
             $content                        = $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/details');
-            $this->assertContains('Who can read and write Single User Group', $content);
-
-            // ensure singleUserGroup members have access
-            $this->logoutCurrentUserLoginNewUserAndGetByUsername($singleUserGroupMembers[0]->username);
-            $this->resetPostArray();
-            $this->setGetArray(array('id' => $johnDoeContactId));
-            $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/details');
-            $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/edit');
-            $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
-            // create a contact with permissions to Hundred Users Group group
-            $this->resetGetArray();
-            $this->setPostArray(array('Contact' => array(
-                'firstName'        => 'Jim',
-                'lastName'         => 'Doe',
-                'officePhone'      => '456765421',
-                'state'            => array('id' => $startingState->id),
-                'explicitReadWriteModelPermissions' => array(
-                    'type' => ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP,
-                    'nonEveryoneGroup' => $hundredUsersGroupId
-                ))));
-            $startTime                      = microtime(true);
-            $url                            = $this->runControllerWithRedirectExceptionAndGetUrl('/contacts/default/create');
-            $timeTakenForHundredUsersGroup  = microtime(true) - $startTime;
-            $jimDoeContactId                = intval(substr($url, strpos($url, 'id=') + 3));
-            $jimDoeContact                  = Contact::getById($jimDoeContactId);
-            $this->assertNotNull($jimDoeContact);
-            $this->resetPostArray();
-            $this->setGetArray(array('id' => $jimDoeContactId));
-            $content                        = $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/details');
-            $this->assertContains('Who can read and write Hundred Users Group', $content);
+            $this->assertContains('Who can read and write ' . strval($group), $content);
 
             $this->resetPostArray();
-            // ensure hundredUsersGroup members have access
-            foreach ($hundredUsersGroupMembers as $member)
+            // ensure group members have access
+            foreach ($groupMembers['usernames'] as $member)
             {
-                $this->logoutCurrentUserLoginNewUserAndGetByUsername($member->username);
-                $this->setGetArray(array('id' => $jimDoeContactId));
+                $user = $this->logoutCurrentUserLoginNewUserAndGetByUsername($member);
+                $this->assertNotNull($user);
+                $this->setGetArray(array('id' => $johnDoeContactId));
                 $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/details');
                 $this->runControllerWithNoExceptionsAndGetContent('/contacts/default/edit');
             }
-            $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
-            var_dump("Time taken for single user Group save:");
-            var_dump($timeTakenForSingleUserGroup);
-            var_dump("Time taken for hundreds user Group save:");
-            var_dump($timeTakenForHundredUsersGroup);
-            var_dump("Count of members of hundred users group");
-            var_dump(count($hundredUsersGroupMembers));
+            return $timeTakenForSave;
         }
     }
 ?>
