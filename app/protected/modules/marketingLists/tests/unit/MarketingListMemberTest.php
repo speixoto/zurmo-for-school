@@ -41,17 +41,15 @@
             SecurityTestHelper::createSuperAdmin();
             SecurityTestHelper::createUsers();
 
-            $super = User::getByUsername('super');
+            $super      = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            MarketingListTestHelper::createMarketingListByName('test marketing List 01');
-            MarketingListTestHelper::createMarketingListByName('test marketing List 02');
-
             //Setup test data owned by the super user.
             $account    = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
-            $account2   = AccountTestHelper::createAccountByNameForOwner('superAccount2', $super);
-            ContactTestHelper::createContactWithAccountByNameForOwner('superContact', $super, $account);
-            ContactTestHelper::createContactWithAccountByNameForOwner('superContact2', $super, $account2);
-            ContactTestHelper::createContactWithAccountByNameForOwner('superContact3', $super, $account);
+            for ($i = 0; $i < 10; $i++)
+            {
+                MarketingListTestHelper::createMarketingListByName('test marketing List ' . $i);
+                ContactTestHelper::createContactWithAccountByNameForOwner('superContact' . $i, $super, $account);
+            }
         }
 
         public function setUp()
@@ -147,7 +145,7 @@
             foreach ($contacts as $index => $contact)
             {
                 $unsubcribed = ($index % 2);
-                $member = MarketingListMemberTestHelper::populateMarketingListMember($unsubcribed, $marketingList, $contact);
+                $member = MarketingListMemberTestHelper::populateValidMarketingListMember($unsubcribed, $marketingList, $contact);
                 $this->assertTrue($member->unrestrictedSave());
                 if ($unsubcribed)
                 {

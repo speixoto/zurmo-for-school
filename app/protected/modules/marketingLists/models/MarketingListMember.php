@@ -77,6 +77,8 @@
                     array('modifiedDateTime',      'type', 'type' => 'datetime'),
                     array('unsubscribed',          'boolean'),
                     array('unsubscribed',          'default', 'value' => false),
+                    array('unsubscribed',          'isNotIllegalStateChange'),
+                    array('unsubscribed',          'doesNotAlreadyExist'),
                 ),
                 'elements' => array(
                     'createdDateTime'  => 'DateTime',
@@ -213,12 +215,7 @@
 
         public function beforeSave()
         {
-            // if its an illegal state change then return false
-            // if id is less than 0 and we have same contact_id and marketinglist_id in db already then return false.
-            // if parent beforeSave() does not work then return false
-            if ($this->illegalStateChange() ||
-                ($this->id < 0 && $this->alreadyExist()) ||
-                !parent::beforeSave())
+            if (!parent::beforeSave())
             {
                 return false;
             }
@@ -238,22 +235,42 @@
             return true;
         }
 
-        protected function alreadyExist()
+        public function doesNotAlreadyExist($attribute, $params)
         {
-            $query  = 'SELECT COUNT(*) FROM ' . static::getTableName();
-            $query  .= ' WHERE contact_id=' . $this->contact->id . ' AND marketinglist_id=' . $this->marketingList->id;
-            return ZurmoRedBean::getCell($query);
+            if ($this->id < 0)
+            {
+                $query  = 'SELECT COUNT(*) FROM ' . static::getTableName();
+                $query  .= ' WHERE contact_id=' . $this->contact->id . ' AND marketinglist_id=' . $this->marketingList->id;
+                if (ZurmoRedBean::getCell($query))
+                {
+                    $this->addError($attribute, Zurmo::t('MarketingListsModule', 'Member already exists'));
+                    return false;
+                }
+            }
+            return true;
         }
 
-        protected function illegalStateChange()
+        public function isNotIllegalStateChange($attribute, $params)
         {
             if (isset($this->originalAttributeValues['unsubscribed']) &&
                 $this->originalAttributeValues['unsubscribed'] != $this->unsubscribed)
             {
                 // if current state is unsubscribed, new state is subscribed and scenario is not set to manual then return true
-                return ($this->originalAttributeValues['unsubscribed'] && $this->getScenario() != static::SCENARIO_MANUAL_CHANGE);
+                if ($this->originalAttributeValues['unsubscribed'] && $this->getScenario() != static::SCENARIO_MANUAL_CHANGE)
+                {
+                    $this->addError($attribute, Zurmo::t('MarketingListsModule', 'Automated State change to subscribed is not allowed.'));
+                    return false;
+                }
             }
-            return false;
+            return true;
+        }
+
+        public function unrestrictedSave($runValidation = true, array $attributeNames = null)
+        {
+            // enforce validation to ensure record:
+            // a- does not already exist
+            // b- is not an illegal state change
+            return parent::unrestrictedSave(true, $attributeNames);
         }
     }
 ?>
