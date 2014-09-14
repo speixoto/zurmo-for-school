@@ -246,6 +246,8 @@
             // we have to do this to ensure when we retrieve the data status is updated from db.
             $campaign->forgetAll();
             $this->assertEmpty(CampaignItem::getAll());
+            // sleep 1 second to ensure we are giving ample time difference between creating the campaign and calling the job
+            sleep(1);
             $job                = new CampaignGenerateDueCampaignItemsJob();
             $this->assertTrue($job->run());
             $campaign           = Campaign::getByName('Active, just Due With Members');
