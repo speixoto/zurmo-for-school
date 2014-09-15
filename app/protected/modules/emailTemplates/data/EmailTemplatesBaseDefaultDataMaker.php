@@ -36,6 +36,8 @@
 
     abstract class EmailTemplatesBaseDefaultDataMaker extends DefaultDataMaker
     {
+        protected $importedImages = array();
+
         protected function makeBuilderPredefinedEmailTemplate($name, $unserializedData, $subject = null, $modelClassName = null,
                                                     $language = null, $type = null, $isDraft = 0, $textContent = null,
                                                     $htmlContent = null)
@@ -71,6 +73,20 @@
                 securableItemGivenPermissionsForGroup($emailTemplate, Group::getByName(Group::EVERYONE_GROUP_NAME));
             $saved                          = $emailTemplate->save(false);
             assert('$saved');
+        }
+
+        protected function makeImages()
+        {
+            $imagesUrlToImport = array(
+                '200x50' => 'http://placehold.it/200x50',
+                '200x200' => 'http://placehold.it/200x200',
+                '580x180' => 'http://placehold.it/580x180'
+            );
+            foreach ($imagesUrlToImport as $type => $url)
+            {
+                $fileUploadData = ImageFileModelUtil::importFromUrl($url);
+                $this->importedImages[$type] = $fileUploadData['id'];
+            }
         }
     }
 ?>

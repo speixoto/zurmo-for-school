@@ -51,10 +51,7 @@
             if (isset($_POST['ImportImageFromUrlForm']))
             {
                 $url = $_POST['ImportImageFromUrlForm']['url'];
-                $tempFilePath = tempnam(sys_get_temp_dir(), 'upload_image_from_url_');
-                $name = preg_replace("#.*\/#", '', $url);
-                file_put_contents($tempFilePath, file_get_contents($url));
-                $fileUploadData = ImageFileModelUtil::saveImageFromTemporaryFile($tempFilePath, $name);
+                $fileUploadData = ImageFileModelUtil::importFromUrl($url);
                 if (isset($fileUploadData['error']))
                 {
                     $result[CHtml::activeId($form, 'url')] = array($fileUploadData['error']);
