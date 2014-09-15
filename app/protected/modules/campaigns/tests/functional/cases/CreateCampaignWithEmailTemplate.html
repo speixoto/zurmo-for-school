@@ -25,7 +25,7 @@
 <!--create first html template-->
 <tr>
 	<td>open</td>
-	<td>index.php/marketing/default/index</td>
+	<td>index.php/marketing/default/dashboardDetails</td>
 	<td></td>
 </tr>
 <tr>
@@ -39,14 +39,44 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>//div[@id='SecuredActionBarForMarketingSearchAndListView']/div[1]/nav[1]/div[3]/ul/li/a</td>
+	<td>assertTextPresent</td>
+	<td>Dashboard</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Lists</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Templates</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Campaigns</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>link=Create Template</td>
+	<td>Create Template</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Create Template</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForPageToLoad</td>
 	<td></td>
 	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <tr>
 	<td>waitForTextPresent</td>
@@ -54,12 +84,37 @@
 	<td></td>
 </tr>
 <tr>
-	<td>waitForTextPresent</td>
+	<td>assertTextPresent</td>
+	<td>Plain Text</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
 	<td>HTML</td>
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
+	<td>assertTextPresent</td>
+	<td>Template Builder</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='EmailTemplateTypeView']/ul/li[1]/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='EmailTemplateTypeView']/ul/li[2]/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='EmailTemplateTypeView']/ul/li[2]/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
 	<td>//div[@id='EmailTemplateTypeView']/ul/li[3]/a/span</td>
 	<td></td>
 </tr>
@@ -67,6 +122,11 @@
 	<td>waitForPageToLoad</td>
 	<td></td>
 	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <tr>
 	<td>waitForTextPresent</td>
@@ -85,7 +145,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//a[@id='generalDataNextLink']/span[3]</td>
+	<td>//div[@id='GeneralDataForEmailTemplateWizardView']/div[2]/div/div/a[2]/span[3]</td>
 	<td></td>
 </tr>
 <tr>
@@ -94,12 +154,17 @@
 	<td></td>
 </tr>
 <tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
 	<td>type</td>
 	<td>ClassicEmailTemplateWizardForm_htmlContent</td>
 	<td>First HTML template content</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
+	<td>click</td>
 	<td>//a[@id='contentFinishLink']/span[3]</td>
 	<td></td>
 </tr>
@@ -116,7 +181,7 @@
 <!--create second html template-->
 <tr>
 	<td>open</td>
-	<td>index.php/marketing/default/index</td>
+	<td>index.php/marketing/default/dashboardDetails</td>
 	<td></td>
 </tr>
 <tr>
@@ -125,14 +190,49 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>//div[@id='SecuredActionBarForMarketingSearchAndListView']/div[1]/nav[1]/div[3]/ul/li/a</td>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Dashboard</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Lists</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Templates</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Campaigns</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>link=Create Template</td>
+	<td>Create Template</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Create Template</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForPageToLoad</td>
 	<td></td>
 	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <tr>
 	<td>waitForTextPresent</td>
@@ -140,12 +240,37 @@
 	<td></td>
 </tr>
 <tr>
-	<td>waitForTextPresent</td>
+	<td>assertTextPresent</td>
+	<td>Plain Text</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
 	<td>HTML</td>
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
+	<td>assertTextPresent</td>
+	<td>Template Builder</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='EmailTemplateTypeView']/ul/li[1]/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='EmailTemplateTypeView']/ul/li[2]/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='EmailTemplateTypeView']/ul/li[2]/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
 	<td>//div[@id='EmailTemplateTypeView']/ul/li[3]/a/span</td>
 	<td></td>
 </tr>
@@ -153,6 +278,11 @@
 	<td>waitForPageToLoad</td>
 	<td></td>
 	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <tr>
 	<td>waitForTextPresent</td>
@@ -171,7 +301,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//a[@id='generalDataNextLink']/span[3]</td>
+	<td>//div[@id='GeneralDataForEmailTemplateWizardView']/div[2]/div/div/a[2]/span[3]</td>
 	<td></td>
 </tr>
 <tr>
@@ -180,12 +310,17 @@
 	<td></td>
 </tr>
 <tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
 	<td>type</td>
 	<td>ClassicEmailTemplateWizardForm_htmlContent</td>
 	<td>Second HTML template content</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
+	<td>click</td>
 	<td>//a[@id='contentFinishLink']/span[3]</td>
 	<td></td>
 </tr>
