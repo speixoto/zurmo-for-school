@@ -1173,7 +1173,7 @@
         }
 
         /**
-         * Resolve that should task be opened in modal detal view
+         * Resolve that should task be opened in modal detail view
          */
         public static function resolveShouldOpenToTask($gridId)
         {

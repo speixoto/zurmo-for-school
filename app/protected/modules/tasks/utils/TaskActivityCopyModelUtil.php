@@ -54,5 +54,14 @@
                 $copyToModel->checkListItems->add($taskCheckListItem);
             }
         }
+
+        /**
+         * Overriding to fix bug https://www.pivotaltracker.com/story/show/74625078
+         * @param RedBeanModel $model
+         * @param RedBeanModel $copyToModel
+         */
+        protected static function resolveExplicitPermissions(RedBeanModel $model, RedBeanModel $copyToModel)
+        {
+        }
     }
 ?>
