@@ -274,8 +274,11 @@
                 }
             }
 
-            $recipientsInfo = EmailArchivingUtil::resolveEmailRecipientsFromEmailMessage($message);
-            if (!$recipientsInfo)
+            try
+            {
+                $recipientsInfo = EmailArchivingUtil::resolveEmailRecipientsFromEmailMessage($message);
+            }
+            catch (NotSupportedException $exception)
             {
                 $this->resolveMessageSubjectAndContentAndSendSystemMessage('RecipientNotExtracted', $message);
                 return false;
@@ -377,6 +380,7 @@
                 if (isset($message->uid)) // For tests uid will not be setup
                 {
                     $this->imapManager->deleteMessage($message->uid);
+                    $this->getMessageLogger()->addDebugMessage('Deleted Message id: ' . $message->uid);
                 }
             }
             catch (NotSupportedException $e)

@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class GlobalMarketingFooterFooterConfigurationPreviewView extends View
+    class GlobalMarketingFooterConfigurationPreviewView extends View
     {
         protected $isHtmlContent;
 
@@ -48,8 +48,8 @@
 
         protected function renderContent()
         {
-            $this->resolvePlaceholderContentForMergeTags();
-            $this->resolvePlaceholderContentForUnsubscribeAndManageSubscriptionsUrls();
+            $this->resolveContentForFooter();
+            $this->resolveContentForMergeTags();
 
             $content        = ZurmoHtml::tag('div', array('id' => 'footer-preview-modal-content',
                                                             'class' => 'footer-preview-modal'),
@@ -57,29 +57,29 @@
             return $content;
         }
 
-        protected function resolvePlaceholderContentForMergeTags()
+        protected function resolveContentForMergeTags()
         {
             $language           = null;
+            $invalidTags        = array();
             $type               = EmailTemplate::TYPE_WORKFLOW;
             $model              = Yii::app()->user->userModel;
+            $params             = $this->resolveMergeTagParams();
             $util               = MergeTagsUtilFactory::make($type, $language, $this->placeholderContent);
-            $resolvedContent    = $util->resolveMergeTags($model);
+            $resolvedContent    = $util->resolveMergeTags($model, $invalidTags, $language, false, $params);
             if ($resolvedContent !== false)
             {
                 $this->placeholderContent = $resolvedContent;
             }
         }
 
-        protected function resolvePlaceholderContentForUnsubscribeAndManageSubscriptionsUrls()
+        protected function resolveContentForFooter()
         {
-            EmailMessageActivityUtil::resolveUnsubscribeAndManageSubscriptionPlaceholders($this->placeholderContent,
-                                                                                            0,
-                                                                                            0,
-                                                                                            0,
-                                                                                            'AutoresponderItem',
-                                                                                            $this->isHtmlContent,
-                                                                                            true,
-                                                                                            true);
+            GlobalMarketingFooterUtil::resolveContentGlobalFooter($this->placeholderContent, $this->isHtmlContent);
+        }
+
+        protected function resolveMergeTagParams()
+        {
+            return GlobalMarketingFooterUtil::resolveFooterMergeTagsArray(1, 2, 3, 'AutoresponderItem', false, true);
         }
     }
 ?>

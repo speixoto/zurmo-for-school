@@ -189,12 +189,13 @@
             }
             else
             {
-                $icon = ZurmoHtml::tag('i', array('class' => 'icon-notice'), '');
+                $params  = LabelUtil::getTranslationParamsForAllModules();
+                $icon    = ZurmoHtml::tag('i', array('class' => 'icon-notice'), '');
                 $message =  Zurmo::t('ZurmoModule',
                     'Due to recent improvements in the Zurmo email template builder, you are required ' .
                     'to re-import the image from the external URL. The image currently in use is located ' .
                     'here {url}. You can also select from an existing image in the gallery.',
-                    array('{url}' => $url));
+                    array_merge($params, array('{url}' => $url)));
                 $message = ZurmoHtml::tag('p', array(), $message);
                 return ZurmoHtml::tag('div', array('class' => 'image-legacy-message general-issue-notice'), $icon . $message);
             }
@@ -243,6 +244,15 @@
                 $extension = str_replace('image/', '', $mimeType);
                 $name .= $extension == 'jpeg' ? '.jpg' : '.' . $extension;
             }
+        }
+
+        public static function importFromUrl($url)
+        {
+            $tempFilePath = tempnam(sys_get_temp_dir(), 'upload_image_from_url_');
+            $name = preg_replace("#.*\/#", '', $url);
+            file_put_contents($tempFilePath, file_get_contents($url));
+            $fileUploadData = static::saveImageFromTemporaryFile($tempFilePath, $name);
+            return $fileUploadData;
         }
     }
 ?>

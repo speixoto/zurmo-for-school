@@ -47,7 +47,6 @@
         public function rules()
         {
             return array(
-                array('apiKey', 'required'),
                 array('apiKey', 'type', 'type' => 'string'),
             );
         }

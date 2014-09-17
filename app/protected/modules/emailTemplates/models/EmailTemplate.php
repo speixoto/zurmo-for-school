@@ -155,6 +155,7 @@
                     'htmlContent',
                     'textContent',
                     'serializedData',
+                    'isFeatured',
                 ),
                 'rules' => array(
                     array('type',                       'required'),
@@ -174,7 +175,7 @@
                     array('name',                       'length',  'min'  => 1, 'max' => 64),
                     array('subject',                    'required'),
                     array('subject',                    'type',    'type' => 'string'),
-                    array('subject',                    'length',  'min'  => 1, 'max' => 64),
+                    array('subject',                    'length',  'min'  => 1, 'max' => 255),
                     array('language',                   'type',    'type' => 'string'),
                     array('language',                   'length',  'min' => 2, 'max' => 2),
                     array('language',                   'SetToUserDefaultLanguageValidator'),
@@ -186,6 +187,7 @@
                     array('textContent',                'EmailTemplateMergeTagsValidator'),
                     array('serializedData',             'type', 'type' => 'string'),
                     array('serializedData',             'EmailTemplateSerializedDataValidator'),
+                    array('isFeatured',                 'type',     'type'  => 'boolean'),
                 ),
                 'elements' => array(
                     'htmlContent'                   => 'TextArea',
@@ -268,6 +270,41 @@
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
             return self::getSubset($joinTablesAdapter, null, null, $where, 'name');
+        }
+
+        protected static function bypassReadPermissionsOptimizationToSqlQueryBasedOnWhere($where)
+        {
+            $q                 = DatabaseCompatibilityUtil::getQuote();
+            $builtTemplateType = static::BUILT_TYPE_BUILDER_TEMPLATE;
+            $isNull            = SQLOperatorUtil::resolveOperatorAndValueForNullOrEmpty('isNull');
+            $expectedWhere     = "({$q}emailtemplate{$q}.{$q}builttype{$q} = {$builtTemplateType}) and " .
+                                 "({$q}emailtemplate{$q}.{$q}modelclassname{$q} {$isNull})";
+            if ($where == $expectedWhere)
+            {
+                return true;
+            }
+            return parent::bypassReadPermissionsOptimizationToSqlQueryBasedOnWhere($where);
+        }
+
+        public function checkPermissionsHasAnyOf($requiredPermissions, User $user = null)
+        {
+            if ($user == null)
+            {
+                $user = Yii::app()->user->userModel;
+            }
+            $effectivePermissions = $this->getEffectivePermissions($user);
+            if (($effectivePermissions & $requiredPermissions) == 0)
+            {
+                $this->setTreatCurrentUserAsOwnerForPermissions(true);
+                if (!$this->isPredefinedBuilderTemplate())
+                {
+                    throw new AccessDeniedSecurityException($user, $requiredPermissions, $effectivePermissions);
+                }
+                else
+                {
+                    //Do nothing
+                }
+            }
         }
 
         /**

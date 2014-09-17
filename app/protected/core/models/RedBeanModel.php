@@ -67,6 +67,11 @@
     abstract class RedBeanModel extends BeanModel implements Serializable
     {
         /**
+         * Character used as delimiter when generating model identifiers
+         */
+        const   MODEL_IDENTIFIER_DELIMITER  = '_';
+
+        /**
          * Models that have not been saved yet have no id as far
          * as the database is concerned. Until they are saved they are
          * assigned a negative id, so that they have identity.
@@ -101,14 +106,14 @@
         // the extended User data. In this way in inheritance hierarchy from
         // model is normalized over several tables, one for each extending
         // class.
-        private $modelClassNameToBean                                        = array();
-        private $attributeNameToBeanAndClassName                             = array();
-        private $relationNameToRelatedModel                                  = array();
-        private $unlinkedRelationNames                                       = array();
-        private $unlinkedOwnedRelatedModelsToRemove                          = array();
-        private $validators                                                  = array();
-        private $attributeNameToErrors                                       = array();
-        private $scenarioName                                                = '';
+        protected $modelClassNameToBean                                        = array();
+        protected $attributeNameToBeanAndClassName                             = array();
+        protected $relationNameToRelatedModel                                  = array();
+        protected $unlinkedRelationNames                                       = array();
+        protected $unlinkedOwnedRelatedModelsToRemove                          = array();
+        protected $validators                                                  = array();
+        protected $attributeNameToErrors                                       = array();
+        protected $scenarioName                                                = '';
         // An object is automatically savable if it is new or contains
         // modified members or related objects.
         // If it is newly created and has never had any data put into it
@@ -122,6 +127,7 @@
         protected $isInGetErrors          = false;
         protected $isValidating           = false;
         protected $isSaving               = false;
+        protected $isDeleting             = false;
         protected $isNewModel             = false;
         protected $isCopied               = false;
 
@@ -563,6 +569,7 @@
                 $this->isInGetErrors              = false;
                 $this->isValidating               = false;
                 $this->isSaving                   = false;
+                $this->isDeleting                 = false;
             }
             catch (Exception $e)
             {
@@ -965,7 +972,21 @@
 
         public function getModelIdentifier()
         {
-            return get_class($this) . strval($this->getPrimaryBean()->id);
+            $className          = get_class($this);
+            $beanId             = strval($this->getPrimaryBean()->id);
+            $modelIdentifier    = static::getModelIdentifierByClassNameAndBeanId($className, $beanId);
+            return $modelIdentifier;
+        }
+
+        protected static function getModelIdentifierByClassNameAndBeanId($modelClassName, $beanId)
+        {
+            return $modelClassName . static::MODEL_IDENTIFIER_DELIMITER . $beanId;
+        }
+
+        public static function getModelClassNameByIdentifier($identifier)
+        {
+            $identifierTokens = explode(static::MODEL_IDENTIFIER_DELIMITER, $identifier);
+            return $identifierTokens[0];
         }
 
         /**
@@ -1408,7 +1429,9 @@
             if ($attributeName == 'id' ||
                 ($this->isAttributeReadOnly($attributeName) && !$this->isAllowedToSetReadOnlyAttribute($attributeName)))
             {
-                throw new NotSupportedException();
+                $message = Zurmo::t('Core', 'It is not allowed to set read only attribute: {attributeName}.',
+                    array('{attributeName}' => $attributeName));
+                throw new NotSupportedException($message);
             }
             else
             {
@@ -2165,7 +2188,9 @@
             }
             if ($this->beforeDelete())
             {
+                $this->isDeleting = true;
                 $deleted = $this->unrestrictedDelete();
+                $this->isDeleting = false;
                 $this->afterDelete();
                 return $deleted;
             }
@@ -2475,9 +2500,9 @@
         {
             assert('is_string($attributeName)');
             assert('is_string($language)');
-            if (isset(static::$attributeLabelsByLanguage[$language][$attributeName]))
+            if (isset(static::$attributeLabelsByLanguage[$language][get_called_class()][$attributeName]))
             {
-                return static::$attributeLabelsByLanguage[$language][$attributeName];
+                return static::$attributeLabelsByLanguage[$language][get_called_class()][$attributeName];
             }
             $labels       = static::translatedAttributeLabels($language);
             $customLabel  = static::getTranslatedCustomAttributeLabelByLanguage($attributeName, $language);
@@ -2495,7 +2520,7 @@
                 //attributes in translatedAttributeLabels($language)
                 $label = Zurmo::t('Core', static::generateAnAttributeLabel($attributeName), array(), null, $language);
             }
-            static::$attributeLabelsByLanguage[$language][$attributeName] = $label;
+            static::$attributeLabelsByLanguage[$language][get_called_class()][$attributeName] = $label;
             return $label;
         }
 
@@ -3025,7 +3050,7 @@
             {
                 $modelClassName = get_called_class();
             }
-            $modelIdentifier = $modelClassName . strval($bean->id);
+            $modelIdentifier = static::getModelIdentifierByClassNameAndBeanId($modelClassName, strval($bean->id));
             try
             {
                 $model = RedBeanModelsCache::getModel($modelIdentifier);
@@ -3223,6 +3248,15 @@
                 return true;
             }
             return false;
+        }
+
+        /**
+         * Whether or not this model instances should be cached in memcache
+         * @return bool
+         */
+        public static function allowMemcacheCache()
+        {
+            return true;
         }
     }
 ?>

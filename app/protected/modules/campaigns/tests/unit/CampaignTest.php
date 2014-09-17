@@ -33,7 +33,7 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-    class CampaignTest extends ZurmoBaseTest
+    class CampaignTest extends AutoresponderOrCampaignBaseTest
     {
         public static $marketingList;
 
@@ -42,6 +42,8 @@
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
             SecurityTestHelper::createUsers();
+            // Delete item from jobQueue, that is created when new user is created
+            Yii::app()->jobQueue->deleteAll();
             self::$marketingList = MarketingListTestHelper::createMarketingListByName('a new list');
         }
 

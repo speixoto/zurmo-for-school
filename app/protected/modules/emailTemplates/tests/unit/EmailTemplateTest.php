@@ -184,11 +184,11 @@
         public function testSubjectLengthValidator()
         {
             $emailTemplate              = new EmailTemplate();
-            $emailTemplate->subject     = str_repeat('a', 100);
+            $emailTemplate->subject     = str_repeat('a', 260);
             $validated                  = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
             $error                      = $emailTemplate->getError('subject');
-            $this->assertEquals("Subject is too long (maximum is 64 characters).", $error);
+            $this->assertEquals("Subject is too long (maximum is 255 characters).", $error);
         }
 
         /**
@@ -444,6 +444,26 @@
             $this->assertTrue($emailTemplate->save());
             $this->assertEmpty($emailTemplate->getErrors());
             $this->assertEquals(5, EmailTemplate::getCount());
+        }
+
+        /**
+         * @depends testCreateAndGetEmailTemplateById
+         */
+        public function testUnsubscribeAndManageSubscriptionsMergeTagsValidation()
+        {
+            $emailTemplate                  = new EmailTemplate();
+            $emailTemplate->type            = EmailTemplate::TYPE_CONTACT;
+            $emailTemplate->subject         = 'Another Test subject';
+            $emailTemplate->name            = 'Another Test Email Template';
+            $emailTemplate->textContent     = GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag() . ', ' .
+                                                GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag();
+            $emailTemplate->htmlContent     = GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag() . ', ' .
+                                                GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag();
+            $emailTemplate->builtType       = EmailTemplate::BUILT_TYPE_PASTED_HTML;
+            $emailTemplate->modelClassName  = 'Contact';
+            $validated                      = $emailTemplate->validate(null, false, true);
+            $this->assertTrue($validated);
+            $this->assertEmpty($emailTemplate->getErrors());
         }
 
         /**

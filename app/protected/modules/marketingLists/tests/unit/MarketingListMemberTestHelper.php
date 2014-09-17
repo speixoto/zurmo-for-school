@@ -38,9 +38,38 @@
     {
         public static function createMarketingListMember($unsubscribed = 0, $marketingList = null, $contact = null)
         {
-            $marketingListMember    = static::populateMarketingListMember($unsubscribed, $marketingList, $contact);
+            $marketingListMember    = static::populateValidMarketingListMember($unsubscribed, $marketingList, $contact);
             $saved                  = $marketingListMember->unrestrictedSave();
+            if (!$saved)
+            {
+                print_r($marketingListMember->getErrors());
+                throw new FailedToSaveModelException();
+            }
             assert('$saved');
+            return $marketingListMember;
+        }
+
+        public static function populateValidMarketingListMember($unsubscribed = 0, $marketingList = null, $contact = null, $iterations = 0)
+        {
+            // following is a quick hack to ensure that we always try to save a validated marketing list member
+            // why do we need it? because we are using random contacts and random marketing lists above
+            // give the number of available marketinglists/contacts we might have a member that already exists
+            $marketingListMember    = static::populateMarketingListMember($unsubscribed, $marketingList, $contact);
+            $mustReturnValidMember  = !isset($marketingList, $contact);
+            $maxIterations          = MarketingList::getCount() * Contact::getCount();
+            if ($mustReturnValidMember)
+            {
+                if (!$marketingListMember->validate())
+                {
+                    if ($iterations == $maxIterations)
+                    {
+                        var_dump("Tried $maxIterations iterations to populate a valid MarketingListMember. Bailing out.");
+                        return $marketingListMember;
+                    }
+                    $iterations++;
+                    $marketingListMember    = static::populateValidMarketingListMember($unsubscribed, null, null, $iterations);
+                }
+            }
             return $marketingListMember;
         }
 

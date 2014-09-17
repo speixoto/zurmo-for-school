@@ -616,6 +616,7 @@
                     unset($data['modelRelations']);
                 }
                 $model = new $modelClassName();
+                $this->setModelScenarioFromData($model, $data);
                 $model = $this->attemptToSaveModelFromData($model, $data, null, false);
                 $id = $model->id;
                 $model->forget();
@@ -675,6 +676,7 @@
             try
             {
                 $model = $modelClassName::getById($id);
+                $this->setModelScenarioFromData($model, $data);
             }
             catch (NotFoundException $e)
             {
@@ -732,6 +734,36 @@
                 throw new ApiException($message);
             }
             return $result;
+        }
+
+        /**
+         * Resolve model scenario from data
+         * @param array $data
+         * @return null
+         */
+        protected function resolveModelScenario(array & $data)
+        {
+            if (isset($data['modelScenario']) && $data['modelScenario'] != '')
+            {
+                $scenarioName = $data['modelScenario'];
+                unset($data['modelScenario']);
+                return $scenarioName;
+            }
+            return null;
+        }
+
+        /**
+         * Set model scenario
+         * @param RedBeanModel $model
+         * @param array $data
+         */
+        protected function setModelScenarioFromData(RedBeanModel $model, array & $data)
+        {
+            $scenarioName = $this->resolveModelScenario($data);
+            if (isset($scenarioName) && $scenarioName != '')
+            {
+                $model->setScenario($scenarioName);
+            }
         }
 
         /**

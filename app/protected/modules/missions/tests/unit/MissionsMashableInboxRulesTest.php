@@ -43,7 +43,7 @@
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
             Yii::app()->user->userModel = User::getByUsername('super');
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             $steven = UserTestHelper::createBasicUser('steven');
             $steven->setRight('MissionsModule', MissionsModule::RIGHT_ACCESS_MISSIONS);
             $steven->setRight('MissionsModule', MissionsModule::RIGHT_CREATE_MISSIONS);

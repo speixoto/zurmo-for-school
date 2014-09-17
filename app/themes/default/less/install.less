@@ -37,134 +37,7 @@
     height:54px;
     margin-bottom:20px;
 }
-/*
-#InstallAccessFailurePageView,
-#ErrorPageView{
-    #gradient > .vertical-three-colors( #f6f6f6, #ffffff, 100px, #f6f6f6 );
-    .b-shadow( ~"0 0 12px 5px rgba(153, 153, 153, 0.3)" );
-    .radius( 5px );
-    font-size:12px;
-    line-height:140%;
-    background:#fff;
-    width:960px;
-    padding:20px;
-    margin:40px auto;
-    a{
-	    background-color: @themeColor;
-	    padding:1px 4px;
-        .radius(2px);
-        color:#fff;
-        &:hover{
-            color:#fff !important;
-            text-decoration:underline;
-        }
-    }
-    div{
-        margin:10px 0;
-    }
-}
 
-#InstallPageView{
-    .AppContainer{
-        background-image:none;
-        font-size:12px;
-        line-height:140%;
-        padding:20px;
-        margin:40px 40px 0 40px;
-        .radius( 5px );
-        a{
-            //margin:auto 10px;
-            //.z-button();
-        }
-    }
-	div.wide.form{
-		float: none;
-	}
-    #save{
-    	color:#fff !important;
-    	.t-shadow(none) !important;
-    }
-    ul{
-        list-style:inside;
-        margin-bottom:10px;
-        li{
-            margin-bottom:5px;
-        }
-    }
-    table{
-        width:100%;
-        table{
-            border-color: #DDDEDE;
-            border-style: solid;
-            border-width: 0 0 1px 0;
-            border-spacing: 0;
-            border-collapse: collapse;
-            td{
-                border-color: #DDDEDE;
-                border-style: solid;
-                border-width: 1px 1px 0 0;
-                padding-left:10px;
-            }
-            tr{
-                border-color: #DDDEDE;
-                border-style: solid;
-                border-width: 0 0 0 1px;
-                border-spacing: 0;
-            }
-            tr:first-child{
-                border-left:none;
-                td{
-                    border:none;
-                    font-weight:bold;
-                }
-            }
-        }
-        //inside another table to prevent hover effect on the main table
-        table tr:hover{
-            background-color:none;
-            color:@textColor;
-        }
-        td{
-            padding:8px 2px;
-        }
-    }
-    #install-form{
-        .unstyle-panel;
-        //padding:0 !important;
-        input[type="submit"]{
-            .z-button();
-        }
-        table{
-            padding-bottom:15px;
-        }
-        th{
-            width:26%;
-        }
-        td{
-            width:37%;
-        }
-        th+td{
-        	vertical-align:top;
-        }
-        tr td:last-child{
-            padding-left:15px;
-        }
-        label{
-            font-size:12px !important;
-            color:#666;
-            font-weight:400 !important;
-            padding-top:12px;
-        }
-        .hasCheckBox{
-        	padding-top:0;
-        	margin-left:0;
-        }
-	    .view-toolbar-container{
-		    border-top:1px solid #ccc;
-	    }
-    }
-}
-*/
 #InstallView{
 	margin-left: 0;
 	padding: 75px 15% 15px 15%;
@@ -222,7 +95,6 @@
 
 #install-form{
 	.unstyle-panel;
-	//padding:0 !important;
 	input[type="submit"]{
 		.z-button();
 	}
@@ -231,6 +103,8 @@
 	}
 	th{
 		width:26%;
+		vertical-align:top;
+		padding-top: 8px;
 	}
 	td{
 		width:37%;
@@ -249,9 +123,7 @@
 		padding-top:0;
 		margin-left:0;
 	}
-	.view-toolbar-container{
-		//border-top:1px solid #ccc;
-	}
+	.view-toolbar-container{}
 	.form-toolbar{
 		border-top: none;
 	}
@@ -290,6 +162,6 @@
 .install-or{
     display:inline-block;
     position:relative;
-    top:-10px;
+    //top:-10px;
 	margin: 0 10px;
 }

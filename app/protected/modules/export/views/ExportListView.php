@@ -34,31 +34,56 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Controller Class for managing currency actions.
-     *
-     */
-    class ZurmoReadPermissionsController extends Controller
+    class ExportListView extends SecuredListView
     {
-        public function filters()
+        public static function getDefaultMetadata()
         {
-            return array(
-                array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH,
-                    'moduleClassName' => 'ZurmoModule',
-                    'rightName' => ZurmoModule::RIGHT_ACCESS_ADMINISTRATION, //Use this right until a more specific right is in place.
-               ),
+            $metadata = array(
+                'global' => array(
+                    'nonPlaceableAttributeNames' => array(
+                        'processOffset',
+                        'serializedData',
+                        'exportFileModel',
+                        'modelClassName',
+                        'isCompleted',
+                        'isJobRunning',
+                        'cancelExport'
+                    ),
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'exportFileName', 'type' => 'ExportFileName'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+
             );
+            return $metadata;
         }
 
-        public function actionRebuildMunge()
+        /**
+         * @return bool
+         */
+        public function getRowsAreSelectable()
         {
-            ReadPermissionsOptimizationUtil::rebuild();
-            echo Zurmo::t('ZurmoModule', 'Read permissions rebuild complete.') . "<BR>";
-            if (SHOW_QUERY_DATA)
-            {
-                echo PageView::makeShowQueryDataContent();
-            }
+            return false;
+        }
+
+        /**
+         * Override to remove the last column.
+         */
+        protected function getCGridViewLastColumn()
+        {
+            return array();
         }
     }
 ?>

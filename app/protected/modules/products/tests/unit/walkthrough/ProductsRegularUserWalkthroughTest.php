@@ -58,7 +58,7 @@
             ProductTestHelper::createProductByNameForOwner("My Product 4", $super);
             //Setup default dashboard.
             Dashboard::getByLayoutIdAndUser(Dashboard::DEFAULT_USER_LAYOUT_ID, $super);
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function testRegularUserAllControllerActionsNoElevation()
@@ -148,6 +148,7 @@
             Yii::app()->user->userModel = $super;
             $product->addPermissions($nobody, Permission::READ);
             $this->assertTrue($product->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($product, $nobody);
 
             //Now the nobody user can access the details view.
             Yii::app()->user->userModel = $nobody;
@@ -168,6 +169,8 @@
             $product->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             //TODO :Its wierd that giving opportunity errors
             $this->assertTrue($product->save());
+            AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForUser($product, $nobody);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($product, $nobody);
 
             //Now the nobody user should be able to access the edit view and still the details view.
             Yii::app()->user->userModel = $nobody;
@@ -183,6 +186,7 @@
             Yii::app()->user->userModel = $super;
             $product->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS, Permission::DENY);
             $this->assertTrue($product->save());
+            AllPermissionsOptimizationUtil::securableItemLostPermissionsForUser($product, $nobody);
 
             //Test nobody, access to detail should fail.
             Yii::app()->user->userModel = $nobody;
@@ -209,6 +213,16 @@
             $parentRole->users->add($userInParentRole);
             $parentRole->roles->add($childRole);
             $this->assertTrue($parentRole->save());
+            $userInChildRole->forget();
+            $userInChildRole = User::getByUsername('nobody');
+            $userInParentRole->forget();
+            $userInParentRole = User::getByUsername('confused');
+            $parentRoleId = $parentRole->id;
+            $parentRole->forget();
+            $parentRole = Role::getById($parentRoleId);
+            $childRoleId = $childRole->id;
+            $childRole->forget();
+            $childRole = Role::getById($childRoleId);
 
             //create product owned by super
 
@@ -225,6 +239,7 @@
             Yii::app()->user->userModel = $super;
             $product2->addPermissions($userInChildRole, Permission::READ);
             $this->assertTrue($product2->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($product2, $userInChildRole);
 
             //Test userInChildRole, access to details should not fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -244,6 +259,8 @@
             Yii::app()->user->userModel = $super;
             $product2->addPermissions($userInChildRole, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($product2->save());
+            AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForUser($product2, $userInChildRole);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($product2, $userInChildRole);
 
             //Test userInChildRole, access to edit should not fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -262,6 +279,7 @@
             Yii::app()->user->userModel = $super;
             $product2->addPermissions($userInChildRole, Permission::READ_WRITE_CHANGE_PERMISSIONS, Permission::DENY);
             $this->assertTrue($product2->save());
+            AllPermissionsOptimizationUtil::securableItemLostPermissionsForUser($product2, $userInChildRole);
 
             //Test userInChildRole, access to detail should fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -333,6 +351,7 @@
             Yii::app()->user->userModel = $super;
             $product3->addPermissions($parentGroup, Permission::READ);
             $this->assertTrue($product3->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForGroup($product3, $parentGroup);
 
             //Test userInParentGroup, access to details should not fail.
             Yii::app()->user->userModel = $userInParentGroup;
@@ -351,6 +370,8 @@
             Yii::app()->user->userModel = $super;
             $product3->addPermissions($parentGroup, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($product3->save());
+            AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForGroup($product3, $parentGroup);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForGroup($product3, $parentGroup);
 
             //Test userInParentGroup, access to edit should not fail.
             Yii::app()->user->userModel = $userInParentGroup;
@@ -370,6 +391,7 @@
             Yii::app()->user->userModel = $super;
             $product3->addPermissions($parentGroup, Permission::READ_WRITE_CHANGE_PERMISSIONS, Permission::DENY);
             $this->assertTrue($product3->save());
+            AllPermissionsOptimizationUtil::securableItemLostPermissionsForGroup($product3, $parentGroup);
 
             //Test userInChildGroup, access to detail should fail.
             Yii::app()->user->userModel = $userInChildGroup;

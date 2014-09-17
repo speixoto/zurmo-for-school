@@ -73,18 +73,6 @@
                         'label' => "eval:Zurmo::t('ZurmoModule', 'Roles')",
                         'url'   => array('/zurmo/role'),
                         'right' => self::RIGHT_ACCESS_ROLES,
-                        'items' => array(
-                            array(
-                                'label' => "eval:Zurmo::t('ZurmoModule', 'Create Role')",
-                                'url'   => array('/zurmo/role/create'),
-                                'right' => self::RIGHT_CREATE_ROLES
-                            ),
-                            array(
-                                'label' => "eval:Zurmo::t('ZurmoModule', 'Roles')",
-                                'url'   => array('/zurmo/role'),
-                                'right' => self::RIGHT_ACCESS_ROLES
-                            ),
-                        ),
                     ),
                 ),
                 'configureMenuItems' => array(

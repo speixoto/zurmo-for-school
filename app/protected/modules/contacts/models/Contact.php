@@ -140,6 +140,11 @@
                     'latestActivityDateTime',
                     'website'
                 ),
+                'indexes' => array(
+                    'person_id' => array(
+                        'members' => array('person_id'),
+                        'unique' => false),
+                ),
             );
             return $metadata;
         }

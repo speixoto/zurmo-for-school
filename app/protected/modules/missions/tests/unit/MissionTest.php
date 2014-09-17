@@ -67,8 +67,10 @@
             $mission->reward      = 'My test reward';
             $mission->status      = Mission::STATUS_AVAILABLE;
             $mission->files->add($fileModel);
-            $mission->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE);
+            $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
+            $mission->addPermissions($everyoneGroup, Permission::READ_WRITE);
             $this->assertTrue($mission->save());
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForGroup($mission, $everyoneGroup);
             $id = $mission->id;
             $mission->forget();
             unset($mission);

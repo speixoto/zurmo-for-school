@@ -36,6 +36,8 @@
 
     class MarketingListMember extends OwnedModel
     {
+        const SCENARIO_MANUAL_CHANGE        = 'manualChange';
+
         public static function getModuleClassName()
         {
             return 'MarketingListsModule';
@@ -75,6 +77,8 @@
                     array('modifiedDateTime',      'type', 'type' => 'datetime'),
                     array('unsubscribed',          'boolean'),
                     array('unsubscribed',          'default', 'value' => false),
+                    array('unsubscribed',          'isNotIllegalStateChange'),
+                    array('unsubscribed',          'doesNotAlreadyExist'),
                 ),
                 'elements' => array(
                     'createdDateTime'  => 'DateTime',
@@ -229,6 +233,44 @@
             }
             $this->modifiedDateTime     = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             return true;
+        }
+
+        public function doesNotAlreadyExist($attribute, $params)
+        {
+            if ($this->id < 0)
+            {
+                $query  = 'SELECT COUNT(*) FROM ' . static::getTableName();
+                $query  .= ' WHERE contact_id=' . $this->contact->id . ' AND marketinglist_id=' . $this->marketingList->id;
+                if (ZurmoRedBean::getCell($query))
+                {
+                    $this->addError($attribute, Zurmo::t('MarketingListsModule', 'Member already exists'));
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public function isNotIllegalStateChange($attribute, $params)
+        {
+            if (isset($this->originalAttributeValues['unsubscribed']) &&
+                $this->originalAttributeValues['unsubscribed'] != $this->unsubscribed)
+            {
+                // if current state is unsubscribed, new state is subscribed and scenario is not set to manual then return true
+                if ($this->originalAttributeValues['unsubscribed'] && $this->getScenario() != static::SCENARIO_MANUAL_CHANGE)
+                {
+                    $this->addError($attribute, Zurmo::t('MarketingListsModule', 'Automated State change to subscribed is not allowed.'));
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public function unrestrictedSave($runValidation = true, array $attributeNames = null)
+        {
+            // enforce validation to ensure record:
+            // a- does not already exist
+            // b- is not an illegal state change
+            return parent::unrestrictedSave(true, $attributeNames);
         }
     }
 ?>

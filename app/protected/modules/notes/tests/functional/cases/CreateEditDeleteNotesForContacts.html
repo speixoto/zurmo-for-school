@@ -12,355 +12,380 @@
 <tr><td rowspan="1" colspan="3">Create Edit Delete Notes For Contacts</td></tr>
 </thead><tbody>
 <tr>
-  <td>setTimeout</td>
-  <td>45000</td>
-  <td></td>
+    <td>setTimeout</td>
+    <td>45000</td>
+    <td></td>
 </tr>
 <tr>
-  <td>open</td>
-  <td>index.php/contacts/default</td>
-  <td></td>
+    <td>open</td>
+    <td>index.php/contacts/default</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>verifyTextPresent</td>
-  <td>Create</td>
-  <td></td>
+    <td>verifyTextPresent</td>
+    <td>Create</td>
+    <td></td>
 </tr>
 <tr>
-  <td>verifyTextPresent</td>
-  <td>Advanced</td>
-  <td></td>
+    <td>verifyTextPresent</td>
+    <td>Advanced</td>
+    <td></td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>ContactsSearchForm_anyMixedAttributes</td>
-  <td>Jane ${randomSuffix}</td>
+    <td>type</td>
+    <td>ContactsSearchForm_anyMixedAttributes</td>
+    <td>Jane ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>keyUp</td>
-  <td>ContactsSearchForm_anyMixedAttributes</td>
-  <td>\10</td>
+    <td>keyUp</td>
+    <td>ContactsSearchForm_anyMixedAttributes</td>
+    <td>\10</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>//div[@id='list-view']/div[2]/table/tbody/tr[1]/td[3]/a</td>
-  <td>Jinny Jane ${randomSuffix}</td>
+    <td>waitForText</td>
+    <td>//div[@id='list-view']/div[2]/table/tbody/tr[1]/td[3]/a</td>
+    <td>Jinny Jane ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>verifyTextPresent</td>
-  <td>Jinny Jane ${randomSuffix}</td>
-  <td></td>
+    <td>verifyTextPresent</td>
+    <td>Jinny Jane ${randomSuffix}</td>
+    <td></td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>link=Jinny Jane ${randomSuffix}</td>
-  <td></td>
+    <td>assertText</td>
+    <td>link=Jinny Jane ${randomSuffix}</td>
+    <td>Jinny Jane ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>clickAndWait</td>
+    <td>link=Jinny Jane ${randomSuffix}</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>Jinny Jane ${randomSuffix}</td>
-  <td></td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>verifyTextPresent</td>
-  <td>Notes</td>
-  <td></td>
+    <td>waitForTextPresent</td>
+    <td>Jinny Jane ${randomSuffix}</td>
+    <td></td>
+</tr>
+<tr>
+    <td>verifyTextPresent</td>
+    <td>Notes</td>
+    <td></td>
 </tr>
 <!--- Create, Edit and Delete an Inline Note Without feeding information for more options starts here -->
 <tr>
-  <td>type</td>
-  <td>Note_description</td>
-  <td>This is an Inline Note ${randomSuffix} for contact without more options</td>
+    <td>type</td>
+    <td>Note_description</td>
+    <td>This is an Inline Note ${randomSuffix} for contact without more options</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>save</td>
-  <td></td>
+    <td>click</td>
+    <td>save</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>//div[@id='list-viewContactLatestActivitiesForPortletView']/table/tbody/tr/td/div/span/a</td>
-  <td>This is an Inline Note ${randomSuffix} for contact without more options</td>
+<td>waitForText</td>
+<td>//div[@id='list-viewContactLatestActivitiesForPortletView']/table/tbody/tr/td/div/span/a</td>
+<td>This is an Inline Note ${randomSuffix} for contact without more options</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>link=This is an Inline Note ${randomSuffix} for contact without more options</td>
-  <td></td>
+    <td>assertText</td>
+    <td>link=This is an Inline Note ${randomSuffix} for contact without more options</td>
+    <td>This is an Inline Note ${randomSuffix} for contact without more options</td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>clickAndWait</td>
+    <td>link=This is an Inline Note ${randomSuffix} for contact without more options</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>//div[@id='NoteEditAndDetailsView']/div/div[2]/div/table/tbody/tr[1]/td</td>
-  <td>This is an Inline Note ${randomSuffix} for contact without more options</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>verifyTextPresent</td>
-  <td>Jinny Jane ${randomSuffix}</td>
-  <td></td>
+    <td>waitForText</td>
+    <td>//div[@id='NoteEditAndDetailsView']/div/div[2]/div/table/tbody/tr[1]/td</td>
+    <td>This is an Inline Note ${randomSuffix} for contact without more options</td>
 </tr>
 <tr>
-  <td>verifyTextPresent</td>
-  <td>Owner</td>
-  <td></td>
+    <td>verifyTextPresent</td>
+    <td>Jinny Jane ${randomSuffix}</td>
+    <td></td>
 </tr>
 <tr>
-  <td>verifyTextPresent</td>
-  <td>Super User</td>
-  <td></td>
+    <td>verifyTextPresent</td>
+    <td>Owner</td>
+    <td></td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>link=Edit</td>
-  <td></td>
+    <td>verifyTextPresent</td>
+    <td>Super User</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>setSpeed</td>
+    <td>3000</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>assertText</td>
+    <td>link=Edit</td>
+    <td>Edit</td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>This is an Inline Note ${randomSuffix} for contact without more options</td>
-  <td></td>
+    <td>clickAndWait</td>
+    <td>link=Edit</td>
+    <td></td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>Note_description</td>
-  <td>This is an Inline New Note ${randomSuffix} for contact without more options</td>
+    <td>setSpeed</td>
+    <td>3000</td>
+    <td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>Note_occurredOnDateTime</td>
-  <td></td>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>Hour</td>
-  <td></td>
+    <td>waitForTextPresent</td>
+    <td>This is an Inline Note ${randomSuffix} for contact without more options</td>
+    <td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>//div[@id='ui-datepicker-div']/div[1]/a[2]/span</td>
-  <td></td>
+    <td>type</td>
+    <td>Note_description</td>
+    <td>This is an Inline New Note ${randomSuffix} for contact without more options</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>click</td>
+    <td>Note_occurredOnDateTime</td>
+    <td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>//div[@id='ui-datepicker-div']/table/tbody/tr[2]/td[3]/a</td>
-  <td></td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForTextPresent</td>
+    <td>Hour</td>
+    <td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>//div[@id='ui-datepicker-div']/div[3]/button[2]</td>
-  <td></td>
+    <td>click</td>
+    <td>//div[@id='ui-datepicker-div']/div[1]/a[2]/span</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>ActivityItemForm_Account_SelectLink</td>
-  <td></td>
+    <td>click</td>
+    <td>//div[@id='ui-datepicker-div']/table/tbody/tr[2]/td[3]/a</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForElementPresent</td>
-  <td>AccountsSearchForm_anyMixedAttributes</td>
-  <td></td>
+    <td>click</td>
+    <td>//div[@id='ui-datepicker-div']/div[3]/button[2]</td>
+    <td></td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>AccountsSearchForm_anyMixedAttributes</td>
-  <td>my account ${randomSuffix}</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>keyUp</td>
-  <td>AccountsSearchForm_anyMixedAttributes</td>
-  <td>\10</td>
+    <td>click</td>
+    <td>ActivityItemForm_Account_SelectLink</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
-  <td>my account ${randomSuffix}</td>
+    <td>waitForElementPresent</td>
+    <td>AccountsSearchForm_anyMixedAttributes</td>
+    <td></td>
 </tr>
 <tr>
-  <td>verifyTextPresent</td>
-  <td>my account ${randomSuffix}</td>
-  <td></td>
+    <td>type</td>
+    <td>AccountsSearchForm_anyMixedAttributes</td>
+    <td>my account ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
-  <td></td>
+    <td>keyUp</td>
+    <td>AccountsSearchForm_anyMixedAttributes</td>
+    <td>\10</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForValue</td>
-  <td>ActivityItemForm_Account_name</td>
-  <td>my account ${randomSuffix}</td>
+    <td>waitForText</td>
+    <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
+    <td>my account ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>verifyValue</td>
-  <td>ActivityItemForm_Contact_name</td>
-  <td>Jinny Jane ${randomSuffix}</td>
+    <td>verifyTextPresent</td>
+    <td>my account ${randomSuffix}</td>
+    <td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>ActivityItemForm_Opportunity_SelectLink</td>
-  <td></td>
+    <td>click</td>
+    <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForElementPresent</td>
-  <td>OpportunitiesSearchForm_anyMixedAttributes</td>
-  <td></td>
+    <td>waitForValue</td>
+    <td>ActivityItemForm_Account_name</td>
+    <td>my account ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>OpportunitiesSearchForm_anyMixedAttributes</td>
-  <td>Test Opportunity ${randomSuffix}</td>
+    <td>verifyValue</td>
+    <td>ActivityItemForm_Contact_name</td>
+    <td>Jinny Jane ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>keyUp</td>
-  <td>OpportunitiesSearchForm_anyMixedAttributes</td>
-  <td>\10</td>
+    <td>click</td>
+    <td>ActivityItemForm_Opportunity_SelectLink</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
-  <td>Test Opportunity ${randomSuffix}</td>
+    <td>waitForElementPresent</td>
+    <td>OpportunitiesSearchForm_anyMixedAttributes</td>
+    <td></td>
 </tr>
 <tr>
-  <td>verifyTextPresent</td>
-  <td>Test Opportunity ${randomSuffix}</td>
-  <td></td>
+    <td>type</td>
+    <td>OpportunitiesSearchForm_anyMixedAttributes</td>
+    <td>Test Opportunity ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
-  <td></td>
+    <td>keyUp</td>
+    <td>OpportunitiesSearchForm_anyMixedAttributes</td>
+    <td>\10</td>
 </tr>
 <tr>
-  <td>waitForValue</td>
-  <td>ActivityItemForm_Opportunity_name</td>
-  <td>Test Opportunity ${randomSuffix}</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>Note_owner_SelectLink</td>
-  <td></td>
+    <td>waitForText</td>
+    <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
+    <td>Test Opportunity ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>verifyTextPresent</td>
+    <td>Test Opportunity ${randomSuffix}</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>User Search</td>
-  <td></td>
+    <td>click</td>
+    <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForElementPresent</td>
-  <td>UsersSearchForm_anyMixedAttributes</td>
-  <td></td>
+    <td>waitForValue</td>
+    <td>ActivityItemForm_Opportunity_name</td>
+    <td>Test Opportunity ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>UsersSearchForm_anyMixedAttributes</td>
-  <td>Sam Smith</td>
+    <td>click</td>
+    <td>Note_owner_SelectLink</td>
+    <td></td>
 </tr>
 <tr>
-  <td>keyUp</td>
-  <td>UsersSearchForm_anyMixedAttributes</td>
-  <td>\10</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForTextPresent</td>
+    <td>User Search</td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForElementPresent</td>
+    <td>UsersSearchForm_anyMixedAttributes</td>
+    <td></td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>UsersSearchForm_anyMixedAttributes</td>
+    <td>Sam Smith</td>
+</tr>
+<tr>
+    <td>keyUp</td>
+    <td>UsersSearchForm_anyMixedAttributes</td>
+    <td>\10</td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
     <td>waitForText</td>
@@ -368,493 +393,552 @@
     <td>Sam Smith</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>link=Sam Smith</td>
-  <td></td>
+    <td>assertText</td>
+    <td>link=Sam Smith</td>
+    <td>Sam Smith</td>
 </tr>
 <tr>
-  <td>waitForValue</td>
-  <td>Note_owner_name</td>
-  <td>Sam Smith</td>
+    <td>click</td>
+    <td>link=Sam Smith</td>
+    <td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>Note_explicitReadWriteModelPermissions_type_2</td>
-  <td></td>
+    <td>waitForValue</td>
+    <td>Note_owner_name</td>
+    <td>Sam Smith</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>save</td>
-  <td></td>
+    <td>click</td>
+    <td>Note_explicitReadWriteModelPermissions_type_2</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>clickAndWait</td>
+    <td>save</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>This is an Inline New Note ${randomSuffix} for contact without more options</td>
-  <td></td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>link=This is an Inline New Note ${randomSuffix} for contact without more options</td>
-  <td></td>
+    <td>waitForTextPresent</td>
+    <td>This is an Inline New Note ${randomSuffix} for contact without more options</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>assertText</td>
+    <td>link=This is an Inline New Note ${randomSuffix} for contact without more options</td>
+    <td>This is an Inline New Note ${randomSuffix} for contact without more options</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>clickAndWait</td>
+    <td>link=This is an Inline New Note ${randomSuffix} for contact without more options</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>This is an Inline New Note ${randomSuffix} for contact without more options</td>
-  <td></td>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>Everyone</td>
-  <td></td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>//div[@id='NoteEditAndDetailsView']/div/div/div/ul/li/ul/li/a</td>
-  <td></td>
+    <td>waitForTextPresent</td>
+    <td>This is an Inline New Note ${randomSuffix} for contact without more options</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForConfirmation</td>
-  <td>Are you sure you want to delete this note?</td>
-  <td></td>
+    <td>waitForTextPresent</td>
+    <td>Everyone</td>
+    <td></td>
 </tr>
 <tr>
-  <td>chooseOkOnNextConfirmation</td>
-  <td></td>
-  <td></td>
+    <td>clickAndWait</td>
+    <td>//div[@id='NoteEditAndDetailsView']/div/div/div/ul/li/ul/li/a</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>waitForConfirmation</td>
+    <td>Are you sure you want to delete this note?</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>chooseOkOnNextConfirmation</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>Jinny Jane ${randomSuffix}</td>
-  <td></td>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
+    <td>waitForTextPresent</td>
+    <td>Jinny Jane ${randomSuffix}</td>
+    <td></td>
 </tr>
 <!--- Create, Edit and Delete an Inline Note Without feeding information for more options ends here -->
 
 <!--- Create, Edit and Delete an Inline Note With feeding information for more options starts here -->
 <tr>
-  <td>type</td>
-  <td>Note_description</td>
-  <td>This is an Inline Note ${randomSuffix} for contact with more options</td>
+    <td>type</td>
+    <td>Note_description</td>
+    <td>This is an Inline Note ${randomSuffix} for contact with more options</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>link=More Options</td>
-  <td></td>
+    <td>assertText</td>
+    <td>link=More Options</td>
+    <td>More Options</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>click</td>
+    <td>link=More Options</td>
+    <td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>Note_occurredOnDateTime</td>
-  <td></td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>click</td>
+    <td>Note_occurredOnDateTime</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>Hour</td>
-  <td></td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>//div[@id='ui-datepicker-div']/div[1]/a[2]/span</td>
-  <td></td>
+    <td>waitForTextPresent</td>
+    <td>Hour</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>click</td>
+    <td>//div[@id='ui-datepicker-div']/div[1]/a[2]/span</td>
+    <td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>//div[@id='ui-datepicker-div']/table/tbody/tr[2]/td[3]/a</td>
-  <td></td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>click</td>
+    <td>//div[@id='ui-datepicker-div']/table/tbody/tr[2]/td[3]/a</td>
+    <td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>//div[@id='ui-datepicker-div']/div[3]/button[2]</td>
-  <td></td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>click</td>
+    <td>//div[@id='ui-datepicker-div']/div[3]/button[2]</td>
+    <td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>ActivityItemForm_Account_SelectLink</td>
-  <td></td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>click</td>
+    <td>ActivityItemForm_Account_SelectLink</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForElementPresent</td>
-  <td>AccountsSearchForm_anyMixedAttributes</td>
-  <td></td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>AccountsSearchForm_anyMixedAttributes</td>
-  <td>my account ${randomSuffix}</td>
+    <td>waitForElementPresent</td>
+    <td>AccountsSearchForm_anyMixedAttributes</td>
+    <td></td>
 </tr>
 <tr>
-  <td>keyUp</td>
-  <td>AccountsSearchForm_anyMixedAttributes</td>
-  <td>\10</td>
+    <td>type</td>
+    <td>AccountsSearchForm_anyMixedAttributes</td>
+    <td>my account ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>keyUp</td>
+    <td>AccountsSearchForm_anyMixedAttributes</td>
+    <td>\10</td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
-  <td>my account ${randomSuffix}</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>verifyTextPresent</td>
-  <td>my account ${randomSuffix}</td>
-  <td></td>
+    <td>waitForText</td>
+    <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
+    <td>my account ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
-  <td></td>
+    <td>verifyTextPresent</td>
+    <td>my account ${randomSuffix}</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForValue</td>
-  <td>ActivityItemForm_Account_name</td>
-  <td>my account ${randomSuffix}</td>
+    <td>click</td>
+    <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
+    <td></td>
 </tr>
 <tr>
-  <td>verifyValue</td>
-  <td>ActivityItemForm_Contact_name</td>
-  <td>Jinny Jane ${randomSuffix}</td>
+    <td>waitForValue</td>
+    <td>ActivityItemForm_Account_name</td>
+    <td>my account ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>ActivityItemForm_Opportunity_SelectLink</td>
-  <td></td>
+    <td>verifyValue</td>
+    <td>ActivityItemForm_Contact_name</td>
+    <td>Jinny Jane ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>click</td>
+    <td>ActivityItemForm_Opportunity_SelectLink</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForElementPresent</td>
-  <td>OpportunitiesSearchForm_anyMixedAttributes</td>
-  <td></td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>OpportunitiesSearchForm_anyMixedAttributes</td>
-  <td>Test Opportunity ${randomSuffix}</td>
+    <td>waitForElementPresent</td>
+    <td>OpportunitiesSearchForm_anyMixedAttributes</td>
+    <td></td>
 </tr>
 <tr>
-  <td>keyUp</td>
-  <td>OpportunitiesSearchForm_anyMixedAttributes</td>
-  <td>\10</td>
+    <td>type</td>
+    <td>OpportunitiesSearchForm_anyMixedAttributes</td>
+    <td>Test Opportunity ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>keyUp</td>
+    <td>OpportunitiesSearchForm_anyMixedAttributes</td>
+    <td>\10</td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
-  <td>Test Opportunity ${randomSuffix}</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
+    <td>waitForText</td>
+    <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
+    <td>Test Opportunity ${randomSuffix}</td>
  </tr>
 <tr>
-  <td>verifyTextPresent</td>
-  <td>Test Opportunity ${randomSuffix}</td>
-  <td></td>
+    <td>verifyTextPresent</td>
+    <td>Test Opportunity ${randomSuffix}</td>
+    <td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
-  <td></td>
+    <td>click</td>
+    <td>//div[@id='list-viewmodal']/div[2]/table/tbody/tr/td[1]/a</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForValue</td>
-  <td>ActivityItemForm_Opportunity_name</td>
-  <td>Test Opportunity ${randomSuffix}</td>
+    <td>waitForValue</td>
+    <td>ActivityItemForm_Opportunity_name</td>
+    <td>Test Opportunity ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>Note_explicitReadWriteModelPermissions_type_2</td>
-  <td></td>
+    <td>click</td>
+    <td>Note_explicitReadWriteModelPermissions_type_2</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>save</td>
-  <td></td>
+    <td>click</td>
+    <td>save</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>open</td>
-  <td>index.php/accounts/default</td>
-  <td></td>
+    <td>open</td>
+    <td>index.php/accounts/default</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>AccountsSearchForm_anyMixedAttributes</td>
-  <td>my account ${randomSuffix}</td>
+    <td>type</td>
+    <td>AccountsSearchForm_anyMixedAttributes</td>
+    <td>my account ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>keyUp</td>
-  <td>AccountsSearchForm_anyMixedAttributes</td>
-  <td>\10</td>
+    <td>keyUp</td>
+    <td>AccountsSearchForm_anyMixedAttributes</td>
+    <td>\10</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>my account ${randomSuffix}</td>
-  <td></td>
+    <td>waitForTextPresent</td>
+    <td>my account ${randomSuffix}</td>
+    <td></td>
 </tr>
 <tr>
-  <td>verifyTextPresent</td>
-  <td>my account ${randomSuffix}</td>
-  <td></td>
+    <td>verifyTextPresent</td>
+    <td>my account ${randomSuffix}</td>
+    <td></td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>link=my account ${randomSuffix}</td>
-  <td></td>
+    <td>assertText</td>
+    <td>link=my account ${randomSuffix}</td>
+    <td>my account ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>clickAndWait</td>
+    <td>link=my account ${randomSuffix}</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>This is an Inline Note ${randomSuffix} for contact with more options</td>
-  <td></td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>link=This is an Inline Note ${randomSuffix} for contact with more options</td>
-  <td></td>
+    <td>waitForTextPresent</td>
+    <td>This is an Inline Note ${randomSuffix} for contact with more options</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>assertText</td>
+    <td>link=This is an Inline Note ${randomSuffix} for contact with more options</td>
+    <td>This is an Inline Note ${randomSuffix} for contact with more options</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>clickAndWait</td>
+    <td>link=This is an Inline Note ${randomSuffix} for contact with more options</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>//div[@id='NoteEditAndDetailsView']/div/div[2]/div/table/tbody/tr[1]/td</td>
-  <td>This is an Inline Note ${randomSuffix} for contact with more options</td>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
-  <td>verifyTextPresent</td>
-  <td>Jinny Jane ${randomSuffix}</td>
-  <td></td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>verifyTextPresent</td>
-  <td>Everyone</td>
-  <td></td>
+    <td>waitForText</td>
+    <td>//div[@id='NoteEditAndDetailsView']/div/div[2]/div/table/tbody/tr[1]/td</td>
+    <td>This is an Inline Note ${randomSuffix} for contact with more options</td>
 </tr>
 <tr>
-  <td>verifyTextPresent</td>
-  <td>Super User</td>
-  <td></td>
-</tr>
-
-<tr>
-  <td>clickAndWait</td>
-  <td>link=Edit</td>
-  <td></td>
+    <td>verifyTextPresent</td>
+    <td>Jinny Jane ${randomSuffix}</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>verifyTextPresent</td>
+    <td>Everyone</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>verifyTextPresent</td>
+    <td>Super User</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>This is an Inline Note ${randomSuffix} for contact with more options</td>
-  <td></td>
+    <td>setSpeed</td>
+    <td>3000</td>
+    <td></td>
 </tr>
 <tr>
-  <td>type</td>
-  <td>Note_description</td>
-  <td>This is an Inline New Note ${randomSuffix} for contact with more options</td>
+    <td>assertText</td>
+    <td>link=Edit</td>
+    <td>Edit</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>Note_explicitReadWriteModelPermissions_type_0</td>
-  <td></td>
+    <td>clickAndWait</td>
+    <td>link=Edit</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>setSpeed</td>
+    <td>3000</td>
+    <td></td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>save</td>
-  <td></td>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForTextPresent</td>
+    <td>This is an Inline Note ${randomSuffix} for contact with more options</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>This is an Inline New Note ${randomSuffix} for contact with more options</td>
-  <td></td>
+    <td>type</td>
+    <td>Note_description</td>
+    <td>This is an Inline New Note ${randomSuffix} for contact with more options</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>link=This is an Inline New Note ${randomSuffix} for contact with more options</td>
-  <td></td>
+    <td>click</td>
+    <td>Note_explicitReadWriteModelPermissions_type_0</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>clickAndWait</td>
+    <td>save</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>This is an Inline New Note ${randomSuffix} for contact with more options</td>
-  <td></td>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>Owner</td>
-  <td></td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>clickAndWait</td>
-  <td>link=Delete</td>
-  <td></td>
+    <td>waitForTextPresent</td>
+    <td>This is an Inline New Note ${randomSuffix} for contact with more options</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>assertText</td>
+    <td>link=This is an Inline New Note ${randomSuffix} for contact with more options</td>
+    <td>This is an Inline New Note ${randomSuffix} for contact with more options</td>
 </tr>
 <tr>
-  <td>waitForConfirmation</td>
-  <td>Are you sure you want to delete this note?</td>
-  <td></td>
+    <td>clickAndWait</td>
+    <td>link=This is an Inline New Note ${randomSuffix} for contact with more options</td>
+    <td></td>
 </tr>
 <tr>
-  <td>chooseOkOnNextConfirmation</td>
-  <td></td>
-  <td></td>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForTextPresent</td>
+    <td>This is an Inline New Note ${randomSuffix} for contact with more options</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>Jinny Jane ${randomSuffix}</td>
-  <td></td>
+    <td>waitForTextPresent</td>
+    <td>Owner</td>
+    <td></td>
+</tr>
+<tr>
+    <td>setSpeed</td>
+    <td>3000</td>
+    <td></td>
+</tr>
+<tr>
+    <td>assertText</td>
+    <td>link=Delete</td>
+    <td>Delete</td>
+</tr>
+<tr>
+    <td>clickAndWait</td>
+    <td>link=Delete</td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
+    <td>waitForConfirmation</td>
+    <td>Are you sure you want to delete this note?</td>
+    <td></td>
+</tr>
+<tr>
+    <td>chooseOkOnNextConfirmation</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
+    <td>waitForTextPresent</td>
+    <td>Jinny Jane ${randomSuffix}</td>
+    <td></td>
+</tr>
+<tr>
+    <td>setSpeed</td>
+    <td>3000</td>
+    <td></td>
 </tr>
 <!--- Create, Edit and Delete an Inline Note With feeding information for more options ends here -->
 </tbody></table>

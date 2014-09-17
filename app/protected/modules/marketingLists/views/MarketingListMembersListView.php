@@ -335,7 +335,7 @@
                         $(elementClass).html(newCount + countStrippedOldContent);
                     }
 
-                    $("#' . $this->getGridViewId() . ' .pager .refresh a").unbind("click.dynamicMemberCountUpdate").bind("click.dynamicMemberCountUpdate", function (event)
+                    function triggerMemberStatsUpdate()
                     {
                         var modelId                 = "' . $this->getModelId() . '";
                         var subscriberCountClass    = ".' . MarketingListDetailsOverlayView::SUBSCRIBERS_STATS_CLASS . '";
@@ -357,7 +357,7 @@
                                                 },
                                 }
                             );
-                        });
+                        }
                     ');
                 // End Not Coding Standard
             }
@@ -373,9 +373,10 @@
             else
             {
                 Yii::app()->clientScript->registerScript($scriptName, '
-                function refreshMembersListGridView()
+                function refreshMembersListGridView(id)
                 {
-                    $("#list-viewMarketingListMembersPortletView .pager .refresh a").click();
+                    $("#" + id).yiiGridView("update");
+                    triggerMemberStatsUpdate();
                 }');
             }
         }

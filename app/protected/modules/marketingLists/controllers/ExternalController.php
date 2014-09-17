@@ -166,6 +166,7 @@
             foreach ($members as $member)
             {
                 $member->unsubscribed       = $unsubscribed;
+                $member->setScenario(MarketingListMember::SCENARIO_MANUAL_CHANGE);
                 $member->unrestrictedSave();
             }
         }

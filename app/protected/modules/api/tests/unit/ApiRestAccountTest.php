@@ -98,7 +98,7 @@
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             $authenticationData = $this->login();
             $headers = array(
                 'Accept: application/json',
@@ -245,7 +245,7 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $billy  = User::getByUsername('billy');
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             $authenticationData = $this->login();
             $headers = array(
                 'Accept: application/json',
@@ -392,7 +392,7 @@
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             $authenticationData = $this->login();
             $headers = array(
                 'Accept: application/json',
@@ -724,11 +724,6 @@
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals('My Company 3', $response['data']['name']);
-
-            $response = $this->createApiCallWithRelativeUrl('delete/' . $accounts[0]->id, 'DELETE', $headers);
-            $response = json_decode($response, true);
-            $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
-            $this->assertEquals('You do not have permissions for this action.', $response['message']);
 
             // Test with privileged user
             $authenticationData = $this->login();
@@ -1272,6 +1267,80 @@
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('Sign in required.', $response['message']);
+        }
+
+        public function testCreateWithScenario()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+            $data['name'] = 'ABCD';
+            $data['createdDateTime']     = '2014-06-12 15:22:41';
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
+
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
+            $this->assertEquals('It is not allowed to set read only attribute: createdDateTime.', $response['message']);
+
+            // Now try to use some invalid scenario name
+            $data['modelScenario']       = 'dummyScenarioName';
+
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
+            $this->assertEquals('It is not allowed to set read only attribute: createdDateTime.', $response['message']);
+
+            // Now use scenario name that allow us to set all values
+            $data['modelScenario']       = 'importModel';
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+
+            RedBeanModel::forgetAll();
+            $account = Account::getById($response['data']['id']);
+            $this->assertEquals($account->name, $response['data']['name']);
+            $this->assertEquals($account->createdDateTime, $response['data']['createdDateTime']);
+        }
+
+        public function testUpdateWithScenario()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $account  = AccountTestHelper::createAccountByNameForOwner('Factor X', $super);
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+            $data['createdDateTime']     = '2014-06-12 14:22:41';
+            $response = $this->createApiCallWithRelativeUrl('update/' . $account->id, 'PUT', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
+            $this->assertEquals('It is not allowed to set read only attribute: createdDateTime.', $response['message']);
+
+            // Now try to use some invalid scenario name
+            $data['modelScenario']       = 'dummyScenarioName';
+
+            $response = $this->createApiCallWithRelativeUrl('update/' . $account->id, 'PUT', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
+            $this->assertEquals('It is not allowed to set read only attribute: createdDateTime.', $response['message']);
+
+            // For update, it is not allowed to set created and modified date time
+            $data['modelScenario']       = 'importModel';
+            $response = $this->createApiCallWithRelativeUrl('update/' . $account->id, 'PUT', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
         }
 
         protected function getApiControllerClassName()

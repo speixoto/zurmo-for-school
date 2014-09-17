@@ -180,7 +180,6 @@
                                     resolveValidationForATemplateSqlStatementAndReturnErrorMessage('1 e 2 ou 1', 2));
             $this->assertEquals('', SQLOperatorUtil::
                                     resolveValidationForATemplateSqlStatementAndReturnErrorMessage('not (not (2 and 4) or 1 and not 4)', 4));
-
         }
     }
 ?>

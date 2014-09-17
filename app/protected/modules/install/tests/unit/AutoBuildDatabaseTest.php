@@ -120,7 +120,6 @@
                                         $compareTypeString  = implode(',', $compareTypes); // Not Coding Standard
                                         if (!in_array($databaseColumnType, $compareTypes))
                                         {
-                                            $compareTypeString  = implode(',', $compareTypes); // Not Coding Standard
                                             $this->fail("Actual database type {$databaseColumnType} not in expected types: {$compareTypeString}.");
                                         }
                                     }
@@ -278,7 +277,7 @@
             $typeArray = array(
                 'string'    => array('VARCHAR', 'TEXT', 'LONGTEXT'),
                 'text'      => array('TEXT'),
-                'longtext'  => array('LONG_TEXT'),
+                'longtext'  => array('LONGTEXT'),
                 'integer'   => array('TINYINT', 'INT', 'INTEGER', 'BIGINT'),
                 'float'     => array('FLOAT', 'DOUBLE'),
                 'year'      => array('YEAR'),

@@ -51,8 +51,9 @@
         {
             if (!$this->sendEmailThroughTransport)
             {
-                $emailMessage->error    = null;
-                $emailMessage->folder   = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox, EmailFolder::TYPE_SENT);
+                $emailMessage->error        = null;
+                $emailMessage->folder       = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox, EmailFolder::TYPE_SENT);
+                $emailMessage->sendAttempts = $emailMessage->sendAttempts + 1;
             }
             else
             {
@@ -77,20 +78,21 @@
          * @param mixed(string || array) $bcc
          * @param array $attachments
          * @param array $settings
+         * @param array $headers
+         * @param array $parts
          */
-        public function sendRawEmail($subject, $from, $to, $textContent = '', $htmlContent = '', $cc = null, $bcc = null, $attachments = null, $settings = null, $headers = array())
+        public function sendRawEmail($subject, $from, $to, $textContent = '', $htmlContent = '', $cc = null, $bcc = null, $attachments = null, $settings = null, $headers = array(), $parts = array())
         {
             assert('is_string($subject) && $subject != ""');
             assert('is_string($from)    && $from != ""');
             assert('(is_array($to) && !empty($to)) || is_string($to) || !isset($to)');
-            assert('is_string($textContent)');
-            assert('is_string($htmlContent)');
-            assert('$textContent != ""  || $htmlContent != ""');
+            assert('is_string($textContent) || $textContent == null');
+            assert('is_string($htmlContent) || $htmlContent == null');
             assert('(is_array($cc) && !empty($cc)) || is_string($cc) || !isset($cc)');
             assert('(is_array($bcc) && !empty($bcc)) || is_string($bcc) || !isset($bcc)');
             assert('isset($to) || isset($cc) || isset($bcc)');
             assert('is_array($attachments) || !isset($attachments)');
-
+            assert('is_array($parts) || !isset($parts)');
             $mailer           = $this->getOutboundMailer();
             if (!$settings)
             {
@@ -112,19 +114,26 @@
             }
 
             $mailer->Subject  = $subject;
-            if ($htmlContent == null && $textContent != null)
+            if (empty($parts))
             {
-                $mailer->body     = $textContent;
-                $mailer->altBody  = $textContent;
+                if ($htmlContent == null && $textContent != null)
+                {
+                    $mailer->body     = $textContent;
+                    $mailer->altBody  = $textContent;
+                }
+                elseif ($htmlContent != null && $textContent == null)
+                {
+                    $mailer->body     = $htmlContent;
+                }
+                elseif ($htmlContent != null && $textContent != null)
+                {
+                    $mailer->body     = $htmlContent;
+                    $mailer->altBody  = $textContent;
+                }
             }
-            elseif ($htmlContent != null && $textContent == null)
+            else
             {
-                $mailer->body     = $htmlContent;
-            }
-            elseif ($htmlContent != null && $textContent != null)
-            {
-                $mailer->body     = $htmlContent;
-                $mailer->altBody  = $textContent;
+                $mailer->parts = $parts;
             }
 
             $mailer->From = $from;

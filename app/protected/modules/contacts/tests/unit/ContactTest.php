@@ -782,7 +782,7 @@
             $this->assertTrue($contact->save());
             $contactId = $contact->id;
             $marketingList = MarketingListTestHelper::createMarketingListByName('Test Marketing List Member Deleted');
-            $member = MarketingListMemberTestHelper::populateMarketingListMember(1, $marketingList, $contact);
+            $member = MarketingListMemberTestHelper::populateValidMarketingListMember(1, $marketingList, $contact);
             $this->assertTrue($member->unrestrictedSave());
             $this->assertEquals(1, count(MarketingListMember::getByContactId($contactId)));
             $testContact = new Contact();
@@ -793,7 +793,7 @@
             $testContact->state             = $contactStates[0];
             $this->assertTrue($testContact->save());
             $testContactId = $testContact->id;
-            $member2 = MarketingListMemberTestHelper::populateMarketingListMember(1, $marketingList, $testContact);
+            $member2 = MarketingListMemberTestHelper::populateValidMarketingListMember(1, $marketingList, $testContact);
             $this->assertTrue($member2->unrestrictedSave());
             $this->assertEquals(1, count(MarketingListMember::getByContactId($testContact->id)));
             $subscribedCount = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingList->id, 1);

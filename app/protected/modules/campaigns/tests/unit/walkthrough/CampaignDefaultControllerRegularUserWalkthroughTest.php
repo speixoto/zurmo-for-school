@@ -57,7 +57,7 @@
                                                                                     'html content for campaign 01',
                                                                                     'fromCampaign',
                                                                                     'fromCampaign@zurmo.com');
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()

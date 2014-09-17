@@ -104,23 +104,25 @@
          * @param array $invalidTags
          * @param null $language
          * @param bool $errorOnFirstMissing
+         * @param array $params
          * @return bool | array
          */
-        public function resolveMergeTagsArrayToAttributes($model, & $invalidTags = array(), $language = null, $errorOnFirstMissing = false)
+        public function resolveMergeTagsArrayToAttributes($model, & $invalidTags = array(), $language = null,
+                                                          $errorOnFirstMissing = false, $params = array())
         {
+            $mergeTagsToAttributes  = false;
             if (!$language)
             {
                 $language = $this->language;
             }
-            if (empty($this->mergeTags))
+            if (!empty($this->mergeTags))
             {
-                return false;
+                $mergeTagsToAttributes = MergeTagsToModelAttributesAdapter::
+                                            resolveMergeTagsArrayToAttributesFromModel($this->mergeTags[1], $model,
+                                                                                        $invalidTags, $language,
+                                                                                        $errorOnFirstMissing, $params);
             }
-            else
-            {
-                return MergeTagsToModelAttributesAdapter::resolveMergeTagsArrayToAttributesFromModel($this->mergeTags[1],
-                                        $model, $invalidTags, $language, $errorOnFirstMissing);
-            }
+            return $mergeTagsToAttributes;
         }
 
         /**
@@ -128,16 +130,18 @@
          * @param array $invalidTags
          * @param null $language
          * @param bool $errorOnFirstMissing
+         * @param array $params
          * @return bool | string
          */
-        public function resolveMergeTags($model, & $invalidTags = array(), $language = null, $errorOnFirstMissing = false)
+        public function resolveMergeTags($model, & $invalidTags = array(), $language = null,
+                                         $errorOnFirstMissing = false, $params = array())
         {
             if (!isset($language))
             {
                 $language = $this->language;
             }
             if (!$this->extractMergeTagsPlaceHolders() ||
-                    $this->resolveMergeTagsArrayToAttributes($model, $invalidTags, $language, $errorOnFirstMissing) &&
+                    $this->resolveMergeTagsArrayToAttributes($model, $invalidTags, $language, $errorOnFirstMissing, $params) &&
                     $this->resolveMergeTagsInTemplateToAttributes())
             {
                 return $this->content;
@@ -163,7 +167,7 @@
 
             // Current RE: /((WAS\%)?(([A-Z0-9])(\^|__)?)+)/ // Not Coding Standard
             $pattern =  '/' . $tagPrefix . '((WAS' . $timeDelimiter . ')?' .
-                        '(([A-Z0-9])' . '(' . $capitalDelimiter . '|' .
+                        '(([A-Z0-9_])' . '(' . $capitalDelimiter . '|' .
                         $propertyDelimiter . ')?)+)' . // Not Coding Standard
                         $tagSuffix . '/';
             // $this->mergeTags index 0 = with tag prefix and suffix, index 1 = without tag prefix and suffix

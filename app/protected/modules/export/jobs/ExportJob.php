@@ -91,8 +91,15 @@
          */
         public function run()
         {
-            $exportItems = ExportItem::getUncompletedItems();
-            $startTime   = Yii::app()->performance->startClock();
+            $cancelledItems = ExportItem::getCancelledItems();
+            foreach ($cancelledItems as $item)
+            {
+                $item->delete();
+                $message = Zurmo::t('ExportModule', 'Deleted export item with ID: {id}', array('{id}' => $item->id));
+                $this->getMessageLogger()->addInfoMessage($message);
+            }
+            $exportItems    = ExportItem::getUncompletedItems();
+            $startTime      = Yii::app()->performance->startClock();
             Yii::app()->performance->startMemoryUsageMarker();
             if (count($exportItems) > 0)
             {
@@ -104,14 +111,25 @@
                     $this->getMessageLogger()->addInfoMessage($message);
                     try
                     {
+                        //Update the job run status for the export item.
+                        $exportItem->isJobRunning = true;
+                        $exportItem->save();
+                        $message = Zurmo::t('ExportModule', 'Update the job running status for export item with ID: {id} to true', array('{id}' => $exportItem->id));
+                        $this->getMessageLogger()->addInfoMessage($message);
                         $this->processExportItem($exportItem);
                     }
                     catch (SecurityException $e)
                     {
                         $message = Zurmo::t('ExportModule', 'Export Item could not be processed due a SecurityException ' . $e->getMessage());
                         $this->getMessageLogger()->addInfoMessage($message);
+                        $exportItem->isJobRunning = false;
+                        $exportItem->save();
                         $this->processCompletedWithSecurityExceptionExportItem($exportItem);
                     }
+                    $exportItem->isJobRunning = false;
+                    $exportItem->save();
+                    $message = Zurmo::t('ExportModule', 'Update the job running status for export item with ID: {id} to false', array('{id}' => $exportItem->id));
+                    $this->getMessageLogger()->addInfoMessage($message);
                     if ($this->hasReachedMaximumProcessingCount())
                     {
                         $this->addMaximumProcessingCountMessageForAllExportItems();
@@ -154,7 +172,7 @@
                     $this->processReportDataProviderExport($exportItem, $dataProviderOrIdsToExport);
                 }
             }
-            else
+            elseif (is_array($dataProviderOrIdsToExport))
             {
                 $this->processIdsToExport($exportItem, $dataProviderOrIdsToExport);
             }
@@ -285,7 +303,7 @@
          * @param $content
          * @param ExportItem $exportItem
          * @return A
-         * @throws FailedToSaveFileModelException
+         * @throws FailedToSaveModelException
          */
         protected function updateExportFileModelByExportItem($content, ExportItem $exportItem)
         {
@@ -293,7 +311,7 @@
             $saved = $exportItem->exportFileModel->save();
             if (!$saved)
             {
-                throw new FailedToSaveFileModelException();
+                throw new FailedToSaveModelException();
             }
             return $exportItem->exportFileModel;
         }
@@ -302,7 +320,7 @@
          * @param string $content
          * @param string $exportFileName
          * @return ExportFileModel
-         * @throws FailedToSaveFileModelException
+         * @throws FailedToSaveModelException
          */
         protected function makeExportFileModelByContent($content, $exportFileName)
         {
@@ -317,7 +335,7 @@
             $saved = $exportFileModel->save();
             if (!$saved)
             {
-                throw new FailedToSaveFileModelException();
+                throw new FailedToSaveModelException();
             }
             return $exportFileModel;
         }
@@ -326,7 +344,7 @@
          * @param ExportItem $exportItem
          * @param ExportFileModel $exportFileModel
          * @param int $offset
-         * @throws FailedToSaveFileModelException
+         * @throws FailedToSaveModelException
          */
         protected function processInProgressExportItem(ExportItem $exportItem, ExportFileModel $exportFileModel, $offset)
         {
@@ -336,14 +354,14 @@
             $saved = $exportItem->save();
             if (!$saved)
             {
-                throw new FailedToSaveFileModelException();
+                throw new FailedToSaveModelException();
             }
         }
 
         /**
          * @param ExportItem $exportItem
          * @param ExportFileModel $exportFileModel
-         * @throws FailedToSaveFileModelException
+         * @throws FailedToSaveModelException
          */
         protected function processCompletedExportItem(ExportItem $exportItem, ExportFileModel $exportFileModel)
         {
@@ -352,7 +370,7 @@
             $saved = $exportItem->save();
             if (!$saved)
             {
-               throw new FailedToSaveFileModelException();
+               throw new FailedToSaveModelException();
             }
             $message                    = new NotificationMessage();
             $message->htmlContent       = Zurmo::t('ExportModule', 'Export of {fileName} requested on {dateTime} is completed. <a href="{url}">Click here</a> to download file!',
@@ -368,7 +386,7 @@
 
         /**
          * @param ExportItem $exportItem
-         * @throws FailedToSaveFileModelException
+         * @throws FailedToSaveModelException
          */
         protected function processCompletedWithSecurityExceptionExportItem(ExportItem $exportItem)
         {
@@ -376,7 +394,7 @@
             $saved = $exportItem->save();
             if (!$saved)
             {
-                throw new FailedToSaveFileModelException();
+                throw new FailedToSaveModelException();
             }
             $message                    = new NotificationMessage();
             $message->htmlContent       = Zurmo::t('ExportModule', 'Export requested on {dateTime} was unable to be completed due to a permissions error.',

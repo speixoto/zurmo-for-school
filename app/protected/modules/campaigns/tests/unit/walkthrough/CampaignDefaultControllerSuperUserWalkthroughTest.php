@@ -74,7 +74,6 @@
             $this->runControllerWithNoExceptionsAndGetContent('campaigns/default');
             $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/index');
             $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/list');
-
             CampaignTestHelper::createCampaign('campaign01',
                 'campaign subject 01',
                 'text content for campaign 01',
@@ -308,7 +307,7 @@
             $this->assertTrue(strpos($content, '</tr><tr><th><label for="Campaign_subject" class="required">Subject ' .
                                                 '<span class="required">*</span></label></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><input id="Campaign_subject" name="Campaign[subject]" ' .
-                                                'type="text" maxlength="64"') !== false);
+                                                'type="text" maxlength="255"') !== false);
             $this->assertTrue(strpos($content, '<tr><th>Enable Tracking<span id="enable-tracking-tooltip" ' .
                                                 'class="tooltip" title="Check to track when recipients open ' .
                                                 'an email or click any links.">?</span></th>') !== false);
@@ -408,7 +407,7 @@
             $this->assertTrue(strpos($content, '<tr><th><label class="error required" for="Campaign_subject">Subject ' .
                                                 '<span class="required">*</span></label></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><input id="Campaign_subject" name="Campaign[subject]" '.
-                                                'type="text" maxlength="64" value="" class="error"') !== false);
+                                                'type="text" maxlength="255" value="" class="error"') !== false);
             $this->assertTrue(strpos($content, '<input id="Campaign_supportsRichText" name="Campaign[supportsRichText]"' .
                                                 ' value="1" type="checkbox" class="error"') !== false);
 
@@ -600,7 +599,7 @@
             $this->assertTrue(strpos($content, '<th><label for="Campaign_subject" class="required">Subject ' .
                                                 '<span class="required">*</span></label></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><input id="Campaign_subject" name="Campaign[subject]" ' .
-                                                'type="text" maxlength="64" value="New Campaign ' .
+                                                'type="text" maxlength="255" value="New Campaign ' .
                                                 'using Create Subject"') !== false);
             $this->assertTrue(strpos($content, '<tr><th>Enable Tracking<span id="enable-tracking-tooltip" ' .
                                                 'class="tooltip" title="Check to track when recipients open ' .
@@ -688,6 +687,7 @@
 
         public function testCampaignDashboardGroupByActions()
         {
+            $this->assertNotNull($this->campaign);
             $this->setGetArray(array('id' => $this->campaign->id));
             $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/details');
 

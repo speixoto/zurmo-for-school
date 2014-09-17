@@ -34,29 +34,37 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ReadPermissionsOptimizationUtilTest extends ZurmoBaseTest
+    class PushDashboardEditView extends EditView
     {
-        public static function setUpBeforeClass()
+        public static function getDefaultMetadata()
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-        }
-
-        public function setUp()
-        {
-            parent::setUp();
-            Yii::app()->user->userModel = User::getByUsername('super');
-        }
-
-        public function testGetMungeIdsByUserIncludesEveryoneGroup()
-        {
-            Yii::app()->user->userModel = User::getByUsername('super');
-            $mungeIds = ReadPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
-            $this->assertEquals(2, count($mungeIds));
-            $group = Group::getByName(Group::EVERYONE_GROUP_NAME);
-            $group->save();
-            $mungeIds = ReadPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
-            $this->assertEquals(3, count($mungeIds));
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type' => 'SaveButton'),
+                            array('type' => 'CancelLink'),
+                        ),
+                    ),
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'MultipleGroupsAndUsers'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                         ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

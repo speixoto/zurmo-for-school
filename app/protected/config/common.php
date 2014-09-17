@@ -180,6 +180,7 @@
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/calendar/Calendar.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/colorPicker/iris.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/colorPicker/color.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/redactor/redactor.min.js',
                     )
                 ),
                 //Add scripts here that do not need to load when using an ajax request such as a modal search box.  The scripts
@@ -215,6 +216,7 @@
                     array('application.core.widgets.assets',            '/calendar/Calendar.js'),
                     array('application.core.widgets.assets',            '/colorPicker/iris.js'),
                     array('application.core.widgets.assets',            '/colorPicker/color.js'),
+                    array('application.core.widgets.assets',            '/redactor/redactor.min.js'),
                 ),
             ),
             'languageHelper' => array(
@@ -252,13 +254,15 @@
             'phoneHelper' => array(
                 'class'          => 'application.core.components.PhoneHelper',
             ),
+            'readPermissionSubscriptionObserver' => array(
+                'class' => 'application.modules.zurmo.observers.ReadPermissionSubscriptionObserver',
+            ),
             'request' => array(
                 'class' => 'application.core.components.ZurmoHttpRequest',
                 'enableCsrfValidation' => true,
                 'enableCookieValidation' => false, //keep off until we can fix it on linux/windows servers.
                 'excludeCsrfValidationRoutes' => array(
                     array('route' => 'contacts/external/', 'tokenEnabled' => true),
-                    array('route' => 'zurmo/imageModel/upload/', 'tokenEnabled' => false), //TODO: @sergio: Remove this when implemented outside redactor
                 ),
             ),
             'sanitizer' => array(
@@ -358,8 +362,9 @@
             'lessCompiler' => array(
                 'class'                 => 'application.extensions.lessphp.LessCompiler',
                 'formatterName'         => 'lessjs',
-                'primaryLessFileToCompile' => 'zurmo.less',
-                'secondaryLessFileToCompile' => 'imports.less',
+                'themeColorDependentLessFilesToCompile' => array(
+                    'zurmo.less', 'imports.less'
+                ),
                 'lessFilesToCompile'    => array(
                     'ie.less',
                     'mobile.less',
@@ -456,7 +461,10 @@
                 'fr' => 'French',
                 'de' => 'German',
             ),
-            'sentryDsn'                 => 'http://5232100222bc4404b368026413df2d9a:47f7a2f1542348d68bea7b00f2261ede@sentry.zurmo.com/2',
+            'sentryDsn'    => 'http://5232100222bc4404b368026413df2d9a:47f7a2f1542348d68bea7b00f2261ede@sentry.zurmo.com/2',
+            'processNamedSecurableActualPermissionsAsNonOptimized' => false,
+            'processReadMungeAsWriteMunge' => false,
+            'showFlashMessageWhenSecurityCacheShouldBeRebuilt' => false,
         ),
         'preload'                       => array(
             'browser',

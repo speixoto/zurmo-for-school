@@ -73,7 +73,7 @@
                     throw new FailedToSaveModelException();
                 }
                 $gameReward = GameReward::getById($gameReward->id);
-                ReadPermissionsOptimizationUtil::
+                AllPermissionsOptimizationUtil::
                     securableItemGivenPermissionsForGroup($gameReward, Group::getByName(Group::EVERYONE_GROUP_NAME));
                 $gameReward->save();
                 $gameRewards[] = $gameReward->id;

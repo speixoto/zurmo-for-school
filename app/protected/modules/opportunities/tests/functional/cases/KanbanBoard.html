@@ -12,9 +12,9 @@
 <tr><td rowspan="1" colspan="3">Kanban Board</td></tr>
 </thead><tbody>
 <tr>
-  <td>setTimeout</td>
-  <td>45000</td>
-  <td></td>
+    <td>setTimeout</td>
+    <td>45000</td>
+    <td></td>
 </tr>
 <!--Go to opportunities list-->
 <tr>
@@ -54,19 +54,24 @@
 </tr>
 <!--Go to opportunities kanban board view-->
 <tr>
-  <td>clickAndWait</td>
-  <td>link=Kanban</td>
-  <td></td>
+    <td>assertText</td>
+    <td>link=Kanban</td>
+    <td>Kanban</td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>clickAndWait</td>
+    <td>link=Kanban</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
 	<td>assertTextPresent</td>
@@ -90,117 +95,122 @@
 </tr>
 <!--change visible column and theme-->
 <tr>
-  <td>click</td>
-  <td>id=kanban-board-options-link</td>
-  <td></td>
+    <td>click</td>
+    <td>id=kanban-board-options-link</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>id=OpportunitiesSearchForm_groupByAttributeVisibleValues_5</td>
-  <td></td>
+    <td>click</td>
+    <td>id=OpportunitiesSearchForm_groupByAttributeVisibleValues_5</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>id=OpportunitiesSearchForm_selectedTheme_3</td>
-  <td></td>
+    <td>click</td>
+    <td>id=OpportunitiesSearchForm_selectedTheme_3</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>//a[@id='kanban-board-options-apply']/span[3]</td>
-  <td></td>
+    <td>click</td>
+    <td>//a[@id='kanban-board-options-apply']/span[3]</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>assertTextNotPresent</td>
-  <td>Closed Lost</td>
-  <td></td>
+    <td>assertTextNotPresent</td>
+    <td>Closed Lost</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <!--select opportunity created in functional test-->
 <tr>
-  <td>type</td>
-  <td>OpportunitiesSearchForm_anyMixedAttributes</td>
-  <td>Test Opportunity ${randomSuffix}</td>
+    <td>type</td>
+    <td>OpportunitiesSearchForm_anyMixedAttributes</td>
+    <td>Test Opportunity ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>keyUp</td>
-  <td>OpportunitiesSearchForm_anyMixedAttributes</td>
-  <td>\10</td>
+    <td>keyUp</td>
+    <td>OpportunitiesSearchForm_anyMixedAttributes</td>
+    <td>\10</td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>waitForText</td>
-  <td>//div[@id='kanban-board']/div[3]/div/ul/li/div/span[3]/a</td>
-  <td>Test Opportunity ${randomSuffix}</td>
+    <td>waitForText</td>
+    <td>//div[@id='kanban-board']/div[3]/div/ul/li/div/span[3]/a</td>
+    <td>Test Opportunity ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>verifyTextPresent</td>
-  <td>Test Opportunity ${randomSuffix}</td>
-  <td></td>
+    <td>verifyTextPresent</td>
+    <td>Test Opportunity ${randomSuffix}</td>
+    <td></td>
 </tr>
 <tr>
-  <td>verifyValue</td>
-  <td>OpportunitiesSearchForm_anyMixedAttributes</td>
-  <td>Test Opportunity ${randomSuffix}</td>
+    <td>verifyValue</td>
+    <td>OpportunitiesSearchForm_anyMixedAttributes</td>
+    <td>Test Opportunity ${randomSuffix}</td>
 </tr>
 <!--clear search result-->
 <tr>
-  <td>click</td>
-  <td>id=clear-search-link</td>
-  <td></td>
+    <td>click</td>
+    <td>id=clear-search-link</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-  <td>verifyValue</td>
-  <td>OpportunitiesSearchForm_anyMixedAttributes</td>
-  <td></td>
+    <td>verifyValue</td>
+    <td>OpportunitiesSearchForm_anyMixedAttributes</td>
+    <td></td>
 </tr>
 <!--Go to opportunities list view-->
 <tr>
-  <td>clickAndWait</td>
-  <td>link=Grid</td>
-  <td></td>
+    <td>assertText</td>
+    <td>link=Grid</td>
+    <td>Grid</td>
 </tr>
 <tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
+    <td>clickAndWait</td>
+    <td>link=Grid</td>
+    <td></td>
 </tr>
 <tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
 	<td>assertTextPresent</td>

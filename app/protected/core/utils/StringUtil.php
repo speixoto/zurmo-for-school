@@ -39,6 +39,8 @@
      */
     class StringUtil
     {
+        const VALID_HASH_PATTERN    = '~^[A-Z0-9\+=/ ]+~i'; // Not Coding Standard
+
         /**
          * Given a string and a length, return the chopped string if it is larger than the length.
          * @param $string
@@ -199,6 +201,55 @@
                 $url = $scheme ."://" . $url;
             }
             return $url;
+        }
+
+        public static function resolveHashForQueryStringArray($queryStringArray)
+        {
+            $queryString            = http_build_query($queryStringArray);
+            $encryptedString        = ZurmoPasswordSecurityUtil::encrypt($queryString);
+            if (!$encryptedString || !static::isValidHash($encryptedString))
+            {
+                throw new NotSupportedException();
+            }
+            $encryptedString        = base64_encode($encryptedString);
+            return $encryptedString;
+        }
+
+        public static function isValidHash($hash)
+        {
+            if (empty($hash))
+            {
+                return false;
+            }
+            $matches = array();
+            $matchesCount = preg_match_all(static::VALID_HASH_PATTERN, $hash, $matches);
+            if (!$matchesCount || ($matches[0][0] !== $hash))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * Convert kilobytes, megabytes, and gigabytes into bytes
+         * input value is in format $value{size} where size is in {'K','M','G'}
+         * @param $value
+         * @return int
+         */
+        public static function convertToBytes($value)
+        {
+            $strippedValue = substr($value, 0, -1);
+            switch(strtoupper(substr($value, -1)))
+            {
+                case "K":
+                    return $strippedValue * 1024;
+                case "M":
+                    return $strippedValue * pow(1024, 2);
+                case "G":
+                    return $strippedValue * pow(1024, 3);
+                default:
+                    return $value;
+            }
         }
     }
 ?>

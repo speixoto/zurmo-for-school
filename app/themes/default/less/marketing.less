@@ -258,7 +258,6 @@
 }
 
 .autoresponder-stats{
-	
 	padding-right:5px;
 	width:20%;
 	float: left;
@@ -531,8 +530,8 @@ a + .autoresponder-stats{
 
 .gmail-user-stage-status,
 .import-item-stage-status,
+.export-item-stage-status,
 .email-recipient-stage-status{
-	
 	text-align: center;
 	float: left;
 	margin-left: 2%;
@@ -547,10 +546,20 @@ a + .autoresponder-stats{
 	line-height:20px;
 	display:inline-block;
 	border-left:1px solid #bababa;
-	&.stage-true{
+	&.stage-true,
+	&.stage-running{
 		i {
 			color: #97c43d;
 			.t-shadow(0 0 5px #97c43d);
+		}
+	}
+	&.stage-running{
+		i{
+			-o-animation: led-throb 0.25s;
+			-ms-animation: led-throb 0.25s;
+			-moz-animation: led-throb 0.25s;
+			-webkit-animation: led-throb 0.25s;
+			animation: led-throb 0.25s;
 		}
 	}
 	&.stage-false{
@@ -559,7 +568,8 @@ a + .autoresponder-stats{
 			.t-shadow(0 0 5px #c43d53);
 		}
 	}
-	i{
+	&.stage-pending i, //default status
+	i{               //default status
 		font-weight: bold;
 		line-height: 1;
 		padding:0 6px;

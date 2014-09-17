@@ -44,8 +44,8 @@
      */
     class ZurmoDatabaseCompatibilityUtil
     {
+        // Begin Not Coding Standard
         private static $storedFunctions = array(
-
             // Permitables - Rights
 
             'create function get_permitable_explicit_actual_right(
@@ -638,14 +638,62 @@
                 call any_user_in_a_sub_role_has_read_permission(securableitem_id, role_id, class_name, module_name, has_read);
                 return has_read;
             end;',
+
+            'create function create_item(user_id int, now_timestamp datetime)
+            returns int
+            begin
+              insert into `item` ( `id`, `createddatetime`, `modifieddatetime`,
+                    `createdbyuser__user_id`, `modifiedbyuser__user_id` )
+                    VALUES ( NULL,  now_timestamp , now_timestamp, user_id, user_id  );
+               return last_insert_id();
+            end;',
+
+            'create function create_email_message(text_content text, html_content text, from_name varchar(128),
+                                                    from_address varchar(255), user_id int, owner_id int,
+                                                    subject varchar(255), headers text, folder_id int,
+                                                    serialized_data text, to_address varchar(255), to_name varchar(128),
+                                                    recipient_type int, contact_item_id int,
+                                                    related_model_type varchar(255), related_model_id int,
+                                                     now_timestamp datetime)
+            returns int
+            NOT DETERMINISTIC
+            MODIFIES SQL DATA
+            begin
+                insert into `emailmessagecontent` ( `textcontent`, `htmlcontent` )
+                            values ( text_content, html_content );
+                set @contentId = last_insert_id();
+                insert into `emailmessagesender` ( `fromname`, `fromaddress` )
+                            values ( from_name, from_address );
+                set @senderId = last_insert_id();
+                set @emailMessageItemId = create_item(1, now_timestamp);
+                insert into `securableitem` ( `item_id` )
+                            values ( @emailMessageItemId );
+                insert into `ownedsecurableitem` ( `securableitem_id`, `owner__user_id` )
+                            values ( last_insert_id(), owner_id );
+                insert into `emailmessage` ( `subject`, `headers`, `ownedsecurableitem_id`,
+                                                `content_emailmessagecontent_id`, `sender_emailmessagesender_id`,
+                                                 `folder_emailfolder_id` )
+                             values ( subject, headers, last_insert_id(), @contentId, @senderId, folder_id);
+                set @emailMessageId = LAST_INSERT_ID();
+                insert into `auditevent` ( `datetime`, `modulename`, `eventname`, `_user_id`,
+                                            `modelclassname`, `modelid`, `serializeddata` )
+                            values ( now_timestamp, "ZurmoModule", "Item Created", user_id,
+                                    "EmailMessage", @emailMessageId, serialized_data );
+                insert into `emailmessagerecipient` ( `toaddress`, `toname`, `type`, `emailmessage_id` )
+                            values ( to_address, to_name, recipient_type, @emailMessageId );
+                set @recipientId = last_insert_id();
+                insert into `emailmessagerecipient_item` ( `emailmessagerecipient_id`, `item_id` )
+                            values ( @recipientId, contact_item_id );
+                call duplicate_filemodels(related_model_type, related_model_id, "emailmessage", @emailMessageId, user_id, now_timestamp);
+                return @emailMessageId;
+            end;',
         );
+        // End Not Coding Standard
 
         // MySQL functions cannot be recursive so we have
         // to do recursive functions with procedures.
-
         // Begin Not Coding Standard
         private static $storedProcedures = array(
-
             // Users - Rights
 
             'create procedure recursive_get_user_actual_right(
@@ -1183,6 +1231,26 @@
                 delete from actual_permissions_cache;
             end;',
 
+            'create procedure clear_cache_named_securable_all_actual_permissions()
+            READS SQL DATA
+            begin
+                declare continue handler for 1146 # Table doesn\'t exist.
+                    begin
+                        # noop - nothing to clear.
+                    end;
+                delete from named_securable_actual_permissions_cache;
+            end;',
+
+            'create procedure clear_cache_actual_rights()
+            READS SQL DATA
+            begin
+                declare continue handler for 1146 # Table doesn\'t exist.
+                    begin
+                        # noop - nothing to clear.
+                    end;
+                delete from actual_rights_cache;
+            end;',
+
             // Read Permissions (Munge)
             #model_table_name can be person in the case of contact since person has ownedsecurableitem_id and not contact
             'create procedure rebuild(
@@ -1578,9 +1646,78 @@
                     call decrement_parent_roles_counts(munge_table_name, securableitem_id, parent_role_id);
                 end if;
             end;',
-        );
 
+            // Misc
+
+            'create procedure duplicate_filemodels(related_model_type varchar(255), related_model_id int,
+                                                new_model_type varchar(255), new_model_id int, user_id int,
+                                                 now_timestamp datetime)
+            begin
+                insert into `filemodel` (`id`, `name`, `size`, `type`, `item_id`,
+                                                    `filecontent_id`, `relatedmodel_id`, `relatedmodel_type`)
+                    select null as `id`, `name`, `size`, `type`, (select create_item(user_id, now_timestamp)) as `item_id`, `filecontent_id`,
+                        new_model_id as `relatedmodel_id`, new_model_type as `relatedmodel_type`
+                    from `filemodel`
+                    where `relatedmodel_type` = related_model_type and `relatedmodel_id` = related_model_id;
+            end;',
+
+            'create procedure create_campaign_items(campaign_id int, marketing_list_id int, processed int)
+            begin
+                insert into `campaignitem` (`id`, `processed`, `campaign_id`, `contact_id`)
+                    select null as id, processed as `processed`, campaign_id as `campaign_id`, `marketinglistmember`.`contact_id`
+                        from `marketinglistmember`
+                            left join `campaignitem` on `campaignitem`.`contact_id` = `marketinglistmember`.`contact_id`
+                                and `campaignitem`.`campaign_id` = campaign_id
+                            left join `contact` on `contact`.`id` = `marketinglistmember`.`contact_id`
+                        where (`marketinglistmember`.`marketinglist_id` = marketing_list_id
+                                and `campaignitem`.`id` is null and `contact`.`id` is not null);
+            end;',
+
+            'create procedure generate_campaign_items(active_status int, processing_status int, now_timestamp datetime)
+            begin
+                  declare loop0_eof boolean default false;
+                  declare campaign_id int(11);
+                  declare marketinglist_id int(11);
+
+                  declare cursor0 cursor for select `campaign`.`id`, `campaign`.`marketinglist_id` from `campaign`
+                        where ((`campaign`.`status` = active_status) and (`campaign`.`sendondatetime` < now_timestamp));
+                  declare continue handler for not found set loop0_eof = TRUE;
+                  open cursor0;
+                        loop0: loop
+                              fetch cursor0 into campaign_id, marketinglist_id;
+                              if loop0_eof then
+                                    leave loop0;
+                              end if;
+                              call create_campaign_items(campaign_id, marketinglist_id, 0);
+                              update `campaign` set `status` = processing_status where id = campaign_id;
+                        end loop loop0;
+                  close cursor0;
+            end;
+
+            create procedure update_email_message_for_sending(message_id int, send_attempts int, sent_datetime datetime,
+                                                                folder_id int, error_serialized_data text, now_timestamp datetime)
+            begin
+                set @emailMessageSendErrorId    = null;
+                delete from `emailmessagesenderror`
+                        where id = (select error_emailmessagesenderror_id
+                                    from `emailmessage`
+                                    where id = message_id);
+                if (error_serialized_data is not null) then
+                    insert into `emailmessagesenderror` ( id, `createddatetime`,`serializeddata` ) values
+                            (null,  now_timestamp , error_serialized_data);
+                    set @emailMessageSendErrorId = last_insert_id();
+                end if;
+
+                update `emailmessage` set
+                        `sendattempts` = send_attempts,
+                        `sentdatetime` = sent_datetime,
+                        `folder_emailfolder_id` = folder_id,
+                        `error_emailmessagesenderror_id` = @emailMessageSendErrorId
+                        where id = message_id;
+            end;',
+        );
         // End Not Coding Standard
+
         /**
          * @param $sql
          * @return string
@@ -1595,6 +1732,8 @@
             {
                 self::createStoredFunctionsAndProcedures();
                 self::createActualPermissionsCacheTable();
+                self::createNamedSecurableActualPermissionsCacheTable();
+                self::createActualRightsCacheTable();
                 return ZurmoRedBean::getCell("select $sql;");
             }
         }
@@ -1613,6 +1752,8 @@
             {
                 self::createStoredFunctionsAndProcedures();
                 self::createActualPermissionsCacheTable();
+                self::createNamedSecurableActualPermissionsCacheTable();
+                self::createActualRightsCacheTable();
                 return ZurmoRedBean::getCell("call $sql;");
             }
         }
@@ -1711,6 +1852,32 @@
                      allow_permissions tinyint unsigned not null,
                      deny_permissions  tinyint unsigned not null,
                      primary key (securableitem_id, permitable_id)
+                    ) engine = innodb
+                      default charset = utf8
+                              collate = utf8_unicode_ci');
+        }
+
+        public static function createNamedSecurableActualPermissionsCacheTable()
+        {
+            ZurmoRedBean::exec('
+                create table if not exists named_securable_actual_permissions_cache
+                    (securableitem_name varchar(64) not null,
+                     permitable_id     int(11) unsigned not null,
+                     allow_permissions tinyint unsigned not null,
+                     deny_permissions  tinyint unsigned not null,
+                     primary key (securableitem_name, permitable_id)
+                    ) engine = innodb
+                      default charset = utf8
+                              collate = utf8_unicode_ci');
+        }
+
+        public static function createActualRightsCacheTable()
+        {
+            ZurmoRedBean::exec('
+                create table if not exists actual_rights_cache
+                    (identifier varchar(255) not null,
+                     entry     int(11) unsigned not null,
+                     primary key (identifier)
                     ) engine = innodb
                       default charset = utf8
                               collate = utf8_unicode_ci');

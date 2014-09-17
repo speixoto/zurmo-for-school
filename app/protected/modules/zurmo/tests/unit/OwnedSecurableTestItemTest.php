@@ -42,7 +42,7 @@
             ZurmoDatabaseCompatibilityUtil::dropStoredFunctionsAndProcedures();
             SecurityTestHelper::createSuperAdmin();
             //do the rebuild to ensure the tables get created properly.
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             //Manually build the test model munge tables.
             ReadPermissionsOptimizationUtil::recreateTable(ReadPermissionsOptimizationUtil::getMungeTableName('OwnedSecurableTestItem'));
         }
@@ -78,6 +78,24 @@
 
             //Reset count of test items to 0.
             $testItem->delete();
+        }
+
+        public function testOwnerChangeChangesModifiedDateTime()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $user = UserTestHelper::createBasicUser('basic');
+            $testItem = new OwnedSecurableTestItem();
+            $testItem->member = 'test';
+            $this->assertTrue($testItem->save());
+            $defaultDateTimeModified = $testItem->modifiedDateTime;
+
+            sleep(1);
+            $testItem->owner = $user;
+            $this->assertTrue($testItem->save());
+            $testItemId = $testItem->id;
+            $testItem->forget();
+            $testItem = OwnedSecurableTestItem::getById($testItemId);
+            $this->assertNotEquals($defaultDateTimeModified, $testItem->modifiedDateTime);
         }
     }
 ?>

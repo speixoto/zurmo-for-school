@@ -154,6 +154,11 @@
                 'customFields' => array(
                     'title' => 'Titles',
                 ),
+                'indexes' => array(
+                    'ownedsecurableitem_id' => array(
+                        'members' => array('ownedsecurableitem_id'),
+                        'unique' => false),
+                ),
             );
             return $metadata;
         }

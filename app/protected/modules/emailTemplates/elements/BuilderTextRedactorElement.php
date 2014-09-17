@@ -36,15 +36,6 @@
 
     class BuilderTextRedactorElement extends RedactorElement
     {
-        protected function resolveHtmlOptions()
-        {
-            $id                      = $this->getEditableInputId();
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $id;
-            $htmlOptions['name']     = $this->getEditableInputName();
-            return $htmlOptions;
-        }
-
         protected function resolveRedactorOptions()
         {
             $parentOptions      = parent::resolveRedactorOptions();

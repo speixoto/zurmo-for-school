@@ -640,7 +640,6 @@
             foreach (PathUtil::getAllMungableModelClassNames() as $modelClassName)
             {
                 $mungeTableName = self::getMungeTableName($modelClassName);
-
                 $usersInRolesChildren = self::getAllUsersInRolesChildRolesRecursively($role);
 
                 // Handle users in $role. In/decrement for the parent's parent
@@ -663,7 +662,7 @@
                             from   permission
                             where  permitable_id in (' . join(', ', $permitableIds) . ')';
                     $securableItemIds = ZurmoRedBean::getCol($sql);
-                    self::$countMethod($mungeTableName, $securableItemIds, $role->role);
+                    self::$countMethod($mungeTableName, $securableItemIds, $role);
                 }
 
                 // Handle users in the child roles of $role. Increment for the parent's parent
@@ -860,53 +859,6 @@
                     self::getAllUpstreamGroupsRecursively($group->group, $groupMungeIds);
                 }
             }
-        }
-
-        /**
-         * @param User $user
-         * @return array
-         */
-        public static function getUserRoleIdAndGroupIds(User $user)
-        {
-            if ($user->role->id > 0)
-            {
-                $roleId = $user->role->id;
-            }
-            else
-            {
-                $roleId = null;
-            }
-            $groupIds = array();
-            foreach ($user->groups as $group)
-            {
-                $groupIds[] = $group->id;
-            }
-            return array($roleId, $groupIds);
-        }
-
-        /**
-         * @param User $user
-         * @return array
-         */
-        public static function getMungeIdsByUser(User $user)
-        {
-            list($roleId, $groupIds) = self::getUserRoleIdAndGroupIds($user);
-            $mungeIds = array("U$user->id");
-            if ($roleId != null)
-            {
-                $mungeIds[] = "R$roleId";
-            }
-            foreach ($groupIds as $groupId)
-            {
-                $mungeIds[] = "G$groupId";
-            }
-            //Add everyone group
-            $everyoneGroupId = Group::getByName(Group::EVERYONE_GROUP_NAME)->id;
-            if (!in_array("G" . $everyoneGroupId, $mungeIds) && $everyoneGroupId > 0)
-            {
-                $mungeIds[] = "G" . $everyoneGroupId;
-            }
-            return $mungeIds;
         }
 
         /**

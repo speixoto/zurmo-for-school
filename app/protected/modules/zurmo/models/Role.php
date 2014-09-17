@@ -106,12 +106,25 @@
             return 'RolesModule';
         }
 
+        protected function forgetPermissionsRightsAndPoliciesCache()
+        {
+            PermissionsCache::forgetAll();
+            Permission::resetCaches();
+            RightsCache::forgetAll();
+            PoliciesCache::forgetAll();
+        }
+
         protected function afterSave()
         {
             if (((isset($this->originalAttributeValues['role'])) || $this->isNewModel) &&
                 $this->role != null && $this->role->id > 0)
             {
-                ReadPermissionsOptimizationUtil::roleParentSet($this);
+                AllPermissionsOptimizationUtil::roleParentSet($this);
+                ReadPermissionsSubscriptionUtil::roleParentSet();
+            }
+            if (isset($this->originalAttributeValues['role']) && $this->originalAttributeValues['role'][1] > 0)
+            {
+                $this->forgetPermissionsRightsAndPoliciesCache();
             }
             parent::afterSave();
         }
@@ -127,7 +140,8 @@
                     //utilize the roleParentBeingRemoved method.
                     $role = unserialize(serialize($this));
                     $role->role = Role::getById($this->originalAttributeValues['role'][1]);
-                    ReadPermissionsOptimizationUtil::roleParentBeingRemoved($role);
+                    AllPermissionsOptimizationUtil::roleParentBeingRemoved($role);
+                    ReadPermissionsSubscriptionUtil::roleParentBeingRemoved();
                     assert('$this->originalAttributeValues["role"][1] != $this->role->id');
                 }
                 return true;
@@ -144,15 +158,15 @@
             {
                 return false;
             }
-            ReadPermissionsOptimizationUtil::roleBeingDeleted($this);
+            AllPermissionsOptimizationUtil::roleBeingDeleted($this);
             return true;
         }
 
         protected function afterDelete()
         {
-            PermissionsCache::forgetAll();
-            RightsCache::forgetAll();
-            PoliciesCache::forgetAll();
+            $this->forgetPermissionsRightsAndPoliciesCache();
+            ReadPermissionsSubscriptionUtil::roleHasBeenDeleted();
+            AllPermissionsOptimizationCache::forgetAll();
         }
 
         protected function beforeValidate()

@@ -40,7 +40,7 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             $box = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
         }
 

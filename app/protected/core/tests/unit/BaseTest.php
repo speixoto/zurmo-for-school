@@ -79,6 +79,7 @@
                 Yii::app()->languageHelper->activateLanguagesForTesting();
                 Yii::app()->languageHelper->importMessagesForTesting();
             }
+            Yii::app()->jobQueue->deleteAll();
         }
 
         public static function tearDownAfterClass()
@@ -90,6 +91,7 @@
 
             TestDatabaseUtil::deleteRowsFromAllTablesExceptLog();
             PermissionsCache::forgetAll();
+            AllPermissionsOptimizationCache::forgetAll();
             RedBeanModel::forgetAll();
             RedBeanDatabase::close();
             assert('!RedBeanDatabase::isSetup()'); // Not Coding Standard

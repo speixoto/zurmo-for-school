@@ -48,6 +48,8 @@
         public $defaultFromEmailAddress;
         public $defaultTestToEmailAddress;
         public $gamificationModalNotificationsEnabled;
+        public $gamificationModalCollectionsEnabled;
+        public $gamificationModalCoinsEnabled;
         public $realtimeUpdatesEnabled;
         public $reCaptchaPrivateKey;
         public $reCaptchaPublicKey;
@@ -60,21 +62,23 @@
                 array('timeZone',                               'required'),
                 array('listPageSize',                           'required'),
                 array('listPageSize',                           'type',      'type' => 'integer'),
-                array('listPageSize',                           'numerical', 'min' => 1),
+                array('listPageSize',                           'numerical', 'min' => 1, 'max' => ZurmoSystemConfigurationUtil::getBatchSize()),
                 array('subListPageSize',                        'required'),
                 array('subListPageSize',                        'type',      'type' => 'integer'),
-                array('subListPageSize',                        'numerical', 'min' => 1),
+                array('subListPageSize',                        'numerical', 'min' => 1, 'max' => ZurmoSystemConfigurationUtil::getBatchSize()),
                 array('modalListPageSize',                      'required'),
                 array('modalListPageSize',                      'type',      'type' => 'integer'),
-                array('modalListPageSize',                      'numerical', 'min' => 1),
+                array('modalListPageSize',                      'numerical', 'min' => 1, 'max' => ZurmoSystemConfigurationUtil::getBatchSize()),
                 array('dashboardListPageSize',                  'required'),
                 array('dashboardListPageSize',                  'type',      'type' => 'integer'),
-                array('dashboardListPageSize',                  'numerical', 'min' => 1),
+                array('dashboardListPageSize',                  'numerical', 'min' => 1, 'max' => ZurmoSystemConfigurationUtil::getBatchSize()),
                 array('defaultFromEmailAddress',                'email'),
                 array('defaultFromEmailAddress',                'required'),
                 array('defaultTestToEmailAddress',              'email'),
                 array('defaultTestToEmailAddress',              'required'),
                 array('gamificationModalNotificationsEnabled',  'boolean'),
+                array('gamificationModalCollectionsEnabled',    'boolean'),
+                array('gamificationModalCoinsEnabled',          'boolean'),
                 array('realtimeUpdatesEnabled',                 'boolean'),
                 array('subListPageSize',                        'type',      'type' => 'integer'),
                 array('reCaptchaPrivateKey',                    'type',      'type' => 'string'),
@@ -94,6 +98,8 @@
                 'defaultFromEmailAddress'                => Zurmo::t('ZurmoModule', 'Default From Email Address'),
                 'defaultTestToEmailAddress'              => Zurmo::t('ZurmoModule', 'Default Test To Email Address'),
                 'gamificationModalNotificationsEnabled'  => Zurmo::t('ZurmoModule', 'Enable game notification popup'),
+                'gamificationModalCollectionsEnabled'    => Zurmo::t('ZurmoModule', 'Enable game collection popup'),
+                'gamificationModalCoinsEnabled'          => Zurmo::t('ZurmoModule', 'Enable game coin popup'),
                 'realtimeUpdatesEnabled'                 => Zurmo::t('ZurmoModule', 'Enable real-time updates'),
                 'reCaptchaPrivateKey'                    => Zurmo::t('ZurmoModule', 'ReCaptcha Private Key'),
                 'reCaptchaPublicKey'                     => Zurmo::t('ZurmoModule', 'ReCaptcha Public Key'),

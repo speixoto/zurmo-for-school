@@ -1577,11 +1577,11 @@
             $x          = new X();
             $p          = new P();
             $b          = new B();
-            $x->P       = $p;
-            $x->B       = $b;
+            $x->prel    = $p;
+            $x->brel    = $b;
             $this->assertFalse($x->validate());
-            $this->assertEquals(' P cannot be blank.', $x->getError('P'));
-            $this->assertEquals(' B cannot be blank.', $x->getError('B'));
+            $this->assertEquals('Prel cannot be blank.', $x->getError('prel'));
+            $this->assertEquals('Brel cannot be blank.', $x->getError('brel'));
             //After save errors
             $x          = new X();
             $p          = new P();
@@ -1597,10 +1597,10 @@
             unset($b);
             $b = B::getById($id);
 
-            $x->P       = $p;
-            $x->B       = $b;
+            $x->prel    = $p;
+            $x->brel    = $b;
             $this->assertFalse($x->save());
-            $this->assertEquals('There was a problem validating  P.', $x->getError('P'));
+            $this->assertEquals('There was a problem validating Prel.', $x->getError('prel'));
         }
     }
 ?>

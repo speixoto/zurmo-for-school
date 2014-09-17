@@ -143,7 +143,7 @@
                                                $checkBox . '<p>' . $checkboxLabel . '</p>');
                 $itemContent .= $this->renderHiddenEditableTextField($checkListItem->id, $checkListItem->name);
                 $itemContent .= $this->attachActionsToCheckListItem();
-                $content     .= ZurmoHtml::tag('li', array('class' => 'check-list-item clearfix'), $itemContent);
+                $content     .= ZurmoHtml::tag('li', array('class' => 'check-list-item clearfix', 'id' => 'SortedTaskCheckListItem_' . $checkListItem->id), $itemContent);
             }
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.modules.tasks.elements.assets')) . '/TaskUtils.js',
@@ -272,12 +272,30 @@
          */
         protected function registerSortableScript()
         {
+            $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/updateSortViaAjax');
             // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('checklistitemsSortablescript',"
-                                                           $('.taskcheckitemslist').sortable
-                                                           ({
-                                                                 items: 'li'
-                                                           });
+                                                            $('.taskcheckitemslist').sortable
+                                                            ({
+                                                                items: 'li',
+                                                                update: function(event, ui)
+                                                                {
+                                                                    serial = $('.taskcheckitemslist').sortable('serialize', { key: 'SortedTaskCheckListItems[]' });
+                                                                    $.ajax(
+                                                                    {
+                                                                        url : '" . $url . "',
+                                                                        type : 'GET',
+                                                                        data : serial,
+                                                                        success : function(data)
+                                                                        {
+                                                                            //console.log('success');
+                                                                        },
+                                                                        error : function()
+                                                                        {
+                                                                        }
+                                                                    });
+                                                                }
+                                                            });
                                                       ");
             // End Not Coding Standard
         }

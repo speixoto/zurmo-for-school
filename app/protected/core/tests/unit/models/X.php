@@ -1,4 +1,4 @@
-<?php
+    <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
      * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
@@ -63,13 +63,13 @@
                 'members' => array(
                 ),
                 'rules' => array(
-                    array('P', 'required'),
-                    array('B', 'required'),
+                    array('prel', 'required'),
+                    array('brel', 'required'),
                 ),
                 'relations' => array(
-                    'P'   => array(static::HAS_ONE, 'P', static::NOT_OWNED,
+                    'prel' => array(static::HAS_ONE, 'P', static::NOT_OWNED,
                                                 static::LINK_TYPE_SPECIFIC, 'AAffiliation'),
-                    'B' => array(static::HAS_ONE, 'B', static::NOT_OWNED,
+                    'brel' => array(static::HAS_ONE, 'B', static::NOT_OWNED,
                                                 static::LINK_TYPE_SPECIFIC, 'BAffiliation'),
                 ),
             );

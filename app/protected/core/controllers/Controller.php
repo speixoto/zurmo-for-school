@@ -45,6 +45,14 @@
             parent::__construct($id, $module);
         }
 
+        /**
+         * Override if the module is a nested module such as groups or roles.
+         */
+        public function resolveAndGetModuleId()
+        {
+            return $this->getModule()->getId();
+        }
+
         public function renderBeginWidget($className, $properties = array())
         {
             ob_start();
@@ -301,7 +309,11 @@
 
         protected static function getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider, $countEmptyStringAsElement = true)
         {
-            if (Yii::app()->request->getQuery('selectAll'))
+            if (Yii::app()->request->getQuery('totalCount'))
+            {
+                return Yii::app()->request->getQuery('totalCount');
+            }
+            elseif (Yii::app()->request->getQuery('selectAll'))
             {
                 return intval($dataProvider->calculateTotalItemCount());
             }

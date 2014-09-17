@@ -33,7 +33,7 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-    class CampaignGenerateDueCampaignItemsJobTest extends ZurmoBaseTest
+    class CampaignGenerateDueCampaignItemsJobTest extends AutoresponderOrCampaignBaseTest
     {
         protected $user;
 
@@ -48,6 +48,10 @@
             parent::setUp();
             $this->user                 = User::getByUsername('super');
             Yii::app()->user->userModel = $this->user;
+            Campaign::deleteAll();
+            CampaignItem::deleteAll();
+            MarketingList::deleteAll();
+            Contact::deleteAll();
         }
 
         public function testGetDisplayName()
@@ -176,21 +180,16 @@
         {
             $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 04');
             $marketingListId    = $marketingList->id;
-            $contact1           = ContactTestHelper::createContactByNameForOwner('campaignContact 01', $this->user);
-            $contact2           = ContactTestHelper::createContactByNameForOwner('campaignContact 02', $this->user);
-            $contact3           = ContactTestHelper::createContactByNameForOwner('campaignContact 03', $this->user);
-            $contact4           = ContactTestHelper::createContactByNameForOwner('campaignContact 04', $this->user);
-            $contact5           = ContactTestHelper::createContactByNameForOwner('campaignContact 05', $this->user);
             $processed          = 0;
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact1);
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact2);
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact3);
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact4);
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact5);
+            for ($i = 1; $i <= 5; $i++)
+            {
+                $contact = ContactTestHelper::createContactByNameForOwner('campaignContact 0' . $i, $this->user);
+                MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact);
+            }
             $marketingList->forgetAll();
 
             $marketingList      = MarketingList::getById($marketingListId);
-            CampaignTestHelper::createCampaign('Active, Due With Members',
+            $campaign           = CampaignTestHelper::createCampaign('Active, Due With Members',
                                                 'subject',
                                                 'text Content',
                                                 'Html Content',
@@ -201,6 +200,8 @@
                                                 null,
                                                 null,
                                                 $marketingList);
+            // we have to do this to ensure when we retrieve the data status is updated from db.
+            $campaign->forgetAll();
             $this->assertEmpty(CampaignItem::getAll());
             $job                = new CampaignGenerateDueCampaignItemsJob();
             $this->assertTrue($job->run());
@@ -217,106 +218,46 @@
         /**
          * @depends testRunWithDueActiveCampaignsWithMembers
          */
-        public function testRunWithDueActiveCampaignsWithCustomBatchSize()
+        public function testRunWithJustDueActiveCampaignsWithMembers()
         {
-            Campaign::deleteAll();
-            $contactIds         = array();
-            $marketingListIds   = array();
-            $campaignIds        = array();
-            for ($index = 6; $index < 9; $index++)
+            $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 05');
+            $marketingListId    = $marketingList->id;
+            $processed          = 0;
+            for ($i = 6; $i <= 10; $i++)
             {
-                $contact        = ContactTestHelper::createContactByNameForOwner('campaignContact 0' . $index,
-                                                                                $this->user);
-                $contactIds[] = $contact->id;
-                $contact->forgetAll();
+                $contact = ContactTestHelper::createContactByNameForOwner('campaignContact 0' . $i, $this->user);
+                MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact);
             }
-            for ($index = 5; $index < 10; $index++)
-            {
-                $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 0' . $index);
-                $marketingListId    = $marketingList->id;
-                $marketingListIds[] = $marketingListId;
-                foreach ($contactIds as $contactId)
-                {
-                    $contact        = Contact::getById($contactId);
-                    $unsubscribed   = (rand(10, 20) % 2);
-                    MarketingListMemberTestHelper::createMarketingListMember($unsubscribed, $marketingList, $contact);
-                }
-                $marketingList->forgetAll();
-                $marketingList      = MarketingList::getById($marketingListId);
-                $campaignSuffix     = substr($marketingList->name, -2);
-                $campaign           = CampaignTestHelper::createCampaign('campaign ' . $campaignSuffix,
-                                                                            'subject ' . $campaignSuffix,
-                                                                            'text ' . $campaignSuffix,
-                                                                            'html ' . $campaignSuffix,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            null,
-                                                                            $marketingList);
-                $this->assertNotNull($campaign);
-                $campaignIds[]      = $campaign->id;
-                $campaign->forgetAll();
-            }
+            $marketingList->forgetAll();
 
-            foreach ($campaignIds as $campaignId)
-            {
-                $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
-                $this->assertEmpty($campaignItems);
-            }
-
-            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(10);
-            $job    = new CampaignGenerateDueCampaignItemsJob();
+            $marketingList      = MarketingList::getById($marketingListId);
+            $nowDateTime        = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $campaign           = CampaignTestHelper::createCampaign('Active, Just Due With Members',
+                                                                                'subject',
+                                                                                'text Content',
+                                                                                'Html Content',
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                Campaign::STATUS_ACTIVE,
+                                                                                $nowDateTime,
+                                                                                null,
+                                                                                $marketingList);
+            // we have to do this to ensure when we retrieve the data status is updated from db.
+            $campaign->forgetAll();
+            $this->assertEmpty(CampaignItem::getAll());
+            // sleep 1 second to ensure we are giving ample time difference between creating the campaign and calling the job
+            sleep(1);
+            $job                = new CampaignGenerateDueCampaignItemsJob();
             $this->assertTrue($job->run());
-            foreach ($campaignIds as $index => $campaignId)
-            {
-                $campaign           = Campaign::getById($campaignId);
-                $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
-                if ($index === 0)
-                {
-                    $expectedCount  = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
-                    $memberCount    = count($campaign->marketingList->marketingListMembers);
-                    if ($memberCount < $expectedCount)
-                    {
-                        $expectedCount = $memberCount;
-                    }
-                    $this->assertNotEmpty($campaignItems);
-                    $this->assertCount($expectedCount, $campaignItems);
-                    $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
-                }
-                else
-                {
-                    $this->assertEmpty($campaignItems);
-                    $this->assertEquals(Campaign::STATUS_ACTIVE, $campaign->status);
-                }
-            }
-
-            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(null);
-            $this->assertTrue($job->run());
-            foreach ($campaignIds as $index =>  $campaignId)
-            {
-                $campaign           = Campaign::getById($campaignId);
-                $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
-                if ($index < 2)
-                {
-                    $expectedCount  = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
-                    $memberCount    = count($campaign->marketingList->marketingListMembers);
-                    if ($memberCount < $expectedCount)
-                    {
-                        $expectedCount = $memberCount;
-                    }
-                    $this->assertNotEmpty($campaignItems);
-                    $this->assertCount($expectedCount, $campaignItems);
-                    $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
-                }
-                else
-                {
-                    $this->assertEmpty($campaignItems);
-                    $this->assertEquals(Campaign::STATUS_ACTIVE, $campaign->status);
-                }
-            }
-            // TODO: @Shoaibi: Low: Add tests for the other campaign type.
+            $campaign           = Campaign::getByName('Active, just Due With Members');
+            $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign[0]->status);
+            $allCampaignItems   = CampaignItem::getAll();
+            $this->assertNotEmpty($allCampaignItems);
+            $this->assertCount(5, $allCampaignItems);
+            $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaign[0]->id);
+            $this->assertNotEmpty($campaignItems);
+            $this->assertCount(5, $campaignItems);
         }
     }
 ?>

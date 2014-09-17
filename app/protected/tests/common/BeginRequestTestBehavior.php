@@ -72,5 +72,11 @@
                 Yii::import($file);
             }
         }
+
+        public function handleLoadReadPermissionSubscriptionObserver($event)
+        {
+            parent::handleLoadReadPermissionSubscriptionObserver($event);
+            Yii::app()->readPermissionSubscriptionObserver->enabled = false;
+        }
     }
 ?>

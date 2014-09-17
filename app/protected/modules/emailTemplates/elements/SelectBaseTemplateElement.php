@@ -105,15 +105,20 @@
         {
             $modelClassName = $this->resolveModelClassName();
             $filterBy = ArrayUtil::getArrayValue(GetUtil::getData(), 'filterBy');
+            $sortAttribute  = null;
+            $sortDescending = false;
             if ($filterBy == static::FILTER_BY_PREVIOUSLY_CREATED_TEMPLATES)
             {
                 $searchAttributeData = EmailTemplate::getPreviouslyCreatedBuilderTemplateSearchAttributeData($modelClassName, false);
+                $sortAttribute       = 'isFeatured';
+                $sortDescending      = true;
             }
             else
             {
                 $searchAttributeData = EmailTemplate::getPredefinedBuilderTemplatesSearchAttributeData();
+                $sortAttribute       = 'id';
             }
-            $dataProvider   = RedBeanModelDataProviderUtil::makeDataProvider($searchAttributeData, 'EmailTemplate', 'RedBeanModelDataProvider', null, false, 10);
+            $dataProvider   = RedBeanModelDataProviderUtil::makeDataProvider($searchAttributeData, 'EmailTemplate', 'RedBeanModelDataProvider', $sortAttribute, $sortDescending, 10);
             return $dataProvider;
         }
 
@@ -122,8 +127,10 @@
             $modelClassName = $this->resolveModelClassName();
             $content =  '
                             <div class="pills">
-                                    <a href="#" class="filter-link active" data-filter="' . static::FILTER_BY_PREDEFINED_TEMPLATES . '">Layouts</a>
-                                    <a href="#" class="filter-link" data-filter="' . static::FILTER_BY_PREVIOUSLY_CREATED_TEMPLATES . '">Saved Templates</a>
+                                    <a href="#" class="filter-link active" data-filter="' . static::FILTER_BY_PREDEFINED_TEMPLATES . '">' . 
+                                        Zurmo::t('DesignerModule', 'Layouts') . '</a>
+                                    <a href="#" id="saved-templates-link" class="filter-link" data-filter="' . static::FILTER_BY_PREVIOUSLY_CREATED_TEMPLATES . '">' . 
+                                        Zurmo::t('EmailTemplatesModule', 'Saved Templates') . '</a>
                             </div>
                         ';
             $content .= $this->renderCloseSelectTemplatesButton();
@@ -142,7 +149,7 @@
         {
             $pagerParams = array(
                 'class'            => 'BottomLinkPager',
-                'nextPageLabel'    => '<span>next</span>',
+                'nextPageLabel'    => '<span>' . Zurmo::t('Core', 'next') . '</span>',
                 'header'           => '<div class="list-preloader"><span class="z-spinner"></span></div>',
                 'htmlOptions'      => array('class' => 'endless-list-pager')
             );
