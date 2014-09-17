@@ -262,10 +262,10 @@
                     foreach ($this->themeColorDependentLessFilesToCompile as $fileToCompile)
                     {
                         $this->resolveCompileFileWithThemeColorsAndColorName($fileToCompile, $colors, $colorName);
-                        if ($colorName == ThemeManager::CUSTOM_NAME)
-                        {
-                            Yii::app()->getAssetManager()->publish($this->getCompiledCustomCssPath(),false, -1, true);
-                        }
+                    }
+                    if ($colorName == ThemeManager::CUSTOM_NAME)
+                    {
+                        Yii::app()->getAssetManager()->publish($this->getCompiledCustomCssPath(),false, -1, true);
                     }
                 }
             }

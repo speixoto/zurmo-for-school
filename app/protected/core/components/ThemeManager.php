@@ -319,7 +319,7 @@
                 Yii::app()->lessCompiler->compileColorDependentLessFile(static::CUSTOM_NAME);
             }
             $cs      = Yii::app()->getClientScript();
-            $baseUrl = Yii::app()->assetManager->getPublishedUrl(Yii::app()->lessCompiler->compiledCustomCssPath);
+            $baseUrl = Yii::app()->getAssetManager()->publish(Yii::app()->lessCompiler->compiledCustomCssPath);
             $cs->registerCssFile($baseUrl . DIRECTORY_SEPARATOR . $primaryFileName);
             $cs->registerCssFile($baseUrl . DIRECTORY_SEPARATOR . $secondaryFileName);
         }
