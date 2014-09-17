@@ -80,7 +80,7 @@
 
         protected function getFormattedAttributeLabel()
         {
-            return Yii::app()->format->text(Zurmo::t('ContactsModule', 'Contacts'));
+            return Yii::app()->format->text($this->model->getAttributeLabel('contacts'));
         }
 
         public static function getDisplayName()

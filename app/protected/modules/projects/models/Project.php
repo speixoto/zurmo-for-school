@@ -97,7 +97,10 @@
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                        'status' => Zurmo::t('ZurmoModule', 'Status',  array(), null, $language),
-                       'tasks'  => Zurmo::t('TasksModule', 'TasksModulePluralLabel', $params, null, $language)
+                       'tasks'  => Zurmo::t('TasksModule', 'TasksModulePluralLabel', $params, null, $language),
+                       'accounts'  => Zurmo::t('AccountsModule', 'AccountsModulePluralLabel', $params, null, $language),
+                       'contacts'  => Zurmo::t('ContactsModule', 'ContactsModulePluralLabel', $params, null, $language),
+                       'opportunities'  => Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', $params, null, $language)
                     )
                 );
         }
