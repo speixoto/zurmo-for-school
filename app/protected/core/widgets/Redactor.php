@@ -38,7 +38,7 @@
     {
         const LINK_FOR_INSERT_CLASS = 'image-gallery-modal-insert';
 
-        public $scriptFile          = array('redactor.js');
+        public $scriptFile          = array('redactor.min.js');
 
         public $cssFile             = array('redactor.css');
 

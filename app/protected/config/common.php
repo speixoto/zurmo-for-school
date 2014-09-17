@@ -180,6 +180,7 @@
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/calendar/Calendar.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/colorPicker/iris.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/colorPicker/color.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/redactor/redactor.min.js',
                     )
                 ),
                 //Add scripts here that do not need to load when using an ajax request such as a modal search box.  The scripts
@@ -215,6 +216,7 @@
                     array('application.core.widgets.assets',            '/calendar/Calendar.js'),
                     array('application.core.widgets.assets',            '/colorPicker/iris.js'),
                     array('application.core.widgets.assets',            '/colorPicker/color.js'),
+                    array('application.core.widgets.assets',            '/redactor/redactor.min.js'),
                 ),
             ),
             'languageHelper' => array(
